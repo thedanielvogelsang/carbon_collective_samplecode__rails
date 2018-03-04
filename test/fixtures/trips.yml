@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  timestamps: 
+  trip_name: MyString
+  mode_of_transport: MyString
+
+two:
+  timestamps: 
+  trip_name: MyString
+  mode_of_transport: MyString
