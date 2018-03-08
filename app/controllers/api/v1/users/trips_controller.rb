@@ -1,9 +1,9 @@
 class Api::V1::Users::TripsController < ApplicationController
   def index
-    render json: User.find(params[:user_id]).trips.order(created_at: :ASC)
+    render json: Trip.user_sort(params[:user_id]), each_serializer: TripSerializer
   end
 
   def show
-    render json: Trips.find(params[:id])
+    render json: Trip.find(params[:id])
   end
 end

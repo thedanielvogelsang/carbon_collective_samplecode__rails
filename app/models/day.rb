@@ -5,7 +5,7 @@ class Day < ApplicationRecord
   validates :date, presence: true, uniqueness: true
   has_many :trips
 
-  before_create :parse_date_time
+  before_validation :parse_date_time
 
   private
     def parse_date_time

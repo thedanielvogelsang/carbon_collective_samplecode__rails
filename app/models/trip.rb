@@ -1,7 +1,10 @@
 require 'trip_helper'
+require 'trip_sorter'
 class Trip < ApplicationRecord
+  attr_accessor :start
+  extend TripSorter
   include TripHelper
-  before_create :add_trip_name
+  after_create :add_trip_name
   after_create :add_carbon_method
 
   enum trip_type: { neutral: 0, public_transit: 1, mo_ped: 2, electric_car: 3, car: 4, airplane: 5 }
@@ -24,10 +27,14 @@ class Trip < ApplicationRecord
     self.stop = DateTime.now
   end
 
+  def start
+    self.created_at
+  end
+
   private
     def add_trip_name
-      day = Day.find_or_create_by(date: DateTime.now.strftime('%d %b %Y'))
-      self.trip_name = day.date + (day.trips.count + 1).to_s
+      day = Day.find(self.day_id)
+      self.trip_name = day.date
     end
 
     def add_carbon_method

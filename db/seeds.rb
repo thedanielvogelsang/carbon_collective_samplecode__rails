@@ -30,16 +30,15 @@ COORD = [
               )
    user.location << Faker::Address.longitude
    user.location << Faker::Address.latitude
-   18.times do |i|
-     t_name = Faker::Compass.direction + Faker::Compass.azimuth
-     date = (DateTime.now - (rand * 3))
-     Day.create(date: date)
-     # fix trip.timestamps array bug
-     i % 2 == 0 ? tt = 0 : tt = 1
-     stop = DateTime.now + (rand * 1)
-     id = rand(1..User.count)
-     Trip.create(user_id: id, day_id: Day.last.id, trip_type: tt, timestamps: COORD.sample, stop: stop)
-   end
+
+   date = (DateTime.now + (rand * 7))
+   Day.create(date: date)
+    10.times do |i|
+      i % 2 == 0 ? tt = 0 : tt = 1
+      stop = date + (rand * 1)
+      id = rand(1..User.count)
+      Trip.create!(user_id: id, day_id: Day.last.id, trip_type: tt, timestamps: COORD.sample, stop: stop)
+    end
    user.save
   p "last username: #{user.username}"
   p "users' password: 'banana'"
