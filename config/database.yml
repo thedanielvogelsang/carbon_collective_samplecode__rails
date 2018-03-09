@@ -24,6 +24,5 @@ test:
 
 production:
   adapter: postgresql
-  database: carbon_collective_development
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
