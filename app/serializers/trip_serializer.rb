@@ -5,17 +5,17 @@ class TripSerializer < ActiveModel::Serializer
       def user
         object.user.username
       end
-      
+
       def mode
         object.trip_type
       end
 
       def start
-        object.start.strftime('%I:%M:%S %p')
+        object.start.strftime('%I:%M %p')
       end
 
       def stop
-        object.stop.strftime('%I:%M:%S %p')
+        object.stop.strftime('%I:%M %p')
       end
 
 
