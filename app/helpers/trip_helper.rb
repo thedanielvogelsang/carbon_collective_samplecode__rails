@@ -48,4 +48,5 @@ module TripHelper
     def co2produced(type, array)
       length_miles(array) * CONV * COEF[type]
     end
+
 end

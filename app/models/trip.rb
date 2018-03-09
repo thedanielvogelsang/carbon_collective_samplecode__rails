@@ -7,7 +7,7 @@ class Trip < ApplicationRecord
   after_create :add_trip_name
   after_create :add_carbon_method
 
-  enum trip_type: { neutral: 0, public_transit: 1, mo_ped: 2, electric_car: 3, car: 4, airplane: 5 }
+  enum trip_type: { neutral: 0, car: 1, mo_ped: 2, electric_car: 3, barge: 4, airplane: 5 }
   belongs_to :user
   belongs_to :day
 
