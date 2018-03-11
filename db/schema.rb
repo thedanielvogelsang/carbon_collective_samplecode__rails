@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180301145038) do
+ActiveRecord::Schema.define(version: 20180311230122) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(version: 20180301145038) do
     t.string "workplace"
     t.string "school"
     t.string "url"
+    t.string "provider"
     t.index ["zipcode_id"], name: "index_users_on_zipcode_id"
   end
 
