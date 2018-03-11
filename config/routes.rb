@@ -8,6 +8,7 @@ Rails.application.routes.draw do
         get '/friends', to: 'users/friends#index'
         get '/friends/:id', to: 'users/friends#show'
         get '/admins', to: 'users/admins#index'
+        get '/days', to: 'users/days#index'
       end
       resources :admins, only: [:index, :show]
       resources :trips
