@@ -13,7 +13,6 @@ class User < ApplicationRecord
   has_many :admins
   has_many :trips
 
-  validates :username, presence: true
   validates :email, presence: true, uniqueness: true
   validate :check_email_format
   validates_uniqueness_of :username, case_sensitive: false
@@ -23,11 +22,17 @@ def total_co2_saved
 end
 
 def self.create_with_omniauth(auth)
-  user = find_or_create_by(uid: auth['uid'], provider:  auth['provider'])
-  user.email = "#{auth['uid']}@#{auth['provider']}.com"
-  user.password = auth['uid']
-  user.name = auth['info']['name']
-  if User.exists?(user)
+  uid = auth['uid']
+  token = auth['credentials'].token
+  user = find_or_create_by(uid: uid, provider:  auth['provider'])
+  user.password = uid
+  user.uid = uid
+  user.token = token
+  user.email = auth['info'].email
+  name = auth['info']['name'].split(' ')
+  user.first = name[0]
+  user.last = name[1]
+  if User.exists?(uid)
     user
   else
     user.save!

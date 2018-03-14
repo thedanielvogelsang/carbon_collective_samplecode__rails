@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get 'sessions/create'
+  resources :users, only: [:new, :create, :show]
 
   namespace :api do
     namespace :v1 do
@@ -20,4 +20,7 @@ Rails.application.routes.draw do
       resources :days, only: [:index, :show]
     end
   end
+  get '/', to: "sessions#index", as: :welcome
+  get '/auth/facebook', as: :facebook_login
+  get '/auth/facebook/callback', to: "sessions#create", as: :facebook_callback
 end
