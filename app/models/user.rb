@@ -15,9 +15,11 @@ class User < ApplicationRecord
 
   has_many :electric_bills
 
+  has_many :user_addresses
+  has_many :addresses, through: :user_addresses
+
   validates :email, presence: true, uniqueness: true
   validate :check_email_format
-  validates_uniqueness_of :username, case_sensitive: false
 
 
 def total_co2_saved
