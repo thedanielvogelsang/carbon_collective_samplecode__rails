@@ -13,6 +13,8 @@ class User < ApplicationRecord
   has_many :admins
   has_many :trips
 
+  has_many :electric_bills
+
   validates :email, presence: true, uniqueness: true
   validate :check_email_format
   validates_uniqueness_of :username, case_sensitive: false

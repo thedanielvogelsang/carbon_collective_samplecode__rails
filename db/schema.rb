@@ -10,10 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180311230122) do
+ActiveRecord::Schema.define(version: 20180314222312) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "addresses", force: :cascade do |t|
+    t.string "address_line1"
+    t.string "address_line2"
+    t.string "city"
+    t.string "state"
+    t.string "country"
+    t.integer "zipcode"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "admins", force: :cascade do |t|
     t.bigint "user_id"
@@ -26,6 +37,16 @@ ActiveRecord::Schema.define(version: 20180311230122) do
     t.string "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "electric_bills", force: :cascade do |t|
+    t.date "start_date"
+    t.date "end_date"
+    t.float "total_kwhs"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_electric_bills_on_user_id"
   end
 
   create_table "friendships", id: false, force: :cascade do |t|
@@ -44,6 +65,13 @@ ActiveRecord::Schema.define(version: 20180311230122) do
     t.index ["admin_id"], name: "index_groups_on_admin_id"
   end
 
+  create_table "houses", force: :cascade do |t|
+    t.float "total_sq_ft"
+    t.integer "no_residents"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "trips", force: :cascade do |t|
     t.string "trip_name"
     t.string "mode_of_transport"
@@ -58,6 +86,15 @@ ActiveRecord::Schema.define(version: 20180311230122) do
     t.index ["user_id"], name: "index_trips_on_user_id"
   end
 
+  create_table "user_addresses", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "address_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["address_id"], name: "index_user_addresses_on_address_id"
+    t.index ["user_id"], name: "index_user_addresses_on_user_id"
+  end
+
   create_table "user_groups", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "group_id"
@@ -69,7 +106,6 @@ ActiveRecord::Schema.define(version: 20180311230122) do
     t.string "first"
     t.string "last"
     t.string "email"
-    t.string "username"
     t.string "uid"
     t.string "token"
     t.string "password_digest"
@@ -92,9 +128,12 @@ ActiveRecord::Schema.define(version: 20180311230122) do
   end
 
   add_foreign_key "admins", "users"
+  add_foreign_key "electric_bills", "users"
   add_foreign_key "groups", "admins"
   add_foreign_key "trips", "days"
   add_foreign_key "trips", "users"
+  add_foreign_key "user_addresses", "addresses"
+  add_foreign_key "user_addresses", "users"
   add_foreign_key "user_groups", "groups"
   add_foreign_key "user_groups", "users"
   add_foreign_key "users", "zipcodes"
