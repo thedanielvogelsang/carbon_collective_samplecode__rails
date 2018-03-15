@@ -1,17 +1,15 @@
 class UsersController < ApplicationController
+  before_action :require_user, only: [:show, :index]
   def index
   end
 
   def show
+    byebug
   end
 
   def new
-    byebug
-    if params[:uid]
-      user = User.where(uid: params[:uid])
-    else
-      user = User.new(safe_params)
-    end
+    @user = User.new(safe_params)
+    flash[:error] = "All fields must be filled in."
   end
 
   def create
@@ -20,6 +18,6 @@ class UsersController < ApplicationController
   private
 
     def safe_params
-      params.require(:user).permit(:first, :last, :email, :zipcode)
+      params.require(:users).permit(:uid, :first, :last, :email, :address)
     end
 end

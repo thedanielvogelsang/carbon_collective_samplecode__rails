@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :users, only: [:new, :create, :show]
+  resources :address, only: [:new, :create]
 
   namespace :api do
     namespace :v1 do
