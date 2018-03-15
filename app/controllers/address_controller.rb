@@ -8,6 +8,7 @@ class AddressController < ApplicationController
 
   def create
     byebug
+    #redirect_to new_house_path({user_id: @user.id, address_id: @address.id})
   end
 
 end
