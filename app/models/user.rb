@@ -35,6 +35,7 @@ def self.create_with_omniauth(auth)
   user.password = uid
   user.uid = uid
   user.token = token
+  user.url = auth['info']['image']
   user.email = auth['info'].email
   name = auth['info']['name'].split(' ')
   user.first = name[0]
