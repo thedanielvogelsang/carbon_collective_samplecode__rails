@@ -4,7 +4,7 @@ class Address < ApplicationRecord
   has_one :house
   belongs_to :zipcode
 
-  attr_accessor :address_line1
+  attr_accessor :geocoder_string
   # before_validation :parse_address
   geocoded_by :geocoder_string do |obj, results|
     if geo = results.first
@@ -16,7 +16,8 @@ class Address < ApplicationRecord
       obj.state = geo.state
       obj.zipcode_id = Zipcode.find_or_create_by(zipcode: geo.postal_code).id
       obj.country = geo.country
-      byebug
+      obj.latitude = geo.latitude
+      obj.longitude = geo.longitude
     end
   end
 
