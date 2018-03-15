@@ -36,6 +36,7 @@ gem 'database_cleaner'
 gem 'active_model_serializers'
 gem 'faraday'
 gem 'faraday_middleware'
+gem 'geocoder'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
