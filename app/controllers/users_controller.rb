@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    byebug
+    @user = User.find(params[:id])
   end
 
   def new
@@ -15,7 +15,7 @@ class UsersController < ApplicationController
     @user = User.create(safe_params)
     if params[:password] == params[:password_confirmation] && @user.save
       flash[:success] = "User data success. Now lets log your home address to get you started"
-      redirect_to new_address_path(@user.id)
+      redirect_to new_address_path({id: @user.id})
     else
       flash[:error] = "Unsuccessful User Creation"
       redirect_to new_user_path

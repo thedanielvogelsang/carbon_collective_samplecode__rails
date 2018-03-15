@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include UserCo2Helper
+
   has_and_belongs_to_many :friendships,
         class_name: "User",
         join_table:  :friendships,
@@ -24,10 +26,6 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true
   validate :check_email_format
 
-
-def total_co2_saved
-end
-
 def self.create_with_omniauth(auth)
   uid = auth['uid']
   token = auth['credentials'].token
@@ -46,6 +44,10 @@ def self.create_with_omniauth(auth)
     user.save!
     user
   end
+end
+
+def bills
+  self.electric_bills
 end
 
 private
