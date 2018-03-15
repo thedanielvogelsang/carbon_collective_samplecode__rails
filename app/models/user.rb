@@ -48,6 +48,10 @@ def self.create_with_omniauth(auth)
   end
 end
 
+def bills
+  self.electric_bills
+end
+
 private
   def check_email_format
     return if errors.key?(:email)

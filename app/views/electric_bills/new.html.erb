@@ -15,6 +15,10 @@
     <%= f.number_field :total_kwhs, options={placeholder: "How many killowatts did you use?"} %>
   </br>
   </br>
+    <%= f.label :bill_cost %>
+    <%= f.text_area :price, options={placeholder: "How much money did you spend on energy?"} %>
+  </br>
+  </br>
 
     <%= f.submit "Log This Month's Bill" %>
     <% end %>

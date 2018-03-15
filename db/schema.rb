@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180314224738) do
+ActiveRecord::Schema.define(version: 20180315214909) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,9 +21,14 @@ ActiveRecord::Schema.define(version: 20180314224738) do
     t.string "city"
     t.string "state"
     t.string "country"
-    t.integer "zipcode"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "latitude"
+    t.float "longitude"
+    t.string "county"
+    t.bigint "zipcode_id"
+    t.string "geocoder_string"
+    t.index ["zipcode_id"], name: "index_addresses_on_zipcode_id"
   end
 
   create_table "admins", force: :cascade do |t|
@@ -46,6 +51,7 @@ ActiveRecord::Schema.define(version: 20180314224738) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
+    t.float "price"
     t.index ["user_id"], name: "index_electric_bills_on_user_id"
   end
 
@@ -138,6 +144,7 @@ ActiveRecord::Schema.define(version: 20180314224738) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "addresses", "zipcodes"
   add_foreign_key "admins", "users"
   add_foreign_key "electric_bills", "users"
   add_foreign_key "groups", "admins"
