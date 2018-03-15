@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :electric_bills, only: [:new, :create]
   resources :users, only: [:new, :create, :show, :update]
   resources :address, only: [:new, :create]
   resources :houses, only: [:new, :create]
