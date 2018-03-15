@@ -1,0 +1,15 @@
+<body>
+  <div>
+    <h1> Household Info </h1>
+  </div>
+  <div class="house-residents-container">
+    <%= form_for @house, {class: "add-resident-form"} do |f| %>
+    <%= f.label :number_of_residents %>
+    <%= f.number_field(:no_residents, options = {min: 1, max: 10, step: 1})%><br>
+    <%= f.label "Total livable square feet" %>
+    <%= f.text_field(:total_sq_ft, options = {size: 12, maxlength: 10, placeholder: "Number Only"}) %><br>
+    <%= f.submit "Create Your CarbonCollective Account" %>
+    <% end %>
+
+  </div>
+</body>
