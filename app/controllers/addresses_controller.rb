@@ -11,7 +11,7 @@ class AddressesController < ApplicationController
     @address = Address.create(safe_params)
     if @address.save
       flash[:success] = "You are now a member of the CarbonCollective Community #{@user.first}"
-      #redirect_to new_house_path({user_id: @user.id, address_id: @address.id})
+      redirect_to new_house_path({user_id: @user.id, address_id: @address.id})
     else
       flash[:error] = "Something went wrong"
       redirect_to new_address_path({id: @user.id})
@@ -22,5 +22,4 @@ class AddressesController < ApplicationController
     def safe_params
       params.require(:address).permit(:geocoder_string)
     end
-
 end

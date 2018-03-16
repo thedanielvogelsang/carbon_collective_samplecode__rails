@@ -13,6 +13,13 @@ module UserCo2Helper
   end
 
   def total_neighborhood_energy_savings
-    Address.where
+    my_zips = self.addresses.map{|a| a.zipcode_id}
+    my_neighbors = my_zips.map do |zip_id|
+      User.joins(:addresses).where(:addresses => {zipcode: zip_id})
+    end
+    # self.total_neighborhood_energy_savings ||= my_neighbors.flatten.map{|n| n.total_co2_saved}
+    #                                               .reduce(0){|s,n| s+n}
   end
+
+  
 end

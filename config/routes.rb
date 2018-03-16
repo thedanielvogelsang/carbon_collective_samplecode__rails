@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :electric_bills, only: [:new, :create]
   resources :users, only: [:new, :create, :show, :update]
   resources :addresses, only: [:new, :create, :show]
+  resources :houses, only: [:new, :create]
 
   namespace :api do
     namespace :v1 do
