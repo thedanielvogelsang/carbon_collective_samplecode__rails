@@ -1,5 +1,14 @@
 module UserCo2Helper
 
+  def total_co2_update
+    total_household_energy_savings
+    total_neighborhood_energy_savings
+    total_city_energy_savings
+    total_county_energy_savings
+    total_state_energy_savings
+    total_country_energy_savings
+  end
+  
   def total_co2_saved
     self.bills.map{|b| b.carbon_saved.to_f}.reduce(0){|sum, num| sum + num}
   end
@@ -9,7 +18,9 @@ module UserCo2Helper
   end
 
   def total_household_energy_savings
-    self.bills.map{|b| b.carbon_saved.to_f}.reduce(0){|sum, num| sum + num}
+    savings = self.bills.map{|b| b.carbon_saved.to_f}.reduce(0){|sum, num| sum + num}
+    self.household = savings
+    self.save
   end
 
   def total_neighborhood_energy_savings
