@@ -17,11 +17,11 @@ class User < ApplicationRecord
 
   has_many :electric_bills
 
-  has_many :user_addresses
-  has_many :addresses, through: :user_addresses
+  # has_many :user_addresses
 
   has_many :user_houses
   has_many :houses, through: :user_houses
+  has_many :addresses, through: :houses
 
   validates :email, presence: true, uniqueness: true
   validate :check_email_format

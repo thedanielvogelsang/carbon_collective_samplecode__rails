@@ -1,7 +1,6 @@
 class Address < ApplicationRecord
-  has_many :user_addresses
-  has_many :users, through: :user_addresses
   has_one :house
+  has_many :users, through: :house
   belongs_to :zipcode
 
   attr_accessor :geocoder_string
