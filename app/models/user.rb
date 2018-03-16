@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include UserCo2Helper
+
   has_and_belongs_to_many :friendships,
         class_name: "User",
         join_table:  :friendships,
@@ -13,13 +15,39 @@ class User < ApplicationRecord
   has_many :admins
   has_many :trips
 
-  validates :username, presence: true
+  has_many :electric_bills
+
+  # has_many :user_addresses
+
+  has_many :user_houses
+  has_many :houses, through: :user_houses
+  has_many :addresses, through: :houses
+
   validates :email, presence: true, uniqueness: true
   validate :check_email_format
-  validates_uniqueness_of :username, case_sensitive: false
 
+def self.create_with_omniauth(auth)
+  uid = auth['uid']
+  token = auth['credentials'].token
+  user = find_or_create_by(uid: uid, provider:  auth['provider'])
+  user.password = uid
+  user.uid = uid
+  user.token = token
+  user.url = auth['info']['image']
+  user.email = auth['info'].email
+  name = auth['info']['name'].split(' ')
+  user.first = name[0]
+  user.last = name[1]
+  if User.exists?(uid)
+    user
+  else
+    user.save!
+    user
+  end
+end
 
-def total_co2_saved
+def bills
+  self.electric_bills
 end
 
 private
