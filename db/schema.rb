@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180315221731) do
+ActiveRecord::Schema.define(version: 20180316010229) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -129,14 +129,18 @@ ActiveRecord::Schema.define(version: 20180315221731) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "zipcode_id"
     t.string "admins", array: true
     t.string "location", array: true
     t.string "workplace"
     t.string "school"
     t.string "url"
     t.string "provider"
-    t.index ["zipcode_id"], name: "index_users_on_zipcode_id"
+    t.float "household"
+    t.float "neighborhood"
+    t.float "city"
+    t.float "county"
+    t.float "state_or_province"
+    t.float "country"
   end
 
   create_table "zipcodes", force: :cascade do |t|
@@ -158,5 +162,4 @@ ActiveRecord::Schema.define(version: 20180315221731) do
   add_foreign_key "user_groups", "users"
   add_foreign_key "user_houses", "houses"
   add_foreign_key "user_houses", "users"
-  add_foreign_key "users", "zipcodes"
 end
