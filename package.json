@@ -2,6 +2,7 @@
   "name": "carbon_collective",
   "private": true,
   "dependencies": {
+    "npm": "^5.7.1",
     "react-native-modal": "^5.0.0"
   }
 }
