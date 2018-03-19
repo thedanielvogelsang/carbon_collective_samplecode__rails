@@ -6,7 +6,6 @@ RSpec.describe Address do
   end
   it 'can be created with a user_id' do
     VCR.use_cassette('addresses/address_can_be_created') do
-      byebug
       visit("/addresses/new?id=#{@user.id}")
       fill_in "address_geocoder_string", with: "4589 Zuni St Denver CO"
       click_on "Start Carbon Savings"
