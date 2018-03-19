@@ -27,4 +27,7 @@ Rails.application.routes.draw do
   get '/', to: "sessions#index", as: :welcome
   get '/auth/facebook', as: :facebook_login
   get '/auth/facebook/callback', to: "sessions#create", as: :facebook_callback
+  get '/logout', to: "sessions#destroy", as: :logout
+  get '/login', to: "sessions#new", as: :login
+  post '/login', to: "sessions#create"
 end
