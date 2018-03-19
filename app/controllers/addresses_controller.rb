@@ -1,5 +1,5 @@
 class AddressesController < ApplicationController
-  before_action :require_user
+  # before_action :require_user
 
   def new
     @user = User.find(params['id'])

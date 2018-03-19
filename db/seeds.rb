@@ -20,9 +20,7 @@ COORD = [
                 first: Faker::HarryPotter.character.split(/\W/)[0],
                 last: Faker::LordOfTheRings.character.split(/\W/)[0],
                 email: Faker::Internet.email,
-                username:"user#{n}",
                 password: 'banana',
-                zipcode_id: Zipcode.order("RANDOM()").last.id,
                 school: Faker::HarryPotter.house,
                 workplace: Faker::Company.name,
                 location: Array.new,
@@ -40,7 +38,7 @@ COORD = [
       Trip.create!(user_id: id, day_id: Day.last.id, trip_type: tt, timestamps: COORD.sample, stop: stop)
     end
    user.save
-  p "last username: #{user.username}"
+  p "last email: #{user.email}"
   p "users' password: 'banana'"
 end
 
