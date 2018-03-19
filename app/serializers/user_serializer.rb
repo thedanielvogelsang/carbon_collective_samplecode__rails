@@ -1,16 +1,10 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :username, :trip_count, :first, :last, :email, :uid,
-                  :token, :zipcode, :admins, :current_location,
+  attributes :id, :trip_count, :first, :last, :email, :uid,
+                  :token, :admins, :current_location,
                   :workplace, :school, :avatar_url
 
   def current_location
     object.location
-  end
-
-  def zipcode
-    if object.zipcode_id
-      Zipcode.find(object.zipcode_id).zipcode
-    end
   end
 
   def trip_count
