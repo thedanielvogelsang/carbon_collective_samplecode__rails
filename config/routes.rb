@@ -24,6 +24,18 @@ Rails.application.routes.draw do
         get '/members', to: 'groups/group_members#index'
       end
       resources :days, only: [:index, :show]
+      namespace :areas do
+        get '/countries', to: 'country#index'
+        get '/countries/:id', to: 'country#show'
+        get '/regions', to: 'region#index'
+        get '/regions/:id', to: 'region#show'
+        get '/cities', to: 'city#index'
+        get '/cities/:id', to: 'city#show'
+        get '/neighborhoods', to: 'neighborhood#index'
+        get '/neighborhoods/:id', to: 'neighborhood#show'
+        get '/households', to: 'household#index'
+        get '/households/:id', to: 'household#show'
+      end
     end
   end
   get '/', to: "sessions#index", as: :welcome
