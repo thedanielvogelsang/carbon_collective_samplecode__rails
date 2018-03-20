@@ -1,0 +1,14 @@
+<body>
+  <div class="new-address-header">
+    <h1>Whats your home address?</h1>
+    <hr>
+  </div>
+  <div class="new-address-form-container">
+    <%= form_for @address, {class: 'new-address-form'} do |f| %>
+    <%= f.label :address %>
+    <%= f.text_field :geocoder_string %><br><br><hr>
+    <%= f.hidden_field :user_id, { :value => @user.id} %>
+    <%= f.submit "Start Carbon Savings!" %>
+    <% end %>
+  </div>
+</body>

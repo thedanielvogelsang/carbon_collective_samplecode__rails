@@ -1,0 +1,29 @@
+<body>
+  <div class="new-form-header">
+    <% if @user.uid %>
+      <h1>Hello <%= @user.first %></h1>
+      <h3>Lets make sure we have your name right...</h3>
+    <% else %>
+      <h3> Please enter: </h3>
+    <% end %>
+
+  </div>
+  <div class="new-form-container">
+  <%= form_for @user, {class: "new-account"} do |f|  %>
+  <% if !@user.uid %>
+  <%= f.label :email %>
+  <%= f.text_field :email %>
+  <%= f.label :password%>
+  <%= f.text_field :password%>
+  <%= f.label :confirm_your_password %>
+  <%= f.text_field :password_confirmation%>
+  <% end %>
+  <%= f.label :first_name %>
+  <%= f.text_field :first %>
+  <%= f.label :last_name %>
+  <%= f.text_field :last %>
+  <%= f.hidden_field :id, { :value => @user.id } %>
+  <%= f.submit "Create Account" %>
+  <% end %>
+  </div>
+</body>

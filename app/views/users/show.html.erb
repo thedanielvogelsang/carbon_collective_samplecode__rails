@@ -1,0 +1,31 @@
+<h1> Hello <%= @user.first %> </h1>
+
+<h3>Global Carbon Saved To Date: <%= @global %> lbs </h3>
+<h4>Your Total Carbon Saved: <%= @user.total_co2_saved %></h4>
+<% @groups.map do |g| %>
+<h5><%= g.name %> Collective Total: <%= g.group_collective_savings %></h5>
+<% end %>
+<h5 style="text-decoration:underline">Community Totals</h5>
+<table>
+  <tr>
+    <th>Vicinity</th><th>Total Collective Savings</th>
+  </tr>
+  <tr>
+    <td>Household</td><td><%= @user.household %></td>
+  </tr>
+  <tr>
+    <td>Neighborhood</td><td><%= @user.neighborhood %></td>
+  </tr>
+  <tr>
+    <td>City</td><td><%= @user.city %></td>
+  </tr>
+  <tr>
+    <td>County</td><td><%= @user.county %></td>
+  </tr>
+  <tr>
+    <td>State</td><td><%= @user.state_or_province %></td>
+  </tr>
+  <tr>
+    <td>Country</td><td><%= @user.country %></td>
+  </tr>
+</table>

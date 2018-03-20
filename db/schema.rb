@@ -10,10 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180301145038) do
+ActiveRecord::Schema.define(version: 20180316010229) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "addresses", force: :cascade do |t|
+    t.string "address_line1"
+    t.string "address_line2"
+    t.string "city"
+    t.string "state"
+    t.string "country"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.float "latitude"
+    t.float "longitude"
+    t.string "county"
+    t.bigint "zipcode_id"
+    t.string "geocoder_string"
+    t.index ["zipcode_id"], name: "index_addresses_on_zipcode_id"
+  end
 
   create_table "admins", force: :cascade do |t|
     t.bigint "user_id"
@@ -26,6 +42,18 @@ ActiveRecord::Schema.define(version: 20180301145038) do
     t.string "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "electric_bills", force: :cascade do |t|
+    t.date "start_date"
+    t.date "end_date"
+    t.float "total_kwhs"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.float "price"
+    t.float "carbon_saved"
+    t.index ["user_id"], name: "index_electric_bills_on_user_id"
   end
 
   create_table "friendships", id: false, force: :cascade do |t|
@@ -44,6 +72,15 @@ ActiveRecord::Schema.define(version: 20180301145038) do
     t.index ["admin_id"], name: "index_groups_on_admin_id"
   end
 
+  create_table "houses", force: :cascade do |t|
+    t.float "total_sq_ft"
+    t.integer "no_residents"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "address_id"
+    t.index ["address_id"], name: "index_houses_on_address_id"
+  end
+
   create_table "trips", force: :cascade do |t|
     t.string "trip_name"
     t.string "mode_of_transport"
@@ -58,6 +95,15 @@ ActiveRecord::Schema.define(version: 20180301145038) do
     t.index ["user_id"], name: "index_trips_on_user_id"
   end
 
+  create_table "user_addresses", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "address_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["address_id"], name: "index_user_addresses_on_address_id"
+    t.index ["user_id"], name: "index_user_addresses_on_user_id"
+  end
+
   create_table "user_groups", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "group_id"
@@ -65,23 +111,36 @@ ActiveRecord::Schema.define(version: 20180301145038) do
     t.index ["user_id"], name: "index_user_groups_on_user_id"
   end
 
+  create_table "user_houses", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "house_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["house_id"], name: "index_user_houses_on_house_id"
+    t.index ["user_id"], name: "index_user_houses_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "first"
     t.string "last"
     t.string "email"
-    t.string "username"
     t.string "uid"
     t.string "token"
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "zipcode_id"
     t.string "admins", array: true
     t.string "location", array: true
     t.string "workplace"
     t.string "school"
     t.string "url"
-    t.index ["zipcode_id"], name: "index_users_on_zipcode_id"
+    t.string "provider"
+    t.float "household"
+    t.float "neighborhood"
+    t.float "city"
+    t.float "county"
+    t.float "state_or_province"
+    t.float "country"
   end
 
   create_table "zipcodes", force: :cascade do |t|
@@ -90,11 +149,17 @@ ActiveRecord::Schema.define(version: 20180301145038) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "addresses", "zipcodes"
   add_foreign_key "admins", "users"
+  add_foreign_key "electric_bills", "users"
   add_foreign_key "groups", "admins"
+  add_foreign_key "houses", "addresses"
   add_foreign_key "trips", "days"
   add_foreign_key "trips", "users"
+  add_foreign_key "user_addresses", "addresses"
+  add_foreign_key "user_addresses", "users"
   add_foreign_key "user_groups", "groups"
   add_foreign_key "user_groups", "users"
-  add_foreign_key "users", "zipcodes"
+  add_foreign_key "user_houses", "houses"
+  add_foreign_key "user_houses", "users"
 end
