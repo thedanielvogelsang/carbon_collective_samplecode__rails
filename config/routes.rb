@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'settings', to: 'settings#show'
+
   resources :electric_bills, only: [:new, :create]
   resources :users, only: [:new, :create, :show, :update]
   resources :addresses, only: [:new, :create, :show]
