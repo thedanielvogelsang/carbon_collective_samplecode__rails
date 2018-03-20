@@ -1,4 +1,5 @@
 class Country < ApplicationRecord
+  include CountryHelper
   validates :name, presence: true, uniqueness: true
   has_many :regions
   has_many :cities, through: :regions
