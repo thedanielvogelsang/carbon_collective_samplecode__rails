@@ -18,11 +18,11 @@ module UserCo2Helper
   end
 
   def avg_monthly_carbon_savings
-    total_carbon_savings_to_date / self.bills.count
+    total_carbon_savings_to_date == 0 ? 0 : total_carbon_savings_to_date / self.bills.count
   end
 
   def avg_monthly_energy_consumption
-    total_energy_consumption_to_date / self.bills.count
+    total_energy_consumption_to_date == 0 ? 0 : total_energy_consumption_to_date / self.bills.count
   end
 
   # def total_city_energy_savings
