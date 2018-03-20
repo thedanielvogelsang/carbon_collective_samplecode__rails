@@ -1,0 +1,16 @@
+<h1>Change <%= @user.first %>'s Settings</h1>
+<%= form_for @user do |f| %>
+<h2> Update Email </h2>
+<%= f.label :email %>
+<%= f.text_field :email %>
+
+<h2> Update Password </h2>
+<%= f.label :confirm_password %> <i>(we need your current password to confirm your changes)</i><br />
+<%= f.text_field :confirm_password %></br>
+<%= f.label :password %></br>
+<%= f.text_field :password %></br>
+<%= f.label :confirm_password %></br>
+<%= f.text_field :password_confirmation %>
+</br>
+<%= f.submit "Update Settings" %>
+<% end %>

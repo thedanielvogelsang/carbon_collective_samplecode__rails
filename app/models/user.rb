@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  attr_accessor :confirm_password
+
   include UserCo2Helper
 
   has_and_belongs_to_many :friendships,
