@@ -17,8 +17,6 @@ class User < ApplicationRecord
   has_many :admins
   has_many :trips
 
-  has_many :electric_bills
-
   # has_many :user_addresses
 
   has_many :user_houses
@@ -49,7 +47,7 @@ def self.create_with_omniauth(auth)
 end
 
 def bills
-  self.electric_bills
+  self.houses.map{|h| h.bills}.flatten
 end
 
 private

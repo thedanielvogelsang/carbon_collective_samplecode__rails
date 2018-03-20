@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180320173422) do
+ActiveRecord::Schema.define(version: 20180320182401) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,10 +74,10 @@ ActiveRecord::Schema.define(version: 20180320173422) do
     t.float "total_kwhs"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "user_id"
     t.float "price"
     t.float "carbon_saved"
-    t.index ["user_id"], name: "index_electric_bills_on_user_id"
+    t.bigint "house_id"
+    t.index ["house_id"], name: "index_electric_bills_on_house_id"
   end
 
   create_table "friendships", id: false, force: :cascade do |t|
@@ -201,7 +201,7 @@ ActiveRecord::Schema.define(version: 20180320173422) do
   add_foreign_key "addresses", "zipcodes"
   add_foreign_key "admins", "users"
   add_foreign_key "cities", "regions"
-  add_foreign_key "electric_bills", "users"
+  add_foreign_key "electric_bills", "houses"
   add_foreign_key "groups", "admins"
   add_foreign_key "houses", "addresses"
   add_foreign_key "neighborhoods", "cities"
