@@ -2,6 +2,7 @@ class Address < ApplicationRecord
   has_one :house
   has_many :users, through: :house
   belongs_to :zipcode
+  belongs_to :neighborhood
 
   attr_accessor :geocoder_string
   # before_validation :parse_address

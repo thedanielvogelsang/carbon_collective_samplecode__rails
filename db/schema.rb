@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180316010229) do
+ActiveRecord::Schema.define(version: 20180320182401) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,8 @@ ActiveRecord::Schema.define(version: 20180316010229) do
     t.string "county"
     t.bigint "zipcode_id"
     t.string "geocoder_string"
+    t.bigint "neighborhood_id"
+    t.index ["neighborhood_id"], name: "index_addresses_on_neighborhood_id"
     t.index ["zipcode_id"], name: "index_addresses_on_zipcode_id"
   end
 
@@ -36,6 +38,28 @@ ActiveRecord::Schema.define(version: 20180316010229) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_admins_on_user_id"
+  end
+
+  create_table "cities", force: :cascade do |t|
+    t.string "name"
+    t.decimal "tepc"
+    t.decimal "mepc"
+    t.decimal "tcspc"
+    t.decimal "mcspc"
+    t.bigint "region_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["region_id"], name: "index_cities_on_region_id"
+  end
+
+  create_table "countries", force: :cascade do |t|
+    t.string "name"
+    t.decimal "tepc"
+    t.decimal "mepc"
+    t.decimal "tcspc"
+    t.decimal "mcspc"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "days", force: :cascade do |t|
@@ -50,10 +74,10 @@ ActiveRecord::Schema.define(version: 20180316010229) do
     t.float "total_kwhs"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "user_id"
     t.float "price"
     t.float "carbon_saved"
-    t.index ["user_id"], name: "index_electric_bills_on_user_id"
+    t.bigint "house_id"
+    t.index ["house_id"], name: "index_electric_bills_on_house_id"
   end
 
   create_table "friendships", id: false, force: :cascade do |t|
@@ -79,6 +103,30 @@ ActiveRecord::Schema.define(version: 20180316010229) do
     t.datetime "updated_at", null: false
     t.bigint "address_id"
     t.index ["address_id"], name: "index_houses_on_address_id"
+  end
+
+  create_table "neighborhoods", force: :cascade do |t|
+    t.string "name"
+    t.decimal "tepc"
+    t.decimal "mepc"
+    t.decimal "tcspc"
+    t.decimal "mcspc"
+    t.bigint "city_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["city_id"], name: "index_neighborhoods_on_city_id"
+  end
+
+  create_table "regions", force: :cascade do |t|
+    t.string "name"
+    t.decimal "tepc"
+    t.decimal "mepc"
+    t.decimal "tcspc"
+    t.decimal "mcspc"
+    t.bigint "country_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["country_id"], name: "index_regions_on_country_id"
   end
 
   create_table "trips", force: :cascade do |t|
@@ -149,11 +197,15 @@ ActiveRecord::Schema.define(version: 20180316010229) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "addresses", "neighborhoods"
   add_foreign_key "addresses", "zipcodes"
   add_foreign_key "admins", "users"
-  add_foreign_key "electric_bills", "users"
+  add_foreign_key "cities", "regions"
+  add_foreign_key "electric_bills", "houses"
   add_foreign_key "groups", "admins"
   add_foreign_key "houses", "addresses"
+  add_foreign_key "neighborhoods", "cities"
+  add_foreign_key "regions", "countries"
   add_foreign_key "trips", "days"
   add_foreign_key "trips", "users"
   add_foreign_key "user_addresses", "addresses"
