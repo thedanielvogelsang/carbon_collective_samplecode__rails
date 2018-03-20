@@ -1,6 +1,11 @@
 class Country < ApplicationRecord
   validates :name, presence: true, uniqueness: true
   has_many :regions
+  has_many :cities, through: :regions
+  has_many :neighborhoods, through: :cities
+  has_many :addresses, through: :neighborhoods
+  has_many :houses, through: :addresses
+  has_many :users, through: :houses
 
   before_validation :capitalize_name,
                     :check_name
