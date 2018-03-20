@@ -10,18 +10,19 @@ module UserCo2Helper
   end
 
   def total_carbon_savings_to_date
-
+    self.bills.map{|b| b.carbon_saved}.reduce(0){|s, n| s + n}
   end
 
   def total_energy_consumption_to_date
+    self.bills.map{|b| b.total_kwhs}.reduce(0){|s, n| s + n}
   end
 
   def avg_monthly_carbon_savings
-
+    total_carbon_savings_to_date / self.bills.count
   end
 
   def avg_monthly_energy_consumption
-
+    total_energy_consumption_to_date / self.bills.count
   end
 
   # def total_city_energy_savings
