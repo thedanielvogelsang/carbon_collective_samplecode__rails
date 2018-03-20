@@ -1,4 +1,6 @@
 class Region < ApplicationRecord
+  include RegionHelper
+  
   validates :name, presence: true, uniqueness: true
 
   belongs_to :country

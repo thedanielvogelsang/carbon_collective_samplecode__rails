@@ -1,4 +1,6 @@
 class Neighborhood < ApplicationRecord
+  include NeighborhoodHelper
+  
   validates :name, presence: true, uniqueness: true
 
   belongs_to :city
@@ -7,7 +9,7 @@ class Neighborhood < ApplicationRecord
   has_many :users, through: :houses
 
   before_validation :capitalize_name
-  
+
   def capitalize_name
     self.name = self.name.split(' ')
     .map{|w| w.downcase == 'of' || w.downcase == 'and' ? lowercase(w) : capitalize(w)}

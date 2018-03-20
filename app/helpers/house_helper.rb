@@ -1,4 +1,4 @@
-module CityHelper
+module HouseHelper
   def total_energy_consumption_to_date
     self.users.map{|u| u.total_energy_consumption_to_date}.flatten
               .reduce(0){|s,n| s + n}

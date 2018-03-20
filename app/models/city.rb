@@ -1,4 +1,6 @@
 class City < ApplicationRecord
+  include CityHelper
+  
   validates :name, presence: true, uniqueness: true
 
   belongs_to :region
