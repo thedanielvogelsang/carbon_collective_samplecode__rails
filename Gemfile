@@ -36,6 +36,8 @@ gem 'database_cleaner'
 gem 'active_model_serializers'
 gem 'faraday'
 gem 'faraday_middleware'
+gem 'webpacker'
+gem 'react-rails'
 gem 'geocoder'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
