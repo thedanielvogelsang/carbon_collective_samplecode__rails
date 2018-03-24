@@ -5,6 +5,7 @@ class HelloWorld extends React.Component {
     return (
       <React.Fragment>
         Greeting: {this.props.greeting}
+        <img src={'../../assets/icon256.png'} />
       </React.Fragment>
     );
   }

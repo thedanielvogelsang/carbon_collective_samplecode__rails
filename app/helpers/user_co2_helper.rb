@@ -25,6 +25,31 @@ module UserCo2Helper
     total_energy_consumption_to_date == 0 ? 0 : total_energy_consumption_to_date / self.bills.count
   end
 
+  def household
+    self.houses.first
+  end
+
+  def address
+    household.address
+  end
+
+  def neighborhood
+    address.neighborhood
+  end
+
+  def city
+    neighborhood.city
+  end
+
+  def region
+    city.region
+  end
+
+  def country
+    region.country
+  end
+
+
   # def total_city_energy_savings
   #   my_cities = self.addresses.map{|a| a.city}
   #   city_members = my_cities.map do |city|

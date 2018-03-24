@@ -1,7 +1,21 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :trip_count, :first, :last, :email, :uid,
-                  :token, :admins, :current_location,
-                  :workplace, :school, :avatar_url
+  attributes :id, :trip_count, :first, :last, :email, :admins,
+                  :avatar_url, :house_ids,
+                  :total_carbon_savings_to_date,
+                  :global_collective_carbon_savings,
+                  :household, :neighborhood, :city, :region, :country
+
+  def house_ids
+    object.houses.map{|h| h.id}
+  end
+
+  def total_carbon_savings_to_date
+    object.total_carbon_savings_to_date.to_s + " lbs"
+  end
+
+  def global_collective_carbon_savings
+    GlobalHelper.total_to_date.to_s + " lbs"
+  end
 
   def current_location
     object.location

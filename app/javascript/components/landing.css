@@ -1,0 +1,47 @@
+#landing {
+  display: flex;
+  flex-flow: column;
+  max-width: 100%;
+}
+
+p {
+  font-size: 1.3em;
+  margin: 15px;
+
+}
+
+@media (orientation: portrait) {
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  main img {
+    margin: 15px;
+    width: 80%;
+    height: 1%;
+  }
+}
+
+
+@media (orientation: landscape) {
+  main {
+    /* un/comment and counter-comment in/out the float: left; in main img {... */
+    /***********************/
+    /* display: flex; */
+    /***********************/
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  main img {
+    /* un/comment and counter-comment in/out the display: flex; in main{... */
+    /***********************/
+    float: left;
+    /***********************/
+    margin: 15px;
+    width: 60%;
+    height: 1%;
+  }
+}
