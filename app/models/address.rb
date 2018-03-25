@@ -1,9 +1,15 @@
 class Address < ApplicationRecord
+  include AddressHelper
+
+
+
   validates_presence_of :address_line1, :city,
                         :state, :country
-  include AddressHelper
-  validates_uniqueness_of :address_line1, scope: :city
-  has_one :house
+
+  validates_uniqueness_of :address_line1, scope: :neighborhood_id
+
+  has_one :house, :dependent => :destroy
+
   has_many :users, through: :house
   belongs_to :zipcode
   belongs_to :neighborhood
