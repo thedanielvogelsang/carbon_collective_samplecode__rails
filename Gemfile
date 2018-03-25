@@ -38,7 +38,6 @@ gem 'faraday'
 gem 'faraday_middleware'
 gem 'webpacker'
 gem 'react-rails'
-gem 'geocoder'
 gem 'rack-cors', :require => 'rack/cors'
 gem 'responders'
 # Use Redis adapter to run Action Cable in production

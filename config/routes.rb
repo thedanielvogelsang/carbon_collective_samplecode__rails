@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :users, only: [:index, :show] do
+      resources :users, only: [:index, :show, :create] do
         get '/trips', to: 'users/trips#index'
         get '/groups', to: 'users/groups#index'
         get '/groups/:id', to: 'users/groups#show'

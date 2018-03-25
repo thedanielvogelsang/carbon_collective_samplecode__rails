@@ -1,14 +1,21 @@
 class UsersController < ApplicationController
   before_action :require_user, only: [:update]
+  respond_to :json
 
   def index
   end
 
   def show
+    respond_to do |format|
     @global = GlobalHelper.total_to_date
     @user = User.find(params[:id])
     @user.total_co2_update
     @groups = @user.groups.limit(2)
+      format.html { render :show}
+      format.json do
+        render 'show.html.erb'
+      end
+    end
   end
 
   def new

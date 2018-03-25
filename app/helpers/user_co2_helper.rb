@@ -26,27 +26,27 @@ module UserCo2Helper
   end
 
   def household
-    self.houses.first
+    self.houses.first if !self.houses.empty?
   end
 
   def address
-    household.address
+    self.houses.empty? ? nil : household.address
   end
 
   def neighborhood
-    address.neighborhood
+    self.houses.empty? ? nil : address.neighborhood
   end
 
   def city
-    neighborhood.city
+    self.houses.empty? ? nil : neighborhood.city
   end
 
   def region
-    city.region
+    self.houses.empty? ? nil : city.region
   end
 
   def country
-    region.country
+    self.houses.empty? ? nil : region.country
   end
 
 
