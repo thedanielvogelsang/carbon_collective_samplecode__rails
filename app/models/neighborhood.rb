@@ -1,7 +1,8 @@
 class Neighborhood < ApplicationRecord
   include NeighborhoodHelper
-  
-  validates :name, presence: true, uniqueness: true
+
+  validates_presence_of :name
+  validates_uniqueness_of :name, scope: :city_id
 
   belongs_to :city
   has_many :addresses
