@@ -1,6 +1,6 @@
 class Country < ApplicationRecord
   include CountryHelper
-  
+
   validates :name, presence: true, uniqueness: true
   has_many :regions
   has_many :cities, through: :regions
@@ -27,6 +27,7 @@ class Country < ApplicationRecord
   end
 
   def check_name
+    self.name == "Usa" ? self.name = "United States of America" : nil
     self.name == "USA" ? self.name = "United States of America" : nil
     self.name == "United States" ? self.name = "United States of America" : nil
   end

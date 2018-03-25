@@ -1,13 +1,15 @@
 class Address < ApplicationRecord
+  validates_presence_of :address_line1, :city,
+                        :state, :country
+  include AddressHelper
   has_one :house
   has_many :users, through: :house
   belongs_to :zipcode
   belongs_to :neighborhood
 
-  before_save :check_neighborhood
+  before_validation :check_associations
 
-  def check_neighborhood
-    byebug
-    self.neighborhood_id ||= self.zipcode.zipcode
+  def check_associations
+    create_or_find_regions_and_associations
   end
 end
