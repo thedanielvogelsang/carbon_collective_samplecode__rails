@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  respond_to :json, :html
+
   def index
   end
 
@@ -13,11 +15,17 @@ class SessionsController < ApplicationController
       redirect_to new_user_path({:user => {uid: user.uid}}) if user.addresses.empty?
       redirect_to user_path(user.id) if !user.addresses.empty?
     else
-      # have to complete this for non-fb logins
-      user = User.find_by(email: params['post'][:email])
-      user && user.authenticate(params[:password])
-      session[:user_id] = user.id
-      redirect_to user_path(user.id)
+      user = User.find_by(email: params[:user][:email])
+      respond_to do |format|
+        if user && user.authenticate(params[:user][:password])
+          session[:user_id] = user.id
+          format.json {redirect_to user_path(user.id) }
+          # redirect_to user_path(user.id)
+        else
+          flash[:error] = 'Password/Email did not match. Please try again'
+          format.json {redirect_to welcome_path }
+        end
+      end
     end
   end
 
@@ -25,4 +33,9 @@ class SessionsController < ApplicationController
     session[:user_id] = nil
     redirect_to welcome_path
   end
+
+  private
+    def safe_params
+      params.require(:user).permit(:password, :email)
+    end
 end
