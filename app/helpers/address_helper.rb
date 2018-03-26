@@ -14,9 +14,15 @@ module AddressHelper
   end
 
   def create_and_assign_region(country)
-    region = Region.where(name: self.state, country_id: country.id).first_or_create
-    self.state = region.name
-    create_and_assign_city(region)
+    if self.state
+      region = Region.where(name: self.state, country_id: country.id).first_or_create
+      self.state = region.name
+      create_and_assign_city(region)
+    else
+      region = Region.where(name: self.country, country_id: country.id).first_or_create
+      self.state = region.name
+      create_and_assign_city(region)
+    end
   end
 
   def create_and_assign_city(region)

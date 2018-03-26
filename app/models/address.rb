@@ -4,7 +4,7 @@ class Address < ApplicationRecord
 
 
   validates_presence_of :address_line1, :city,
-                        :state, :country
+                        :country
 
   validates_uniqueness_of :address_line1, scope: :neighborhood_id
 

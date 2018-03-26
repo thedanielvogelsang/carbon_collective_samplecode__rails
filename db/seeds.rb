@@ -2,7 +2,7 @@ require 'database_cleaner'
 
 DatabaseCleaner.clean_with(:truncation)
 
-ZIPS = [80204, 80205, 80207, 80209, 80216, 80218, 80202, 80211, 80220]
+ZIPS = [80204, 80205, 80207, 80209, 80216, 80218, 80202, 80211, 80220, 0]
 ZIPS.each{ |zc| Zipcode.create!(zipcode: zc) }
 
 COUNTRIES = [
