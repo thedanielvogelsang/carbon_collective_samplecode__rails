@@ -9,7 +9,7 @@ COUNTRIES = [
 ["Afghanistan", 141],
 ["Albania", 2564],
 ["Algeria", 1216],
-["American Samoa", 1845]
+["American Samoa", 1845],
 ["Andorra", 6565],
 ["Angola", 401],
 ["Antigua & Barbuda", 3205],
@@ -84,7 +84,7 @@ COUNTRIES = [
 ["Greece", 4919],
 ["Greenland", 5196],
 ["Grenada", 1798],
-["Guam", 9217]
+["Guam", 9217],
 ["Guatemala", 586],
 ["Guinea", 74],
 ["Guinea-Bissau", 17],
@@ -120,7 +120,7 @@ COUNTRIES = [
 ["Liechtenstein", 35848],
 ["Lithuania", 3468],
 ["Luxembourg", 10647],
-["Macau", 7532]
+["Macau", 7532],
 ["Republic of Macedonia", 3314],
 ["Madagascar", 53],
 ["Malawi", 102],
@@ -203,7 +203,7 @@ COUNTRIES = [
 ["Uganda", 70],
 ["Ukraine", 3234],
 ["United Arab Emirates", 16195],
-["United Kingdom (Great Britain)", 4796]
+["United Kingdom (Great Britain)", 4796],
 ["United States of America", 12071],
 ["Uruguay", 2984],
 ["Uzbekistan", 1628],

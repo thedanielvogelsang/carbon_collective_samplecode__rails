@@ -142,15 +142,6 @@ ActiveRecord::Schema.define(version: 20180325213251) do
     t.index ["user_id"], name: "index_trips_on_user_id"
   end
 
-  create_table "user_addresses", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "address_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["address_id"], name: "index_user_addresses_on_address_id"
-    t.index ["user_id"], name: "index_user_addresses_on_user_id"
-  end
-
   create_table "user_groups", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "group_id"
@@ -205,8 +196,6 @@ ActiveRecord::Schema.define(version: 20180325213251) do
   add_foreign_key "regions", "countries"
   add_foreign_key "trips", "days"
   add_foreign_key "trips", "users"
-  add_foreign_key "user_addresses", "addresses"
-  add_foreign_key "user_addresses", "users"
   add_foreign_key "user_groups", "groups"
   add_foreign_key "user_groups", "users"
   add_foreign_key "user_houses", "houses"
