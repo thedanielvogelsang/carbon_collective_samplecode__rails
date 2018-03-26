@@ -19,7 +19,7 @@ module AddressHelper
       self.state = region.name
       create_and_assign_city(region)
     else
-      region = Region.where(name: self.country, country_id: country.id).first_or_create
+      region = Region.where(name: self.country + ' Region', country_id: country.id).first_or_create
       self.state = region.name
       create_and_assign_city(region)
     end
@@ -32,12 +32,23 @@ module AddressHelper
   end
 
   def check_neighborhood(city)
-    self.neighborhood_id == nil ? create_neighborhood(city) : nil
+    self.zipcode ? nil : create_zip
+    self.neighborhood ? nil : create_neighborhood(city)
   end
 
   def create_neighborhood(city)
-    nhood = Neighborhood.where(name: self.zipcode.zipcode.to_s, city_id: city.id).first_or_create
-    self.neighborhood_id = nhood.id
+    if self.neighborhood_name
+      hood = Neighborhood.where(name: self.neighborhood_name, city_id: city.id).first_or_create
+      self.neighborhood_id = hood.id
+    else
+      hood = Neighborhood.where(name: self.zipcode.zipcode.to_s + " zip area", city_id: city.id).first_or_create
+      self.neighborhood_id = hood.id
+    end
+  end
+
+  def create_zip
+    zip = Zipcode.find_by(zipcode: 0)
+    self.zipcode_id = zip.id
   end
 
   def capitalize_name
