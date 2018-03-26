@@ -218,21 +218,96 @@ COUNTRIES = [
 ["Zimbabwe", 549]
 ]
 
-COUNTRIES.each do
-  |c| Country.create(name: c[0], tepc: c[1], mepc: c[1]/12, tcspc: 0, mcspc: 0)
-end
-#
+# COUNTRIES.each do
+#   |c| Country.create!(name: c[0], tepc: c[1], mepc: c[1]/12, tcspc: 0, mcspc: 0)
+# end
+# puts "You have #{Country.count} countries in the database"
+
+REGIONS = [
+  "Alabama",
+  "Alaska",
+  "Arizona",
+  "Arkansas",
+  "California",
+  "Colorado",
+  "Connecticut",
+  "Delaware",
+  "Florida",
+  "Georgia",
+  "Hawaii",
+  "Idaho",
+  "Illinois",
+  "Indiana",
+  "Iowa",
+  "Kansas",
+  "Kentucky",
+  "Louisiana",
+  "Maine",
+  "Maryland",
+  "Massachusetts",
+  "Michigan",
+  "Minnesota",
+  "Mississippi",
+  "Missouri",
+  "Montana",
+  "Nebraska",
+  "Nevada",
+  "New Hampshire",
+  "New Jersey",
+  "New Mexico",
+  "New York",
+  "North Carolina",
+  "North Dakota",
+  "Ohio",
+  "Oklahoma",
+  "Oregon",
+  "Pennsylvania",
+  "Rhode Island",
+  "South Carolina",
+  "South Dakota",
+  "Tennessee",
+  "Texas",
+  "Utah",
+  "Vermont",
+  "Virginia",
+  "Washington",
+  "West Virginia",
+  "Wisconsin",
+  "Wyoming"
+]
+CA_REGIONS = [
+  "Ontario",
+  "Quebec",
+  "Nova Scotia",
+  "New Brunswick",
+  "Manitoba",
+  "British Colombia",
+  "Prince Edward Island",
+  "Saskatchewan",
+  "Alberta",
+  "Newfoundland",
+  "Labrador",
+]
+
+REGIONS.each do |r| Region.create(name: r, country_id: Country.find_by(name: "United States of America").id)
+puts "#{Region.count} States created in Regions table"
+
+CA_REGIONS.each do |r| Region.create(name: r, country_id: Country.find_by(name: "Canada").id)
+puts "#{Region.count} Provinces created in Regions table"
+
+Region.create(name: )
 # 8.times do |n|
 #   user = User.create!(
 #                 first: Faker::HarryPotter.character.split(/\W/)[0],
 #                 last: Faker::LordOfTheRings.character.split(/\W/)[0],
 #                 email: Faker::Internet.email,
 #                 password: 'banana',
-#                 school: Faker::HarryPotter.house,
-#                 workplace: Faker::Company.name,
 #                 location: Array.new,
 #                 url: Faker::Avatar.image
 #               )
+#   Address.create(address_line1: "123#{n} Imaginary Lane",
+#
+#   )
 #    user.location << Faker::Address.longitude
 #    user.location << Faker::Address.latitude
 #
