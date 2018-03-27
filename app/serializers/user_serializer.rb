@@ -1,5 +1,5 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :trip_count, :first, :last, :email, :admins,
+  attributes :id, :first, :last, :email,
                   :avatar_url, :house_ids,
                   :total_carbon_savings_to_date,
                   :global_collective_carbon_savings,
@@ -10,11 +10,11 @@ class UserSerializer < ActiveModel::Serializer
   end
 
   def total_carbon_savings_to_date
-    object.total_carbon_savings_to_date.to_s + " lbs"
+    object.total_carbon_savings_to_date.to_s + " kwhs"
   end
 
   def global_collective_carbon_savings
-    GlobalHelper.total_to_date.to_s + " lbs"
+    GlobalHelper.total_to_date.to_s + " kwhs"
   end
 
   def current_location
