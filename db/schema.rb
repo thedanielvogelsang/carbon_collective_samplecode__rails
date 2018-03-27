@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180326014527) do
+ActiveRecord::Schema.define(version: 20180327160450) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,8 +75,8 @@ ActiveRecord::Schema.define(version: 20180326014527) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.float "price"
-    t.float "carbon_saved"
     t.bigint "house_id"
+    t.float "electricity_saved"
     t.index ["house_id"], name: "index_electric_bills_on_house_id"
   end
 

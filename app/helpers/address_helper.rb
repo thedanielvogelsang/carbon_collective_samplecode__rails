@@ -3,6 +3,10 @@ module AddressHelper
     create_and_assign_country
   end
 
+  def address
+    self.address_line1 + ', ' + self.city + ', ' + self.country
+  end
+
   private
 
   def create_and_assign_country
