@@ -15,7 +15,7 @@ RSpec.describe Address, type: :model do
       @n1 = "Neighborhood 1"
       @n2 = "Neighborhood 2"
     end
-    xit 'can be created with simply address, city, and country with or without zipcode_id and/or neighborhood_id' do
+    it 'can be created with simply address, city, and country with or without zipcode_id and/or neighborhood_id' do
 
       address = Address.new(address_line1: @addy,
                             city: @city,
@@ -45,7 +45,7 @@ RSpec.describe Address, type: :model do
       expect(address.zipcode.zipcode).to eq("80212")
       expect(address.neighborhood.name).to eq("0 Zip Area")
     end
-    xit 'can share a city and not a zip' do
+    it 'can share a city and not a zip' do
       address = Address.new(address_line1: @addy, city: @city, country: @country, zipcode_id: @zip.id)
       expect(address.country).to eq("United States of America")
       address2 = Address.new(address_line1: @addy2, city: @city, country: @country, zipcode_id: @zip2.id)
@@ -55,7 +55,7 @@ RSpec.describe Address, type: :model do
       expect(address.city).to eq(address2.city)
       expect(address.country).to eq(address2.country)
     end
-    xit 'can share a neighborhood and not a zip' do
+    it 'can share a neighborhood and not a zip' do
       address = Address.new(address_line1: @addy, city: @city, country: @country, neighborhood_name: @n1, zipcode_id: @zip.id)
       expect(address.country).to eq("United States of America")
       address2 = Address.new(address_line1: @addy2, city: @city, country: @country, neighborhood_name: @n1, zipcode_id: @zip2.id)
@@ -64,7 +64,7 @@ RSpec.describe Address, type: :model do
       expect(address.zipcode).to_not eq(address2.zipcode)
       expect(address.neighborhood).to eq(address2.neighborhood)
     end
-    xit 'can share a zip and not a neighborhood' do
+    it 'can share a zip and not a neighborhood' do
       address = Address.new(address_line1: @addy, city: @city, country: @country, neighborhood_name: @n1, zipcode_id: @zip.id)
       expect(address.country).to eq("United States of America")
       address2 = Address.new(address_line1: @addy2, city: @city, country: @country, neighborhood_name: @n2, zipcode_id: @zip.id)
@@ -88,7 +88,7 @@ RSpec.describe Address, type: :model do
       @n1 = "Neighborhood 1"
       @n2 = "Neighborhood 2"
     end
-    xit 'can share associations with another from a different neighborhood' do
+    it 'can share associations with another from a different neighborhood' do
       address1 =  Address.create(address_line1: @addy,
                               city: @city,
                               country: @country,
@@ -118,7 +118,7 @@ RSpec.describe Address, type: :model do
       # calls same country association
       expect(address1.neighborhood.city.region.country).to eq(address2.neighborhood.city.region.country)
     end
-    xit 'can share associations with another from a different city' do
+    it 'can share associations with another from a different city' do
       address1 =  Address.create(address_line1: @addy,
                               city: @city,
                               country: @country,
@@ -147,7 +147,7 @@ RSpec.describe Address, type: :model do
       # calls same country association
       expect(address1.neighborhood.city.region.country).to eq(address2.neighborhood.city.region.country)
     end
-    xit 'can share associations with another from a different region' do
+    it 'can share associations with another from a different region' do
       2.times do |t|
         Country.create(name: "USA#{t}")
         Region.create(name: "Region#{t}", country_id: Country.last.id)
@@ -186,7 +186,7 @@ RSpec.describe Address, type: :model do
       expect(address1.neighborhood.city.region.country).to eq(address2.neighborhood.city.region.country)
 
     end
-    xit 'CANNOT share associations with another from a different country' do
+    it 'CANNOT share associations with another from a different country' do
       2.times do |t|
         Country.create(name: "USA#{t}")
         Region.create(name: "Region#{t}", country_id: Country.last.id)
@@ -227,7 +227,7 @@ RSpec.describe Address, type: :model do
       @n1 = "Neighborhood 1"
       @n2 = "Neighborhood 2"
     end
-    xit "creates a neighborhood and region if given name but no id" do
+    it "creates a neighborhood and region if given name but no id" do
       expect(Neighborhood.count).to eq(0)
       expect(Region.count).to eq(0)
       address1 =  Address.create(address_line1: @addy,
@@ -240,7 +240,7 @@ RSpec.describe Address, type: :model do
       expect(Neighborhood.first.name).to eq(@n1)
       expect(Region.count).to eq(1)
     end
-    xit "creates a neighborhood based on zip and region based on country if given neither" do
+    it "creates a neighborhood based on zip and region based on country if given neither" do
       expect(Neighborhood.count).to eq(0)
       expect(Region.count).to eq(0)
       address =  Address.create(address_line1: @addy,
