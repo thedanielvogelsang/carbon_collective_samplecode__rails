@@ -34,19 +34,39 @@ module UserCo2Helper
   end
 
   def neighborhood
-    self.houses.empty? ? nil : address.neighborhood.name
+    self.houses.empty? ? nil : household.address.neighborhood.name
   end
 
   def city
-    self.houses.empty? ? nil : neighborhood.city.name
+    self.houses.empty? ? nil : household.address.neighborhood.city.name
   end
 
   def region
-    self.houses.empty? ? nil : city.region.name
+    self.houses.empty? ? nil : household.address.neighborhood.city.region.name
   end
 
   def country
-    self.houses.empty? ? nil : region.country.name
+    self.houses.empty? ? nil : household.address.neighborhood.city.region.country.name
+  end
+
+  def household_total_savings
+    household ? household.total_electricity_savings_to_date : nil
+  end
+
+  def neighborhood_total_savings
+    household ? household.address.neighborhood.total_electricity_savings_to_date : nil
+  end
+
+  def city_total_savings
+    household ? household.address.neighborhood.city.total_electricity_savings_to_date : nil
+  end
+
+  def region_total_savings
+    household ? household.address.neighborhood.city.region.total_electricity_savings_to_date : nil
+  end
+
+  def country_total_savings
+    household ? household.address.neighborhood.city.region.country.total_electricity_savings_to_date : nil
   end
 
 

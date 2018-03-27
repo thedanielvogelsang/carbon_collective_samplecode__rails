@@ -10,7 +10,7 @@ class ElectricBill < ApplicationRecord
   def electricity_saved?
     country_monthly_average = self.house.address.neighborhood.city.region.country.mepc
     country_monthly_average > self.total_kwhs.to_f ? res = true : res = false
-    res ? self.electricity_saved = (country_monthly_average - self.total_kwhs.to_f) : nil
+    res ? self.electricity_saved = (country_monthly_average - self.total_kwhs.to_f) : self.electricity_saved = 0
     res
   end
 

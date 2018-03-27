@@ -4,8 +4,8 @@ module HouseHelper
               .reduce(0){|s,n| s + n}
   end
 
-  def total_electricty_savings_to_date
-    self.users.map{|u| u.total_electricty_savings_to_date}.flatten
+  def total_electricity_savings_to_date
+    self.users.map{|u| u.total_electricity_savings_to_date}.flatten
               .reduce(0){|s,n| s + n}
   end
 
@@ -18,8 +18,8 @@ module HouseHelper
               .reduce(0){|s,n| s + n} / self.no_residents
   end
 
-  def avg_total_electricty_savings_per_resident
-    total_electricty_savings_to_date == 0 ? nil : total_electricty_savings_to_date / self.no_residents
+  def avg_total_electricity_savings_per_resident
+    total_electricity_savings_to_date == 0 ? nil : total_electricity_savings_to_date / self.no_residents
   end
 
   def avg_monthly_electricity_savings_per_resident

@@ -18,7 +18,7 @@ module NeighborhoodHelper
               .reduce(0){|s,n| s + n} / self.users.count
   end
 
-  def avg_total_electricty_savings_per_capita
+  def avg_total_electricity_savings_per_capita
     total_electricity_savings_to_date / self.users.count
   end
 

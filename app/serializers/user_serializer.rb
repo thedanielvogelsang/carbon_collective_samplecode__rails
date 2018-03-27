@@ -1,19 +1,24 @@
 class UserSerializer < ActiveModel::Serializer
   attributes :id, :first, :last, :email,
                   :avatar_url, :house_ids,
-                  :total_carbon_savings_to_date,
-                  :global_collective_carbon_savings,
-                  :household, :neighborhood, :city, :region, :country
+                  :total_electricity_savings_to_date,
+                  :global_collective_electricity_savings, :address,
+                  :household, :neighborhood, :city, :region, :country,
+                  :household_total_savings,
+                  :neighborhood_total_savings,
+                  :city_total_savings,
+                  :region_total_savings,
+                  :country_total_savings
 
   def house_ids
     object.houses.map{|h| h.id}
   end
 
-  def total_carbon_savings_to_date
-    object.total_carbon_savings_to_date.to_s + " kwhs"
+  def total_electricity_savings_to_date
+    object.total_electricity_savings_to_date.to_s + " kwhs"
   end
 
-  def global_collective_carbon_savings
+  def global_collective_electricity_savings
     GlobalHelper.total_to_date.to_s + " kwhs"
   end
 
