@@ -53,12 +53,11 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'capybara', '~> 2.13'
   gem 'launchy'
+  gem 'database_cleaner'
   gem 'selenium-webdriver'
   gem 'rspec-rails'
   gem 'shoulda-matchers', git: 'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
   gem 'launchy'
-  gem 'database_cleaner'
-  gem 'shoulda-matchers'
 end
 
 group :development do
