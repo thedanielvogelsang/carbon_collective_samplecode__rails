@@ -28,11 +28,8 @@ gem 'jbuilder', '~> 2.5'
 gem 'bcrypt'
 gem 'omniauth-facebook'
 gem 'figaro'
-gem 'database_cleaner'
 gem 'json'
 gem 'faker', :git => 'git://github.com/stympy/faker.git', :branch => 'master'
-gem 'pry'
-gem 'database_cleaner'
 gem 'active_model_serializers'
 gem 'faraday'
 gem 'faraday_middleware'
@@ -52,11 +49,16 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   # Adds support for Capybara system testing and selenium driver
+  gem 'pry'
+  gem 'rspec-rails'
   gem 'capybara', '~> 2.13'
+  gem 'launchy'
   gem 'selenium-webdriver'
   gem 'rspec-rails'
   gem 'shoulda-matchers', git: 'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
   gem 'launchy'
+  gem 'database_cleaner'
+  gem 'shoulda-matchers'
 end
 
 group :development do
@@ -68,5 +70,9 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
+group :test do
+  gem 'vcr'
+  gem 'webmock'
+end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
