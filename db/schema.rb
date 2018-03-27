@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180320182401) do
+ActiveRecord::Schema.define(version: 20180326014527) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,8 +27,8 @@ ActiveRecord::Schema.define(version: 20180320182401) do
     t.float "longitude"
     t.string "county"
     t.bigint "zipcode_id"
-    t.string "geocoder_string"
     t.bigint "neighborhood_id"
+    t.string "neighborhood_name"
     t.index ["neighborhood_id"], name: "index_addresses_on_neighborhood_id"
     t.index ["zipcode_id"], name: "index_addresses_on_zipcode_id"
   end
@@ -143,15 +143,6 @@ ActiveRecord::Schema.define(version: 20180320182401) do
     t.index ["user_id"], name: "index_trips_on_user_id"
   end
 
-  create_table "user_addresses", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "address_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["address_id"], name: "index_user_addresses_on_address_id"
-    t.index ["user_id"], name: "index_user_addresses_on_user_id"
-  end
-
   create_table "user_groups", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "group_id"
@@ -179,8 +170,6 @@ ActiveRecord::Schema.define(version: 20180320182401) do
     t.datetime "updated_at", null: false
     t.string "admins", array: true
     t.string "location", array: true
-    t.string "workplace"
-    t.string "school"
     t.string "url"
     t.string "provider"
     t.float "household"
@@ -192,7 +181,7 @@ ActiveRecord::Schema.define(version: 20180320182401) do
   end
 
   create_table "zipcodes", force: :cascade do |t|
-    t.integer "zipcode"
+    t.string "zipcode"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -208,8 +197,6 @@ ActiveRecord::Schema.define(version: 20180320182401) do
   add_foreign_key "regions", "countries"
   add_foreign_key "trips", "days"
   add_foreign_key "trips", "users"
-  add_foreign_key "user_addresses", "addresses"
-  add_foreign_key "user_addresses", "users"
   add_foreign_key "user_groups", "groups"
   add_foreign_key "user_groups", "users"
   add_foreign_key "user_houses", "houses"

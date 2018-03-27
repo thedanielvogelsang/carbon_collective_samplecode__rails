@@ -1,0 +1,64 @@
+header {
+  display: flex;
+  flex-flow: row, nowrap;
+  justify-content: space-between;
+  background-color: #161616;
+}
+
+.side-buffer {
+  width: 20%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+header div img {
+  width: auto;
+  height: auto;
+  max-width: 128px;
+  max-height: 128px;
+  min-width: 72px;
+  min-height: 72px;
+}
+
+header h1 {
+  text-transform: capitalize;
+  text-align: center;
+  vertical-align: bottom;
+}
+
+button {
+  background-color: #8d8;
+  color: #313131;
+  border-radius: 2em;
+  width: 70%;
+  height: 50%;
+  min-width: 72px;
+  min-height: 72px;
+  font-size: 1.3em;
+}
+
+@media (orientation: portrait) {
+
+  header h1 {
+    font-size: 2em;
+  }
+
+  header div img {
+    width: 100%;
+    height: auto;
+    max-width: 72px;
+    max-height: 72px;
+  }
+}
+
+@media (orientation: landscape) {
+  header h1 {
+    font-size: 3em;
+    text-transform: capitalize;
+    text-align: center;
+    vertical-align: bottom;
+  }
+
+}

@@ -36,7 +36,10 @@ gem 'database_cleaner'
 gem 'active_model_serializers'
 gem 'faraday'
 gem 'faraday_middleware'
-gem 'geocoder'
+gem 'webpacker'
+gem 'react-rails'
+gem 'rack-cors', :require => 'rack/cors'
+gem 'responders'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
@@ -52,7 +55,8 @@ group :development, :test do
   gem 'capybara', '~> 2.13'
   gem 'selenium-webdriver'
   gem 'rspec-rails'
-  gem 'shoulda-matchers'
+  gem 'shoulda-matchers', git: 'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
+  gem 'launchy'
 end
 
 group :development do

@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :users, only: [:index, :show] do
+      resources :users, only: [:index, :show, :create] do
         get '/trips', to: 'users/trips#index'
         get '/groups', to: 'users/groups#index'
         get '/groups/:id', to: 'users/groups#show'
@@ -43,5 +43,5 @@ Rails.application.routes.draw do
   get '/auth/facebook/callback', to: "sessions#create", as: :facebook_callback
   get '/logout', to: "sessions#destroy", as: :logout
   get '/login', to: "sessions#new", as: :login
-  post '/login', to: "sessions#create"
+  post '/login', to: "sessions#create", :defaults => {:format => :json}
 end

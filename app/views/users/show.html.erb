@@ -1,7 +1,8 @@
+
 <h1> Hello <%= @user.first %> </h1>
 
 <h3>Global Carbon Saved To Date: <%= @global %> lbs </h3>
-<h4>Your Total Carbon Saved: <%= @user.total_co2_saved %></h4>
+<h4>Your Total Carbon Saved: <%= @user.total_carbon_savings_to_date %></h4>
 <% @groups.map do |g| %>
 <h5><%= g.name %> Collective Total: <%= g.group_collective_savings %></h5>
 <% end %>
