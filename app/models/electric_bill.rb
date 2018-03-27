@@ -1,15 +1,16 @@
 class ElectricBill < ApplicationRecord
-  belongs_to :user
+  belongs_to :house
 
   validates_presence_of :start_date,
                         :end_date,
                         :total_kwhs
 
-  after_validation :co2_saved?
+  after_validation :electricity_saved?
 
-  def co2_saved?
-    897 > self.total_kwhs.to_f ? res = true : res = false
-    res ? self.carbon_saved = (897 - self.total_kwhs.to_f) : nil
+  def electricity_saved?
+    country_monthly_average = self.house.address.neighborhood.city.region.country.mepc
+    country_monthly_average > self.total_kwhs.to_f ? res = true : res = false
+    res ? self.electricity_saved = (country_monthly_average - self.total_kwhs.to_f) : self.electricity_saved = 0
     res
   end
 

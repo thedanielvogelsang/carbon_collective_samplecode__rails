@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  attr_accessor :confirm_password
+
   include UserCo2Helper
 
   has_and_belongs_to_many :friendships,
@@ -14,8 +16,6 @@ class User < ApplicationRecord
 
   has_many :admins
   has_many :trips
-
-  has_many :electric_bills
 
   # has_many :user_addresses
 
@@ -47,7 +47,7 @@ def self.create_with_omniauth(auth)
 end
 
 def bills
-  self.electric_bills
+  self.houses.map{|h| h.bills}.flatten
 end
 
 private

@@ -1,5 +1,12 @@
 class SessionsController < ApplicationController
+  skip_before_action :verify_authenticity_token, only: [:create]
+  respond_to :json, :html
+
   def index
+  end
+
+  def new
+    @user = User.new
   end
 
   def create
@@ -9,12 +16,27 @@ class SessionsController < ApplicationController
       redirect_to new_user_path({:user => {uid: user.uid}}) if user.addresses.empty?
       redirect_to user_path(user.id) if !user.addresses.empty?
     else
-      # have to complete this for non-fb logins
-      byebug
-      user = User.where(email: params[:email])
-      user && user.authenticate(params[:password])
-      session[:user_id] = user.id
-      redirect_to user_path(user.id)
+      user = User.find_by(email: params[:user][:email])
+      respond_to do |format|
+        if user && user.authenticate(params[:user][:password])
+          session[:user_id] = user.id
+          format.json {redirect_to user_path(user.id) }
+          # redirect_to user_path(user.id)
+        else
+          flash[:error] = 'Password/Email did not match. Please try again'
+          format.json {redirect_to welcome_path }
+        end
+      end
     end
   end
+
+  def destroy
+    session[:user_id] = nil
+    redirect_to welcome_path
+  end
+
+  private
+    def safe_params
+      params.require(:user).permit(:password, :email)
+    end
 end

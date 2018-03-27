@@ -1,25 +1,22 @@
 class Address < ApplicationRecord
-  has_one :house
+  include AddressHelper
+
+
+
+  validates_presence_of :address_line1, :city,
+                        :country
+
+  validates_uniqueness_of :address_line1, scope: :neighborhood_id
+
+  has_one :house, :dependent => :destroy
+
   has_many :users, through: :house
   belongs_to :zipcode
+  belongs_to :neighborhood
 
-  attr_accessor :geocoder_string
-  # before_validation :parse_address
-  geocoded_by :geocoder_string do |obj, results|
-    if geo = results.first
-      unit = geo.data['address_components'][0]['long_name']
-      obj.address_line1 = geo.street_address
-      obj.address_line2 = unit if geo.street_address.scan(unit).empty?
-      obj.city = geo.city
-      obj.county = geo.data['address_components'][-4]['long_name']
-      obj.state = geo.state
-      obj.zipcode_id = Zipcode.find_or_create_by(zipcode: geo.postal_code).id
-      obj.country = geo.country
-      obj.latitude = geo.latitude
-      obj.longitude = geo.longitude
-    end
+  before_validation :check_associations
+
+  def check_associations
+    create_or_find_regions_and_associations
   end
-
-  before_validation :geocode
-
 end

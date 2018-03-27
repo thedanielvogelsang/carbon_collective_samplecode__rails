@@ -33,7 +33,10 @@ gem 'faker', :git => 'git://github.com/stympy/faker.git', :branch => 'master'
 gem 'active_model_serializers'
 gem 'faraday'
 gem 'faraday_middleware'
-gem 'geocoder'
+gem 'webpacker'
+gem 'react-rails'
+gem 'rack-cors', :require => 'rack/cors'
+gem 'responders'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
@@ -49,10 +52,10 @@ group :development, :test do
   gem 'pry'
   gem 'rspec-rails'
   gem 'capybara', '~> 2.13'
-  gem 'launchy'
-  gem 'selenium-webdriver'
   gem 'database_cleaner'
-  gem 'shoulda-matchers'
+  gem 'selenium-webdriver'
+  gem 'shoulda-matchers', git: 'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
+  gem 'launchy'
 end
 
 group :development do

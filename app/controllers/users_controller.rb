@@ -1,13 +1,21 @@
 class UsersController < ApplicationController
-  before_action :require_user, only: [:show, :index, :update]
+  before_action :require_user, only: [:update]
+  respond_to :json
+
   def index
   end
 
   def show
+    respond_to do |format|
     @global = GlobalHelper.total_to_date
     @user = User.find(params[:id])
     @user.total_co2_update
     @groups = @user.groups.limit(2)
+      format.html { render :show}
+      format.json do
+        render 'show.html.erb'
+      end
+    end
   end
 
   def new
@@ -15,7 +23,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.create(safe_params)
+    @user = User.new(safe_params)
     if params[:password] == params[:password_confirmation] && @user.save
       flash[:success] = "User data success. Now lets log your home address to get you started"
       redirect_to new_address_path({id: @user.id})
@@ -26,19 +34,40 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user = User.find(params[:id])
-    if @user.update(safe_params)
-      redirect_to user_path(@user.id) if !@user.addresses.empty?
-      redirect_to new_address_path({id: @user.id}) if @user.addresses.empty?
-    else
-      flash[:error] = "Unsuccessful update, please try again"
-      redirect_back(fallback_location: root_path)
-    end
+    user = User.find(params[:id])
+    params['user']['password_confirmation'] != '' ? authenticate(user) : update_user(user)
   end
 
   private
+    def authenticate(user)
+      if user.authenticate(params[:user][:confirm_password])
+        update_with_password(user)
+      else
+        flash[:error] = "Password confirmation incorrect"
+        redirect_to settings_path
+      end
+    end
+
+    def update_with_password(user)
+      if user.update(safe_params)
+        redirect_to user_path(user)
+      else
+        flash[:error] = "New password didnt match confirmation"
+        redirect_to settings_path
+      end
+    end
+
+    def update_user(user)
+      if user.update(safe_params)
+        redirect_to user_path(user.id) if !user.addresses.empty?
+        redirect_to new_address_path({id: user.id}) if user.addresses.empty?
+      else
+        flash[:error] = "Unsuccessful update, please try again"
+        redirect_back(fallback_location: user_path(user))
+      end
+    end
 
     def safe_params
-      params.require('user').permit(:uid, :first, :last, :email, :password, :id)
+      params.require('user').permit(:uid, :first, :last, :email, :password, :id, :password_confirmation)
     end
 end
