@@ -41,13 +41,13 @@ module AddressHelper
       hood = Neighborhood.where(name: self.neighborhood_name, city_id: city.id).first_or_create
       self.neighborhood_id = hood.id
     else
-      hood = Neighborhood.where(name: self.zipcode.zipcode.to_s + " zip area", city_id: city.id).first_or_create
+      hood = Neighborhood.where(name: self.zipcode.zipcode + " zip area", city_id: city.id).first_or_create
       self.neighborhood_id = hood.id
     end
   end
 
   def create_zip
-    zip = Zipcode.find_by(zipcode: 0)
+    zip = Zipcode.find_by(zipcode: "0")
     self.zipcode_id = zip.id
   end
 
