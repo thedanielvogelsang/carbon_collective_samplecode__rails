@@ -1,5 +1,3 @@
-require 'database_cleaner'
-
 DatabaseCleaner.clean_with(:truncation)
 
 COUNTRIES = {
