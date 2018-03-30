@@ -30,6 +30,9 @@ class Api::V1::HousesController < ApplicationController
   end
 
   def destroy
+    house = House.find(params[:id])
+    house.destroy
+    render json: house, status: 204
   end
 
   private

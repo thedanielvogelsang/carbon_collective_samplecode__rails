@@ -25,7 +25,7 @@ class Api::V1::AddressesController < ApplicationController
   def destroy
     address = Address.find(params[:id])
     address.destroy
-    render status: 204 
+    render json: address, status: 204 
   end
 
   private
