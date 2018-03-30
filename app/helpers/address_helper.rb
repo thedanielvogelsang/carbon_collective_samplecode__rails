@@ -37,7 +37,11 @@ module AddressHelper
 
   def check_neighborhood(city)
     self.zipcode ? nil : create_zip
-    (self.neighborhood.name == self.neighborhood_name && self.neighborhood.city_id == city.id) ? nil : create_neighborhood(city)
+    if self.neighborhood
+      (self.neighborhood.name == self.neighborhood_name && self.neighborhood.city_id == city.id) ? nil : create_neighborhood(city)
+    else
+      create_neighborhood(city)
+    end
   end
 
   def create_neighborhood(city)
