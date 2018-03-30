@@ -12,7 +12,7 @@ module AddressHelper
   def create_and_assign_country
     capitalize_name
     check_name
-    country = Country.find_or_create_by(name: self.country)
+    country = Country.find_by(name: self.country)
     self.country = country.name
     create_and_assign_region(country)
   end
@@ -37,7 +37,7 @@ module AddressHelper
 
   def check_neighborhood(city)
     self.zipcode ? nil : create_zip
-    self.neighborhood ? nil : create_neighborhood(city)
+    (self.neighborhood.name == self.neighborhood_name && self.neighborhood.city_id == city.id) ? nil : create_neighborhood(city)
   end
 
   def create_neighborhood(city)
