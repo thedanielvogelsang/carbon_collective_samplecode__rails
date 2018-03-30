@@ -1,7 +1,3 @@
-require 'database_cleaner'
-
-DatabaseCleaner.clean_with(:truncation)
-
 COUNTRIES = {
   :countries => [
   ["Afghanistan", 141],
