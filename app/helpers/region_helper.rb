@@ -1,29 +1,25 @@
 module RegionHelper
-  def total_electricity_consumption_to_date
-    self.users.map{|u| u.total_electricity_consumption_to_date}.flatten
-              .reduce(0){|s,n| s + n}
+  def update_attributes
+    update_total_savings
+    update_daily_avg_consumption
+    update_daily_avg_savings
   end
 
-  def total_electricity_savings_to_date
-    self.users.map{|u| u.total_electricity_savings_to_date}.flatten
-              .reduce(0){|s,n| s + n}
+  def update_total_savings
+    energy_saved = self.users.map{|u| u.total_electricity_savings}.flatten
+              .reduce(0){|sum, num| sum + num}
+    self.total_energy_saved = energy_saved
   end
 
-  def avg_total_electricity_consumption_per_capita
-    total_electricity_consumption_to_date / self.users.count
+  def update_daily_avg_consumption
+    energy_consumed = self.users.map{|u| u.avg_daily_electricity_consumption }.flatten
+            .reduce(0){|sum, num| sum + num} / self.users.count
+    self.avg_daily_energy_consumed_per_user = energy_consumed
   end
 
-  def avg_monthly_electricity_consumption_per_capita
-    self.users.map{|u| u.avg_monthly_electricity_consumption}.flatten
-              .reduce(0){|s,n| s + n} / self.users.count
-  end
-
-  def avg_total_electricity_savings_per_capita
-    total_electricity_savings_to_date / self.users.count
-  end
-
-  def avg_monthly_electricity_savings_per_capita
-    self.users.map{|u| u.avg_monthly_electricity_savings}.flatten
-              .reduce(0){|s,n| s + n} / self.users.count
+  def update_daily_avg_savings
+    energy_savings = self.users.map{|u| u.total_electricity_savings }.flatten
+            .reduce(0){|sum, num| sum + num } / self.users.count
+    self.avg_total_energy_saved_per_user = energy_savings
   end
 end

@@ -1,24 +1,7 @@
 module UserCo2Helper
 
-  def total_co2_update
-    # total_household_electricity_savings
-    # total_neighborhood_electricity_savings
-    # total_city_electricity_savings
-    # total_county_electricity_savings
-    # total_state_electricity_savings
-    # total_country_electricity_savings
-  end
-
-  def total_electricity_savings_to_date
-    self.bills.map{|b| b.electricity_saved}.reduce(0){|s, n| s + n}
-  end
-
-  def total_electricity_consumption_to_date
-
-  end
-
   def avg_daily_electricity_savings
-    # total_electricity_savings_to_date == 0 ? 0 : total_electricity_savings_to_date / self.bills.count
+    self.total_kwhs_logged / self.total_days_logged
   end
 
   def avg_daily_electricity_consumption

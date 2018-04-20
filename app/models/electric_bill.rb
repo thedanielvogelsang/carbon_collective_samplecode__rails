@@ -44,6 +44,5 @@ class ElectricBill < ApplicationRecord
       u.total_electricity_savings += elect_saved
       u.save
     end
-    update_users_regions_totals(elect_saved)
   end
 end

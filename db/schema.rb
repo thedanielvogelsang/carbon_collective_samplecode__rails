@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180420164748) do
+ActiveRecord::Schema.define(version: 20180420200211) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,10 +44,11 @@ ActiveRecord::Schema.define(version: 20180420164748) do
     t.string "name"
     t.decimal "total_energy_saved"
     t.decimal "avg_daily_energy_consumed_per_capita"
-    t.decimal "avg_total_energy_saved_per_capita"
     t.bigint "region_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "avg_total_energy_saved_per_user"
+    t.decimal "avg_daily_energy_consumed_per_user"
     t.index ["region_id"], name: "index_cities_on_region_id"
   end
 
@@ -55,9 +56,10 @@ ActiveRecord::Schema.define(version: 20180420164748) do
     t.string "name"
     t.decimal "total_energy_saved"
     t.decimal "avg_daily_energy_consumed_per_capita"
-    t.decimal "avg_total_energy_saved_per_capita"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "avg_total_energy_saved_per_user"
+    t.decimal "avg_daily_energy_consumed_per_user"
   end
 
   create_table "days", force: :cascade do |t|
@@ -115,10 +117,11 @@ ActiveRecord::Schema.define(version: 20180420164748) do
     t.string "name"
     t.decimal "total_energy_saved"
     t.decimal "avg_daily_energy_consumed_per_capita"
-    t.decimal "avg_total_energy_saved_per_capita"
     t.bigint "city_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "avg_total_energy_saved_per_user"
+    t.decimal "avg_daily_energy_consumed_per_user"
     t.index ["city_id"], name: "index_neighborhoods_on_city_id"
   end
 
@@ -126,10 +129,11 @@ ActiveRecord::Schema.define(version: 20180420164748) do
     t.string "name"
     t.decimal "total_energy_saved"
     t.decimal "avg_daily_energy_consumed_per_capita"
-    t.decimal "avg_total_energy_saved_per_capita"
     t.bigint "country_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "avg_total_energy_saved_per_user"
+    t.decimal "avg_daily_energy_consumed_per_user"
     t.index ["country_id"], name: "index_regions_on_country_id"
   end
 
