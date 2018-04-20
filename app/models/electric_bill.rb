@@ -6,8 +6,7 @@ class ElectricBill < ApplicationRecord
                         :total_kwhs
 
   after_validation :electricity_saved?,
-                   :update_users_savings,
-                   :update_users_regions_totals
+                   :update_users_savings
 
   def electricity_saved?
     self.house.address.neighborhood.city.region.has_average? ? region_comparison : country_comparison
