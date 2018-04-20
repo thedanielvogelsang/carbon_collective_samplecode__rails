@@ -26,6 +26,8 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true
   validate :check_email_format
 
+  before_create :add_zeros
+
 def self.create_with_omniauth(auth)
   uid = auth['uid']
   token = auth['credentials'].token
@@ -54,5 +56,11 @@ private
   def check_email_format
     return if errors.key?(:email)
     validates_format_of :email, with: /\A([a-z0-9_\.-]+\@[\da-z\.-]+\.[a-z\.]{2,6})\z/, message: "Address Invalid Format"
+  end
+
+  def add_zeros
+    self.total_kwhs_logged = 0
+    self.total_days_logged = 0
+    self.total_electricity_savings = 0
   end
 end

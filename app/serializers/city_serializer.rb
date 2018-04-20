@@ -1,29 +1,22 @@
 class CitySerializer < ActiveModel::Serializer
   attributes :id, :name, :number_of_users_in_city, :region, :country,
-                  :total_electricity_consumption_to_date,
-                  :total_electricity_savings_to_date,
-                  :avg_total_electricity_consumption_per_capita,
-                  :avg_monthly_electricity_consumption_per_capita,
-                  :avg_total_electricity_savings_per_capita,
-                  :avg_monthly_electricity_savings_per_capita
+                  :total_energy_saved,
+                  :avg_total_energy_saved_per_user,
+                  :avg_daily_energy_consumed_per_user,
+                  :avg_daily_energy_consumed_per_capita
 
-  def total_electricity_consumption_to_date
-  object.total_electricity_consumption_to_date.to_s + ' kwhs consumed to date'
+
+  def total_energy_saved
+    object.total_energy_saved.to_s + ' kwhs consumed to date'
   end
-  def total_electricity_savings_to_date
-  object.total_electricity_savings_to_date.to_s + ' kwhs electricity saved to date'
+  def avg_total_energy_saved_per_user
+    object.avg_total_energy_saved_per_user.to_s + ' kwhs electricity saved to date'
   end
-  def avg_total_electricity_consumption_per_capita
-  (object.avg_total_electricity_consumption_per_capita).to_s + ' total kwhs consumed per capita' if object.avg_total_electricity_consumption_per_capita != nil
+  def avg_daily_energy_consumed_per_user
+    (object.avg_daily_energy_consumed_per_user).to_s + ' daily kwhs consumed per carbon collective user' if object.avg_daily_energy_consumed_per_user != nil
   end
-  def avg_monthly_electricity_consumption_per_capita
-  (object.avg_monthly_electricity_consumption_per_capita).to_s + ' kwhs consumed per capita per month' if object.total_electricity_consumption_to_date != nil
-  end
-  def avg_total_electricity_savings_per_capita
-  (object.avg_total_electricity_savings_per_capita).to_s + ' total kwhs of electricity saved per capita' if object.avg_total_electricity_savings_per_capita != nil
-  end
-  def avg_monthly_electricity_savings_per_capita
-  (object.avg_monthly_electricity_savings_per_capita).to_s + ' kwhs of electricity saved per capita per month' if object.avg_monthly_electricity_savings_per_capita != nil
+  def avg_daily_energy_consumed_per_capita
+    (object.avg_daily_energy_consumed_per_capita).to_s + ' calculated daily kwhs consumed per capita' if object.avg_daily_energy_consumed_per_capita != nil
   end
 
   def region

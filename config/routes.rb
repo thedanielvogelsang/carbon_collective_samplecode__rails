@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
-
   get 'settings', to: 'settings#show'
+
+# reconfigure and clean up routes
 
   resources :electric_bills, only: [:new, :create]
   resources :users, only: [:new, :create, :show, :update]

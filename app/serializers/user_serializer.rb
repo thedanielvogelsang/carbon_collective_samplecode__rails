@@ -15,11 +15,11 @@ class UserSerializer < ActiveModel::Serializer
   end
 
   def total_electricity_savings_to_date
-    object.total_electricity_savings_to_date.to_s + " kwhs"
+    object.total_electricity_savings.to_s + " kwhs"
   end
 
   def global_collective_electricity_savings
-    GlobalHelper.total_to_date.to_s + " kwhs"
+    Global.first.total_energy_saved.to_s + " kwhs"
   end
 
   def current_location
