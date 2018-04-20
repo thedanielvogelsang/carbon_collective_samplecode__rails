@@ -12,6 +12,7 @@ class Region < ApplicationRecord
   has_many :users, through: :houses
 
   before_validation :capitalize_name
+
   def capitalize_name
     self.name = self.name.split(' ')
     .map{|w| w.downcase == 'of' || w.downcase == 'and' ? lowercase(w) : capitalize(w)}
@@ -24,5 +25,9 @@ class Region < ApplicationRecord
 
   def capitalize(word)
     word.capitalize
+  end
+
+  def has_average?
+    true if self.avg_daily_energy_consumed_per_capita
   end
 end

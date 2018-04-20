@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  post 'calendar/create'
+
+  get 'calendar/destroy'
+
   get 'settings', to: 'settings#show'
 
   resources :electric_bills, only: [:new, :create]

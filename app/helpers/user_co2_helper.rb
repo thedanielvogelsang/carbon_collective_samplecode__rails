@@ -14,15 +14,15 @@ module UserCo2Helper
   end
 
   def total_electricity_consumption_to_date
-    self.bills.map{|b| b.total_kwhs}.reduce(0){|s, n| s + n}
+
   end
 
-  def avg_monthly_electricity_savings
-    total_electricity_savings_to_date == 0 ? 0 : total_electricity_savings_to_date / self.bills.count
+  def avg_daily_electricity_savings
+    # total_electricity_savings_to_date == 0 ? 0 : total_electricity_savings_to_date / self.bills.count
   end
 
-  def avg_monthly_electricity_consumption
-    total_electricity_consumption_to_date == 0 ? 0 : total_electricity_consumption_to_date / self.bills.count
+  def avg_daily_electricity_consumption
+    self.total_kwhs_logged.fdiv(self.total_days_logged)
   end
 
   def household
