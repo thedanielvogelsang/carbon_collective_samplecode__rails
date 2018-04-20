@@ -1,10 +1,7 @@
 Rails.application.routes.draw do
-
-  post 'calendar/create'
-
-  get 'calendar/destroy'
-
   get 'settings', to: 'settings#show'
+
+# reconfigure and clean up routes
 
   resources :electric_bills, only: [:new, :create]
   resources :users, only: [:new, :create, :show, :update]

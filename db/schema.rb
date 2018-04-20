@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180420200211) do
+ActiveRecord::Schema.define(version: 20180420202035) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,11 +88,11 @@ ActiveRecord::Schema.define(version: 20180420200211) do
   end
 
   create_table "globals", force: :cascade do |t|
+    t.decimal "total_energy_saved"
     t.decimal "total_water_saved"
     t.decimal "total_carbon_saved"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.decimal "total_electricity_saved"
   end
 
   create_table "groups", force: :cascade do |t|
@@ -180,12 +180,6 @@ ActiveRecord::Schema.define(version: 20180420200211) do
     t.string "location", array: true
     t.string "url"
     t.string "provider"
-    t.float "household"
-    t.float "neighborhood"
-    t.float "city"
-    t.float "county"
-    t.float "state_or_province"
-    t.float "country"
     t.decimal "total_kwhs_logged"
     t.decimal "total_days_logged"
     t.decimal "total_electricity_savings"

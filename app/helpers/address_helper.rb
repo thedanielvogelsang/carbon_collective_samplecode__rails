@@ -49,7 +49,7 @@ module AddressHelper
       hood = Neighborhood.where(name: self.neighborhood_name, city_id: city.id).first_or_create
       self.neighborhood_id = hood.id
     else
-      hood = Neighborhood.where(name: self.zipcode.zipcode + " zip area", city_id: city.id).first_or_create
+      hood = Neighborhood.where(name: self.zipcode.zipcode + " Zip Area", city_id: city.id).first_or_create
       self.neighborhood_id = hood.id
     end
   end

@@ -19,7 +19,7 @@ class UserSerializer < ActiveModel::Serializer
   end
 
   def global_collective_electricity_savings
-    Global.first.total_electricity_saved.to_s + " kwhs"
+    Global.first.total_energy_saved.to_s + " kwhs"
   end
 
   def current_location

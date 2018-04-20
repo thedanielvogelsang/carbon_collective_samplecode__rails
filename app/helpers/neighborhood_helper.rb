@@ -1,8 +1,9 @@
 module NeighborhoodHelper
-  def update_attributes
+  def update_data
     update_total_savings
     update_daily_avg_consumption
     update_daily_avg_savings
+    self.save
   end
 
   def update_total_savings
