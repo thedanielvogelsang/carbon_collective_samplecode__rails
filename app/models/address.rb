@@ -14,7 +14,7 @@ class Address < ApplicationRecord
   belongs_to :zipcode
   belongs_to :neighborhood
 
-  before_validation :check_associations
+  before_validation :check_associations, on: [:create, :update]
 
   def check_associations
     create_or_find_regions_and_associations
