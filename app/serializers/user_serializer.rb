@@ -42,7 +42,7 @@ class UserSerializer < ActiveModel::Serializer
     object.url
   end
   def household_total_savings
-    object.household_total_savings.to_f.round(2)
+    object.household_total_savings.to_f.round(2).to_s
   end
   def neighborhood_total_savings
     object.neighborhood_total_savings.to_f.round(2)
