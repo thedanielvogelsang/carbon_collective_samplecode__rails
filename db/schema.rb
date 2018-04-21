@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180420202035) do
+ActiveRecord::Schema.define(version: 20180421061846) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +52,16 @@ ActiveRecord::Schema.define(version: 20180420202035) do
     t.index ["region_id"], name: "index_cities_on_region_id"
   end
 
+  create_table "city_snapshots", force: :cascade do |t|
+    t.bigint "city_id"
+    t.decimal "total_energy_saved"
+    t.decimal "average_daily_energy_consumption_per_user"
+    t.decimal "average_total_energy_saved_per_user"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["city_id"], name: "index_city_snapshots_on_city_id"
+  end
+
   create_table "countries", force: :cascade do |t|
     t.string "name"
     t.decimal "total_energy_saved"
@@ -60,6 +70,16 @@ ActiveRecord::Schema.define(version: 20180420202035) do
     t.datetime "updated_at", null: false
     t.decimal "avg_total_energy_saved_per_user"
     t.decimal "avg_daily_energy_consumed_per_user"
+  end
+
+  create_table "country_snapshots", force: :cascade do |t|
+    t.bigint "country_id"
+    t.decimal "total_energy_saved"
+    t.decimal "average_daily_energy_consumption_per_user"
+    t.decimal "average_total_energy_saved_per_user"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["country_id"], name: "index_country_snapshots_on_country_id"
   end
 
   create_table "days", force: :cascade do |t|
@@ -104,6 +124,16 @@ ActiveRecord::Schema.define(version: 20180420202035) do
     t.index ["admin_id"], name: "index_groups_on_admin_id"
   end
 
+  create_table "household_snapshots", force: :cascade do |t|
+    t.bigint "house_id"
+    t.decimal "average_daily_energy_consumption_per_resident"
+    t.decimal "average_total_energy_saved_per_resident"
+    t.decimal "total_energy_saved"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["house_id"], name: "index_household_snapshots_on_house_id"
+  end
+
   create_table "houses", force: :cascade do |t|
     t.float "total_sq_ft"
     t.integer "no_residents"
@@ -111,6 +141,16 @@ ActiveRecord::Schema.define(version: 20180420202035) do
     t.datetime "updated_at", null: false
     t.bigint "address_id"
     t.index ["address_id"], name: "index_houses_on_address_id"
+  end
+
+  create_table "neighborhood_snapshots", force: :cascade do |t|
+    t.bigint "neighborhood_id"
+    t.decimal "average_daily_energy_consumption_per_user"
+    t.decimal "average_total_energy_saved_per_user"
+    t.decimal "total_energy_saved"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["neighborhood_id"], name: "index_neighborhood_snapshots_on_neighborhood_id"
   end
 
   create_table "neighborhoods", force: :cascade do |t|
@@ -123,6 +163,16 @@ ActiveRecord::Schema.define(version: 20180420202035) do
     t.decimal "avg_total_energy_saved_per_user"
     t.decimal "avg_daily_energy_consumed_per_user"
     t.index ["city_id"], name: "index_neighborhoods_on_city_id"
+  end
+
+  create_table "region_snapshots", force: :cascade do |t|
+    t.bigint "region_id"
+    t.decimal "total_energy_saved"
+    t.decimal "average_daily_energy_consumption_per_user"
+    t.decimal "average_total_energy_saved_per_user"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["region_id"], name: "index_region_snapshots_on_region_id"
   end
 
   create_table "regions", force: :cascade do |t|
@@ -195,10 +245,15 @@ ActiveRecord::Schema.define(version: 20180420202035) do
   add_foreign_key "addresses", "zipcodes"
   add_foreign_key "admins", "users"
   add_foreign_key "cities", "regions"
+  add_foreign_key "city_snapshots", "cities"
+  add_foreign_key "country_snapshots", "countries"
   add_foreign_key "electric_bills", "houses"
   add_foreign_key "groups", "admins"
+  add_foreign_key "household_snapshots", "houses"
   add_foreign_key "houses", "addresses"
+  add_foreign_key "neighborhood_snapshots", "neighborhoods"
   add_foreign_key "neighborhoods", "cities"
+  add_foreign_key "region_snapshots", "regions"
   add_foreign_key "regions", "countries"
   add_foreign_key "trips", "days"
   add_foreign_key "trips", "users"

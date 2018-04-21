@@ -42,18 +42,18 @@ class UserSerializer < ActiveModel::Serializer
     object.url
   end
   def household_total_savings
-    object.household_total_savings.to_f.round(2)
+    object.household_total_savings.to_f.round(2).to_s
   end
   def neighborhood_total_savings
-    object.neighborhood_total_savings.to_f.round(2)
+    object.neighborhood_total_savings.to_f.round(2).to_s
   end
   def city_total_savings
-    object.city_total_savings.to_f.round(2)
+    object.city_total_savings.to_f.round(2).to_s
   end
   def region_total_savings
-    object.region_total_savings.to_f.round(2)
+    object.region_total_savings.to_f.round(2).to_s
   end
   def country_total_savings
-    object.country_total_savings.to_f.round(2)
+    object.country_total_savings.to_f.round(2).to_s
   end
 end
