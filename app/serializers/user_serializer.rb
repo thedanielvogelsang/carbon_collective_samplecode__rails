@@ -15,11 +15,11 @@ class UserSerializer < ActiveModel::Serializer
   end
 
   def total_electricity_savings_to_date
-    object.total_electricity_savings.to_f.round(2).to_s + " kwhs"
+    object.total_electricity_savings.to_f.round(3).to_s + " kwhs"
   end
 
   def global_collective_electricity_savings
-    Global.first.total_energy_saved.to_f.round(2).to_s + " kwhs"
+    Global.first.total_energy_saved.to_f.round(3).to_s + " kwhs"
   end
 
   def current_location
@@ -45,15 +45,15 @@ class UserSerializer < ActiveModel::Serializer
     object.household_total_savings.to_f.round(2).to_s
   end
   def neighborhood_total_savings
-    object.neighborhood_total_savings.to_f.round(2)
+    object.neighborhood_total_savings.to_f.round(2).to_s
   end
   def city_total_savings
-    object.city_total_savings.to_f.round(2)
+    object.city_total_savings.to_f.round(2).to_s
   end
   def region_total_savings
-    object.region_total_savings.to_f.round(2)
+    object.region_total_savings.to_f.round(2).to_s
   end
   def country_total_savings
-    object.country_total_savings.to_f.round(2)
+    object.country_total_savings.to_f.round(2).to_s
   end
 end
