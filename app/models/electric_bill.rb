@@ -38,6 +38,7 @@ class ElectricBill < ApplicationRecord
     kwhs = self.total_kwhs.fdiv(num_res)
     users = house.users
     elect_saved = self.electricity_saved.fdiv(num_res)
+    byebug
     users.each do |u|
       u.total_days_logged += num_days
       u.total_kwhs_logged += kwhs
