@@ -18,9 +18,7 @@ COUNTRIES = {
   ["Bangladesh", 351],
   ["Barbados", 3087],
   ["Belarus", 3448],
-
   ["Belgium", 7099],
-
   ["Belize", 1130],
   ["Benin", 93],
   ["Bermuda", 8505],
@@ -173,9 +171,7 @@ COUNTRIES = {
   ["Slovenia", 6572],
   ["Solomon Islands", 124],
   ["Somalia", 27],
-
   ["South Africa", 3904],
-
   ["Korea, Republic of (South Korea)", 9720],
   ["South Sudan", 55],
   ["Spain", 4818],
