@@ -8,7 +8,8 @@ class Neighborhood < ApplicationRecord
   has_many :addresses
   has_many :houses, through: :addresses
   has_many :users, through: :houses
-
+  has_many :neighborhood_snapshots
+  
   before_validation :capitalize_name
 
   def capitalize_name

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180421054033) do
+ActiveRecord::Schema.define(version: 20180421061156) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -123,6 +123,16 @@ ActiveRecord::Schema.define(version: 20180421054033) do
     t.index ["address_id"], name: "index_houses_on_address_id"
   end
 
+  create_table "neighborhood_snapshots", force: :cascade do |t|
+    t.bigint "neighborhood_id"
+    t.decimal "average_daily_energy_consumption_per_user"
+    t.decimal "average_total_energy_saved_per_user"
+    t.decimal "total_energy_saved"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["neighborhood_id"], name: "index_neighborhood_snapshots_on_neighborhood_id"
+  end
+
   create_table "neighborhoods", force: :cascade do |t|
     t.string "name"
     t.decimal "total_energy_saved"
@@ -209,6 +219,7 @@ ActiveRecord::Schema.define(version: 20180421054033) do
   add_foreign_key "groups", "admins"
   add_foreign_key "household_snapshots", "houses"
   add_foreign_key "houses", "addresses"
+  add_foreign_key "neighborhood_snapshots", "neighborhoods"
   add_foreign_key "neighborhoods", "cities"
   add_foreign_key "regions", "countries"
   add_foreign_key "trips", "days"
