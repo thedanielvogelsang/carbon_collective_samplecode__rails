@@ -8,3 +8,18 @@ task :update_snapshots => :environment do
     House.all.each{|h| HouseholdSnapshot.take_snapshot(h) }
   puts "Snapshots logged"
 end
+
+task :update_data => :environment do
+  puts 'Updating country data'
+  Country.all.each{|c| c.update_data }
+  puts 'Updating region data'
+  Region.all.each{|r| r.update_data }
+
+  puts 'Updating city data'
+  City.all.each{|c| c.update_data }
+
+  puts 'Updating neighborhood data'
+  Neighborhood.all.each{|n| n.update_data }
+
+  puts '...done'
+end
