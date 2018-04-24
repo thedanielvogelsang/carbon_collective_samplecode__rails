@@ -13,7 +13,7 @@ class HelloWorld extends React.Component {
   }
 
   handleLogin(){
-    return fetch('http://localhost:3000/api/v1/users', {
+    return fetch('http://localhost:3000/login', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
