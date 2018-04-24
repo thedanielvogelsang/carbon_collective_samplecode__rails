@@ -7,6 +7,7 @@ class Api::V1::Areas::RegionController < ApplicationController
       render json: Region.joins(:users).order(total_energy_saved: :desc).distinct
     end
   end
+  
   def show
     render json: Region.find(params[:id])
   end

@@ -384,10 +384,10 @@ doha_qatar = Address.create(address_line1: "Airport Road Al Matar St",
                country: "Qatar",
                zipcode_id: Zipcode.last.id)
 
-        house = House.create(total_sq_ft: rand(1000..3000), no_residents: rand(4), address_id: doha_qatar.id)
+        house = House.create(total_sq_ft: rand(1000..3000), no_residents: 1, address_id: doha_qatar.id)
         bind_new_user(house)
         puts "#{house} added in #{doha_qatar.country}"
-          kwhs = 75000
+          kwhs = 35000
           price = rand(1..1000)
           bill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house.id)
         puts "1 bill added to house ##{house.id} in #{house.address.city}: #{bill}\n"
