@@ -7,16 +7,19 @@ class NeighborhoodSerializer < ActiveModel::Serializer
 
 
   def total_energy_saved
-    object.total_energy_saved.to_s + ' kwhs consumed to date'
+    object.total_energy_saved.round(2).to_s + ' kwhs electricity saved to date'
   end
   def avg_total_energy_saved_per_user
-    object.avg_total_energy_saved_per_user.to_s + ' kwhs electricity saved to date'
+    object.avg_total_energy_saved_per_user.round(2).to_s +
+    ' average total kwhs electricity saved per carbon collective user'
   end
   def avg_daily_energy_consumed_per_user
-    (object.avg_daily_energy_consumed_per_user).to_s + ' daily kwhs consumed per carbon collective user' if object.avg_daily_energy_consumed_per_user != nil
+    (object.avg_daily_energy_consumed_per_user).round(2).to_s +
+    ' average daily kwhs consumed per carbon collective user' if object.avg_daily_energy_consumed_per_user != nil
   end
   def avg_daily_energy_consumed_per_capita
-    (object.avg_daily_energy_consumed_per_capita).to_s + ' calculated daily kwhs consumed per capita in neighborhood' if object.avg_daily_energy_consumed_per_capita != nil
+    (object.avg_daily_energy_consumed_per_capita).round(2).to_s +
+    ' average daily kwhs consumed per capita' if object.avg_daily_energy_consumed_per_capita != nil
   end
 
   def city

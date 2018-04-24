@@ -11,9 +11,10 @@ class Region < ApplicationRecord
   has_many :houses, through: :addresses
   has_many :users, through: :houses
   has_many :region_snapshots
-  
-  before_validation :capitalize_name
 
+  before_validation :capitalize_name
+  before_create :add_zeros
+  
   def capitalize_name
     self.name = self.name.split(' ')
     .map{|w| w.downcase == 'of' || w.downcase == 'and' ? lowercase(w) : capitalize(w)}
@@ -30,5 +31,11 @@ class Region < ApplicationRecord
 
   def has_average?
     true if self.avg_daily_energy_consumed_per_capita
+  end
+
+  def add_zeros
+    self.total_energy_saved = 0
+    self.avg_total_energy_saved_per_user = 0
+    self.avg_daily_energy_consumed_per_user = 0
   end
 end

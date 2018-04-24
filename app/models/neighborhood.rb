@@ -9,8 +9,9 @@ class Neighborhood < ApplicationRecord
   has_many :houses, through: :addresses
   has_many :users, through: :houses
   has_many :neighborhood_snapshots
-  
+
   before_validation :capitalize_name
+  before_create :add_zeros
 
   def capitalize_name
     self.name = self.name.split(' ')
@@ -24,5 +25,11 @@ class Neighborhood < ApplicationRecord
 
   def capitalize(word)
     word.capitalize
+  end
+
+  def add_zeros
+    self.total_energy_saved = 0
+    self.avg_total_energy_saved_per_user = 0
+    self.avg_daily_energy_consumed_per_user = 0
   end
 end
