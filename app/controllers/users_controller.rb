@@ -24,12 +24,16 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(safe_params)
-    if params[:password] == params[:password_confirmation] && @user.save
-      flash[:success] = "User data success. Now lets log your home address to get you started"
-      redirect_to new_address_path({id: @user.id})
-    else
-      flash[:error] = "Unsuccessful User Creation"
-      redirect_to new_user_path
+    respond_to do |format|
+      if params[:user][:password] == params[:user][:passwordConfirmation] && @user.save
+        format.json {render json: @user}
+      elsif params[:user][:password] != params[:user][:passwordConfirmation]
+        flash[:error] = 'Passwords did not match. Please try again'
+        format.json {render :json => {:errors => flash[:error]}, :status => 401 }
+      else
+        error = "Email already taken. Did you forget your password?"
+        format.json {render :json => {:errors => error}, :status => 401 }
+      end
     end
   end
 
