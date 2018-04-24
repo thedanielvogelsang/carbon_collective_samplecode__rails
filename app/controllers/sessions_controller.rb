@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: [:create]
+  protect_from_forgery with: :null_session
+
   respond_to :json, :html
 
   def index
@@ -16,15 +17,17 @@ class SessionsController < ApplicationController
       redirect_to new_user_path({:user => {uid: user.uid}}) if user.addresses.empty?
       redirect_to user_path(user.id) if !user.addresses.empty?
     else
-      user = User.find_by(email: params[:user][:email])
+      user = User.find_by(email: safe_params[:email])
       respond_to do |format|
-        if user && user.authenticate(params[:user][:password])
+        if user && user.authenticate(safe_params[:password])
           session[:user_id] = user.id
-          format.json {redirect_to user_path(user.id) }
-          # redirect_to user_path(user.id)
-        else
+          format.json {render json: user}
+        elsif user && !user.authenticate(safe_params[:password])
           flash[:error] = 'Password/Email did not match. Please try again'
-          format.json {redirect_to welcome_path }
+          format.json {render :json => {:errors => flash[:error]}, :status => 401 }
+        else
+          flash[:error] = 'Email not found. Please try again'
+          format.json {render :json => {:errors => flash[:error]}, :status => 401 }
         end
       end
     end
