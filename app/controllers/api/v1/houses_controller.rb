@@ -1,7 +1,6 @@
 class Api::V1::HousesController < ApplicationController
   def index
-    user = User.find(params[:user_id])
-    render json: user.houses
+    render json: House.all
   end
 
   def show

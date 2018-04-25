@@ -10,7 +10,8 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :addresses, only: [:create, :update, :destroy]
+      resources :addresses, only: [:index, :show]
+      resources :houses, only: [:index, :show]
       resources :users, only: [:index, :show] do
         resources :houses
         # get '/trips', to: 'users/trips#index'
@@ -21,12 +22,6 @@ Rails.application.routes.draw do
         # get '/admins', to: 'users/admins#index'
         # get '/days', to: 'users/days#index'
       end
-      # resources :admins, only: [:index, :show]
-      # resources :trips
-      # resources :groups, only: [:index, :show] do
-      #   get '/members', to: 'groups/group_members#index'
-      # end
-      # resources :days, only: [:index, :show]
       namespace :areas do
         get '/countries', to: 'country#index'
         get '/countries/:id', to: 'country#show'
@@ -37,6 +32,12 @@ Rails.application.routes.draw do
         get '/neighborhoods', to: 'neighborhood#index'
         get '/neighborhoods/:id', to: 'neighborhood#show'
       end
+      # resources :admins, only: [:index, :show]
+      # resources :trips
+      # resources :groups, only: [:index, :show] do
+      #   get '/members', to: 'groups/group_members#index'
+      # end
+      # resources :days, only: [:index, :show]
     end
   end
   get '/', to: "sessions#index", as: :welcome
