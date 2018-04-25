@@ -21,7 +21,17 @@ module HouseHelper
     total_electricity_savings_to_date
   end
 
-  
+  def total_electricity_consumption_to_date
+    self.bills.map{|b| b.total_kwhs }.flatten.reduce(0){|s,n| s+n}
+  end
+
+  def avg_total_electricity_consumption_per_resident
+    total_electricity_consumption_to_date / self.no_residents
+  end
+
+  def avg_total_electricity_savings_per_resident
+    total_energy_saved / self.no_residents
+  end
   #
 
   #
