@@ -19,6 +19,7 @@ module AddressHelper
 
   def create_and_assign_region(country)
     if self.state
+      check_state
       region = Region.where(name: self.state, country_id: country.id).first_or_create
       self.state = region.name
       create_and_assign_city(region)
@@ -45,7 +46,7 @@ module AddressHelper
   end
 
   def create_neighborhood(city)
-    if self.neighborhood_name
+    if self.neighborhood_name && self.neighborhood_name != ""
       hood = Neighborhood.where(name: self.neighborhood_name, city_id: city.id).first_or_create
       self.neighborhood_id = hood.id
     else
@@ -78,4 +79,63 @@ module AddressHelper
     self.country == "USA" ? self.country = "United States of America" : nil
     self.country == "United States" ? self.country = "United States of America" : nil
   end
+
+  def check_state
+    state_abb = self.state.upcase
+    US_STATES.keys.include?(state_abb) ? self.state = US_STATES[state_abb] : nil
+  end
+
+  US_STATES = {
+    "AL" => "Alabama",
+    "AK" => "Alaska",
+    "AZ" => "Arizona",
+    "AR" => "Arkansas",
+    "CA" => "California",
+    "CO" => "Colorado",
+    "CT" => "Connecticut",
+    "DE" => "Deleware",
+    "FL" => "Florida",
+    "GA" => "Georgia",
+    "HI" => "Hawaii",
+    "ID" => "Idaho",
+    "IL" => "Illinois",
+    "IN" => "Indiana",
+    "IA" => "Iowa",
+    "KS" => "Kansas",
+    "KY" => "Kentucky",
+    "LA" => "Louisiana",
+    "ME" => "Maine",
+    "MD" => "Maryland",
+    "MA" => "Massachussets",
+    "MI" => "Michigan",
+    "MN" => "Minnesota",
+    "MS" => "Mississippi",
+    "MO" => "Missouri",
+    "MT" => "Montana",
+    "NE" => "Nebraska",
+    "NV" => "Nevada",
+    "NH" => "New Hampshire",
+    "NJ" => "New Jersey",
+    "NM" => "New Mexico",
+    "NY" => "New York",
+    "NC" => "North Carolina",
+    "ND" => "North Dakota",
+    "OH" => "Ohio",
+    "OK" => "Oklahoma",
+    "OR" => "Oregon",
+    "PA" => "Pennsylvania",
+    "RI" => "Rhode Island",
+    "SC" => "South Carolina",
+    "SD" => "South Dakota",
+    "TN" => "Tennessee",
+    "TX" => "Texas",
+    "UT" => "Utah",
+    "VT" => "Vermont",
+    "VA" => "Virginia",
+    "WA" => "Washington",
+    "WV" => "West Virginia",
+    "WI" => "Wisconsin",
+    "WY" => "Wyoming",
+    "DC" => "District of Columbia"
+  }
 end
