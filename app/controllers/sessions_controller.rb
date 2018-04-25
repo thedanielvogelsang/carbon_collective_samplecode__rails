@@ -23,11 +23,11 @@ class SessionsController < ApplicationController
           session[:user_id] = user.id
           format.json {render json: user}
         elsif user && !user.authenticate(safe_params[:password])
-          flash[:error] = 'Password/Email did not match. Please try again'
-          format.json {render :json => {:errors => flash[:error]}, :status => 401 }
+          error = 'Password/Email did not match. Please try again'
+          format.json {render :json => {:errors => error}, :status => 401 }
         else
-          flash[:error] = 'Email not found. Please try again'
-          format.json {render :json => {:errors => flash[:error]}, :status => 401 }
+          error = 'Email not found. Please try again'
+          format.json {render :json => {:errors => error}, :status => 401 }
         end
       end
     end

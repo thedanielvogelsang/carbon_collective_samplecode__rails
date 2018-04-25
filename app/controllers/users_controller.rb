@@ -26,10 +26,11 @@ class UsersController < ApplicationController
     @user = User.new(safe_params)
     respond_to do |format|
       if params[:user][:password] == params[:user][:passwordConfirmation] && @user.save
+        session[:user_id] = user.id
         format.json {render json: @user}
       elsif params[:user][:password] != params[:user][:passwordConfirmation]
-        flash[:error] = 'Passwords did not match. Please try again'
-        format.json {render :json => {:errors => flash[:error]}, :status => 401 }
+        error = 'Passwords did not match. Please try again'
+        format.json {render :json => {:errors => error}, :status => 401 }
       else
         error = "Email already taken. Did you forget your password?"
         format.json {render :json => {:errors => error}, :status => 401 }
