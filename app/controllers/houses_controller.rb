@@ -1,7 +1,6 @@
 class HousesController < ApplicationController
 
   def create
-    byebug
     user = User.find(params[:user_id])
     @house = House.new(safe_params)
     if @house.save
