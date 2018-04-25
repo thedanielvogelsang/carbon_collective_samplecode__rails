@@ -26,7 +26,7 @@ class UsersController < ApplicationController
     @user = User.new(safe_params)
     respond_to do |format|
       if params[:user][:password] == params[:user][:passwordConfirmation] && @user.save
-        session[:user_id] = user.id
+        session[:user_id] = @user.id
         format.json {render json: @user}
       elsif params[:user][:password] != params[:user][:passwordConfirmation]
         error = 'Passwords did not match. Please try again'
