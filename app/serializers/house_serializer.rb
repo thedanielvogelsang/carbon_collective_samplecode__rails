@@ -16,14 +16,8 @@ class HouseSerializer < ActiveModel::Serializer
   def avg_total_electricity_consumption_per_resident
     (object.avg_total_electricity_consumption_per_resident).to_s + ' kwhs per house member' if object.avg_total_electricity_consumption_per_resident != nil
   end
-  def avg_monthly_electricity_consumption_per_resident
-    (object.avg_monthly_electricity_consumption_per_resident).to_s + ' kwhs per house member per month' if object.total_electricity_consumption_to_date != nil
-  end
   def avg_total_electricity_savings_per_resident
     (object.avg_total_electricity_savings_per_resident).to_s + ' kwhs of electricity saved per house member' if object.avg_total_electricity_savings_per_resident != nil
-  end
-  def avg_monthly_electricity_savings_per_resident
-    (object.avg_monthly_electricity_savings_per_resident).to_s + ' kwhs of electricity saved per house member per month' if object.avg_monthly_electricity_savings_per_resident != nil
   end
 
   def number_of_bills_entered

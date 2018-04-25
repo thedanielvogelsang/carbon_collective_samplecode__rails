@@ -20,6 +20,8 @@ module HouseHelper
   def total_energy_saved
     total_electricity_savings_to_date
   end
+
+  
   #
 
   #
