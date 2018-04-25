@@ -19,7 +19,7 @@ class User < ApplicationRecord
 
   # has_many :user_addresses
 
-  has_many :user_houses
+  has_many :user_houses, dependent: :destroy
   has_many :houses, through: :user_houses
   has_many :addresses, through: :houses
 
