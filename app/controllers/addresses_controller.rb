@@ -8,7 +8,7 @@ class AddressesController < ApplicationController
     if @address.save
       render json: @address, status: 202
     else
-      error = "address did not save"
+      error = "Address did not save, please try again"
       render :json => {errors: error}, status: 401
     end
   end
