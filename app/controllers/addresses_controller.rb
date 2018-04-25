@@ -1,25 +1,20 @@
 class AddressesController < ApplicationController
   # before_action :require_user
 
-  def new
-    @user = User.find(params['id'])
-    @address = Address.new
-  end
-
   def create
-    @user = User.find(params['address']['user_id'])
-    @address = Address.create(safe_params)
+    zipcode = Zipcode.find_or_create_by(zipcode: params[:zipcode]) if params[:zipcode]
+    @address = Address.new(safe_params)
+    @address.zipcode_id = zipcode.id
     if @address.save
-      flash[:success] = "You are now a member of the CarbonCollective Community #{@user.first}"
-      redirect_to new_house_path({user_id: @user.id, address_id: @address.id})
+      render json: @address, status: 202
     else
-      flash[:error] = "Something went wrong"
-      redirect_to new_address_path({id: @user.id})
+      error = "address did not save"
+      render :json => {errors: error}, status: 401
     end
   end
 
   private
     def safe_params
-      params.require(:address).permit(:geocoder_string)
+      params.require(:address).permit(:address_line1, :address_line2, :city, :neighborhood_name, :state, :country)
     end
 end

@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :addresses, only: [:create, :update, :destroy]
-      resources :users, only: [:index, :show, :create] do
+      resources :users, only: [:index, :show] do
         resources :houses
         # get '/trips', to: 'users/trips#index'
         # get '/groups', to: 'users/groups#index'
