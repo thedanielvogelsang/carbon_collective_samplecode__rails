@@ -2,7 +2,6 @@ class ElectricBillsController < ApplicationController
 
   def create
     bill = ElectricBill.new(safe_params)
-    byebug
     if bill.save
       render json: bill, status: 201
     else

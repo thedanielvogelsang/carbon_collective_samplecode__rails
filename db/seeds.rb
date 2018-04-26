@@ -525,7 +525,7 @@ neighborhood3 = "Highlands"
                 bill4 = ElectricBill.create(start_date: sdate4, end_date: edate4, total_kwhs: kwhs4, price: price4, house_id: house.id)
               puts "fourth bill added to house ##{house.id} in #{house.address.city}: #{bill4}"
 
-    sadd = Address.create!(address_line1: "1234 Race St",
+    sadd = Address.create!(address_line1: "1284 Race St",
                 city: city, country: country.name, state: state.name,
                 neighborhood_name: neighborhood1,
                 zipcode_id: z.id)
