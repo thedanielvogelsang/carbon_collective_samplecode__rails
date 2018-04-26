@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
 # reconfigure and clean up routes
 
-  resources :electric_bills, only: [:new, :create]
+  resources :electric_bills, only: [:create]
   resources :users, only: [:new, :create, :show, :update]
   resources :addresses, only: [:new, :create, :show]
   resources :houses, only: [:new, :create]
