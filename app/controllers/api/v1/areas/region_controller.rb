@@ -1,4 +1,5 @@
 class Api::V1::Areas::RegionController < ApplicationController
+  
   def index
     if params[:country]
       id = Country.find_by(name: params[:country])
@@ -7,8 +8,12 @@ class Api::V1::Areas::RegionController < ApplicationController
       render json: Region.joins(:users).order(total_energy_saved: :desc).distinct
     end
   end
-  
+
   def show
     render json: Region.find(params[:id])
+  end
+
+  def users
+    render json: Region.find(params[:id]).users.order(total_electricity_savings: :desc).limit(10)
   end
 end

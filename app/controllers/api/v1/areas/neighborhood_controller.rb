@@ -7,8 +7,11 @@ class Api::V1::Areas::NeighborhoodController < ApplicationController
       render json: Neighborhood.joins(:users).order(total_energy_saved: :desc).distinct
     end
   end
-  
+
   def show
     render json: Neighborhood.find(params[:id])
+  end
+  def users
+    render json: Neighborhood.find(params[:id]).users.order(total_electricity_savings: :desc).limit(10)
   end
 end

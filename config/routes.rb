@@ -25,12 +25,16 @@ Rails.application.routes.draw do
       namespace :areas do
         get '/countries', to: 'country#index'
         get '/countries/:id', to: 'country#show'
+        get '/countries/:id/users', to: 'country#users'
         get '/regions', to: 'region#index'
         get '/regions/:id', to: 'region#show'
+        get '/regions/:id/users', to: 'region#users'
         get '/cities', to: 'city#index'
         get '/cities/:id', to: 'city#show'
+        get '/cities/:id/users', to: 'city#users'
         get '/neighborhoods', to: 'neighborhood#index'
         get '/neighborhoods/:id', to: 'neighborhood#show'
+        get '/neighborhoods/:id/users', to: 'neighborhood#users'
       end
       # resources :admins, only: [:index, :show]
       # resources :trips

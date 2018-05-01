@@ -10,6 +10,19 @@ class UserSerializer < ActiveModel::Serializer
                   :region_total_savings,
                   :country_total_savings
 
+  def neighborhood
+    [Neighborhood.find_by(name: object.neighborhood).id, object.neighborhood]
+  end
+  def city
+    [City.find_by(name: object.city).id, object.city]
+  end
+  def region
+    [Region.find_by(name: object.region).id, object.region]
+  end
+  def country
+    [Country.find_by(name: object.country).id, object.country]
+  end
+
   def house_ids
     object.houses.map{|h| h.id}
   end
