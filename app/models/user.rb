@@ -55,7 +55,7 @@ end
 private
   def check_email_format
     return if errors.key?(:email)
-    validates_format_of :email, with: /\A([a-z0-9_\.-]+\@[\da-z\.-]+\.[a-z\.]{2,6})\z/, message: "Address Invalid Format"
+    validates_format_of :email, with: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i, message: "Address Invalid Format"
   end
 
   def add_zeros
@@ -63,4 +63,5 @@ private
     self.total_days_logged = 0
     self.total_electricity_savings = 0
   end
+
 end

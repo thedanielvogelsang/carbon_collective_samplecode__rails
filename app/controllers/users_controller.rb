@@ -31,6 +31,9 @@ class UsersController < ApplicationController
       elsif params[:user][:password] != params[:user][:passwordConfirmation]
         error = 'Passwords did not match. Please try again'
         format.json {render :json => {:errors => error}, :status => 401 }
+      elsif !@user.errors.messages[:email].empty? && @user.errors.messages[:email][0] != 'has already been taken'
+        error = "Email format invalid. If problem continues contact CarbonCollective systems support"
+        format.json {render :json => {:errors => error}, :status => 401 }
       else
         error = "Email already taken. Did you forget your password?"
         format.json {render :json => {:errors => error}, :status => 401 }
@@ -39,6 +42,7 @@ class UsersController < ApplicationController
   end
 
   def update
+    byebug
     user = User.find(params[:id])
     params['user']['password_confirmation'] != '' ? authenticate(user) : update_user(user)
   end
