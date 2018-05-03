@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-  before_action :require_user, only: [:update]
   respond_to :json
 
   def index
@@ -42,9 +41,13 @@ class UsersController < ApplicationController
   end
 
   def update
-    byebug
     user = User.find(params[:id])
-    params['user']['password_confirmation'] != '' ? authenticate(user) : update_user(user)
+    if user.update(safe_params)
+      render json: user, status: 200
+    else
+      error = user.errors.message
+      render json: error, status: 401
+    end
   end
 
   private
@@ -77,6 +80,6 @@ class UsersController < ApplicationController
     end
 
     def safe_params
-      params.require('user').permit(:uid, :first, :last, :email, :password, :id, :password_confirmation)
+      params.require('user').permit(:first, :last, :email, :password)
     end
 end
