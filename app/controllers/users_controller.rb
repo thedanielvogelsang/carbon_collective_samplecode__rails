@@ -43,10 +43,10 @@ class UsersController < ApplicationController
   def update
     user = User.find(params[:id])
     if user.update(safe_params)
-      render json: user, success: 200
+      render json: user, status: 200
     else
       error = user.errors.message
-      byebug
+      render json: error, status: 401
     end
   end
 
