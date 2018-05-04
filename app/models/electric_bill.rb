@@ -9,11 +9,11 @@ class ElectricBill < ApplicationRecord
                    :update_users_savings
 
   def electricity_saved?
-    self.house.address.neighborhood.city.region.has_average? ? region_comparison : country_comparison
+    self.house.address.city.region.has_average? ? region_comparison : country_comparison
   end
 
   def region_comparison
-    region_per_cap_daily_average = self.house.address.neighborhood.city.region.avg_daily_energy_consumed_per_capita
+    region_per_cap_daily_average = self.house.address.city.region.avg_daily_energy_consumed_per_capita
     num_days = self.end_date - self.start_date
     bill_daily_average = self.total_kwhs.fdiv(num_days)
     avg_daily_use_per_resident = bill_daily_average.fdiv(self.house.no_residents)
@@ -23,7 +23,7 @@ class ElectricBill < ApplicationRecord
   end
 
   def country_comparison
-    country_per_cap_daily_average = self.house.address.neighborhood.city.region.country.avg_daily_energy_consumed_per_capita
+    country_per_cap_daily_average = self.house.address.city.region.country.avg_daily_energy_consumed_per_capita
     num_days = self.end_date - self.start_date
     bill_daily_average = self.total_kwhs.fdiv(num_days)
     avg_daily_use_per_resident = bill_daily_average.fdiv(self.house.no_residents)
