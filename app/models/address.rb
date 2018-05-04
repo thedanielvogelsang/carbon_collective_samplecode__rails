@@ -18,7 +18,4 @@ class Address < ApplicationRecord
 
   # before_validation :check_associations, on: [:create, :update]
 
-  def check_associations
-    create_or_find_regions_and_associations
-  end
 end
