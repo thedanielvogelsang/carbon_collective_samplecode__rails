@@ -17,11 +17,11 @@ module UserCo2Helper
   end
 
   def neighborhood
-    (!self.houses.empty? && self.houses.first.neighborhood) ? nil : household.address.neighborhood
+    (!self.houses.empty? && self.houses.first.address.neighborhood) ? household.address.neighborhood : nil
   end
 
   def city
-    self.houses.empty? ? nil : household.address.city.name
+    self.houses.empty? ? nil : household.address.city
   end
 
   def region
@@ -37,7 +37,7 @@ module UserCo2Helper
   end
 
   def neighborhood_total_savings
-    household.address.neighborhood ? Neighborhood.find_by(name: household.address.neighborhood).total_energy_saved : nil
+    household.address.neighborhood ? household.address.neighborhood.total_energy_saved : nil
   end
 
   def city_total_savings

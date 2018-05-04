@@ -11,16 +11,16 @@ class UserSerializer < ActiveModel::Serializer
                   :country_total_savings
 
   def neighborhood
-    [Neighborhood.find_by(name: object.neighborhood).id, object.neighborhood] if object.neighborhood
+    [object.neighborhood.id, object.neighborhood] if object.neighborhood
   end
   def city
-    [City.find_by(name: object.city).id, object.city] if object.city
+    [object.city.id, object.city.name] if object.city
   end
   def region
-    [Region.find_by(name: object.region).id, object.region] if object.region
+    [object.region.id, object.region.name] if object.region
   end
   def country
-    [Country.find_by(name: object.country).id, object.country] if object.country
+    [object.country.id, object.country.name] if object.country
   end
 
   def house_ids
