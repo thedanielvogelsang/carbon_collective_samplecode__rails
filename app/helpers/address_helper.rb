@@ -18,13 +18,8 @@ module AddressHelper
   end
 
   def create_and_assign_region(country)
-    if self.state
       check_state
       region = Region.where(name: self.state, country_id: country.id).first_or_create
-      self.state = region.name
-      create_and_assign_city(region)
-    else
-      region = Region.where(name: self.country + ' Region', country_id: country.id).first_or_create
       self.state = region.name
       create_and_assign_city(region)
     end
@@ -81,7 +76,7 @@ module AddressHelper
   end
 
   def check_state
-    state_abb = self.state.upcase
+    state_abb = self.region.upcase
     US_STATES.keys.include?(state_abb) ? self.state = US_STATES[state_abb] : nil
   end
 

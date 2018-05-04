@@ -1,6 +1,6 @@
 class AddressesController < ApplicationController
   # before_action :require_user
-
+  
   def create
     zipcode = Zipcode.find_or_create_by(zipcode: params[:zipcode]) if params[:zipcode]
     @address = Address.new(safe_params)
