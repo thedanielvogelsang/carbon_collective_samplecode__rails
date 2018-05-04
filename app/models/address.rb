@@ -1,22 +1,21 @@
 class Address < ApplicationRecord
+  # Address Helper currently not being used
   include AddressHelper
 
+  validates_presence_of :address_line1
 
-
-  validates_presence_of :address_line1, :city,
-                        :country
-
-  validates_uniqueness_of :address_line1, scope: :neighborhood_id
+  validates_uniqueness_of :address_line1, scope: :city_id
 
   has_one :house, :dependent => :destroy
 
   has_many :users, through: :house
   belongs_to :zipcode
-  belongs_to :neighborhood
+  belongs_to :city
+  belongs_to :neighborhood, optional: true
 
-  before_validation :check_associations, on: [:create, :update]
+  has_one :region, through: :city
+  has_one :country, through: :region
 
-  def check_associations
-    create_or_find_regions_and_associations
-  end
+  # before_validation :check_associations, on: [:create, :update]
+
 end

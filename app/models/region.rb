@@ -14,7 +14,7 @@ class Region < ApplicationRecord
 
   before_validation :capitalize_name
   before_create :add_zeros
-  
+
   def capitalize_name
     self.name = self.name.split(' ')
     .map{|w| w.downcase == 'of' || w.downcase == 'and' ? lowercase(w) : capitalize(w)}
@@ -29,13 +29,16 @@ class Region < ApplicationRecord
     word.capitalize
   end
 
-  def has_average?
-    true if self.avg_daily_energy_consumed_per_capita
-  end
-
   def add_zeros
     self.total_energy_saved = 0
     self.avg_total_energy_saved_per_user = 0
     self.avg_daily_energy_consumed_per_user = 0
   end
+  
+  # used on electric bills model:
+
+  def has_average?
+    true if self.avg_daily_energy_consumed_per_capita
+  end
+
 end
