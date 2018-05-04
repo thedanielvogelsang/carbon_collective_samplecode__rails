@@ -319,9 +319,11 @@ end
 country = Country.find_by(name: "United States of America")
 state = Region.find_by(name: "Colorado")
 
-city = "Denver"
-city2 = "Fort Collins"
-city3 = "Golden"
+city1 = City.create(name: "Denver", region_id: state.id)
+city2 = City.create(name: "Fort Collins", region_id: state.id)
+city3 = City.create(name: "Golden", region_id: state.id)
+city4 = City.create(name: "Boulder", region_id: state.id)
+
 zip1 = "80216"
 zip2 = "80218"
 zip3 = "80211"
@@ -332,12 +334,16 @@ neighborhood1 = "Cap Hill"
 neighborhood2 = "Five Points"
 neighborhood3 = "Highlands"
 
+Neighborhood.create(name: neighborhood1, city_id: city1.id)
+Neighborhood.create(name: neighborhood2, city_id: city1.id)
+Neighborhood.create(name: neighborhood3, city_id: city1.id)
+
 # 5 addresses in Denver; Colorado AVG: 723kwhs/month
   # 2 in caphill
     z = Zipcode.create(zipcode: zip1)
       tadd = Address.create(address_line1: "1255 Emerson St", address_line2: "#2",
-                  city: city, country: country.name, state: state.name,
-                  neighborhood_name: neighborhood1,
+                  city: city.name, country: country.name, state: state.name,
+                  neighborhood: neighborhood1.name, city_id: city.id,
                   zipcode_id: z.id)
 
     #HOUSE NUMBER 9; 2 resident users; savings in 3/4 bills;

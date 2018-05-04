@@ -1,6 +1,6 @@
 module AddressHelper
   def create_or_find_regions_and_associations
-    create_and_assign_country
+    create_and_assign_all
   end
 
   def address
@@ -9,7 +9,10 @@ module AddressHelper
 
   private
 
-  def create_and_assign_country
+  def create_and_assign_all
+    city = City.find_by(self.city_id)
+    region = Region.find_by(city.region_id)
+    country = Country.find_by(region.country_id)
     capitalize_name
     check_name
     country = Country.find_by(name: self.country)
@@ -22,7 +25,6 @@ module AddressHelper
       region = Region.where(name: self.state, country_id: country.id).first_or_create
       self.state = region.name
       create_and_assign_city(region)
-    end
   end
 
   def create_and_assign_city(region)
@@ -47,6 +49,14 @@ module AddressHelper
     else
       hood = Neighborhood.where(name: self.zipcode.zipcode + " Zip Area", city_id: city.id).first_or_create
       self.neighborhood_id = hood.id
+    end
+  end
+
+  def create_and_assign_neighborhood
+    if self.neighborhood
+      hood = self.neighborhood
+      hood = capitalize(hood)
+
     end
   end
 
