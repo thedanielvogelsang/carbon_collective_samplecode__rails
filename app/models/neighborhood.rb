@@ -1,5 +1,5 @@
 class Neighborhood < ApplicationRecord
-  include NeighborhoodHelper
+  include NeighborhoodElectricityHelper
 
   validates_presence_of :name
   validates_uniqueness_of :name, scope: :city_id

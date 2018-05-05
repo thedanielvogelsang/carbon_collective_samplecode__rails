@@ -1,5 +1,5 @@
 class Region < ApplicationRecord
-  include RegionHelper
+  include RegionElectricityHelper
 
   validates_presence_of :name
   validates_uniqueness_of :name, scope: :country_id
