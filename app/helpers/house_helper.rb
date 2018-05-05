@@ -7,17 +7,17 @@ module HouseHelper
 
   ## used for snapshots -- pending api use ##
   # 0.5 ms
-  def average_daily_energy_consumption_per_resident
+  def average_daily_electricity_consumption_per_resident
     self.users.map{|u| u.avg_daily_electricity_consumption}.flatten
               .reduce(0){|s,n| s + n} / self.no_residents
   end
 
   #
-  def average_total_energy_saved_per_resident
+  def average_total_electricity_saved_per_resident
     total_electricity_savings_to_date / self.no_residents
   end
 
-  def total_energy_saved
+  def total_electricity_saved
     total_electricity_savings_to_date
   end
 
@@ -30,7 +30,7 @@ module HouseHelper
   end
 
   def avg_total_electricity_savings_per_resident
-    total_energy_saved / self.no_residents
+    total_electricity_saved / self.no_residents
   end
   #
 

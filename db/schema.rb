@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180504151630) do
+ActiveRecord::Schema.define(version: 20180505165237) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -119,6 +119,18 @@ ActiveRecord::Schema.define(version: 20180504151630) do
     t.datetime "updated_at", null: false
     t.bigint "admin_id"
     t.index ["admin_id"], name: "index_groups_on_admin_id"
+  end
+
+  create_table "heat_bills", force: :cascade do |t|
+    t.date "start_date"
+    t.date "end_date"
+    t.float "price"
+    t.float "energy_saved"
+    t.bigint "house_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.float "total_energy"
+    t.index ["house_id"], name: "index_heat_bills_on_house_id"
   end
 
   create_table "household_snapshots", force: :cascade do |t|
@@ -232,6 +244,18 @@ ActiveRecord::Schema.define(version: 20180504151630) do
     t.decimal "total_electricity_savings"
   end
 
+  create_table "water_bills", force: :cascade do |t|
+    t.date "start_date"
+    t.date "end_date"
+    t.float "total_gallons"
+    t.float "price"
+    t.float "water_saved"
+    t.bigint "house_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["house_id"], name: "index_water_bills_on_house_id"
+  end
+
   create_table "zipcodes", force: :cascade do |t|
     t.string "zipcode"
     t.datetime "created_at", null: false
@@ -247,6 +271,7 @@ ActiveRecord::Schema.define(version: 20180504151630) do
   add_foreign_key "country_snapshots", "countries"
   add_foreign_key "electric_bills", "houses"
   add_foreign_key "groups", "admins"
+  add_foreign_key "heat_bills", "houses"
   add_foreign_key "household_snapshots", "houses"
   add_foreign_key "houses", "addresses"
   add_foreign_key "neighborhood_snapshots", "neighborhoods"
@@ -259,4 +284,5 @@ ActiveRecord::Schema.define(version: 20180504151630) do
   add_foreign_key "user_groups", "users"
   add_foreign_key "user_houses", "houses"
   add_foreign_key "user_houses", "users"
+  add_foreign_key "water_bills", "houses"
 end

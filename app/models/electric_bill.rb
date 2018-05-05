@@ -1,19 +1,19 @@
 class ElectricBill < ApplicationRecord
   belongs_to :house
 
-  validates_presence_of :start_date,
-                        :end_date,
-                        :total_kwhs
+    validates_presence_of :start_date,
+                          :end_date,
+                          :total_kwhs
 
-  after_validation :electricity_saved?,
+    after_validation :electricity_saved?,
                    :update_users_savings
 
   def electricity_saved?
-    self.house.address.city.region.has_average? ? region_comparison : country_comparison
+    self.house.address.city.region.has_electricity_average? ? region_comparison : country_comparison
   end
 
   def region_comparison
-    region_per_cap_daily_average = self.house.address.city.region.avg_daily_energy_consumed_per_capita
+    region_per_cap_daily_average = self.house.address.city.region.avg_daily_electricity_consumed_per_capita
     num_days = self.end_date - self.start_date
     bill_daily_average = self.total_kwhs.fdiv(num_days)
     avg_daily_use_per_resident = bill_daily_average.fdiv(self.house.no_residents)
@@ -23,7 +23,7 @@ class ElectricBill < ApplicationRecord
   end
 
   def country_comparison
-    country_per_cap_daily_average = self.house.address.city.region.country.avg_daily_energy_consumed_per_capita
+    country_per_cap_daily_average = self.house.address.city.region.country.avg_daily_electricity_consumed_per_capita
     num_days = self.end_date - self.start_date
     bill_daily_average = self.total_kwhs.fdiv(num_days)
     avg_daily_use_per_resident = bill_daily_average.fdiv(self.house.no_residents)
@@ -39,7 +39,7 @@ class ElectricBill < ApplicationRecord
     users = house.users
     elect_saved = self.electricity_saved.fdiv(num_res)
     users.each do |u|
-      u.total_days_logged += num_days
+      u.total_electricitybill_days_logged += num_days
       u.total_kwhs_logged += kwhs
       u.total_electricity_savings += elect_saved
       u.save
