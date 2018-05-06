@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  #check back in on this (and views) later
   get 'settings', to: 'settings#show'
 
 # reconfigure and clean up routes
@@ -68,6 +69,7 @@ Rails.application.routes.draw do
       # resources :days, only: [:index, :show]
     end
   end
+  post '/calendar', to: "calendar#create"
   get '/', to: "sessions#index", as: :welcome
   get '/auth/facebook', as: :facebook_login
   get '/auth/facebook/callback', to: "sessions#create", as: :facebook_callback
