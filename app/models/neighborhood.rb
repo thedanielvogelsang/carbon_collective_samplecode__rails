@@ -37,5 +37,8 @@ class Neighborhood < ApplicationRecord
     self.avg_daily_electricity_consumed_per_user = 0
     self.avg_daily_water_consumed_per_user = 0
     self.avg_daily_gas_consumed_per_user = 0
+    self.avg_daily_electricity_consumed_per_capita = 0
+    self.avg_daily_water_consumed_per_capita = 0
+    self.avg_daily_gas_consumed_per_capita = 0
   end
 end

@@ -4,7 +4,11 @@ class Api::V1::HousesController < ApplicationController
   end
 
   def show
-    render json: House.find(params[:id])
+    if House.exists?(params[:id])
+      render json: House.find(params[:id])
+    else
+      render json: {error: "House does not exist"}, status: 404
+    end
   end
 
   private

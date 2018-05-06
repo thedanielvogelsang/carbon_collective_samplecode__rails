@@ -6,7 +6,7 @@ class City < ApplicationRecord
 
   belongs_to :region
   has_many :neighborhoods
-  has_many :addresses, through: :neighborhoods
+  has_many :addresses
   has_many :houses, through: :addresses
   has_many :users, through: :houses
   has_many :city_snapshots
@@ -39,5 +39,8 @@ class City < ApplicationRecord
     self.avg_daily_electricity_consumed_per_user = 0
     self.avg_daily_water_consumed_per_user = 0
     self.avg_daily_gas_consumed_per_user = 0
+    self.avg_daily_electricity_consumed_per_capita = 0
+    self.avg_daily_water_consumed_per_capita = 0
+    self.avg_daily_gas_consumed_per_capita = 0
   end
 end

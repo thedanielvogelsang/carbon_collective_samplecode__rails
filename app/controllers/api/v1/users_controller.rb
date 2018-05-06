@@ -4,7 +4,11 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def show
-    render json: User.find(params[:id])
+    if User.exists?(params[:id])
+      render json: User.find(params[:id])
+    else
+      render json: {error: "User does not exist"}, status: 404
+    end
   end
 
   # def create
