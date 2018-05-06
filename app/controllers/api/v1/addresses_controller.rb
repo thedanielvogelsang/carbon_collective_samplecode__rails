@@ -5,7 +5,11 @@ class Api::V1::AddressesController < ApplicationController
   end
 
   def show
-    render json: Address.find(params[:id])
+    if Address.exists?(params[:id])
+      render json: Address.find(params[:id])
+    else
+      render json: {error: "Address does not exist"}, status: 404
+    end
   end
 
   private

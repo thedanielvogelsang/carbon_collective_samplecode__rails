@@ -8,7 +8,8 @@ class Api::V1::Areas::RegionGasController < ApplicationController
       .distinct, each_serializer: RegionGasSerializer
     else
       render json: Region
-      .order(avg_daily_gas_consumed_per_capita: :asc), each_serializer: RegionGasSerializer
+      .order(avg_daily_gas_consumed_per_capita: :asc),
+      each_serializer: RegionGasSerializer
     end
   end
 
