@@ -23,18 +23,18 @@ Rails.application.routes.draw do
         # get '/days', to: 'users/days#index'
       end
       namespace :areas do
-        get '/countries', to: 'country#index'
-        get '/countries/:id', to: 'country#show'
-        get '/countries/:id/users', to: 'country#users'
-        get '/regions', to: 'region#index'
-        get '/regions/:id', to: 'region#show'
-        get '/regions/:id/users', to: 'region#users'
-        get '/cities', to: 'city#index'
-        get '/cities/:id', to: 'city#show'
-        get '/cities/:id/users', to: 'city#users'
-        get '/neighborhoods', to: 'neighborhood#index'
-        get '/neighborhoods/:id', to: 'neighborhood#show'
-        get '/neighborhoods/:id/users', to: 'neighborhood#users'
+        get '/countries/electricity', to: 'country_electricity#index'
+        get '/countries/:id/electricity', to: 'country_electricity#show'
+        get '/countries/:id/electricity/users', to: 'country_electricity#users'
+        get '/regions/electricity', to: 'region_electricity#index'
+        get '/regions/:id/electricity', to: 'region_electricity#show'
+        get '/regions/:id/electricity/users', to: 'region_electricity#users'
+        get '/cities/electricity', to: 'city_electricity#index'
+        get '/cities/:id/electricity', to: 'city_electricity#show'
+        get '/cities/:id/electricity/users', to: 'city_electricity#users'
+        get '/neighborhoods/electricity', to: 'neighborhood_electricity#index'
+        get '/neighborhoods/:id/electricity', to: 'neighborhood_electricity#show'
+        get '/neighborhoods/:id/electricity/users', to: 'neighborhood_electricity#users'
       end
       # resources :admins, only: [:index, :show]
       # resources :trips

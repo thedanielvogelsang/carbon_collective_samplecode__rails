@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180505165237) do
+ActiveRecord::Schema.define(version: 20180505164638) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,13 +39,21 @@ ActiveRecord::Schema.define(version: 20180505165237) do
 
   create_table "cities", force: :cascade do |t|
     t.string "name"
-    t.decimal "total_energy_saved"
-    t.decimal "avg_daily_energy_consumed_per_capita"
+    t.decimal "total_electricity_saved"
+    t.decimal "total_gas_saved"
+    t.decimal "total_water_saved"
+    t.decimal "avg_daily_electricity_consumed_per_capita"
+    t.decimal "avg_daily_gas_consumed_per_capita"
+    t.decimal "avg_daily_water_consumed_per_capita"
+    t.decimal "avg_total_electricity_saved_per_user"
+    t.decimal "avg_total_gas_saved_per_user"
+    t.decimal "avg_total_water_saved_per_user"
+    t.decimal "avg_daily_electricity_consumed_per_user"
+    t.decimal "avg_daily_gas_consumed_per_user"
+    t.decimal "avg_daily_water_consumed_per_user"
     t.bigint "region_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.decimal "avg_total_energy_saved_per_user"
-    t.decimal "avg_daily_energy_consumed_per_user"
     t.index ["region_id"], name: "index_cities_on_region_id"
   end
 
@@ -61,12 +69,20 @@ ActiveRecord::Schema.define(version: 20180505165237) do
 
   create_table "countries", force: :cascade do |t|
     t.string "name"
-    t.decimal "total_energy_saved"
-    t.decimal "avg_daily_energy_consumed_per_capita"
+    t.decimal "total_electricity_saved"
+    t.decimal "total_gas_saved"
+    t.decimal "total_water_saved"
+    t.decimal "avg_daily_electricity_consumed_per_capita"
+    t.decimal "avg_daily_gas_consumed_per_capita"
+    t.decimal "avg_daily_water_consumed_per_capita"
+    t.decimal "avg_total_electricity_saved_per_user"
+    t.decimal "avg_total_gas_saved_per_user"
+    t.decimal "avg_total_water_saved_per_user"
+    t.decimal "avg_daily_electricity_consumed_per_user"
+    t.decimal "avg_daily_gas_consumed_per_user"
+    t.decimal "avg_daily_water_consumed_per_user"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.decimal "avg_total_energy_saved_per_user"
-    t.decimal "avg_daily_energy_consumed_per_user"
   end
 
   create_table "country_snapshots", force: :cascade do |t|
@@ -124,12 +140,12 @@ ActiveRecord::Schema.define(version: 20180505165237) do
   create_table "heat_bills", force: :cascade do |t|
     t.date "start_date"
     t.date "end_date"
+    t.float "total_therms"
     t.float "price"
-    t.float "energy_saved"
+    t.float "gas_saved"
     t.bigint "house_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.float "total_energy"
     t.index ["house_id"], name: "index_heat_bills_on_house_id"
   end
 
@@ -164,13 +180,21 @@ ActiveRecord::Schema.define(version: 20180505165237) do
 
   create_table "neighborhoods", force: :cascade do |t|
     t.string "name"
-    t.decimal "total_energy_saved"
-    t.decimal "avg_daily_energy_consumed_per_capita"
+    t.decimal "total_electricity_saved"
+    t.decimal "total_gas_saved"
+    t.decimal "total_water_saved"
+    t.decimal "avg_daily_electricity_consumed_per_capita"
+    t.decimal "avg_daily_gas_consumed_per_capita"
+    t.decimal "avg_daily_water_consumed_per_capita"
+    t.decimal "avg_total_electricity_saved_per_user"
+    t.decimal "avg_total_gas_saved_per_user"
+    t.decimal "avg_total_water_saved_per_user"
+    t.decimal "avg_daily_electricity_consumed_per_user"
+    t.decimal "avg_daily_gas_consumed_per_user"
+    t.decimal "avg_daily_water_consumed_per_user"
     t.bigint "city_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.decimal "avg_total_energy_saved_per_user"
-    t.decimal "avg_daily_energy_consumed_per_user"
     t.index ["city_id"], name: "index_neighborhoods_on_city_id"
   end
 
@@ -186,13 +210,21 @@ ActiveRecord::Schema.define(version: 20180505165237) do
 
   create_table "regions", force: :cascade do |t|
     t.string "name"
-    t.decimal "total_energy_saved"
-    t.decimal "avg_daily_energy_consumed_per_capita"
+    t.decimal "total_electricity_saved"
+    t.decimal "total_gas_saved"
+    t.decimal "total_water_saved"
+    t.decimal "avg_daily_electricity_consumed_per_capita"
+    t.decimal "avg_daily_gas_consumed_per_capita"
+    t.decimal "avg_daily_water_consumed_per_capita"
+    t.decimal "avg_total_electricity_saved_per_user"
+    t.decimal "avg_total_gas_saved_per_user"
+    t.decimal "avg_total_water_saved_per_user"
+    t.decimal "avg_daily_electricity_consumed_per_user"
+    t.decimal "avg_daily_gas_consumed_per_user"
+    t.decimal "avg_daily_water_consumed_per_user"
     t.bigint "country_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.decimal "avg_total_energy_saved_per_user"
-    t.decimal "avg_daily_energy_consumed_per_user"
     t.index ["country_id"], name: "index_regions_on_country_id"
   end
 
@@ -240,8 +272,14 @@ ActiveRecord::Schema.define(version: 20180505165237) do
     t.string "url"
     t.string "provider"
     t.decimal "total_kwhs_logged"
-    t.decimal "total_days_logged"
+    t.decimal "total_electricitybill_days_logged"
     t.decimal "total_electricity_savings"
+    t.decimal "total_gallons_logged"
+    t.decimal "total_waterbill_days_logged"
+    t.decimal "total_water_savings"
+    t.decimal "total_therms_logged"
+    t.decimal "total_heatbill_days_logged"
+    t.decimal "total_gas_savings"
   end
 
   create_table "water_bills", force: :cascade do |t|
