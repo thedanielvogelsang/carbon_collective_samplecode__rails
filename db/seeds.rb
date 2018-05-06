@@ -1,3 +1,5 @@
+# At this point, integers represent annual average electricity use
+#        per household for each region; pending addition of water and gas
 COUNTRIES = {
   :countries => [
   ["Afghanistan", 141],
@@ -217,7 +219,7 @@ GLOBE = Global.create
 
 COUNTRIES[:countries].each do |c|
   daily_avg = c[1].fdiv(30)
-  Country.create!(name: c[0], avg_daily_energy_consumed_per_capita: daily_avg, total_energy_saved: 0)
+  Country.create!(name: c[0], avg_daily_electricity_consumed_per_capita: daily_avg)
 end
 puts "You have #{Country.count} countries in the database"
 #
@@ -289,15 +291,15 @@ CA_REGIONS = [
 
 STATES.each do |r|
   state_avg = "%0.6f" % (("%0.6f" % r[1]).to_f / ("%0.6f" % 30).to_f)
-  Region.create(name: r[0], avg_daily_energy_consumed_per_capita: state_avg,
+  Region.create(name: r[0], avg_daily_electricity_consumed_per_capita: state_avg,
                 country_id: Country.find_by(name: "United States of America").id,
-                total_energy_saved: 0
                )
 end
 puts "#{Region.count} States created in Regions table"
+
 #
 CA_REGIONS.each do |r|
-  Region.create(name: r, country_id: Country.find_by(name: "Canada").id, total_energy_saved: 0)
+  Region.create(name: r, country_id: Country.find_by(name: "Canada").id)
 end
 puts "#{Region.count} Provinces created in Regions table"
 

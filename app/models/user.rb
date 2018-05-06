@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   attr_accessor :confirm_password
 
-  include UserCo2Helper
+  include UserElectricityHelper
 
   has_and_belongs_to_many :friendships,
         class_name: "User",
@@ -60,8 +60,14 @@ private
 
   def add_zeros
     self.total_kwhs_logged = 0
-    self.total_days_logged = 0
+    self.total_electricitybill_days_logged = 0
     self.total_electricity_savings = 0
+    self.total_gallons_logged = 0
+    self.total_waterbill_days_logged = 0
+    self.total_water_savings = 0
+    self.total_therms_logged = 0
+    self.total_heatbill_days_logged = 0
+    self.total_gas_savings = 0
   end
 
 end

@@ -1,5 +1,5 @@
 class Neighborhood < ApplicationRecord
-  include NeighborhoodHelper
+  include NeighborhoodElectricityHelper
 
   validates_presence_of :name
   validates_uniqueness_of :name, scope: :city_id
@@ -28,8 +28,14 @@ class Neighborhood < ApplicationRecord
   end
 
   def add_zeros
-    self.total_energy_saved = 0
-    self.avg_total_energy_saved_per_user = 0
-    self.avg_daily_energy_consumed_per_user = 0
+    self.total_electricity_saved = 0
+    self.total_water_saved = 0
+    self.total_gas_saved = 0
+    self.avg_total_electricity_saved_per_user = 0
+    self.avg_total_water_saved_per_user = 0
+    self.avg_total_gas_saved_per_user = 0
+    self.avg_daily_electricity_consumed_per_user = 0
+    self.avg_daily_water_consumed_per_user = 0
+    self.avg_daily_gas_consumed_per_user = 0
   end
 end

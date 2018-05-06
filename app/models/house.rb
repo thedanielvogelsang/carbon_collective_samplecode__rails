@@ -10,6 +10,8 @@ class House < ApplicationRecord
   has_many :user_houses, :dependent => :destroy
   has_many :users, through: :user_houses
   has_many :electric_bills, :dependent => :destroy
+  has_many :heat_bills, :dependent => :destroy
+  has_many :water_bills, :dependent => :destroy
   has_many :household_snapshots
 
   def bills
