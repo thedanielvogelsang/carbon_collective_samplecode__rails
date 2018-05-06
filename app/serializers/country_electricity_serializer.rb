@@ -1,4 +1,4 @@
-class CountrySerializer < ActiveModel::Serializer
+class CountryElectricitySerializer < ActiveModel::Serializer
   attributes :id, :name, :number_of_users_in_country,
                   :total_electricity_saved,
                   :avg_total_electricity_saved_per_user,

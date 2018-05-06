@@ -1,4 +1,4 @@
-class NeighborhoodSerializer < ActiveModel::Serializer
+class NeighborhoodElectricitySerializer < ActiveModel::Serializer
   attributes :id, :name, :number_of_users_in_neighborhood, :city, :region, :country,
                   :total_electricity_saved,
                   :avg_total_electricity_saved_per_user,
