@@ -1,5 +1,8 @@
 # At this point, integers represent annual average electricity use
 #        per household for each region; pending addition of water and gas
+require 'csv'
+DENVER_NEIGHBORHOODS = './statistical_neighborhoods.csv'
+
 COUNTRIES = {
   :countries => [
   ["Afghanistan", 141],
@@ -275,7 +278,7 @@ STATES = [
   ["Wisconsin", 703],
   ["Wyoming", 894]
 ]
-CA_REGIONS = [
+CANADA_REGIONS = [
   "Ontario",
   "Quebec",
   "Nova Scotia",
@@ -298,7 +301,7 @@ end
 puts "#{Region.count} States created in Regions table"
 
 #
-CA_REGIONS.each do |r|
+CANADA_REGIONS.each do |r|
   Region.create(name: r, country_id: Country.find_by(name: "Canada").id)
 end
 puts "#{Region.count} Provinces created in Regions table"
@@ -332,14 +335,20 @@ zip3 = "80211"
 zip_fort = "80521"
 zip_gold = "80401"
 
-neighborhood1 = "Cap Hill"
+neighborhood1 = "Capitol Hill"
 neighborhood2 = "Five Points"
-neighborhood3 = "Highlands"
+neighborhood3 = "Highland"
 
 dn1 = Neighborhood.create(name: neighborhood1, city_id: city1.id)
 dn2 = Neighborhood.create(name: neighborhood2, city_id: city1.id)
 dn3 = Neighborhood.create(name: neighborhood3, city_id: city1.id)
 
+denver_neighborhoods = CSV.open DENVER_NEIGHBORHOODS, headers: true, header_converters: :symbol
+
+denver_neighborhoods.each do |row|
+  byebug
+  Neighborhood.create(name: row[:name], city_id: city1.id)
+end
 # 5 addresses in Denver; Colorado AVG: 723kwhs/month
   # 2 in caphill
     z = Zipcode.create(zipcode: zip1)
