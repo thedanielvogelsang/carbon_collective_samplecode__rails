@@ -1,5 +1,5 @@
 class Country < ApplicationRecord
-  include CountryElectricityHelper
+  include CountryHelper
 
   validates :name, presence: true, uniqueness: true
   has_many :regions

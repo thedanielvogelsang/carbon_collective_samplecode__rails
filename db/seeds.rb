@@ -220,8 +220,9 @@ COUNTRIES = {
 GLOBE = Global.create
 
 COUNTRIES[:countries].each do |c|
-  daily_avg = c[1].fdiv(30)
-  Country.create!(name: c[0], avg_daily_electricity_consumed_per_capita: daily_avg)
+  edaily_avg = c[1].fdiv(30)
+  Country.create!(name: c[0], avg_daily_electricity_consumed_per_capita: edaily_avg,
+                  avg_daily_water_consumed_per_capita: 101.5)
 end
 puts "You have #{Country.count} countries in the database"
 #
@@ -575,11 +576,11 @@ gzip= Zipcode.create(zipcode: zip_gold)
           puts "second bill added to house ##{house.id} in #{house.address.city.name}: #{bill2}\n"
           puts "created #{Address.where(city_id: city3.id).count} address in Golden\n\n\n"
 
-GLOBE.update_data
-country.update_data
-state.update_data
-Neighborhood.all.each{|n| n.update_data}
-City.all.each{|c| c.update_data}
+# GLOBE.update_data
+# country.update_data
+# state.update_data
+# Neighborhood.all.each{|n| n.update_data}
+# City.all.each{|c| c.update_data}
 
 # # #
 # # # COORD = [

@@ -15,7 +15,7 @@ class HeatBill < ApplicationRecord
  def region_comparison
    region_per_cap_daily_average = self.house.address.city.region.avg_daily_gas_consumed_per_capita
    num_days = self.end_date - self.start_date
-   bill_daily_average = self.total_gas.fdiv(num_days)
+   bill_daily_average = self.total_therms.fdiv(num_days)
    avg_daily_use_per_resident = bill_daily_average.fdiv(self.house.no_residents)
    region_per_cap_daily_average > avg_daily_use_per_resident ? res = true : res = false
    res ? self.gas_saved = ((region_per_cap_daily_average - avg_daily_use_per_resident) * num_days) : self.gas_saved = 0
@@ -24,11 +24,16 @@ class HeatBill < ApplicationRecord
 
  def country_comparison
    country_per_cap_daily_average = self.house.address.city.region.country.avg_daily_gas_consumed_per_capita
-   num_days = self.end_date - self.start_date
-   bill_daily_average = self.total_gas.fdiv(num_days)
-   avg_daily_use_per_resident = bill_daily_average.fdiv(self.house.no_residents)
-   country_per_cap_daily_average > avg_daily_use_per_resident ? res = true : res = false
-   res ? self.gas_saved = ((country_per_cap_daily_average - avg_daily_use_per_resident) * num_days) : self.gas_saved = 0
+   if country_per_cap_daily_average
+     num_days = self.end_date - self.start_date
+     bill_daily_average = self.total_therms.fdiv(num_days)
+     avg_daily_use_per_resident = bill_daily_average.fdiv(self.house.no_residents)
+     country_per_cap_daily_average > avg_daily_use_per_resident ? res = true : res = false
+     res ? self.gas_saved = ((country_per_cap_daily_average - avg_daily_use_per_resident) * num_days) : self.gas_saved = 0
+   else
+     res = false
+     self.gas_saved = 0
+   end
    res
  end
 
