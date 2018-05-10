@@ -599,7 +599,7 @@ gzip= Zipcode.create(zipcode: zip_gold)
             bill2 = ElectricBill.create(start_date: sdate, end_date: edate, total_kwhs: kwhs2, price: price2, house_id: house.id)
             wbill2 = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: 15000, price: price, house_id: house.id)
 
-          puts "second set of bills added to house ##{house.id} in #{house.address.city.name}: #{bill2}, #{{wbill2}}\n"
+          puts "second set of bills added to house ##{house.id} in #{house.address.city.name}: #{bill2}, #{wbill2}\n"
           wbill3 = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: 20000, price: price, house_id: house.id)
           puts "second bill added to house ##{house.id} in #{house.address.city.name}: #{wbill3}\n"
 
