@@ -23,6 +23,7 @@ Rails.application.routes.draw do
             # get '/admins', to: 'users/admins#index'
           # get '/days', to: 'users/days#index'
       end
+      get '/users/:id/resources', to: 'users#resources'
       namespace :areas do
         get '/countries', to: 'country#index'
         get '/countries/:id', to: 'country#show'

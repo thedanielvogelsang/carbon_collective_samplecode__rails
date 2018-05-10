@@ -7,7 +7,7 @@ class UserSerializer < ActiveModel::Serializer
 
 
   def neighborhood
-    [object.neighborhood.id, object.neighborhood] if object.neighborhood
+    [object.neighborhood.id, object.neighborhood.name] if object.neighborhood
   end
   def city
     [object.city.id, object.city.name] if object.city
