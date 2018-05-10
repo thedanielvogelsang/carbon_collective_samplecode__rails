@@ -1,7 +1,6 @@
 # At this point, integers represent annual average electricity use
 #        per household for each region; pending addition of water and gas
 require 'csv'
-DENVER_NEIGHBORHOODS = './statistical_neighborhoods.csv'
 
 COUNTRIES = {
   :countries => [
@@ -335,6 +334,8 @@ zip3 = "80211"
 zip_fort = "80521"
 zip_gold = "80401"
 
+DENVER_NEIGHBORHOODS = 'db/statistical_neighborhoods.csv'
+
 neighborhood1 = "Capitol Hill"
 neighborhood2 = "Five Points"
 neighborhood3 = "Highland"
@@ -346,9 +347,9 @@ dn3 = Neighborhood.create(name: neighborhood3, city_id: city1.id)
 denver_neighborhoods = CSV.open DENVER_NEIGHBORHOODS, headers: true, header_converters: :symbol
 
 denver_neighborhoods.each do |row|
-  byebug
-  Neighborhood.create(name: row[:name], city_id: city1.id)
+  Neighborhood.create(name: row[:nbhd_name], city_id: city1.id)
 end
+puts "all neighborhoods of Denver added"
 # 5 addresses in Denver; Colorado AVG: 723kwhs/month
   # 2 in caphill
     z = Zipcode.create(zipcode: zip1)
