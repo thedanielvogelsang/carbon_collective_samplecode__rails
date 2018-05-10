@@ -605,11 +605,11 @@ gzip= Zipcode.create(zipcode: zip_gold)
 
           puts "created #{Address.where(city_id: city3.id).count} address in Golden\n\n\n"
 
-# GLOBE.update_data
-# country.update_data
-# state.update_data
-# Neighborhood.all.each{|n| n.update_data}
-# City.all.each{|c| c.update_data}
+GLOBE.update_data
+country.update_data
+state.update_data
+Neighborhood.all.each{|n| n.update_data}
+City.all.each{|c| c.update_data}
 
 # # #
 # # # COORD = [
