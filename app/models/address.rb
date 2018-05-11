@@ -16,6 +16,6 @@ class Address < ApplicationRecord
   has_one :region, through: :city
   has_one :country, through: :region
 
-  # before_validation :check_associations, on: [:create, :update]
+  before_validation :check_ids, on: [:create, :update]
 
 end

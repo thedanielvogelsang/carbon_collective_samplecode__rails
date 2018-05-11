@@ -5,6 +5,11 @@ module HouseHelper
               .reduce(0){|s,n| s + n}
   end
 
+  def total_water_savings_to_date
+    self.water_bills.map{|wb| wb.water_saved}.flatten
+              .reduce(0){|s,n| s + n}
+  end
+
   ## used for snapshots -- pending api use ##
   # 0.5 ms
   def average_daily_electricity_consumption_per_resident

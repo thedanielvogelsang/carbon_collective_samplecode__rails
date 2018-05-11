@@ -1,4 +1,4 @@
-waterclass WaterBill < ApplicationRecord
+class WaterBill < ApplicationRecord
   belongs_to :house
 
   validates_presence_of :start_date,

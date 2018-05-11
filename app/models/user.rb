@@ -2,6 +2,8 @@ class User < ApplicationRecord
   attr_accessor :confirm_password
 
   include UserElectricityHelper
+  include UserWaterHelper
+  include UserGasHelper
 
   has_and_belongs_to_many :friendships,
         class_name: "User",
