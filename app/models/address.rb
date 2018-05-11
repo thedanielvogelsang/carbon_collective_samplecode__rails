@@ -4,7 +4,7 @@ class Address < ApplicationRecord
 
   validates_presence_of :address_line1
 
-  validates_uniqueness_of :address_line1, scope: :city_id
+  validates_uniqueness_of :address_line1, scope: [:address_line2, :city_id]
 
   has_one :house, :dependent => :destroy
 
