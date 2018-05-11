@@ -1,8 +1,8 @@
 class UserWaterSerializer < ActiveModel::Serializer
   attributes :id, :first, :last, :email,
                   :avatar_url, :house_ids,
-                  :personal_water_savings_to_date,
-                  :address,
+                  :personal_savings_to_date,
+                  :address, :global_collective_savings,
                   :household, :neighborhood, :city, :region, :country,
                   :household_total_savings,
                   :neighborhood_total_savings,
@@ -27,13 +27,13 @@ class UserWaterSerializer < ActiveModel::Serializer
     object.houses.map{|h| h.id} if object.houses.length > 0
   end
 
-  def personal_water_savings_to_date
+  def personal_savings_to_date
     object.total_water_savings.to_f.round(2).to_s + " gallons"
   end
 
-  # def global_collective_water_savings
-  #   Global.first.total_water_saved.to_f.round(2).to_s + " kwhs"
-  # end
+  def global_collective_savings
+    Global.first.total_water_saved.to_f.round(2).to_s + " gallons"
+  end
 
   def current_location
     object.location

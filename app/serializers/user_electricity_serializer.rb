@@ -1,8 +1,8 @@
 class UserElectricitySerializer < ActiveModel::Serializer
   attributes :id, :first, :last, :email,
                   :avatar_url, :house_ids,
-                  :total_electricity_savings_to_date,
-                  :global_collective_electricity_savings, :address,
+                  :personal_savings_to_date,
+                  :global_collective_savings, :address,
                   :household, :neighborhood, :city, :region, :country,
                   :household_total_savings,
                   :neighborhood_total_savings,
@@ -27,11 +27,11 @@ class UserElectricitySerializer < ActiveModel::Serializer
     object.houses.map{|h| h.id} if object.houses.length > 0
   end
 
-  def total_electricity_savings_to_date
+  def personal_savings_to_date
     object.total_electricity_savings.to_f.round(2).to_s + " kwhs"
   end
 
-  def global_collective_electricity_savings
+  def global_collective_savings
     Global.first.total_energy_saved.to_f.round(2).to_s + " kwhs"
   end
 
