@@ -578,14 +578,14 @@ puts "all neighborhoods of Denver added"
                     zipcode_id: bzip.id)
         # this address is a trial to test for address validations of address_line1 + address_line2
         rand_two = Address.create(address_line1: "1981 E 18th St", address_line2: "#204",
-                    city_id: city1.id, neighborhood: rand_add.neigborhood, zipcode_id: bzip.id)
+                    city_id: city1.id, neighborhood: rand_add.neighborhood, zipcode_id: bzip.id)
 
-                house = House.create(total_sq_ft: 400, no_residents: 2, address_id: rand_add.id)
+                house2 = House.create(total_sq_ft: 400, no_residents: 2, address_id: rand_two.id)
                 bind_new_user(house)
-                puts "#{house} added at #{rand_add.address_line1, rand_add.address_line2} in #{rand_add.neighborhood.name} with no bills"
+                puts "#{house2} added at #{rand_add.address_line1}, #{rand_add.address_line2} in #{rand_add.neighborhood.name} with no bills"
 
                 house = House.create(total_sq_ft: 600, no_residents: rand(1..6), address_id: rand_add.id)
-                puts "#{house} added in #{rand_add.city} at same address, different apartment: #{rand_add.address_line1, rand_add.address_line2}"
+                puts "#{house} added in #{rand_add.city} at same address, different apartment: #{rand_add.address_line1}, #{rand_add.address_line2}"
                 user = bind_new_user(house)
                 puts "#{user.first} created with email #{user.email} & password #{user.password}"
 
