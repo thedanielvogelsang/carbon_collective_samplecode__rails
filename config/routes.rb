@@ -40,7 +40,6 @@ Rails.application.routes.draw do
         get '/countries/:id/gas/users', to: 'country_gas#users'
 
         get '/regions', to: 'region#index'
-        get '/regions/:id', to: 'region#show'
         get '/regions/electricity', to: 'region_electricity#index'
         get '/regions/:id/electricity', to: 'region_electricity#show'
         get '/regions/:id/electricity/users', to: 'region_electricity#users'
