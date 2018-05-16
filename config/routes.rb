@@ -26,7 +26,6 @@ Rails.application.routes.draw do
       get '/users/:id/resources', to: 'users#resources'
       namespace :areas do
         get '/countries', to: 'country#index'
-        get '/countries/:id', to: 'country#show'
         get '/countries/electricity', to: 'country_electricity#index'
         get '/countries/:id/electricity', to: 'country_electricity#show'
         get '/countries/:id/electricity/users', to: 'country_electricity#users'
@@ -40,10 +39,9 @@ Rails.application.routes.draw do
         get '/countries/:id/gas/users', to: 'country_gas#users'
 
         get '/regions', to: 'region#index'
-        get '/regions/:id', to: 'region#show'
         get '/regions/electricity', to: 'region_electricity#index'
         get '/regions/:id/electricity', to: 'region_electricity#show'
-        get '/regions/:id/electricity/users', to: 'region_electricity#users'
+        get '/regions/:id/electricity/:users', to: 'region_electricity#users'
 
         get '/regions/water', to: 'region_water#index'
         get '/regions/:id/water', to: 'region_water#show'
@@ -54,7 +52,6 @@ Rails.application.routes.draw do
         get '/regions/:id/gas/users', to: 'region_gas#users'
 
         get '/cities', to: 'city#index'
-        get '/cities/:id', to: 'city#show'
         get '/cities/electricity', to: 'city_electricity#index'
         get '/cities/:id/electricity', to: 'city_electricity#show'
         get '/cities/:id/electricity/users', to: 'city_electricity#users'
@@ -68,9 +65,8 @@ Rails.application.routes.draw do
         get '/cities/:id/gas/users', to: 'city_gas#users'
 
         get '/neighborhoods', to: 'neighborhood#index'
-        get '/neighborhoods/:id', to: 'neighborhood#show'
         get '/neighborhoods/electricity', to: 'neighborhood_electricity#index'
-        get '/neighbgit lorhoods/:id/electricity', to: 'neighborhood_electricity#show'
+        get '/neighborhoods/:id/electricity', to: 'neighborhood_electricity#show'
         get '/neighborhoods/:id/electricity/users', to: 'neighborhood_electricity#users'
 
         get '/neighborhoods/water', to: 'neighborhood_water#index'

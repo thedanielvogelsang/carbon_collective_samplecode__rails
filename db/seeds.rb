@@ -221,62 +221,72 @@ GLOBE = Global.create
 
 COUNTRIES[:countries].each do |c|
   edaily_avg = c[1].fdiv(30)
+  wdaily_avg = 101.5
   Country.create!(name: c[0], avg_daily_electricity_consumed_per_capita: edaily_avg,
-                  avg_daily_water_consumed_per_capita: 101.5)
+                  avg_daily_electricity_consumed_per_user: edaily_avg,
+                  avg_daily_water_consumed_per_capita: wdaily_avg,
+                  avg_daily_water_consumed_per_user: wdaily_avg)
 end
+
+usa = Country.find(199)
+usa.avg_daily_gas_consumed_per_capita = 8.46
+usa.avg_daily_gas_consumed_per_user = 8.46
+usa.save
+
 puts "You have #{Country.count} countries in the database"
-#
+
+# All states have electric, water, and gas averages
 STATES = [
-  ["Alabama", 1211],
-  ["Alaska", 632],
-  ["Arizona", 1049],
-  ["Arkansas", 1133],
-  ["California", 557],
-  ["Colorado", 723],
-  ["Connecticut", 752],
-  ["Delaware", 944],
-  ["Florida", 1078],
-  ["Georgia", 1088],
-  ["Hawaii", 515],
-  ["Idaho", 1055],
-  ["Illinois", 755],
-  ["Indiana", 1005],
-  ["Iowa", 908],
-  ["Kansas", 926],
-  ["Kentucky", 1154],
-  ["Louisiana", 1273],
-  ["Maine", 551],
-  ["Maryland", 1031],
-  ["Massachusetts", 632],
-  ["Michigan", 665],
-  ["Minnesota", 817],
-  ["Mississippi", 1220],
-  ["Missouri", 1086],
-  ["Montana", 860],
-  ["Nebraska", 1034],
-  ["Nevada", 924],
-  ["New Hampshire", 629],
-  ["New Jersey", 687],
-  ["New Mexico", 655],
-  ["New York", 602],
-  ["North Carolina", 1098],
-  ["North Dakota", 1205],
-  ["Ohio", 892],
-  ["Oklahoma", 1142],
-  ["Oregon", 976],
-  ["Pennsylvania", 857],
-  ["Rhode Island", 602],
-  ["South Carolina", 1124],
-  ["South Dakota", 1055],
-  ["Tennessee", 1245],
-  ["Texas", 1174],
-  ["Utah", 798],
-  ["Vermont", 569],
-  ["Virginia", 1156],
-  ["Washington", 1041],
-  ["West Virginia", 1118],
-  ["Wisconsin", 703],
-  ["Wyoming", 894]
+  ["Alabama", 1211, 82, 10.92],
+  ["Alaska", 632, 94, 23.33],
+  ["Arizona", 1049, 142, 5.86],
+  ["Arkansas", 1133, 100, 9.83],
+  ["California", 557, 126, 5.47],
+  ["Colorado", 723, 123, 7.56],
+  ["Connecticut", 752, 77, 5.83],
+  ["Delaware", 944, 63, 8.17],
+  ["Florida", 1078, 98, 5.83],
+  ["Georgia", 1088, 95, 7.78],
+  ["Hawaii", 515, 169, 5.50],
+  ["Idaho", 1055, 187, 8.81],
+  ["Illinois", 755, 92, 8.53],
+  ["Indiana", 1005, 78, 11.94],
+  ["Iowa", 908, 67, 13.31],
+  ["Kansas", 926, 83, 10.53],
+  ["Kentucky", 1154, 69, 10.83],
+  ["Louisiana", 1273, 119, 25.33],
+  ["Maine", 551, 56, 8.47],
+  ["Maryland", 1031, 111, 6.57],
+  ["Massachusetts", 632, 84, 5.92],
+  ["Michigan", 665, 82, 7.75],
+  ["Minnesota", 817, 70, 8.97],
+  ["Mississippi", 1220, 118, 10.53],
+  ["Missouri", 1086, 90, 8.36],
+  ["Montana", 860, 114, 10.53],
+  ["Nebraska", 1034, 137, 12.50],
+  ["Nevada", 924, 192, 6.25],
+  ["New Hampshire", 629, 77, 6.36],
+  ["New Jersey", 687, 71, 7.11],
+  ["New Mexico", 655, 109, 9.31],
+  ["New York", 602, 99, 5.25],
+  ["North Carolina", 1098, 72, 6.97],
+  ["North Dakota", 1205, 93, 22.31],
+  ["Ohio", 892, 71, 8.94],
+  ["Oklahoma", 1142, 87, 11.58],
+  ["Oregon", 976, 123, 6.61],
+  ["Pennsylvania", 857, 59, 8.42],
+  ["Rhode Island", 602, 81, 5.33],
+  ["South Carolina", 1124, 102, 9.36],
+  ["South Dakota", 1055, 96, 12.42],
+  ["Tennessee", 1245, 82, 9.14],
+  ["Texas", 1174, 139, 13.06],
+  ["Utah", 798, 188, 7.33],
+  ["Vermont", 569, 66, 5.86],
+  ["Virginia", 1156, 77, 7.86],
+  ["Washington", 1041, 105, 7.72],
+  ["West Virginia", 1118, 103, 11.69],
+  ["Wisconsin", 703, 59, 8.56],
+  ["Wyoming", 894, 154, 24.81]
 ]
 CANADA_REGIONS = [
   "Ontario",
@@ -295,6 +305,8 @@ CANADA_REGIONS = [
 STATES.each do |r|
   state_avg = "%0.6f" % (("%0.6f" % r[1]).to_f / ("%0.6f" % 30).to_f)
   Region.create(name: r[0], avg_daily_electricity_consumed_per_capita: state_avg,
+                avg_daily_water_consumed_per_capita: r[2],
+                avg_daily_gas_consumed_per_capita: r[3],
                 country_id: Country.find_by(name: "United States of America").id,
                )
 end
@@ -467,7 +479,7 @@ puts "all neighborhoods of Denver added"
 
                       puts "second set of bills added to house ##{house.id} in #{house.address.city.name}: #{bill2}, #{wbill2}\n"
                       wbill3 = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: 20000, price: price, house_id: house.id)
-                      puts "second bill added to house ##{house.id} in #{house.address.city.name}: #{wbill3}\n"
+                      puts "third bill added to house ##{house.id} in #{house.address.city.name}: #{wbill3}\n"
 
                       puts "created #{Address.where(city_id: city1.id).count} address in CapHill\n\n\n"
 
@@ -617,9 +629,6 @@ puts "all neighborhoods of Denver added"
 
                     puts "third bill added to house ##{house.id} in #{house.address.city.name}: #{bill3}\n"
                     puts "created address in #{house.address.neighborhood.name}\n\n\n"
-
-# 1 address in Golden
-
 
 GLOBE.update_data
 country.update_data

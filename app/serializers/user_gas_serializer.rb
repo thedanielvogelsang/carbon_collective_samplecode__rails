@@ -1,8 +1,8 @@
-class UserElectricitySerializer < ActiveModel::Serializer
-  attributes :id, :total_electricity_savings, :first, :last, :email,
+class UserGasSerializer < ActiveModel::Serializer
+  attributes :id, :total_gas_savings, :first, :last, :email,
                   :avatar_url, :house_ids,
                   :personal_savings_to_date,
-                  :global_collective_savings, :address,
+                  :address, :global_collective_savings,
                   :household, :neighborhood, :city, :region, :country,
                   :household_total_savings,
                   :neighborhood_total_savings,
@@ -28,11 +28,11 @@ class UserElectricitySerializer < ActiveModel::Serializer
   end
 
   def personal_savings_to_date
-    object.total_electricity_savings.to_f.round(2).to_s + " kwhs"
+    object.total_gas_savings.to_f.round(2).to_s + " therms"
   end
 
   def global_collective_savings
-    Global.first.total_energy_saved.to_f.round(2).to_s + " kwhs"
+    nil
   end
 
   def current_location
@@ -56,18 +56,18 @@ class UserElectricitySerializer < ActiveModel::Serializer
   end
 
   def household_total_savings
-    object.household_total_electricity_savings.to_f.round(2).to_s if !object.houses.empty?
+    object.household_total_gas_savings.to_f.round(2).to_s if !object.houses.empty?
   end
   def neighborhood_total_savings
-    object.neighborhood_total_electricity_savings.to_f.round(2).to_s if !object.houses.empty?
+    object.neighborhood_total_gas_savings.to_f.round(2).to_s if !object.houses.empty?
   end
   def city_total_savings
-    object.city_total_electricity_savings.to_f.round(2).to_s if !object.houses.empty?
+    object.city_total_gas_savings.to_f.round(2).to_s if !object.houses.empty?
   end
   def region_total_savings
-    object.region_total_electricity_savings.to_f.round(2).to_s if !object.houses.empty?
+    object.region_total_gas_savings.to_f.round(2).to_s if !object.houses.empty?
   end
   def country_total_savings
-    object.country_total_electricity_savings.to_f.round(2).to_s if !object.houses.empty?
+    object.country_total_gas_savings.to_f.round(2).to_s if !object.houses.empty?
   end
 end

@@ -1,7 +1,9 @@
 class Api::V1::Areas::CityController < ApplicationController
   def index
-    if params[:region]
-      render json: Region.find(params[:region]).cities.order(:name)
+    if params[:region_id]
+      render json: City.where(region_id: params[:region_id]).order(:name)
+    else
+      render json: City.all.order(:name)
     end
   end
 

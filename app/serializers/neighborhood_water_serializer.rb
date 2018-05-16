@@ -11,7 +11,7 @@ class NeighborhoodWaterSerializer < ActiveModel::Serializer
   end
   def avg_total_water_saved_per_user
     object.avg_total_water_saved_per_user.round(2).to_s +
-    ' average total gallons water saved per carbon collective user'
+    ' average total gallons water saved per carbon collective user' if object.avg_total_water_saved_per_user != nil
   end
   def avg_daily_water_consumed_per_user
     (object.avg_daily_water_consumed_per_user).round(2).to_s +

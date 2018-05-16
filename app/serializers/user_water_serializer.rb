@@ -1,5 +1,5 @@
 class UserWaterSerializer < ActiveModel::Serializer
-  attributes :id, :first, :last, :email,
+  attributes :id, :total_water_savings, :first, :last, :email,
                   :avatar_url, :house_ids,
                   :personal_savings_to_date,
                   :address, :global_collective_savings,
