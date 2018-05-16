@@ -13,6 +13,7 @@ class House < ApplicationRecord
   has_many :heat_bills, :dependent => :destroy
   has_many :water_bills, :dependent => :destroy
   has_many :household_snapshots
+  has_one :neighborhood, through: :address
 
   def bills
     self.electric_bills

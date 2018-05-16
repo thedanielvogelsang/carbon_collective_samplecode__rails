@@ -479,7 +479,7 @@ puts "all neighborhoods of Denver added"
 
                       puts "second set of bills added to house ##{house.id} in #{house.address.city.name}: #{bill2}, #{wbill2}\n"
                       wbill3 = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: 20000, price: price, house_id: house.id)
-                      puts "second bill added to house ##{house.id} in #{house.address.city.name}: #{wbill3}\n"
+                      puts "third bill added to house ##{house.id} in #{house.address.city.name}: #{wbill3}\n"
 
                       puts "created #{Address.where(city_id: city1.id).count} address in CapHill\n\n\n"
 
@@ -629,9 +629,6 @@ puts "all neighborhoods of Denver added"
 
                     puts "third bill added to house ##{house.id} in #{house.address.city.name}: #{bill3}\n"
                     puts "created address in #{house.address.neighborhood.name}\n\n\n"
-
-# 1 address in Golden
-
 
 GLOBE.update_data
 country.update_data
