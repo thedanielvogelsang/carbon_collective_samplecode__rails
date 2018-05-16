@@ -4,7 +4,7 @@ class Api::V1::Areas::RegionGasController < ApplicationController
     if params[:country]
       id = Country.find_by(name: params[:country])
       render json: Region.where(country_id: id)
-      .order(avg_daily_gas_consumed_per_user: :desc)
+      .order(avg_daily_gas_consumed_per_user: :asc)
       .distinct, each_serializer: RegionGasSerializer
     else
       render json: Region

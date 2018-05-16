@@ -1,15 +1,17 @@
 module CityHelper
   def update_data
-    update_total_electricity_savings
-    update_daily_avg_electricity_savings
-    update_daily_avg_electricity_consumption
-    update_total_water_savings
-    update_daily_avg_water_savings
-    update_daily_avg_water_consumption
-    update_total_gas_savings
-    update_daily_avg_gas_savings
-    update_daily_avg_gas_consumption
-    self.save
+    if self.users.count != 0
+      update_total_electricity_savings
+      update_daily_avg_electricity_savings
+      update_daily_avg_electricity_consumption
+      update_total_water_savings
+      update_daily_avg_water_savings
+      update_daily_avg_water_consumption
+      update_total_gas_savings
+      update_daily_avg_gas_savings
+      update_daily_avg_gas_consumption
+      self.save
+    end
   end
 
   def update_total_electricity_savings
