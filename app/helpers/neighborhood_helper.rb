@@ -23,7 +23,6 @@ module NeighborhoodHelper
     energy_savings = self.users.map{|u| u.total_electricity_savings }
             .flatten.reject(&:nan?)
             .reduce(0){|sum, num| sum + num } / self.users.count if self.users.count != 0
-            byebug
     self.avg_total_electricity_saved_per_user = energy_savings
   end
 

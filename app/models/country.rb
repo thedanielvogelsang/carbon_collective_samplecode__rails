@@ -13,7 +13,7 @@ class Country < ApplicationRecord
   before_validation :capitalize_name,
                     :check_name
 
-  before_create :add_zeros
+  before_create :add_zeros, :copy_default_per_capita
 
   def capitalize_name
     self.name = self.name.split(' ')
@@ -45,5 +45,14 @@ class Country < ApplicationRecord
     self.avg_daily_electricity_consumed_per_user = 0
     self.avg_daily_water_consumed_per_user = 0
     self.avg_daily_gas_consumed_per_user = 0
+  end
+
+  def copy_default_per_capita
+    default_elect = self.avg_daily_electricity_consumed_per_capita
+    default_wat = self.avg_daily_water_consumed_per_capita
+    default_gas = self.avg_daily_gas_consumed_per_capita
+    self.avg_daily_electricity_consumed_per_user = default_elect if default_elect
+    self.avg_daily_water_consumed_per_user = default_wat if default_wat
+    self.avg_daily_gas_consumed_per_user = default_gas if default_gas
   end
 end
