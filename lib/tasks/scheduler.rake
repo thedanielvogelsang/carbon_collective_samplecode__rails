@@ -12,6 +12,7 @@ end
 task :update_data => :environment do
   puts 'Updating country data'
   Country.all.each{|c| c.update_data }
+  
   puts 'Updating region data'
   Region.all.each{|r| r.update_data }
 
