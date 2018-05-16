@@ -11,8 +11,9 @@ module GlobalHelper
     tes = User.all.map{|u| u.total_electricity_savings}.reduce(0){|s,n| s+n}
     self.total_energy_saved = tes
   end
+
   def update_total_water_savings
-    tes = User.all.map{|u| u.total_water_savings}.reduce(0){|s,n| s+n}
-    self.total_water_saved = tes
+    tws = User.all.map{|u| u.total_water_savings}.reduce(0){|s,n| s+n}
+    self.total_water_saved = tws
   end
 end
