@@ -26,8 +26,7 @@ Rails.application.routes.draw do
       get '/users/:id/resources', to: 'users#resources'
       namespace :areas do
         get '/countries', to: 'country#index'
-        get '/countries/:id', to: 'country#show'
-        get '/countries/electricity', to: 'country_electricity#index'
+          get '/countries/electricity', to: 'country_electricity#index'
         get '/countries/:id/electricity', to: 'country_electricity#show'
         get '/countries/:id/electricity/users', to: 'country_electricity#users'
 
@@ -42,7 +41,7 @@ Rails.application.routes.draw do
         get '/regions', to: 'region#index'
         get '/regions/electricity', to: 'region_electricity#index'
         get '/regions/:id/electricity', to: 'region_electricity#show'
-        get '/regions/:id/electricity/users', to: 'region_electricity#users'
+        get '/regions/:id/electricity/:users', to: 'region_electricity#users'
 
         get '/regions/water', to: 'region_water#index'
         get '/regions/:id/water', to: 'region_water#show'

@@ -3,10 +3,10 @@ class Api::V1::Areas::NeighborhoodGasController < ApplicationController
     if params[:city]
       id = City.find_by(name: params[:city])
       render json: Neighborhood.where(city_id: id)
-      .joins(:users).order(total_gas_saved: :desc)
+      .joins(:users).order(avg_daily_gas_consumed_per_user: :desc)
       .distinct, each_serializer: NeighborhoodGasSerializer
     else
-      render json: Neighborhood.joins(:users).order(total_gas_saved: :desc)
+      render json: Neighborhood.joins(:users).order(avg_daily_gas_consumed_per_user: :desc)
       .distinct, each_serializer: NeighborhoodGasSerializer
     end
   end

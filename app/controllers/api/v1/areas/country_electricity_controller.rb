@@ -1,7 +1,7 @@
 class Api::V1::Areas::CountryElectricityController < ApplicationController
 
   def index
-    render json: Country.order(avg_daily_electricity_consumed_per_capita: :desc)
+    render json: Country.order(avg_daily_electricity_consumed_per_user: :desc)
     .distinct, each_serializer: CountryElectricitySerializer
   end
 
