@@ -66,7 +66,7 @@ Rails.application.routes.draw do
 
         get '/neighborhoods', to: 'neighborhood#index'
         get '/neighborhoods/electricity', to: 'neighborhood_electricity#index'
-        get '/neighbgit lorhoods/:id/electricity', to: 'neighborhood_electricity#show'
+        get '/neighborhoods/:id/electricity', to: 'neighborhood_electricity#show'
         get '/neighborhoods/:id/electricity/users', to: 'neighborhood_electricity#users'
 
         get '/neighborhoods/water', to: 'neighborhood_water#index'

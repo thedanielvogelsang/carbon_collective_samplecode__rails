@@ -4,14 +4,15 @@ class Api::V1::Areas::RegionWaterController < ApplicationController
   def index
     # renders only states WITH users
     if params[:country]
-      id = Country.find_by(name: params[:country])
+      id = Country.find_by(name: params[:country]).id
       render json: Region.where(country_id: id)
-      .order(avg_daily_water_consumed_per_user: :desc)
-      .distinct, each_serializer: RegionWaterSerializer
-    #renderes all regions, regardless of country or users
+        .order(avg_daily_water_consumed_per_user: :asc)
+        .distinct, each_serializer: RegionWaterSerializer
+    #renders all regions, regardless of country or users
     else
       render json: Region
-      .order(avg_daily_water_consumed_per_capita: :asc), each_serializer: RegionWaterSerializer
+        .order(avg_daily_water_consumed_per_capita: :asc),
+        each_serializer: RegionWaterSerializer
     end
   end
 
@@ -28,8 +29,8 @@ class Api::V1::Areas::RegionWaterController < ApplicationController
   def users
     if Region.exists?(params[:id])
       render json: Region.find(params[:id])
-      .users.order(total_water_savings: :desc)
-      .limit(10), each_serializer: UserWaterSerializer
+        .users.order(total_water_savings: :desc)
+          .limit(10), each_serializer: UserWaterSerializer
     else
       render json: {error: "Region not in database. try again!"}, status: 404
     end

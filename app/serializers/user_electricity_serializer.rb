@@ -1,5 +1,5 @@
 class UserElectricitySerializer < ActiveModel::Serializer
-  attributes :id, :first, :last, :email,
+  attributes :id, :total_electricity_savings, :first, :last, :email,
                   :avatar_url, :house_ids,
                   :personal_savings_to_date,
                   :global_collective_savings, :address,
