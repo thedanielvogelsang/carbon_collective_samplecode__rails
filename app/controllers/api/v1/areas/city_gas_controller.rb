@@ -3,9 +3,12 @@ class Api::V1::Areas::CityGasController < ApplicationController
   def index
     if params[:region]
       id = Region.find_by(name: params[:region]).id
-      render json: City.where(region_id: id)
-      .joins(:users).order(avg_daily_gas_consumed_per_capita: :desc)
+      render json: City.where(region_id: id).joins(:users)
+      .order(avg_daily_gas_consumed_per_capita: :desc)
       .distinct, each_serializer: CityGasSerializer
+    else
+      render json: City
+      .order(avg_daily_gas_consumed_per_capita: :asc), each_serializer: CityGasSerializer
     end
   end
 

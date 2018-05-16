@@ -14,21 +14,22 @@ module NeighborhoodHelper
 
   def update_total_electricity_savings
     energy_saved = self.users.map{|u| u.total_electricity_savings}
-              .flatten
+              .flatten.reject(&:nan?)
               .reduce(0){|sum, num| sum + num}
     self.total_electricity_saved = energy_saved
   end
 
   def update_daily_avg_electricity_savings
     energy_savings = self.users.map{|u| u.total_electricity_savings }
-            .flatten
+            .flatten.reject(&:nan?)
             .reduce(0){|sum, num| sum + num } / self.users.count if self.users.count != 0
+            byebug
     self.avg_total_electricity_saved_per_user = energy_savings
   end
 
   def update_daily_avg_electricity_consumption
     energy_consumed = self.users.map{|u| u.avg_daily_electricity_consumption }
-            .flatten
+            .flatten.reject(&:nan?)
             .reduce(0){|sum, num| sum + num} / self.users.count if self.users.count != 0
     self.avg_daily_electricity_consumed_per_user = energy_consumed
   end

@@ -2,8 +2,8 @@ class Api::V1::Areas::NeighborhoodWaterController < ApplicationController
   def index
     if params[:city]
       id = City.find_by(name: params[:city])
-      render json: Neighborhood.where(city_id: id).joins(:users)
-      .order(total_water_saved: :desc)
+      render json: Neighborhood.where(city_id: id)
+      .order(avg_daily_water_consumed_per_user: :desc)
       .distinct, each_serializer: NeighborhoodWaterSerializer
     else
       render json: Neighborhood.joins(:users).order(total_water_saved: :desc)

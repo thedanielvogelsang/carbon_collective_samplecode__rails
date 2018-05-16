@@ -4,12 +4,11 @@ class Api::V1::Areas::CityWaterController < ApplicationController
     if params[:region]
       id = Region.find_by(name: params[:region]).id
       render json: City.where(region_id: id)
-      .joins(:users).order(total_water_saved: :desc)
+      .joins(:users).order(avg_daily_gas_consumed_per_capita: :desc)
       .distinct, each_serializer: CityWaterSerializer
     else
-      render json: City.joins(:users)
-      .order(total_water_saved: :desc)
-      .distinct, each_serializer: CityWaterSerializer
+      render json: City
+      .order(avg_daily_water_consumed_per_capita: :asc), each_serializer: CityWaterSerializer
     end
   end
 

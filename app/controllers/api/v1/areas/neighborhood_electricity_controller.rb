@@ -3,7 +3,7 @@ class Api::V1::Areas::NeighborhoodElectricityController < ApplicationController
     if params[:city]
       id = City.find_by(name: params[:city])
       render json: Neighborhood.where(city_id: id)
-      .joins(:users).order(total_electricity_saved: :desc)
+      .order(avg_daily_electricity_consumed_per_user: :desc)
       .distinct, each_serializer: NeighborhoodElectricitySerializer
     else
       render json: Neighborhood.joins(:users)

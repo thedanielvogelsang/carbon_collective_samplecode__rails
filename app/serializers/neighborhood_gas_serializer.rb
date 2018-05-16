@@ -11,7 +11,7 @@ class NeighborhoodGasSerializer < ActiveModel::Serializer
   end
   def avg_total_gas_saved_per_user
     object.avg_total_gas_saved_per_user.round(2).to_s +
-    ' average total therms gas saved per carbon collective user'
+    ' average total therms gas saved per carbon collective user' if object.avg_total_gas_saved_per_user != nil
   end
   def avg_daily_gas_consumed_per_user
     (object.avg_daily_gas_consumed_per_user).round(2).to_s +

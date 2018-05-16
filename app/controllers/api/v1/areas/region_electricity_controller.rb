@@ -5,7 +5,7 @@ class Api::V1::Areas::RegionElectricityController < ApplicationController
     if params[:country_id]
       id = Country.find(params[:country_id])
       render json: Region.where(country_id: id)
-      .joins(:users).order(:total_electricity_saved)
+      .order(avg_daily_electricity_consumed_per_user: :desc)
       .distinct, each_serializer: RegionElectricitySerializer
     else
       render json: Region

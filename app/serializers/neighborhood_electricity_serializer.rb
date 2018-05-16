@@ -11,7 +11,7 @@ class NeighborhoodElectricitySerializer < ActiveModel::Serializer
   end
   def avg_total_electricity_saved_per_user
     object.avg_total_electricity_saved_per_user.round(2).to_s +
-    ' average total kwhs electricity saved per carbon collective user'
+    ' average total kwhs electricity saved per carbon collective user' if object.avg_total_electricity_saved_per_user
   end
   def avg_daily_electricity_consumed_per_user
     (object.avg_daily_electricity_consumed_per_user).round(2).to_s +
