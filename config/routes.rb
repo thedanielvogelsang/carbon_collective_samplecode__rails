@@ -52,6 +52,7 @@ Rails.application.routes.draw do
         get '/regions/:id/gas/users', to: 'region_gas#users'
 
         get '/cities', to: 'city#index'
+        get '/cities/show/:id', to: 'city#show'
         get '/cities/electricity', to: 'city_electricity#index'
         get '/cities/:id/electricity', to: 'city_electricity#show'
         get '/cities/:id/electricity/users', to: 'city_electricity#users'
