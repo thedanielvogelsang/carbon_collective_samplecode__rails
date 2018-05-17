@@ -100,6 +100,12 @@ module RegionHelper
     end
   end
 
+  def set_default_ranks
+    WaterRanking.create(area_type: "Region", area_id: self.id, rank: nil, arrow: nil)
+    ElectricityRanking.create(area_type: "Region", area_id: self.id, rank: nil, arrow: nil)
+    GasRanking.create(area_type: "Region", area_id: self.id, rank: nil, arrow: nil)
+  end
+
   private
 
   def check_state

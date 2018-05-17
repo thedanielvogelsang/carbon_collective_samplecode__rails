@@ -1,6 +1,6 @@
 class RegionWaterSerializer < ActiveModel::Serializer
   attributes :id, :name, :number_of_users_in_region, :country,
-                  :total_water_saved,
+                  :total_water_saved, :rank, :arrow,
                   :avg_total_water_saved_per_user,
                   :avg_daily_water_consumed_per_user,
                   :avg_daily_water_consumed_per_capita
@@ -26,5 +26,11 @@ class RegionWaterSerializer < ActiveModel::Serializer
   end
   def number_of_users_in_region
     object.users.count
+  end
+  def rank
+    object.water_ranking.rank
+  end
+  def arrow
+    object.water_ranking.arrow
   end
 end

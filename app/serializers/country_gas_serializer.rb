@@ -1,6 +1,6 @@
 class CountryGasSerializer < ActiveModel::Serializer
-  attributes :id, :name, :number_of_users, :metric_name,
-                  :metric_sym, :total_saved,
+  attributes :id, :name, :number_of_users, :metric_name, :metric_sym, 
+                  :total_saved, :rank, :arrow,
                   :avg_total_saved_per_user,
                   :avg_daily_consumed_per_user,
                   :avg_daily_consumed_per_capita
@@ -28,5 +28,11 @@ class CountryGasSerializer < ActiveModel::Serializer
   end
   def metric_sym
     "therms"
+  end
+  def rank
+    object.gas_ranking.rank
+  end
+  def arrow
+    object.gas_ranking.arrow
   end
 end

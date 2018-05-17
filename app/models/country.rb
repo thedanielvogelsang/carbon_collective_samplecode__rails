@@ -15,6 +15,10 @@ class Country < ApplicationRecord
 
   before_create :add_zeros, :copy_default_per_capita
 
+  has_one :electricity_ranking, :as => :area
+  has_one :water_ranking, :as => :area
+  has_one :gas_ranking, :as => :area
+
   def capitalize_name
     self.name = self.name.split(' ')
     .map{|w| w.downcase == 'of' || w.downcase == 'and' ? lowercase(w) : capitalize(w)}

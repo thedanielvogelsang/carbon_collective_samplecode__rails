@@ -95,4 +95,9 @@ module CountryHelper
       self.avg_daily_gas_consumed_per_user = gas_consumed
     end
   end
+  def set_default_ranks
+    WaterRanking.create(area_type: "Country", area_id: self.id, rank: nil, arrow: nil)
+    ElectricityRanking.create(area_type: "Country", area_id: self.id, rank: nil, arrow: nil)
+    GasRanking.create(area_type: "Country", area_id: self.id, rank: nil, arrow: nil)
+  end
 end

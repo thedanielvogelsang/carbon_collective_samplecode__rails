@@ -1,6 +1,6 @@
 class RegionGasSerializer < ActiveModel::Serializer
   attributes :id, :name, :number_of_users_in_region, :country,
-                  :total_gas_saved,
+                  :total_gas_saved, :rank, :arrow,
                   :avg_total_gas_saved_per_user,
                   :avg_daily_gas_consumed_per_user,
                   :avg_daily_gas_consumed_per_capita
@@ -26,5 +26,11 @@ class RegionGasSerializer < ActiveModel::Serializer
   end
   def number_of_users_in_region
     object.users.count
+  end
+  def rank
+    object.gas_ranking.rank
+  end
+  def arrow
+    object.gas_ranking.arrow
   end
 end

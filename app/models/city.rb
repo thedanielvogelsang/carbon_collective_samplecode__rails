@@ -11,6 +11,10 @@ class City < ApplicationRecord
   has_many :users, through: :houses
   has_many :city_snapshots
 
+  has_one :electricity_ranking, :as => :area
+  has_one :water_ranking, :as => :area
+  has_one :gas_ranking, :as => :area
+
   before_validation :capitalize_name
 
   before_create :add_zeros
