@@ -25,9 +25,9 @@ class RegionElectricitySerializer < ActiveModel::Serializer
     object.users.count
   end
   def rank
-    object.electric_ranking.rank
+    object.electricity_ranking.rank
   end
   def arrow
-    object.electric_ranking.arrow
+    object.electricity_ranking.arrow
   end
 end

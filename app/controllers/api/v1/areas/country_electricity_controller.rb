@@ -28,8 +28,9 @@ class Api::V1::Areas::CountryElectricityController < ApplicationController
   def update
     if Country.exists?(params[:id])
       country = Country.find(params[:id])
-      if country.update(safe_params)
-        render json: country
+      c_ranking = country.electricity_ranking
+      if c_ranking.update(safe_params)
+        render json: country, serializer: CountryElectricitySerializer
       else
         render json: {error: "Country unable to update. Try again!"}, status: 404
       end
