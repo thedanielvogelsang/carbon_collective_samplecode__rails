@@ -1,6 +1,6 @@
 class NeighborhoodWaterSerializer < ActiveModel::Serializer
   attributes :id, :name, :number_of_users, :city, :region, :country,
-                  :total_saved,
+                  :total_saved, :rank, :arrow,
                   :avg_total_saved_per_user,
                   :avg_daily_consumed_per_user,
                   :avg_daily_consumed_per_capita
@@ -30,5 +30,11 @@ class NeighborhoodWaterSerializer < ActiveModel::Serializer
   end
   def number_of_users
     object.users.count
+  end
+  def rank
+    object.water_ranking.rank
+  end
+  def arrow
+    object.water_ranking.arrow
   end
 end

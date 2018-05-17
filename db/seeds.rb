@@ -225,7 +225,8 @@ COUNTRIES[:countries].each do |c|
   Country.create!(name: c[0], avg_daily_electricity_consumed_per_capita: edaily_avg,
                   avg_daily_electricity_consumed_per_user: edaily_avg,
                   avg_daily_water_consumed_per_capita: wdaily_avg,
-                  avg_daily_water_consumed_per_user: wdaily_avg)
+                  avg_daily_water_consumed_per_user: wdaily_avg,
+                  )
 end
 
 usa = Country.find(199)
@@ -632,9 +633,17 @@ puts "all neighborhoods of Denver added"
 
 GLOBE.update_data
 country.update_data
+Country.all.each{|c| c.set_default_ranks}
 state.update_data
-Neighborhood.all.each{|n| n.update_data}
-City.all.each{|c| c.update_data}
+Region.all.each{|r| r.set_default_ranks}
+Neighborhood.all.each do |n|
+  n.update_data
+  n.set_default_ranks
+end
+City.all.each{ |c|
+    c.update_data
+    c.set_default_ranks
+  }
 
 # # #
 # # # COORD = [

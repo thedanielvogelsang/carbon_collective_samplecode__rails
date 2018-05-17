@@ -1,5 +1,5 @@
 class CountryWaterSerializer < ActiveModel::Serializer
-  attributes :id, :name, :number_of_users, :metric_name,
+  attributes :id, :name, :number_of_users, :metric_name, :rank, :arrow,
                   :metric_sym, :total_saved,
                   :total_saved,
                   :avg_total_saved_per_user,
@@ -26,5 +26,11 @@ class CountryWaterSerializer < ActiveModel::Serializer
   end
   def metric_sym
     "gal."
+  end
+  def rank
+    object.water_ranking.rank
+  end
+  def arrow
+    object.water_ranking.arrow
   end
 end

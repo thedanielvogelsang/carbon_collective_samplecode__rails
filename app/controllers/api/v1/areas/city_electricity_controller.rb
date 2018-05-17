@@ -30,4 +30,17 @@ class Api::V1::Areas::CityElectricityController < ApplicationController
       render json: {error: "City not in database. try again!"}, status: 404
     end
   end
+
+  def update
+    if City.exists(params[:id])
+      city = City.find(params[:id])
+      if city.update(safe_params)
+        render json: city, status: 204, serializer: CityElectricitySerializer
+      else
+        render json: {error: "City unable to update. Try again!"}, status: 404
+      end
+    else
+      render json: {error: "City not in database. Try again!"}, status: 404
+    end
+  end
 end

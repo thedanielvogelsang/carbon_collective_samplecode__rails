@@ -29,10 +29,12 @@ Rails.application.routes.draw do
         get '/countries/electricity', to: 'country_electricity#index'
         get '/countries/:id/electricity', to: 'country_electricity#show'
         get '/countries/:id/electricity/users', to: 'country_electricity#users'
+        put '/countries/:id/electricity', to: 'country_electricity#update'
 
         get '/countries/water', to: 'country_water#index'
         get '/countries/:id/water', to: 'country_water#show'
         get '/countries/:id/water/users', to: 'country_water#users'
+        put '/countries/:id/water', to: 'country_water#update'
 
         get '/countries/gas', to: 'country_gas#index'
         get '/countries/:id/gas', to: 'country_gas#show'
@@ -42,6 +44,7 @@ Rails.application.routes.draw do
         get '/regions/electricity', to: 'region_electricity#index'
         get '/regions/:id/electricity', to: 'region_electricity#show'
         get '/regions/:id/electricity/:users', to: 'region_electricity#users'
+        put '/regions/:id/electricity', to: 'region_electricity#update'
 
         get '/regions/water', to: 'region_water#index'
         get '/regions/:id/water', to: 'region_water#show'

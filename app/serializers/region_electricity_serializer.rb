@@ -1,6 +1,6 @@
 class RegionElectricitySerializer < ActiveModel::Serializer
   attributes :id, :name, :number_of_users_in_region, :country,
-                  :total_electricity_saved,
+                  :total_electricity_saved, :rank, :arrow,
                   :avg_total_electricity_saved_per_user,
                   :avg_daily_electricity_consumed_per_user,
                   :avg_daily_electricity_consumed_per_capita
@@ -23,5 +23,11 @@ class RegionElectricitySerializer < ActiveModel::Serializer
   end
   def number_of_users_in_region
     object.users.count
+  end
+  def rank
+    object.electricity_ranking.rank
+  end
+  def arrow
+    object.electricity_ranking.arrow
   end
 end

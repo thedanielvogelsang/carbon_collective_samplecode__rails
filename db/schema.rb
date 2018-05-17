@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180505164638) do
+ActiveRecord::Schema.define(version: 20180517201237) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -113,11 +113,27 @@ ActiveRecord::Schema.define(version: 20180505164638) do
     t.index ["house_id"], name: "index_electric_bills_on_house_id"
   end
 
+  create_table "electricity_rankings", force: :cascade do |t|
+    t.string "area_type"
+    t.bigint "area_id"
+    t.integer "rank"
+    t.boolean "arrow"
+    t.index ["area_type", "area_id"], name: "index_electricity_rankings_on_area_type_and_area_id"
+  end
+
   create_table "friendships", id: false, force: :cascade do |t|
     t.integer "user_id"
     t.integer "friend_user_id"
     t.index ["friend_user_id", "user_id"], name: "index_friendships_on_friend_user_id_and_user_id", unique: true
     t.index ["user_id", "friend_user_id"], name: "index_friendships_on_user_id_and_friend_user_id", unique: true
+  end
+
+  create_table "gas_rankings", force: :cascade do |t|
+    t.string "area_type"
+    t.bigint "area_id"
+    t.integer "rank"
+    t.boolean "arrow"
+    t.index ["area_type", "area_id"], name: "index_gas_rankings_on_area_type_and_area_id"
   end
 
   create_table "globals", force: :cascade do |t|
@@ -292,6 +308,16 @@ ActiveRecord::Schema.define(version: 20180505164638) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["house_id"], name: "index_water_bills_on_house_id"
+  end
+
+  create_table "water_rankings", force: :cascade do |t|
+    t.string "area_type"
+    t.bigint "area_id"
+    t.integer "rank"
+    t.boolean "arrow"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["area_type", "area_id"], name: "index_water_rankings_on_area_type_and_area_id"
   end
 
   create_table "zipcodes", force: :cascade do |t|

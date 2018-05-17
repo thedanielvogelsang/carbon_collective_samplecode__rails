@@ -1,5 +1,5 @@
 class CountryElectricitySerializer < ActiveModel::Serializer
-  attributes :id, :name, :number_of_users, :metric_name,
+  attributes :id, :name, :number_of_users, :metric_name, :rank, :arrow,
                   :metric_sym, :total_saved,
                   :avg_total_saved_per_user,
                   :avg_daily_consumed_per_user,
@@ -25,5 +25,11 @@ class CountryElectricitySerializer < ActiveModel::Serializer
   end
   def metric_sym
     "kwhs"
+  end
+  def rank
+    object.electricity_ranking.rank
+  end
+  def arrow
+    object.electricity_ranking.arrow
   end
 end

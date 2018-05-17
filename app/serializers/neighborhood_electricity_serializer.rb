@@ -31,4 +31,10 @@ class NeighborhoodElectricitySerializer < ActiveModel::Serializer
   def number_of_users
     object.users.count
   end
+  def rank
+    object.electricity_ranking.rank
+  end
+  def arrow
+    object.electricity_ranking.arrow
+  end
 end
