@@ -1,6 +1,6 @@
 class CityElectricitySerializer < ActiveModel::Serializer
   attributes :id, :name, :number_of_users, :region, :country,
-                  :total_saved,
+                  :total_saved, :rank, :arrow,
                   :avg_total_saved_per_user,
                   :avg_daily_consumed_per_user,
                   :avg_daily_consumed_per_capita
