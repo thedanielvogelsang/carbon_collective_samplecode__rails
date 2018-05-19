@@ -75,10 +75,10 @@ class UserElectricitySerializer < ActiveModel::Serializer
     object.total_electricity_savings.round(2).to_s + " kwhs"
   end
   def rank
-    object.user_water_ranking.rank
+    object.user_electricity_ranking.rank
   end
 
   def arrow
-    object.user_water_ranking.arrow
+    object.user_electricity_ranking.arrow
   end
 end

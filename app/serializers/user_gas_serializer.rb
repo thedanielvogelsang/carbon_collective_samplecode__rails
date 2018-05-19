@@ -75,10 +75,10 @@ class UserGasSerializer < ActiveModel::Serializer
     object.total_gas_savings.round(2).to_s + " therms"
   end
   def rank
-    object.user_water_ranking.rank
+    object.user_gas_ranking.rank
   end
 
   def arrow
-    object.user_water_ranking.arrow
+    object.user_gas_ranking.arrow
   end
 end

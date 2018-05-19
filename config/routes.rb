@@ -5,6 +5,8 @@ Rails.application.routes.draw do
 # reconfigure and clean up routes
 
   resources :electric_bills, only: [:create]
+  resources :water_bills, only: [:create]
+  resources :gas_bills, only: [:create]
   resources :users, only: [:create, :update]
   resources :addresses, only: [:create]
   resources :houses, only: [:create]
