@@ -1,10 +1,8 @@
 class NeighborhoodElectricitySerializer < ActiveModel::Serializer
   attributes :id, :name, :number_of_users, :city, :region, :country,
-<<<<<<< Updated upstream
-=======
-                  :rank, :arrow, :metric_name, :metric_sym,
->>>>>>> Stashed changes
                   :total_saved,
+                  :rank, :arrow, 
+                  :metric_name, :metric_sym,
                   :avg_total_saved_per_user,
                   :avg_daily_consumed_per_user,
                   :avg_daily_consumed_per_capita

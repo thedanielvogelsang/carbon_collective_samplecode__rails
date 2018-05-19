@@ -1,12 +1,8 @@
 class CityGasSerializer < ActiveModel::Serializer
   attributes :id, :name, :number_of_users, :region, :country,
-<<<<<<< Updated upstream
-                  :rank, :arrow
-=======
+                  :total_saved,
                   :rank, :arrow,
                   :metric_name, :metric_sym,
->>>>>>> Stashed changes
-                  :total_saved,
                   :avg_total_saved_per_user,
                   :avg_daily_consumed_per_user,
                   :avg_daily_consumed_per_capita,
