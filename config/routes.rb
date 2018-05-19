@@ -15,6 +15,9 @@ Rails.application.routes.draw do
       resources :houses, only: [:index, :show]
       resources :users, only: [:index, :show] do
           resources :houses
+          put '/electricity', to: 'users/users_electricity#update'
+          put '/water', to: 'users/users_water#update'
+          put '/gas', to: 'users/users_gas#update'
           # get '/trips', to: 'users/trips#index'
             # get '/groups', to: 'users/groups#index'
             # get '/groups/:id', to: 'users/groups#show'
