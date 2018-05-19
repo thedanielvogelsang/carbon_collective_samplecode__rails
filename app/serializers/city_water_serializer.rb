@@ -1,5 +1,5 @@
 class CityWaterSerializer < ActiveModel::Serializer
-  attributes :id, :name, :number_of_users_in_city, :region, :country,
+  attributes :id, :name, :number_of_users, :region, :country,
                   :total_saved,
                   :rank, :arrow,
                   :metric_name, :metric_sym,

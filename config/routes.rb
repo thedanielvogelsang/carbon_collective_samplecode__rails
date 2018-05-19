@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :addresses, only: [:index, :show]
       resources :houses, only: [:index, :show]
+      get 'houses/:id/users', to: 'houses#users'
       resources :users, only: [:index, :show] do
           resources :houses
           put '/electricity', to: 'users/users_electricity#update'

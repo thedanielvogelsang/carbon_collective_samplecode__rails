@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   attr_accessor :confirm_password
-  include UserHelper 
+  include UserHelper
   include UserElectricityHelper
   include UserWaterHelper
   include UserGasHelper
@@ -56,6 +56,16 @@ end
 
 def bills
   self.houses.map{|h| h.bills}.flatten
+end
+
+def electric_bills
+  self.houses.map{|h| h.electric_bills}.flatten
+end
+def water_bills
+  self.houses.map{|h| h.water_bills}.flatten
+end
+def gas_bills
+  self.houses.map{|h| h.heat_bills}.flatten
 end
 
 private

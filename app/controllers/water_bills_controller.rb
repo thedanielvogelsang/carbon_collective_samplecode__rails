@@ -5,7 +5,7 @@ class WaterBillsController < ApplicationController
     if bill.save
       render json: bill, status: 201
     else
-      error = "Something went wrong, try again"
+      error = bill.errors.messages
       render :json => {errors: error}, status: 401
     end
   end

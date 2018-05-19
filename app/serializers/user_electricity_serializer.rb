@@ -1,7 +1,7 @@
 class UserElectricitySerializer < ActiveModel::Serializer
   attributes :id, :total_savings, :first, :last, :email,
                   :avatar_url, :house_ids,
-                  :rank, :arrow,
+                  :rank, :arrow, :last_updated,
                   :personal_savings_to_date,
                   :global_collective_savings, :address,
                   :household, :neighborhood, :city, :region, :country,
@@ -80,5 +80,9 @@ class UserElectricitySerializer < ActiveModel::Serializer
 
   def arrow
     object.user_electricity_ranking.arrow
+  end
+
+  def last_updated
+    object.user_electricity_ranking.updated_at
   end
 end
