@@ -1,5 +1,6 @@
 class NeighborhoodGasSerializer < ActiveModel::Serializer
   attributes :id, :name, :number_of_users, :city, :region, :country,
+                  :metric_name, :metric_sym,
                   :total_saved, :rank, :arrow,
                   :avg_total_saved_per_user,
                   :avg_daily_consumed_per_user,
@@ -36,5 +37,11 @@ class NeighborhoodGasSerializer < ActiveModel::Serializer
   end
   def arrow
     object.gas_ranking.arrow
+  end
+  def metric_name
+    "thermal heat units"
+  end
+  def metric_sym
+    "therms"
   end
 end

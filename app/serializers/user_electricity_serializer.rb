@@ -1,5 +1,5 @@
 class UserElectricitySerializer < ActiveModel::Serializer
-  attributes :id, :total_electricity_savings, :first, :last, :email,
+  attributes :id, :total_savings, :first, :last, :email,
                   :avatar_url, :house_ids,
                   :personal_savings_to_date,
                   :global_collective_savings, :address,
@@ -69,5 +69,8 @@ class UserElectricitySerializer < ActiveModel::Serializer
   end
   def country_total_savings
     object.country_total_electricity_savings.to_f.round(2).to_s if !object.houses.empty?
+  end
+  def total_savings
+    object.total_electricity_savings.round(2).to_s + " kwhs"
   end
 end

@@ -1,5 +1,9 @@
 class NeighborhoodElectricitySerializer < ActiveModel::Serializer
   attributes :id, :name, :number_of_users, :city, :region, :country,
+<<<<<<< Updated upstream
+=======
+                  :rank, :arrow, :metric_name, :metric_sym,
+>>>>>>> Stashed changes
                   :total_saved,
                   :avg_total_saved_per_user,
                   :avg_daily_consumed_per_user,
@@ -30,6 +34,12 @@ class NeighborhoodElectricitySerializer < ActiveModel::Serializer
   end
   def number_of_users
     object.users.count
+  end
+  def metric_name
+    "kilowatt hours"
+  end
+  def metric_sym
+    "kwhs"
   end
   def rank
     object.electricity_ranking.rank

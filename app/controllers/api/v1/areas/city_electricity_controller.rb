@@ -32,15 +32,22 @@ class Api::V1::Areas::CityElectricityController < ApplicationController
   end
 
   def update
-    if City.exists(params[:id])
+    if City.exists?(params[:id])
       city = City.find(params[:id])
-      if city.update(safe_params)
-        render json: city, status: 204, serializer: CityElectricitySerializer
+      c_ranking = city.electricity_ranking
+      if c_ranking.update(safe_params)
+        render json: city, serializer: CityElectricitySerializer
       else
         render json: {error: "City unable to update. Try again!"}, status: 404
       end
     else
       render json: {error: "City not in database. Try again!"}, status: 404
     end
+  end
+  
+  private
+
+  def safe_params
+    params.require("cities").permit(:rank, :arrow)
   end
 end

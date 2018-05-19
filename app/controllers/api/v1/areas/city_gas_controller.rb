@@ -29,4 +29,23 @@ class Api::V1::Areas::CityGasController < ApplicationController
       render json: {error: "City not in database. try again!"}, status: 404
     end
   end
+
+  def update
+    if City.exists?(params[:id])
+      city = City.find(params[:id])
+      c_ranking = city.gas_ranking
+      if c_ranking.update(safe_params)
+        render json: city, serializer: CityGasSerializer
+      else
+        render json: {error: "City unable to update. Try again!"}, status: 404
+      end
+    else
+      render json: {error: "City not in database. Try again!"}, status: 404
+    end
+  end
+  private
+
+  def safe_params
+    params.require("cities").permit(:rank, :arrow)
+  end
 end

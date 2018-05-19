@@ -1,6 +1,11 @@
 class CityElectricitySerializer < ActiveModel::Serializer
   attributes :id, :name, :number_of_users, :region, :country,
+<<<<<<< Updated upstream
                   :total_saved,
+=======
+                  :total_saved, :rank, :arrow,
+                  :metric_name, :metric_sym,
+>>>>>>> Stashed changes
                   :avg_total_saved_per_user,
                   :avg_daily_consumed_per_user,
                   :avg_daily_consumed_per_capita
@@ -27,6 +32,12 @@ class CityElectricitySerializer < ActiveModel::Serializer
   end
   def number_of_users
     object.users.count
+  end
+  def metric_name
+    "kilowatt hours"
+  end
+  def metric_sym
+    "kwhs"
   end
   def rank
     object.electricity_ranking.rank
