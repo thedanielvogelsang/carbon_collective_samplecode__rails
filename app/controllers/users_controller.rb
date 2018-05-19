@@ -22,42 +22,56 @@ class UsersController < ApplicationController
 
   def update
     user = User.find(params[:id])
-    if user.update(safe_params)
+    oldpass = params[:user][:old_password]
+    authenticated = authenticate_old_password(user, oldpass)
+    if oldpass && authenticated
+      if user.update(safe_params)
+        render json: user, status: 200
+      else
+        render json: {:errors => user.errors.messages}, status: 404
+      end
+    elsif oldpass && !authenticated
+      render json: {:errors => "old password inaccurate, try again"}, status: 404
+    elsif !oldpass && user.update(safe_params)
       render json: user, status: 200
     else
-      error = user.errors.message
-      render json: error, status: 401
+      render json: {:errors => 'failure to update, please try again'}, status: 404
     end
   end
 
   private
-    def authenticate(user)
-      if user.authenticate(params[:user][:confirm_password])
-        update_with_password(user)
-      else
-        flash[:error] = "Password confirmation incorrect"
-        redirect_to settings_path
-      end
+
+    def authenticate_old_password(u, pass)
+      u.authenticate(pass)
     end
 
-    def update_with_password(user)
-      if user.update(safe_params)
-        redirect_to user_path(user)
-      else
-        flash[:error] = "New password didnt match confirmation"
-        redirect_to settings_path
-      end
-    end
-
-    def update_user(user)
-      if user.update(safe_params)
-        redirect_to user_path(user.id) if !user.addresses.empty?
-        redirect_to new_address_path({id: user.id}) if user.addresses.empty?
-      else
-        flash[:error] = "Unsuccessful update, please try again"
-        redirect_back(fallback_location: user_path(user))
-      end
-    end
+    # def authenticate(user)
+    #   if user.authenticate(params[:user][:confirm_password])
+    #     update_with_password(user)
+    #   else
+    #     flash[:error] = "Password confirmation incorrect"
+    #     redirect_to settings_path
+    #   end
+    # end
+    #
+    # def update_with_password(user)
+    #   if user.update(safe_params)
+    #     redirect_to user_path(user)
+    #   else
+    #     flash[:error] = "New password didnt match confirmation"
+    #     redirect_to settings_path
+    #   end
+    # end
+    #
+    # def update_user(user)
+    #   if user.update(safe_params)
+    #     redirect_to user_path(user.id) if !user.addresses.empty?
+    #     redirect_to new_address_path({id: user.id}) if user.addresses.empty?
+    #   else
+    #     flash[:error] = "Unsuccessful update, please try again"
+    #     redirect_back(fallback_location: user_path(user))
+    #   end
+    # end
 
     def safe_params
       params.require('user').permit(:first, :last, :email, :password)

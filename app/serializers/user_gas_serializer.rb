@@ -1,6 +1,7 @@
 class UserGasSerializer < ActiveModel::Serializer
   attributes :id, :total_savings, :first, :last, :email,
                   :avatar_url, :house_ids,
+                  :rank, :arrow, :last_updated,
                   :personal_savings_to_date,
                   :address, :global_collective_savings,
                   :household, :neighborhood, :city, :region, :country,
@@ -72,5 +73,16 @@ class UserGasSerializer < ActiveModel::Serializer
   end
   def total_savings
     object.total_gas_savings.round(2).to_s + " therms"
+  end
+  def rank
+    object.user_gas_ranking.rank
+  end
+
+  def arrow
+    object.user_gas_ranking.arrow
+  end
+
+  def last_updated
+    object.user_gas_ranking.updated_at
   end
 end

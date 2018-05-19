@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   attr_accessor :confirm_password
-
+  include UserHelper
   include UserElectricityHelper
   include UserWaterHelper
   include UserGasHelper
@@ -24,6 +24,10 @@ class User < ApplicationRecord
   has_many :user_houses, dependent: :destroy
   has_many :houses, through: :user_houses
   has_many :addresses, through: :houses
+
+  has_one :user_electricity_ranking
+  has_one :user_water_ranking
+  has_one :user_gas_ranking
 
   validates :email, presence: true, uniqueness: true
   validate :check_email_format
@@ -52,6 +56,16 @@ end
 
 def bills
   self.houses.map{|h| h.bills}.flatten
+end
+
+def electric_bills
+  self.houses.map{|h| h.electric_bills}.flatten
+end
+def water_bills
+  self.houses.map{|h| h.water_bills}.flatten
+end
+def gas_bills
+  self.houses.map{|h| h.heat_bills}.flatten
 end
 
 private

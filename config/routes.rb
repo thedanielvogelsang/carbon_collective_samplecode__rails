@@ -5,6 +5,8 @@ Rails.application.routes.draw do
 # reconfigure and clean up routes
 
   resources :electric_bills, only: [:create]
+  resources :water_bills, only: [:create]
+  resources :gas_bills, only: [:create]
   resources :users, only: [:create, :update]
   resources :addresses, only: [:create]
   resources :houses, only: [:create]
@@ -13,8 +15,12 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :addresses, only: [:index, :show]
       resources :houses, only: [:index, :show]
+      get 'houses/:id/users', to: 'houses#users'
       resources :users, only: [:index, :show] do
           resources :houses
+          put '/electricity', to: 'users/users_electricity#update'
+          put '/water', to: 'users/users_water#update'
+          put '/gas', to: 'users/users_gas#update'
           # get '/trips', to: 'users/trips#index'
             # get '/groups', to: 'users/groups#index'
             # get '/groups/:id', to: 'users/groups#show'

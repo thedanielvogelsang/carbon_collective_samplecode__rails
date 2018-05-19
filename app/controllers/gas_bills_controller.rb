@@ -1,7 +1,7 @@
-class ElectricBillsController < ApplicationController
+class HeatBillsController < ApplicationController
 
   def create
-    bill = ElectricBill.new(safe_params)
+    bill = HeatBill.new(safe_params)
     if bill.save
       render json: bill, status: 201
     else
@@ -12,6 +12,6 @@ class ElectricBillsController < ApplicationController
 
   private
     def safe_params
-      params.require(:electric_bills).permit(:start_date, :end_date, :total_kwhs, :price, :house_id)
+      params.require(:gas_bills).permit(:start_date, :end_date, :total_therms, :price, :house_id)
     end
 end

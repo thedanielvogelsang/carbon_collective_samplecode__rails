@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180517201237) do
+ActiveRecord::Schema.define(version: 20180519021108) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -258,6 +258,24 @@ ActiveRecord::Schema.define(version: 20180517201237) do
     t.index ["user_id"], name: "index_trips_on_user_id"
   end
 
+  create_table "user_electricity_rankings", force: :cascade do |t|
+    t.integer "rank"
+    t.boolean "arrow"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_user_electricity_rankings_on_user_id"
+  end
+
+  create_table "user_gas_rankings", force: :cascade do |t|
+    t.integer "rank"
+    t.boolean "arrow"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_user_gas_rankings_on_user_id"
+  end
+
   create_table "user_groups", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "group_id"
@@ -272,6 +290,15 @@ ActiveRecord::Schema.define(version: 20180517201237) do
     t.datetime "updated_at", null: false
     t.index ["house_id"], name: "index_user_houses_on_house_id"
     t.index ["user_id"], name: "index_user_houses_on_user_id"
+  end
+
+  create_table "user_water_rankings", force: :cascade do |t|
+    t.integer "rank"
+    t.boolean "arrow"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_user_water_rankings_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -344,9 +371,12 @@ ActiveRecord::Schema.define(version: 20180517201237) do
   add_foreign_key "regions", "countries"
   add_foreign_key "trips", "days"
   add_foreign_key "trips", "users"
+  add_foreign_key "user_electricity_rankings", "users"
+  add_foreign_key "user_gas_rankings", "users"
   add_foreign_key "user_groups", "groups"
   add_foreign_key "user_groups", "users"
   add_foreign_key "user_houses", "houses"
   add_foreign_key "user_houses", "users"
+  add_foreign_key "user_water_rankings", "users"
   add_foreign_key "water_bills", "houses"
 end

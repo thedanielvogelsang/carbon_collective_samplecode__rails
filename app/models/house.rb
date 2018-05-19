@@ -18,4 +18,5 @@ class House < ApplicationRecord
   def bills
     self.electric_bills
   end
+
 end
