@@ -1,7 +1,8 @@
 class CityWaterSerializer < ActiveModel::Serializer
   attributes :id, :name, :number_of_users_in_city, :region, :country,
-                  :rank, :arrow,
                   :total_saved,
+                  :rank, :arrow,
+                  :metric_name, :metric_sym,
                   :avg_total_saved_per_user,
                   :avg_daily_consumed_per_user,
                   :avg_daily_consumed_per_capita
@@ -34,5 +35,11 @@ class CityWaterSerializer < ActiveModel::Serializer
   end
   def arrow
     object.water_ranking.arrow
+  end
+  def metric_name
+    "gallons of water"
+  end
+  def metric_sym
+    "gal."
   end
 end

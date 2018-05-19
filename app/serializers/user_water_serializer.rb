@@ -1,5 +1,5 @@
 class UserWaterSerializer < ActiveModel::Serializer
-  attributes :id, :total_water_savings, :first, :last, :email,
+  attributes :id, :total_savings, :first, :last, :email,
                   :avatar_url, :house_ids,
                   :personal_savings_to_date,
                   :address, :global_collective_savings,
@@ -69,5 +69,9 @@ class UserWaterSerializer < ActiveModel::Serializer
   end
   def country_total_savings
     object.country_total_water_savings.to_f.round(2).to_s if !object.houses.empty?
+  end
+
+  def total_savings
+    object.total_water_savings.round(2).to_s + " gals"
   end
 end

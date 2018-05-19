@@ -39,6 +39,7 @@ Rails.application.routes.draw do
         get '/countries/gas', to: 'country_gas#index'
         get '/countries/:id/gas', to: 'country_gas#show'
         get '/countries/:id/gas/users', to: 'country_gas#users'
+        put '/countries/:id/gas', to: 'country_gas#update'
 
         get '/regions', to: 'region#index'
         get '/regions/electricity', to: 'region_electricity#index'
@@ -49,37 +50,45 @@ Rails.application.routes.draw do
         get '/regions/water', to: 'region_water#index'
         get '/regions/:id/water', to: 'region_water#show'
         get '/regions/:id/water/users', to: 'region_water#users'
+        put '/regions/:id/water', to: 'region_water#update'
 
         get '/regions/gas', to: 'region_gas#index'
         get '/regions/:id/gas', to: 'region_gas#show'
         get '/regions/:id/gas/users', to: 'region_gas#users'
+        put '/regions/:id/gas', to: 'region_gas#update'
 
         get '/cities', to: 'city#index'
         get '/cities/show/:id', to: 'city#show'
         get '/cities/electricity', to: 'city_electricity#index'
         get '/cities/:id/electricity', to: 'city_electricity#show'
         get '/cities/:id/electricity/users', to: 'city_electricity#users'
+        put '/cities/:id/electricity', to: 'city_electricity#update'
 
         get '/cities/water', to: 'city_water#index'
         get '/cities/:id/water', to: 'city_water#show'
         get '/cities/:id/water/users', to: 'city_water#users'
+        put '/cities/:id/water', to: 'city_water#update'
 
         get '/cities/gas', to: 'city_gas#index'
         get '/cities/:id/gas', to: 'city_gas#show'
         get '/cities/:id/gas/users', to: 'city_gas#users'
+        put '/cities/:id/gas', to: 'city_gas#update'
 
         get '/neighborhoods', to: 'neighborhood#index'
         get '/neighborhoods/electricity', to: 'neighborhood_electricity#index'
         get '/neighborhoods/:id/electricity', to: 'neighborhood_electricity#show'
         get '/neighborhoods/:id/electricity/users', to: 'neighborhood_electricity#users'
+        put '/neighborhoods/:id/electricity', to: 'neighborhood_electricity#update'
 
         get '/neighborhoods/water', to: 'neighborhood_water#index'
         get '/neighborhoods/:id/water', to: 'neighborhood_water#show'
         get '/neighborhoods/:id/water/users', to: 'neighborhood_water#users'
+        put '/neighborhoods/:id/water', to: 'neighborhood_water#update'
 
         get '/neighborhoods/gas', to: 'neighborhood_gas#index'
         get '/neighborhoods/:id/gas', to: 'neighborhood_gas#show'
         get '/neighborhoods/:id/gas/users', to: 'neighborhood_gas#users'
+        put '/neighborhoods/:id/gas', to: 'neighborhood_gas#update'
       end
       # resources :admins, only: [:index, :show]
       # resources :trips

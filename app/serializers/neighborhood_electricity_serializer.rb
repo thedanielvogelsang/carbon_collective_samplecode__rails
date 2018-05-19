@@ -1,7 +1,8 @@
 class NeighborhoodElectricitySerializer < ActiveModel::Serializer
   attributes :id, :name, :number_of_users, :city, :region, :country,
-                  :rank, :arrow,
                   :total_saved,
+                  :rank, :arrow, 
+                  :metric_name, :metric_sym,
                   :avg_total_saved_per_user,
                   :avg_daily_consumed_per_user,
                   :avg_daily_consumed_per_capita
@@ -31,6 +32,12 @@ class NeighborhoodElectricitySerializer < ActiveModel::Serializer
   end
   def number_of_users
     object.users.count
+  end
+  def metric_name
+    "kilowatt hours"
+  end
+  def metric_sym
+    "kwhs"
   end
   def rank
     object.electricity_ranking.rank
