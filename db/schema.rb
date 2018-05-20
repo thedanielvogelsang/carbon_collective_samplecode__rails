@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180519021108) do
+ActiveRecord::Schema.define(version: 20180520190900) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,7 +54,11 @@ ActiveRecord::Schema.define(version: 20180519021108) do
     t.bigint "region_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_cities_on_name", unique: true
     t.index ["region_id"], name: "index_cities_on_region_id"
+    t.index ["total_electricity_saved"], name: "index_cities_on_total_electricity_saved"
+    t.index ["total_gas_saved"], name: "index_cities_on_total_gas_saved"
+    t.index ["total_water_saved"], name: "index_cities_on_total_water_saved"
   end
 
   create_table "city_snapshots", force: :cascade do |t|
@@ -83,6 +87,10 @@ ActiveRecord::Schema.define(version: 20180519021108) do
     t.decimal "avg_daily_water_consumed_per_user"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_countries_on_name", unique: true
+    t.index ["total_electricity_saved"], name: "index_countries_on_total_electricity_saved"
+    t.index ["total_gas_saved"], name: "index_countries_on_total_gas_saved"
+    t.index ["total_water_saved"], name: "index_countries_on_total_water_saved"
   end
 
   create_table "country_snapshots", force: :cascade do |t|
@@ -110,6 +118,7 @@ ActiveRecord::Schema.define(version: 20180519021108) do
     t.float "price"
     t.bigint "house_id"
     t.float "electricity_saved"
+    t.index ["electricity_saved"], name: "index_electric_bills_on_electricity_saved"
     t.index ["house_id"], name: "index_electric_bills_on_house_id"
   end
 
@@ -118,6 +127,7 @@ ActiveRecord::Schema.define(version: 20180519021108) do
     t.bigint "area_id"
     t.integer "rank"
     t.boolean "arrow"
+    t.index ["area_id", "area_type"], name: "index_electricity_rankings_on_area_id_and_area_type"
     t.index ["area_type", "area_id"], name: "index_electricity_rankings_on_area_type_and_area_id"
   end
 
@@ -133,6 +143,7 @@ ActiveRecord::Schema.define(version: 20180519021108) do
     t.bigint "area_id"
     t.integer "rank"
     t.boolean "arrow"
+    t.index ["area_id", "area_type"], name: "index_gas_rankings_on_area_id_and_area_type"
     t.index ["area_type", "area_id"], name: "index_gas_rankings_on_area_type_and_area_id"
   end
 
@@ -162,6 +173,7 @@ ActiveRecord::Schema.define(version: 20180519021108) do
     t.bigint "house_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["gas_saved"], name: "index_heat_bills_on_gas_saved"
     t.index ["house_id"], name: "index_heat_bills_on_house_id"
   end
 
@@ -212,6 +224,10 @@ ActiveRecord::Schema.define(version: 20180519021108) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["city_id"], name: "index_neighborhoods_on_city_id"
+    t.index ["name"], name: "index_neighborhoods_on_name", unique: true
+    t.index ["total_electricity_saved"], name: "index_neighborhoods_on_total_electricity_saved"
+    t.index ["total_gas_saved"], name: "index_neighborhoods_on_total_gas_saved"
+    t.index ["total_water_saved"], name: "index_neighborhoods_on_total_water_saved"
   end
 
   create_table "region_snapshots", force: :cascade do |t|
@@ -242,6 +258,10 @@ ActiveRecord::Schema.define(version: 20180519021108) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["country_id"], name: "index_regions_on_country_id"
+    t.index ["name"], name: "index_regions_on_name", unique: true
+    t.index ["total_electricity_saved"], name: "index_regions_on_total_electricity_saved"
+    t.index ["total_gas_saved"], name: "index_regions_on_total_gas_saved"
+    t.index ["total_water_saved"], name: "index_regions_on_total_water_saved"
   end
 
   create_table "trips", force: :cascade do |t|
@@ -323,6 +343,9 @@ ActiveRecord::Schema.define(version: 20180519021108) do
     t.decimal "total_therms_logged"
     t.decimal "total_heatbill_days_logged"
     t.decimal "total_gas_savings"
+    t.index ["total_electricity_savings"], name: "index_users_on_total_electricity_savings"
+    t.index ["total_gas_savings"], name: "index_users_on_total_gas_savings"
+    t.index ["total_water_savings"], name: "index_users_on_total_water_savings"
   end
 
   create_table "water_bills", force: :cascade do |t|
@@ -335,6 +358,7 @@ ActiveRecord::Schema.define(version: 20180519021108) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["house_id"], name: "index_water_bills_on_house_id"
+    t.index ["water_saved"], name: "index_water_bills_on_water_saved"
   end
 
   create_table "water_rankings", force: :cascade do |t|
@@ -344,6 +368,7 @@ ActiveRecord::Schema.define(version: 20180519021108) do
     t.boolean "arrow"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["area_id", "area_type"], name: "index_water_rankings_on_area_id_and_area_type"
     t.index ["area_type", "area_id"], name: "index_water_rankings_on_area_type_and_area_id"
   end
 
