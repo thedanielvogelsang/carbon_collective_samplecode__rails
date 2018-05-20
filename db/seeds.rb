@@ -327,7 +327,7 @@ def bind_new_user(house)
                   )
   user.houses << house
   user.save
-  puts "#{user} (with id: #{user.id}) created at #{house.address.address}"
+  puts "#{user} (with id: #{user.id}) created at #{house.address}"
   user
 end
 @start_date = DateTime.now - 30

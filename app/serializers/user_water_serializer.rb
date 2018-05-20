@@ -3,7 +3,7 @@ class UserWaterSerializer < ActiveModel::Serializer
                   :avatar_url, :house_ids,
                   :rank, :arrow, :last_updated,
                   :personal_savings_to_date,
-                  :address, :global_collective_savings,
+                  :global_collective_savings,
                   :household, :neighborhood, :city, :region, :country,
                   :household_total_savings,
                   :neighborhood_total_savings,
@@ -22,10 +22,6 @@ class UserWaterSerializer < ActiveModel::Serializer
   end
   def country
     [object.country.id, object.country.name] if object.country
-  end
-
-  def house_ids
-    object.houses.map{|h| h.id} if object.houses.length > 0
   end
 
   def personal_savings_to_date

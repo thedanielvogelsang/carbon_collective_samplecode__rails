@@ -3,7 +3,7 @@ class UserGasSerializer < ActiveModel::Serializer
                   :avatar_url, :house_ids,
                   :rank, :arrow, :last_updated,
                   :personal_savings_to_date,
-                  :address, :global_collective_savings,
+                  :global_collective_savings,
                   :household, :neighborhood, :city, :region, :country,
                   :household_total_savings,
                   :neighborhood_total_savings,

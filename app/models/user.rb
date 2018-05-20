@@ -24,6 +24,9 @@ class User < ApplicationRecord
   has_many :user_houses, dependent: :destroy
   has_many :houses, through: :user_houses
   has_many :addresses, through: :houses
+  has_many :cities, through: :addresses
+  has_many :regions, through: :cities
+  has_many :countries, through: :regions
 
   has_one :user_electricity_ranking
   has_one :user_water_ranking

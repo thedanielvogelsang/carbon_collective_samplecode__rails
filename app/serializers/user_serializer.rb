@@ -2,7 +2,7 @@ class UserSerializer < ActiveModel::Serializer
   attributes :id, :first, :last, :email,
                   :avatar_url, :house_ids,
                   :total_carbon_savings_to_date,
-                  :global_collective_carbon_savings, :address,
+                  :global_collective_carbon_savings,
                   :household, :neighborhood, :city, :region, :country,
 
 

@@ -1,8 +1,7 @@
 class NeighborhoodGasSerializer < ActiveModel::Serializer
-  attributes :id, :name, :number_of_users, :city, :region, :country,
+  attributes :id, :name, :city, :region, :country,
                   :metric_name, :metric_sym,
                   :total_saved, :rank, :arrow,
-                  :avg_total_saved_per_user,
                   :avg_daily_consumed_per_user,
                   :avg_daily_consumed_per_capita
 
@@ -10,9 +9,9 @@ class NeighborhoodGasSerializer < ActiveModel::Serializer
   def total_saved
     object.total_gas_saved.round(2)
   end
-  def avg_total_saved_per_user
-    object.avg_total_gas_saved_per_user.round(2) if object.avg_total_gas_saved_per_user != nil
-  end
+  # def avg_total_saved_per_user
+  #   object.avg_total_gas_saved_per_user.round(2) if object.avg_total_gas_saved_per_user != nil
+  # end
   def avg_daily_consumed_per_user
     (object.avg_daily_gas_consumed_per_user).round(2) if object.avg_daily_gas_consumed_per_user != nil
   end
