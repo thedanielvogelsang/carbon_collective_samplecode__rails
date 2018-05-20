@@ -33,11 +33,6 @@ class SessionsController < ApplicationController
     end
   end
 
-  def destroy
-    session[:user_id] = nil
-    redirect_to welcome_path
-  end
-
   private
     def safe_params
       params.require(:user).permit(:password, :email)
