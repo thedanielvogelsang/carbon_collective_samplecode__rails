@@ -1,5 +1,7 @@
 module UserElectricityHelper
 
+  include UserHelper
+
   def avg_daily_electricity_savings
     self.total_kwhs_logged / self.total_electricitybill_days_logged
   end
@@ -8,29 +10,6 @@ module UserElectricityHelper
     self.total_kwhs_logged.fdiv(self.total_electricitybill_days_logged)
   end
 
-  def household
-    self.houses.first if !self.houses.empty?
-  end
-
-  def address
-    self.houses.empty? ? nil : household.address.address
-  end
-
-  def neighborhood
-    (!self.houses.empty? && self.houses.first.address.neighborhood) ? household.address.neighborhood : nil
-  end
-
-  def city
-    self.houses.empty? ? nil : household.address.city
-  end
-
-  def region
-    self.houses.empty? ? nil : household.address.region
-  end
-
-  def country
-    self.houses.empty? ? nil : household.address.country
-  end
 # check
   def household_total_electricity_savings
     household ? household.total_electricity_savings_to_date : nil

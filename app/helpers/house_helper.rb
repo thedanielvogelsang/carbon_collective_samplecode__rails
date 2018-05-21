@@ -1,4 +1,5 @@
 module HouseHelper
+  include Co2Helper
   # 0.4 ms vs 0.7 w/ users
   def total_electricity_savings_to_date
     self.bills.map{|b| b.electricity_saved}.flatten
@@ -13,6 +14,12 @@ module HouseHelper
   def total_gas_savings_to_date
     self.heat_bills.map{|hb| hb.gas_saved}.flatten
               .reduce(0){|s,n| s + n}
+  end
+
+  def total_carbon_savings_to_date
+    return combine_average_use(total_electricity_savings_to_date,
+                              total_gas_savings_to_date,
+                              )
   end
 
   ## used for snapshots -- pending api use ##
