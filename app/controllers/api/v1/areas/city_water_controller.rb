@@ -1,10 +1,10 @@
 class Api::V1::Areas::CityWaterController < ApplicationController
 
   def index
-    if params[:region]
-      id = Region.find_by(name: params[:region]).id
+    if params[:parent]
+      id = Region.find_by(name: params[:parent]).id
       render json: City.where(region_id: id).joins(:users)
-        .order(avg_daily_gas_consumed_per_user: :asc)
+        .order(avg_daily_water_consumed_per_user: :asc)
         .distinct, each_serializer: CityWaterSerializer
     else
       render json: City

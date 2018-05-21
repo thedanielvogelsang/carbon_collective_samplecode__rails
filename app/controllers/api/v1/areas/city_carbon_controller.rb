@@ -1,20 +1,16 @@
-class Api::V1::Areas::CityGasController < ApplicationController
-
+class Api::V1::Areas::CityCarbonController < ApplicationController
   def index
     if params[:parent]
-      id = Region.find_by(name: params[:parent]).id
-      render json: City.where(region_id: id).joins(:users)
-        .order(avg_daily_gas_consumed_per_user: :asc)
-        .distinct, each_serializer: CityGasSerializer
+      region = Region.find_by(name: params[:parent])
+      render json: City.where(region_id: region.id).joins(:carbon_ranking).merge(CarbonRanking.order(avg_daily_carbon_consumed_per_user: :desc)), each_serializer: CityCarbonSerializer
     else
-      render json: City
-        .order(avg_daily_gas_consumed_per_user: :asc), each_serializer: CityGasSerializer
+      render json: City.all, each_serializer: CityCarbonSerializer
     end
   end
 
   def show
     if City.exists?(params[:id])
-      render json: City.find(params[:id]), serializer: CityGasSerializer
+      render json: City.find(params[:id]), serializer: CityCarbonSerializer
     else
       render json: {error: "City not in database. try again!"}, status: 404
     end
@@ -23,8 +19,8 @@ class Api::V1::Areas::CityGasController < ApplicationController
   def users
     if City.exists?(params[:id])
       render json: City.find(params[:id])
-        .users.order(total_gas_savings: :desc)
-        .limit(10), each_serializer: UserGasSerializer
+        .users.order(total_Carbon_savings: :desc)
+        .limit(10), each_serializer: UserCarbonSerializer
     else
       render json: {error: "City not in database. try again!"}, status: 404
     end
@@ -33,9 +29,9 @@ class Api::V1::Areas::CityGasController < ApplicationController
   def update
     if City.exists?(params[:id])
       city = City.find(params[:id])
-      c_ranking = city.gas_ranking
+      c_ranking = city.carbon_ranking
       if c_ranking.update(safe_params)
-        render json: city, serializer: CityGasSerializer
+        render json: city, serializer: CityCarbonSerializer
       else
         render json: {error: "City unable to update. Try again!"}, status: 404
       end
@@ -43,6 +39,7 @@ class Api::V1::Areas::CityGasController < ApplicationController
       render json: {error: "City not in database. Try again!"}, status: 404
     end
   end
+
   private
 
   def safe_params

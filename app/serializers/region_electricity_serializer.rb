@@ -1,5 +1,5 @@
 class RegionElectricitySerializer < ActiveModel::Serializer
-  attributes :id, :name, :country,
+  attributes :id, :name, :parent,
                   :total_saved, :rank, :arrow,
                   :metric_sym, :metric_name,
                   :avg_daily_consumed_per_user,
@@ -17,7 +17,7 @@ class RegionElectricitySerializer < ActiveModel::Serializer
   def avg_daily_consumed_per_capita
     (object.avg_daily_electricity_consumed_per_capita).round(2) if object.avg_daily_electricity_consumed_per_capita != nil
   end
-  def country
+  def parent
     object.country.name
   end
   def metric_name

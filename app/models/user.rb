@@ -31,6 +31,7 @@ class User < ApplicationRecord
   has_one :user_electricity_ranking
   has_one :user_water_ranking
   has_one :user_gas_ranking
+  has_one :user_carbon_ranking
 
   validates :email, presence: true, uniqueness: true
   validate :check_email_format
@@ -77,6 +78,7 @@ private
     validates_format_of :email, with: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i, message: "Address Invalid Format"
   end
 
+# used upon initial creation only
   def add_zeros
     self.total_kwhs_logged = 0
     self.total_electricitybill_days_logged = 0
@@ -87,6 +89,8 @@ private
     self.total_therms_logged = 0
     self.total_heatbill_days_logged = 0
     self.total_gas_savings = 0
+    self.total_carbon_savings = 0
+    self.total_pounds_logged = 0
   end
 
 end

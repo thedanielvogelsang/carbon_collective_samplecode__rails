@@ -2,8 +2,8 @@ class Api::V1::Areas::RegionElectricityController < ApplicationController
 
   def index
     # if clause used for search_address
-    if params[:country]
-      id = Country.find_by(name: params[:country]).id
+    if params[:parent]
+      id = Country.find_by(name: params[:parent]).id
       render json: Region.where(country_id: id)
       .order(avg_daily_electricity_consumed_per_user: :asc)
       .distinct, each_serializer: RegionElectricitySerializer

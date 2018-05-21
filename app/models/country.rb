@@ -18,6 +18,7 @@ class Country < ApplicationRecord
   has_one :electricity_ranking, :as => :area
   has_one :water_ranking, :as => :area
   has_one :gas_ranking, :as => :area
+  has_one :carbon_ranking, :as => :area
 
   def capitalize_name
     self.name = self.name.split(' ')

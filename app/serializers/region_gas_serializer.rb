@@ -1,5 +1,5 @@
 class RegionGasSerializer < ActiveModel::Serializer
-  attributes :id, :name, :country,
+  attributes :id, :name, :parent,
                   :total_saved, :rank, :arrow,
                   :metric_name, :metric_sym,
                   :avg_daily_consumed_per_user,
@@ -18,7 +18,7 @@ class RegionGasSerializer < ActiveModel::Serializer
     (object.avg_daily_gas_consumed_per_capita).round(2) if object.avg_daily_gas_consumed_per_capita != nil
   end
 
-  def country
+  def parent
     object.country.name
   end
   def number_of_users_in_region

@@ -1,5 +1,5 @@
 class NeighborhoodElectricitySerializer < ActiveModel::Serializer
-  attributes :id, :name, :city, :region, :country,
+  attributes :id, :name, :parent,
                   :total_saved,
                   :rank, :arrow,
                   :metric_name, :metric_sym,
@@ -20,15 +20,15 @@ class NeighborhoodElectricitySerializer < ActiveModel::Serializer
     (object.avg_daily_electricity_consumed_per_capita).round(2) if object.avg_daily_electricity_consumed_per_capita != nil
   end
 
-  def city
+  def parent
     object.city.name
   end
-  def region
-    object.city.region.name
-  end
-  def country
-    object.city.region.country.name
-  end
+  # def region
+  #   object.city.region.name
+  # end
+  # def country
+  #   object.city.region.country.name
+  # end
   # def number_of_users
   #   object.users.count
   # end

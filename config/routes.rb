@@ -47,6 +47,11 @@ Rails.application.routes.draw do
         get '/countries/:id/gas/users', to: 'country_gas#users'
         put '/countries/:id/gas', to: 'country_gas#update'
 
+        get '/countries/carbon', to: 'country_carbon#index'
+        get '/countries/:id/carbon/users', to: 'country_carbon#users'
+        get '/countries/:id/carbon', to: 'country_carbon#show'
+        put '/countries/:id/carbon', to: 'country_carbon#update'
+
         get '/regions', to: 'region#index'
         get '/regions/electricity', to: 'region_electricity#index'
         get '/regions/:id/electricity', to: 'region_electricity#show'
@@ -62,6 +67,11 @@ Rails.application.routes.draw do
         get '/regions/:id/gas', to: 'region_gas#show'
         get '/regions/:id/gas/users', to: 'region_gas#users'
         put '/regions/:id/gas', to: 'region_gas#update'
+
+        get '/regions/carbon', to: 'region_carbon#index'
+        get '/regions/:id/carbon/users', to: 'region_carbon#users'
+        get '/regions/:id/carbon', to: 'region_carbon#show'
+        put '/regions/:id/carbon', to: 'region_carbon#update'
 
         get '/cities', to: 'city#index'
         get '/cities/show/:id', to: 'city#show'
@@ -80,6 +90,11 @@ Rails.application.routes.draw do
         get '/cities/:id/gas/users', to: 'city_gas#users'
         put '/cities/:id/gas', to: 'city_gas#update'
 
+        get '/cities/carbon', to: 'city_carbon#index'
+        get '/cities/:id/carbon/users', to: 'city_carbon#users'
+        get '/cities/:id/carbon', to: 'city_carbon#show'
+        put '/cities/:id/carbon', to: 'city_carbon#update'
+
         get '/neighborhoods', to: 'neighborhood#index'
         get '/neighborhoods/electricity', to: 'neighborhood_electricity#index'
         get '/neighborhoods/:id/electricity', to: 'neighborhood_electricity#show'
@@ -95,6 +110,11 @@ Rails.application.routes.draw do
         get '/neighborhoods/:id/gas', to: 'neighborhood_gas#show'
         get '/neighborhoods/:id/gas/users', to: 'neighborhood_gas#users'
         put '/neighborhoods/:id/gas', to: 'neighborhood_gas#update'
+
+        get '/neighborhoods/carbon', to: 'neighborhood_carbon#index'
+        get '/neighborhoods/:id/carbon/users', to: 'neighborhood_carbon#users'
+        get '/neighborhoods/:id/carbon', to: 'neighborhood_carbon#show'
+        put '/neighborhoods/:id/carbon', to: 'neighborhood_carbon#update'
       end
       # resources :admins, only: [:index, :show]
       # resources :trips
