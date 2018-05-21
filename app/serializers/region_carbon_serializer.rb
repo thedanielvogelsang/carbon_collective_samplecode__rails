@@ -19,10 +19,10 @@ class RegionCarbonSerializer < ActiveModel::Serializer
     end
 
     def metric_name
-      "metric tons CO2"
+      "lbs of CO2"
     end
     def metric_sym
-      "co2"
+      "lbs"
     end
     def rank
       object.carbon_ranking.rank

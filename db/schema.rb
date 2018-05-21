@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180520223138) do
+ActiveRecord::Schema.define(version: 20180521024429) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -363,6 +363,8 @@ ActiveRecord::Schema.define(version: 20180520223138) do
     t.decimal "total_therms_logged"
     t.decimal "total_heatbill_days_logged"
     t.decimal "total_gas_savings"
+    t.decimal "total_carbon_savings"
+    t.decimal "total_pounds_logged"
     t.index ["total_electricity_savings"], name: "index_users_on_total_electricity_savings"
     t.index ["total_gas_savings"], name: "index_users_on_total_gas_savings"
     t.index ["total_water_savings"], name: "index_users_on_total_water_savings"
