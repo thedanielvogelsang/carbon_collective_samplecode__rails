@@ -1,8 +1,7 @@
 class Api::V1::Areas::CountryCarbonController < ApplicationController
 
   def index
-      render json: Country.joins(:users)
-            .joins(:carbon_ranking)
+      render json: Country.joins(:carbon_ranking)
             .merge(CarbonRanking.order(:avg_daily_carbon_consumed_per_user)).uniq,
          each_serializer: CountryCarbonSerializer
   end
@@ -10,6 +9,17 @@ class Api::V1::Areas::CountryCarbonController < ApplicationController
   def show
     if Country.exists?(params[:id])
       render json: Country.find(params[:id]), serializer: CountryCarbonSerializer
+    else
+      render json: {error: "Country not in database. try again!"}, status: 404
+    end
+  end
+
+  # used for userboard for each regional area
+  def users
+    if Country.exists?(params[:id])
+      render json: Country.find(params[:id])
+          .users.order(total_carbon_savings: :desc)
+          .limit(10), each_serializer: UserCarbonSerializer
     else
       render json: {error: "Country not in database. try again!"}, status: 404
     end

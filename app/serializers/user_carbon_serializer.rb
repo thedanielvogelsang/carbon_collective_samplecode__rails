@@ -1,11 +1,13 @@
 class UserCarbonSerializer < ActiveModel::Serializer
-  attributes :id, :first, :avatar_url, :global_collective_savings,
+  attributes :id, :first, :last, :avatar_url, :global_collective_savings,
                   :personal_savings_to_date,
                   :household, :neighborhood, :city, :region, :country,
                   :household_total_savings, :neighborhood_total_savings,
                   :city_total_savings, :region_total_savings,
-                  :country_total_savings
-
+                  :country_total_savings, :total_savings
+  def total_savings
+    object.total_carbon_savings.to_f.round(2).to_s + " lbs"
+  end
   def neighborhood
     [object.neighborhood.id, object.neighborhood.name] if object.neighborhood
   end

@@ -22,6 +22,16 @@ class Api::V1::Areas::NeighborhoodCarbonController < ApplicationController
     end
   end
 
+  def users
+    if Neighborhood.exists?(params[:id])
+      render json: Neighborhood.find(params[:id])
+        .users.order(total_carbon_savings: :desc)
+        .limit(10), each_serializer: UserCarbonSerializer
+    else
+      render json: {error: "neighborhood not in database. try again!"}, status: 404
+    end
+  end
+
   def update
     if Neighborhood.exists?(params[:id])
       neighborhood = Neighborhood.find(params[:id])

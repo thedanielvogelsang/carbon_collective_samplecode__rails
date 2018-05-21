@@ -2,13 +2,12 @@ class Api::V1::Areas::RegionCarbonController < ApplicationController
   def index
     if params[:country]
       country = Country.find_by(name: params[:country])
-      render json: Region.where(country_id: country.id).joins(:users)
+      render json: Region.where(country_id: country.id)
             .joins(:carbon_ranking)
             .merge(CarbonRanking.order(:avg_daily_carbon_consumed_per_user)).uniq,
         each_serializer: RegionCarbonSerializer
     else
-      render json: Region.joins(:users)
-            .joins(:carbon_ranking)
+      render json: Region.joins(:carbon_ranking)
             .merge(CarbonRanking.order(:avg_daily_carbon_consumed_per_user)).uniq,
         each_serializer: RegionCarbonSerializer
     end
@@ -17,6 +16,16 @@ class Api::V1::Areas::RegionCarbonController < ApplicationController
   def show
     if Region.exists?(params[:id])
       render json: Region.find(params[:id]), serializer: RegionCarbonSerializer
+    else
+      render json: {error: "Region not in database. try again!"}, status: 404
+    end
+  end
+
+  def users
+    if Region.exists?(params[:id])
+      render json: Region.find(params[:id])
+        .users.order(total_carbon_savings: :desc)
+          .limit(10), each_serializer: UserCarbonSerializer
     else
       render json: {error: "Region not in database. try again!"}, status: 404
     end

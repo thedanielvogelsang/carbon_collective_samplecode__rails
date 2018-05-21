@@ -23,7 +23,7 @@ module UserHelper
     def country
       self.houses.empty? ? nil : household.address.country
     end
-    
+
   def set_default_ranks
     UserElectricityRanking.create(user_id: self.id, rank: nil, arrow: nil)
     UserWaterRanking.create(user_id: self.id, rank: nil, arrow: nil)
