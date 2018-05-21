@@ -632,21 +632,24 @@ puts "all neighborhoods of Denver added"
                     puts "created address in #{house.address.neighborhood.name}\n\n\n"
 
 GLOBE.update_data
-country.update_data
 Country.all.each{|c| c.set_default_ranks}
-state.update_data
+country.update_data
+
 Region.all.each{|r| r.set_default_ranks}
+
+state.update_data
 
 User.all.each{|u| u.set_default_ranks}
 
-Neighborhood.all.each do |n|
-  n.update_data
-  n.set_default_ranks
-end
-City.all.each{ |c|
-    c.update_data
+City.all.each do |c|
     c.set_default_ranks
-  }
+    c.update_data
+end
+
+Neighborhood.all.each do |n|
+  n.set_default_ranks
+  n.update_data
+end
 
 # # #
 # # # COORD = [

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180520190900) do
+ActiveRecord::Schema.define(version: 20180520223138) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,17 @@ ActiveRecord::Schema.define(version: 20180520190900) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_admins_on_user_id"
+  end
+
+  create_table "carbon_rankings", force: :cascade do |t|
+    t.string "area_type"
+    t.bigint "area_id"
+    t.integer "rank"
+    t.boolean "arrow"
+    t.decimal "total_carbon_saved"
+    t.decimal "avg_daily_carbon_consumed_per_user"
+    t.index ["area_id", "area_type"], name: "index_carbon_rankings_on_area_id_and_area_type"
+    t.index ["area_type", "area_id"], name: "index_carbon_rankings_on_area_type_and_area_id"
   end
 
   create_table "cities", force: :cascade do |t|

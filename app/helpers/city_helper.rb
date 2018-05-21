@@ -1,25 +1,31 @@
 module CityHelper
+  include Co2Helper
+
   def update_data
     if self.users.count != 0
-      update_total_electricity_savings
+      update_total_electricity_and_carbon_savings
       update_daily_avg_electricity_savings
       update_daily_avg_electricity_consumption
       update_total_water_savings
       update_daily_avg_water_savings
       update_daily_avg_water_consumption
-      update_total_gas_savings
+      update_total_gas_and_carbon_savings
       update_daily_avg_gas_savings
       update_daily_avg_gas_consumption
+      update_carbon_consumption
       self.save
     end
   end
 
-  def update_total_electricity_savings
+  def update_total_electricity_and_carbon_savings
     if ElectricBill.joins(:house => :address).where(:addresses => {city_id: self.id}).count != 0
       energy_saved = self.users.map{|u| u.total_electricity_savings}
                 .flatten.reject(&:nan?)
                 .reduce(0){|sum, num| sum + num}
       self.total_electricity_saved = energy_saved
+      carbon_ranking = self.carbon_ranking
+      carbon_ranking.total_carbon_saved += kwhs_to_carbon(energy_saved)
+      carbon_ranking.save
     end
   end
 
@@ -71,12 +77,15 @@ module CityHelper
     end
   end
 
-  def update_total_gas_savings
+  def update_total_gas_and_carbon_savings
     if HeatBill.joins(:house => :address).where(:addresses => {city_id: self.id}).count != 0
       gas_saved = self.users.map{|u| u.total_gas_savings}
                 .flatten.reject(&:nan?)
                 .reduce(0){|sum, num| sum + num}
       self.total_gas_saved = gas_saved
+      carbon_ranking = self.carbon_ranking
+      carbon_ranking.total_carbon_saved += therms_to_carbon(gas_saved)
+      carbon_ranking.save
     end
   end
 
@@ -98,9 +107,16 @@ module CityHelper
     end
   end
 
+  def update_carbon_consumption
+    carbon_ranking = self.carbon_ranking
+    carbon_ranking.avg_daily_carbon_consumed_per_user = combine_average_use(self.avg_daily_electricity_consumed_per_user, self.avg_daily_gas_consumed_per_user)
+    carbon_ranking.save
+  end
+
   def set_default_ranks
     WaterRanking.create(area_type: "City", area_id: self.id, rank: nil, arrow: nil)
     ElectricityRanking.create(area_type: "City", area_id: self.id, rank: nil, arrow: nil)
     GasRanking.create(area_type: "City", area_id: self.id, rank: nil, arrow: nil)
+    CarbonRanking.create(area_type: "City", area_id: self.id, rank: nil, arrow: nil, total_carbon_saved: 0, avg_daily_carbon_consumed_per_user: 0)
   end
 end
