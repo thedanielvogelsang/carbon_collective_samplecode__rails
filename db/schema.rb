@@ -289,6 +289,15 @@ ActiveRecord::Schema.define(version: 20180520223138) do
     t.index ["user_id"], name: "index_trips_on_user_id"
   end
 
+  create_table "user_carbon_rankings", force: :cascade do |t|
+    t.integer "rank"
+    t.boolean "arrow"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_user_carbon_rankings_on_user_id"
+  end
+
   create_table "user_electricity_rankings", force: :cascade do |t|
     t.integer "rank"
     t.boolean "arrow"
@@ -407,6 +416,7 @@ ActiveRecord::Schema.define(version: 20180520223138) do
   add_foreign_key "regions", "countries"
   add_foreign_key "trips", "days"
   add_foreign_key "trips", "users"
+  add_foreign_key "user_carbon_rankings", "users"
   add_foreign_key "user_electricity_rankings", "users"
   add_foreign_key "user_gas_rankings", "users"
   add_foreign_key "user_groups", "groups"

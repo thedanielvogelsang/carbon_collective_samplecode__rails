@@ -31,6 +31,7 @@ class User < ApplicationRecord
   has_one :user_electricity_ranking
   has_one :user_water_ranking
   has_one :user_gas_ranking
+  has_one :user_carbon_ranking
 
   validates :email, presence: true, uniqueness: true
   validate :check_email_format
