@@ -9,7 +9,8 @@ class UserWaterSerializer < ActiveModel::Serializer
                   :neighborhood_total_savings,
                   :city_total_savings,
                   :region_total_savings,
-                  :country_total_savings
+                  :country_total_savings,
+                  :metric_sym
 
   def neighborhood
     [object.neighborhood.id, object.neighborhood.name] if object.neighborhood
@@ -81,5 +82,9 @@ class UserWaterSerializer < ActiveModel::Serializer
   end
   def last_updated
     object.user_water_ranking.updated_at
+  end
+
+  def metric_sym
+    'gallons'
   end
 end

@@ -4,7 +4,8 @@ class UserCarbonSerializer < ActiveModel::Serializer
                   :household, :neighborhood, :city, :region, :country,
                   :household_total_savings, :neighborhood_total_savings,
                   :city_total_savings, :region_total_savings,
-                  :country_total_savings, :total_savings
+                  :country_total_savings, :total_savings,
+                  :metric_sym,
   def total_savings
     object.total_carbon_savings.to_f.round(2).to_s + " lbs"
   end
@@ -34,7 +35,7 @@ class UserCarbonSerializer < ActiveModel::Serializer
   end
 
   def household_total_savings
-    object.household.total_carbon_savings_to_date if !object.houses.empty?
+    object.household.total_carbon_savings_to_date.round(3) if !object.houses.empty?
   end
 
   def neighborhood_total_savings
@@ -53,5 +54,8 @@ class UserCarbonSerializer < ActiveModel::Serializer
 
   def country_total_savings
     object.country.carbon_ranking.total_carbon_saved.round(3)
+  end
+  def metric_sym
+    'lbsCO2'
   end
 end

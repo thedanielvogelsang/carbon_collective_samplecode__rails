@@ -1,7 +1,7 @@
 class Api::V1::Areas::NeighborhoodCarbonController < ApplicationController
   def index
-    if params[:city]
-      city = City.find_by(name: params[:city])
+    if params[:parent]
+      city = City.find_by(name: params[:parent])
       render json: Neighborhood.where(city: city).joins(:users)
             .joins(:carbon_ranking)
             .merge(CarbonRanking.order(:avg_daily_carbon_consumed_per_user)).uniq,

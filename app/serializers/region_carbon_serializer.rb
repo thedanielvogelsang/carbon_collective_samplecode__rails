@@ -1,8 +1,8 @@
 class RegionCarbonSerializer < ActiveModel::Serializer
-  attributes :id, :name, :country, :total_saved, :avg_daily_consumed_per_user,
+  attributes :id, :name, :parent, :total_saved, :avg_daily_consumed_per_user,
                   :metric_sym, :metric_name, :rank, :arrow
 
-    def country
+    def parent
       object.country.name
     end
 

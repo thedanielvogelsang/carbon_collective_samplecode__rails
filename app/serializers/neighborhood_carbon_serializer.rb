@@ -1,18 +1,18 @@
 class NeighborhoodCarbonSerializer < ActiveModel::Serializer
-  attributes :id, :name, :city, :region, :country, :total_saved, :avg_daily_consumed_per_user,
+  attributes :id, :name, :parent, :total_saved, :avg_daily_consumed_per_user,
                   :metric_sym, :metric_name, :rank, :arrow
 
-    def city
+    def parent
       object.city.name
     end
 
-    def region
-      object.city.region.name
-    end
-
-    def country
-      object.city.region.country.name
-    end
+    # def region
+    #   object.city.region.name
+    # end
+    #
+    # def country
+    #   object.city.region.country.name
+    # end
 
     # def number_of_users
     #   object.users.count

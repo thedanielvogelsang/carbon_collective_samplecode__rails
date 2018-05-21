@@ -1,7 +1,7 @@
 class Api::V1::Areas::RegionCarbonController < ApplicationController
   def index
-    if params[:country]
-      country = Country.find_by(name: params[:country])
+    if params[:parent]
+      country = Country.find_by(name: params[:parent])
       render json: Region.where(country_id: country.id)
             .joins(:carbon_ranking)
             .merge(CarbonRanking.order(:avg_daily_carbon_consumed_per_user)).uniq,

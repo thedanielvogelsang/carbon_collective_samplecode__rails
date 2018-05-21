@@ -9,7 +9,8 @@ class UserGasSerializer < ActiveModel::Serializer
                   :neighborhood_total_savings,
                   :city_total_savings,
                   :region_total_savings,
-                  :country_total_savings
+                  :country_total_savings,
+                  :metric_sym
 
   def neighborhood
     [object.neighborhood.id, object.neighborhood.name] if object.neighborhood
@@ -84,5 +85,9 @@ class UserGasSerializer < ActiveModel::Serializer
 
   def last_updated
     object.user_gas_ranking.updated_at
+  end
+
+  def metric_sym
+    'therms'
   end
 end

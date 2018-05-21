@@ -2,8 +2,8 @@ class Api::V1::Areas::CityElectricityController < ApplicationController
 
   # used for rankings, only neighborhoods with users listed
   def index
-    if params[:region]
-      id = Region.find_by(name: params[:region]).id
+    if params[:parent]
+      id = Region.find_by(name: params[:parent]).id
       render json: City.where(region_id: id).joins(:users)
         .order(avg_daily_electricity_consumed_per_user: :asc)
         .distinct, each_serializer: CityElectricitySerializer
@@ -44,7 +44,7 @@ class Api::V1::Areas::CityElectricityController < ApplicationController
       render json: {error: "City not in database. Try again!"}, status: 404
     end
   end
-  
+
   private
 
   def safe_params

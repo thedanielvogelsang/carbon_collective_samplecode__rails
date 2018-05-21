@@ -1,5 +1,5 @@
 class CityWaterSerializer < ActiveModel::Serializer
-  attributes :id, :name, :region, :country,
+  attributes :id, :name, :parent,
                   :total_saved,
                   :rank, :arrow,
                   :metric_name, :metric_sym,
@@ -20,12 +20,12 @@ class CityWaterSerializer < ActiveModel::Serializer
     (object.avg_daily_water_consumed_per_capita).round(2) if object.avg_daily_water_consumed_per_capita != nil
   end
 
-  def region
+  def parent
     object.region.name
   end
-  def country
-    object.region.country.name
-  end
+  # def country
+  #   object.region.country.name
+  # end
   # def number_of_users
   #   object.users.count
   # end
