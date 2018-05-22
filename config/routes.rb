@@ -8,13 +8,13 @@ Rails.application.routes.draw do
   resources :water_bills, only: [:create]
   resources :gas_bills, only: [:create]
   resources :users, only: [:create, :update]
-  resources :addresses, only: [:create]
+  resources :addresses, only: [:create, :show]
   resources :houses, only: [:create]
 
   namespace :api do
     namespace :v1 do
       resources :addresses, only: [:index, :show]
-      resources :houses, only: [:index, :show]
+      resources :houses, only: [:index, :show, :update]
       get 'houses/:id/users', to: 'houses#users'
       resources :users, only: [:index, :show] do
           resources :houses
