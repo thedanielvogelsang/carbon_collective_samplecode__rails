@@ -5,8 +5,9 @@ class UsersController < ApplicationController
     @user = User.new(safe_params)
     respond_to do |format|
       if params[:user][:password] == params[:user][:passwordConfirmation] && @user.save
-        session[:user_id] = @user.id
-        format.json {render json: @user}
+        UserMailer.registration(@user).deliver_now
+        error = "Please confirm your email address to continue"
+        format.json {render :json => {:errors => error}, :status => 401}
       elsif params[:user][:password] != params[:user][:passwordConfirmation]
         error = 'Passwords did not match. Please try again'
         format.json {render :json => {:errors => error}, :status => 401 }
@@ -24,6 +25,9 @@ class UsersController < ApplicationController
     user = User.find(params[:id])
     oldpass = params[:user][:old_password]
     authenticated = authenticate_old_password(user, oldpass)
+
+    # put in clause for updating email to reset email confirm"
+
     if oldpass && authenticated
       if user.update(safe_params)
         render json: user, status: 200
@@ -36,6 +40,19 @@ class UsersController < ApplicationController
       render json: user, status: 200
     else
       render json: {:errors => 'failure to update, please try again'}, status: 404
+    end
+  end
+
+  def confirm_email
+    user = User.find_by_confirm_token(params[:format])
+    if user
+      user.email_activate
+      flash[:success] = "Welcome to Carbon Collective! Your email has been confirmed.
+      Please sign in to the app to continue."
+      redirect_to "http://localhost:3001/login-first-time"
+    else
+      flash[:error] = "Sorry. User does not exist"
+      redirect_to root_url
     end
   end
 

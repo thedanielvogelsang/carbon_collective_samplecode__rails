@@ -36,7 +36,7 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true
   validate :check_email_format
 
-  before_create :add_zeros
+  before_create :add_zeros, :add_confirm_token
 
 def self.create_with_omniauth(auth)
   uid = auth['uid']
@@ -72,6 +72,12 @@ def gas_bills
   self.houses.map{|h| h.heat_bills}.flatten
 end
 
+def email_activate
+  self.email_confirmed = true
+  self.confirm_token = nil
+  self.save!(:validate => false)
+end
+
 private
   def check_email_format
     return if errors.key?(:email)
@@ -91,6 +97,12 @@ private
     self.total_gas_savings = 0
     self.total_carbon_savings = 0
     self.total_pounds_logged = 0
+  end
+
+  def add_confirm_token
+    if self.confirm_token.blank?
+        self.confirm_token = SecureRandom.urlsafe_base64.to_s
+    end
   end
 
 end
