@@ -8,9 +8,14 @@ Rails.application.routes.draw do
   resources :water_bills, only: [:create]
   resources :gas_bills, only: [:create]
   resources :users, only: [:create, :update]
+  resource :users do
+    member do
+      get :confirm_email
+    end
+  end
   resources :addresses, only: [:create]
   resources :houses, only: [:create]
-
+  post '/suggestions', to: 'suggestions#send_suggestion'
   namespace :api do
     namespace :v1 do
       resources :addresses, only: [:index, :show]
