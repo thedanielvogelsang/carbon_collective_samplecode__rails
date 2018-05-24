@@ -1,5 +1,5 @@
 class HouseSerializer < ActiveModel::Serializer
-  attributes :id, :total_sq_ft, :number_residents, :address, :neighborhood,
+  attributes :id, :total_sq_ft, :no_residents, :address, :neighborhood,
                   :users_id, :users_names, :number_of_bills_entered,
                   :total_electricity_consumption_to_date,
                   :total_electricity_savings_to_date,
@@ -24,9 +24,6 @@ class HouseSerializer < ActiveModel::Serializer
       "number of bills" => object.bills.count,
       "bill ids" => object.bills.map{|b| b.id}
     }
-  end
-  def number_residents
-    object.no_residents
   end
 
   def users_id
