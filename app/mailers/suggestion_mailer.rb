@@ -12,5 +12,6 @@ class SuggestionMailer < ApplicationMailer
       @mail = user
       mail(to: 'carboncollective.devops@gmail.com',
             subject: "New Requested Area")
+    end
 
 end
