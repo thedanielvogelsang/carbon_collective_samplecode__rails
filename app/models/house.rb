@@ -7,11 +7,11 @@ class House < ApplicationRecord
 
   validates :address_id, presence: true, uniqueness: true
 
-  has_many :user_houses, :dependent => :destroy
+  has_many :user_houses, dependent: :destroy
   has_many :users, through: :user_houses
-  has_many :electric_bills, :dependent => :destroy
-  has_many :heat_bills, :dependent => :destroy
-  has_many :water_bills, :dependent => :destroy
+  has_many :electric_bills, dependent: :destroy
+  has_many :heat_bills, dependent: :destroy
+  has_many :water_bills, dependent: :destroy
   has_many :household_snapshots
   has_one :neighborhood, through: :address
 
