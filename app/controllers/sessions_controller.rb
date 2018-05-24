@@ -20,8 +20,13 @@ class SessionsController < ApplicationController
       user = User.find_by(email: safe_params[:email])
       respond_to do |format|
         if user && user.authenticate(safe_params[:password])
-          session[:user_id] = user.id
-          format.json {render json: user}
+          if user.email_confirmed
+            session[:user_id] = user.id
+            format.json {render json: user}
+          else
+            error = "Email Not Confirmed! Please confirm your email address to continue..."
+            format.json {render :json => {:errors => error}, :status => 401 }
+          end
         elsif user && !user.authenticate(safe_params[:password])
           error = 'Password/Email did not match. Please try again'
           format.json {render :json => {:errors => error}, :status => 401 }
