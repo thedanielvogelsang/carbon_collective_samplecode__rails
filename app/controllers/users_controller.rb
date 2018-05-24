@@ -51,8 +51,8 @@ class UsersController < ApplicationController
       Please sign in to the app to continue."
       redirect_to "http://localhost:3001/login-first-time"
     else
-      flash[:error] = "Sorry. User does not exist"
-      redirect_to root_url
+      flash[:error] = "Sorry. Page Invalid"
+      render :file => 'public/404.html', :status => :not_found, :layout => false
     end
   end
 

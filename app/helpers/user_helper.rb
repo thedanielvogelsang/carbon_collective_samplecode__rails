@@ -31,4 +31,8 @@ module UserHelper
     UserCarbonRanking.create(user_id: self.id, rank: nil, arrow: nil)
   end
 
+  def confirm_accounts
+    self.email_activate
+  end
+
 end
