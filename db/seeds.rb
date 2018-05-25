@@ -639,7 +639,6 @@ Region.all.each{|r| r.set_default_ranks}
 
 state.update_data
 
-User.all.each{|u| u.set_default_ranks}
 User.all.each{|u| u.email_activate}
 
 City.all.each do |c|

@@ -5,7 +5,6 @@ class UsersController < ApplicationController
     @user = User.new(safe_params)
     respond_to do |format|
       if params[:user][:password] == params[:user][:passwordConfirmation] && @user.save
-        user.set_default_ranks
         UserMailer.registration(@user).deliver_now
         error = "Please confirm your email address to continue"
         format.json {render :json => {:errors => error}, :status => 401}

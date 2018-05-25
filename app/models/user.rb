@@ -36,7 +36,10 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true
   validate :check_email_format
 
-  before_create :add_zeros, :add_confirm_token
+  before_create :add_zeros,
+                :add_confirm_token
+                
+  after_create :set_default_ranks
 
 def self.create_with_omniauth(auth)
   uid = auth['uid']
