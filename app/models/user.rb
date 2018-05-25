@@ -28,17 +28,17 @@ class User < ApplicationRecord
   has_many :regions, through: :cities
   has_many :countries, through: :regions
 
-  has_one :user_electricity_ranking
-  has_one :user_water_ranking
-  has_one :user_gas_ranking
-  has_one :user_carbon_ranking
+  has_one :user_electricity_ranking, dependent: :destroy
+  has_one :user_water_ranking, dependent: :destroy
+  has_one :user_gas_ranking, dependent: :destroy
+  has_one :user_carbon_ranking, dependent: :destroy
 
   validates :email, presence: true, uniqueness: true
   validate :check_email_format
 
   before_create :add_zeros,
                 :add_confirm_token
-                
+
   after_create :set_default_ranks
 
 def self.create_with_omniauth(auth)
