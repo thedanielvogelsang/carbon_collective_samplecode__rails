@@ -45,11 +45,13 @@ class UsersController < ApplicationController
 
   def confirm_email
     user = User.find_by_confirm_token(params[:format])
+    # host = 'https://carbon-collective.github.io'
+    host = 'http://localhost:3001'
     if user
       user.email_activate
       flash[:success] = "Welcome to Carbon Collective! Your email has been confirmed.
       Please sign in to the app to continue."
-      redirect_to "http://localhost:3001/login-first-time"
+      redirect_to "#{host}/login-first-time"
     else
       flash[:error] = "Sorry. Page Invalid"
       render :file => 'public/404.html', :status => :not_found, :layout => false
