@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :water_bills, only: [:create]
   resources :gas_bills, only: [:create]
   resources :users, only: [:create, :update]
+  post '/users/:user_id/old_houses/:house_id', to: 'users#old_houses'
   resource :users do
     member do
       get :confirm_email

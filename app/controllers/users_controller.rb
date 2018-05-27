@@ -58,6 +58,18 @@ class UsersController < ApplicationController
     end
   end
 
+  def old_houses
+    user = User.find(params[:user_id])
+    house = House.find(params[:house_id])
+    if user && house
+      user.houses << house
+      render json: user
+    else
+      error = "User could not be added to existing house"
+      render json: {errors: error}, status: 401
+    end
+  end
+
   private
 
     def authenticate_old_password(u, pass)
