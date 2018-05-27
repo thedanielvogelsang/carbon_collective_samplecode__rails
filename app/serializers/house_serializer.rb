@@ -35,7 +35,10 @@ class HouseSerializer < ActiveModel::Serializer
   end
 
   def address
-    object.address
+    addy = object.address
+    addy.address_line1 + " #{addy.address_line2.to_s}" +
+        ', ' + addy.city.name + ', ' +
+          addy.region.name
   end
 
   def neighborhood
