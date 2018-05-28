@@ -7,9 +7,16 @@ class AddressesController < ApplicationController
     @address.zipcode_id = zipcode.id
     if @address.save
       render json: @address, status: 202
+    elsif !@address.save && @address.errors.messages[:address_line1][0] == 'has already been taken'
+      city_id = @address.city_id
+      address = @address.address_line1
+      old_address = Address.where(address_line1: address, city_id: city_id)[0]
+      @house = old_address.house
+      error = "House already exists"
+      render :json => {:errors => error, :house => @house.id}, status: 401
     else
       error = "Address did not save, please try again"
-      render :json => {errors: error}, status: 401
+      render :json => {:errors => error}, status: 401
     end
   end
 

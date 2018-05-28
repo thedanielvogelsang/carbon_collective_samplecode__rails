@@ -1,6 +1,6 @@
 class HouseSerializer < ActiveModel::Serializer
   attributes :id, :total_sq_ft, :no_residents, :address, :neighborhood,
-                  :users_id, :users_names, :number_of_bills_entered,
+                  :users_names, :no_users, :number_of_bills_entered,
                   :total_electricity_consumption_to_date,
                   :total_electricity_savings_to_date,
                   :avg_total_electricity_consumption_per_resident,
@@ -26,8 +26,8 @@ class HouseSerializer < ActiveModel::Serializer
     }
   end
 
-  def users_id
-    object.users.map{|u| u.id}
+  def no_users
+    object.users.count
   end
 
   def users_names
@@ -35,7 +35,10 @@ class HouseSerializer < ActiveModel::Serializer
   end
 
   def address
-    object.address
+    addy = object.address
+    addy.address_line1 + " #{addy.address_line2.to_s}" +
+        ', ' + addy.city.name + ', ' +
+          addy.region.name
   end
 
   def neighborhood
