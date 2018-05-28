@@ -369,7 +369,7 @@ puts "all neighborhoods of Denver added"
                   zipcode_id: z.id)
 
     #HOUSE NUMBER 1; 2 resident users; savings in 3/4 bills;
-          house = House.create(total_sq_ft: rand(1000..3000), no_residents: 2, address_id: tadd.id)
+          house = House.create(total_sq_ft: rand(1000..3000), no_residents: 0, address_id: tadd.id)
           user1 = bind_new_user(house)
           user2 = bind_new_user(house)
           puts "#{user1.first} created with email #{user1.email} & password #{user1.password}"
@@ -404,7 +404,7 @@ puts "all neighborhoods of Denver added"
                 zipcode_id: z.id)
 
     # HOUSE NUMBER 2; 5 residents, 3 users; Colorado: 723; savings in 5/5 bills
-        house2 = House.create!(total_sq_ft: rand(1000..3000), no_residents: 5, address_id: sadd.id)
+        house2 = House.create!(total_sq_ft: rand(1000..3000), no_residents:2, address_id: sadd.id)
         puts "#{house2} added in #{sadd.region} at #{sadd.address_line1} in #{sadd.neighborhood.name}"
         user =  bind_new_user(house2)
         user2 =  bind_new_user(house2)
@@ -460,7 +460,7 @@ puts "all neighborhoods of Denver added"
                           city: city1,
                           zipcode_id: gzip.id)
 
-                  house = House.create(total_sq_ft: rand(1000..3000), no_residents: 6, address_id: gold_add.id)
+                  house = House.create(total_sq_ft: rand(1000..3000), no_residents: 5, address_id: gold_add.id)
                   puts "#{house} added in #{gold_add.city} at #{gold_add.address_line1} in #{gold_add.neighborhood.name}"
                   user = bind_new_user(house)
                   puts "#{user.first} created with email #{user.email} & password #{user.password}"
@@ -544,7 +544,7 @@ puts "all neighborhoods of Denver added"
       gadd = Address.create(address_line1: "4109 32nd St",
                   neighborhood: dn3, city: city1,
                   zipcode_id: z2.id)
-          house = House.create(total_sq_ft: 3500, no_residents: 4, address_id: gadd.id)
+          house = House.create(total_sq_ft: 3500, no_residents: 2, address_id: gadd.id)
             puts "#{house} added in #{gadd.city} at #{gadd.address_line1} in #{gadd.neighborhood.name}"
 
               user1 = bind_new_user(house)
@@ -570,7 +570,7 @@ puts "all neighborhoods of Denver added"
                               email: 'dvog@gmail.com',
                               password: 'password')
 
-        house = House.create!(total_sq_ft: rand(1000..3000), no_residents: 4, address_id: dadd.id)
+        house = House.create!(total_sq_ft: rand(1000..3000), no_residents: 2, address_id: dadd.id)
           puts "#{house} added in #{dadd.city} at #{dadd.address_line1} in #{dadd.neighborhood.name}"
         dan.houses << house
           puts "#{dan.first} created with email #{dan.email} & password #{dan.password}, added to house(#{house.id})"
@@ -593,11 +593,11 @@ puts "all neighborhoods of Denver added"
         rand_two = Address.create(address_line1: "1981 E 18th St", address_line2: "#204",
                     city_id: city1.id, neighborhood: rand_add.neighborhood, zipcode_id: bzip.id)
 
-                house2 = House.create(total_sq_ft: 400, no_residents: 2, address_id: rand_two.id)
+                house2 = House.create(total_sq_ft: 400, no_residents: 1, address_id: rand_two.id)
                 bind_new_user(house)
                 puts "#{house2} added at #{rand_add.address_line1}, #{rand_add.address_line2} in #{rand_add.neighborhood.name} with no bills"
 
-                house = House.create(total_sq_ft: 600, no_residents: rand(1..6), address_id: rand_add.id)
+                house = House.create(total_sq_ft: 600, no_residents: rand(0..4), address_id: rand_add.id)
                 puts "#{house} added in #{rand_add.city} at same address, different apartment: #{rand_add.address_line1}, #{rand_add.address_line2}"
                 user = bind_new_user(house)
                 puts "#{user.first} created with email #{user.email} & password #{user.password}"
