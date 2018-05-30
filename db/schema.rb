@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180528023236) do
+ActiveRecord::Schema.define(version: 20180530011630) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,30 @@ ActiveRecord::Schema.define(version: 20180528023236) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["city_id"], name: "index_city_snapshots_on_city_id"
+  end
+
+  create_table "counties", force: :cascade do |t|
+    t.string "name"
+    t.decimal "total_electricity_saved"
+    t.decimal "total_gas_saved"
+    t.decimal "total_water_saved"
+    t.decimal "avg_daily_electricity_consumed_per_capita"
+    t.decimal "avg_daily_gas_consumed_per_capita"
+    t.decimal "avg_daily_water_consumed_per_capita"
+    t.decimal "avg_total_electricity_saved_per_user"
+    t.decimal "avg_total_gas_saved_per_user"
+    t.decimal "avg_total_water_saved_per_user"
+    t.decimal "avg_daily_electricity_consumed_per_user"
+    t.decimal "avg_daily_gas_consumed_per_user"
+    t.decimal "avg_daily_water_consumed_per_user"
+    t.bigint "region_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_counties_on_name", unique: true
+    t.index ["region_id"], name: "index_counties_on_region_id"
+    t.index ["total_electricity_saved"], name: "index_counties_on_total_electricity_saved"
+    t.index ["total_gas_saved"], name: "index_counties_on_total_gas_saved"
+    t.index ["total_water_saved"], name: "index_counties_on_total_water_saved"
   end
 
   create_table "countries", force: :cascade do |t|
@@ -204,7 +228,7 @@ ActiveRecord::Schema.define(version: 20180528023236) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "address_id"
-    t.boolean "apartment"
+    t.boolean "apartment", default: false
     t.index ["address_id"], name: "index_houses_on_address_id"
   end
 
@@ -409,6 +433,7 @@ ActiveRecord::Schema.define(version: 20180528023236) do
   add_foreign_key "admins", "users"
   add_foreign_key "cities", "regions"
   add_foreign_key "city_snapshots", "cities"
+  add_foreign_key "counties", "regions"
   add_foreign_key "country_snapshots", "countries"
   add_foreign_key "electric_bills", "houses"
   add_foreign_key "groups", "admins"
