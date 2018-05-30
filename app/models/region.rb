@@ -5,6 +5,7 @@ class Region < ApplicationRecord
   validates_uniqueness_of :name, scope: :country_id
 
   belongs_to :country
+  has_many :counties
   has_many :cities
   has_many :neighborhoods, through: :cities
   has_many :addresses, through: :neighborhoods

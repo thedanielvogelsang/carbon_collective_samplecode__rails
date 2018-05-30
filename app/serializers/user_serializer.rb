@@ -3,7 +3,7 @@ class UserSerializer < ActiveModel::Serializer
                   :avatar_url, :house_ids,
                   :total_carbon_savings_to_date,
                   :global_collective_carbon_savings,
-                  :household, :neighborhood, :city, :region, :country,
+                  :household, :neighborhood, :city, :county, :region, :country,
 
 
   def neighborhood

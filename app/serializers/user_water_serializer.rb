@@ -4,10 +4,11 @@ class UserWaterSerializer < ActiveModel::Serializer
                   :rank, :arrow, :last_updated,
                   :personal_savings_to_date,
                   :global_collective_savings,
-                  :household, :neighborhood, :city, :region, :country,
+                  :household, :neighborhood, :city, :county, :region, :country,
                   :household_total_savings,
                   :neighborhood_total_savings,
                   :city_total_savings,
+                  :county_total_savings,
                   :region_total_savings,
                   :country_total_savings,
                   :metric_sym
@@ -17,6 +18,9 @@ class UserWaterSerializer < ActiveModel::Serializer
   end
   def city
     [object.city.id, object.city.name] if object.city
+  end
+  def county
+    [object.county.id, object.county.name] if object.county
   end
   def region
     [object.region.id, object.region.name] if object.region
@@ -61,6 +65,10 @@ class UserWaterSerializer < ActiveModel::Serializer
   end
   def city_total_savings
     object.city_total_water_savings.to_f.round(2).to_s if !object.houses.empty?
+  end
+
+  def county_total_savings
+    object.country_total_water_savings.to_f.round(2).to_s if !object.houses.empty?
   end
   def region_total_savings
     object.region_total_water_savings.to_f.round(2).to_s if !object.houses.empty?

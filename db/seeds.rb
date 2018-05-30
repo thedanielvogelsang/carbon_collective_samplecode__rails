@@ -336,7 +336,7 @@ end
 # Creates multiple addresses in colorado
 country = Country.find_by(name: "United States of America")
 state = Region.find_by(name: "Colorado")
-
+county = County.create(name: "Denver", region_id: state.id)
 city1 = City.create(name: "Denver", region_id: state.id)
 
 zip1 = "80218"
@@ -365,7 +365,7 @@ puts "all neighborhoods of Denver added"
   # 3 in caphill -- 2 with zip1, 1 with zip2
     z = Zipcode.create(zipcode: zip1)
       tadd = Address.create(address_line1: "1255 Emerson St", address_line2: "#2",
-                  neighborhood_id: dn1.id, city_id: city1.id,
+                  neighborhood_id: dn1.id, city_id: city1.id, county_id: county.id,
                   zipcode_id: z.id)
 
     #HOUSE NUMBER 1; 2 resident users; savings in 3/4 bills;
@@ -400,7 +400,7 @@ puts "all neighborhoods of Denver added"
               puts "fourth bill added to house ##{house.id} in #{house.address.city.name}: #{bill4}"
 
     sadd = Address.create!(address_line1: "1284 Race St",
-                neighborhood: dn1, city: city1,
+                neighborhood: dn1, city: city1, county_id: county.id,
                 zipcode_id: z.id)
 
     # HOUSE NUMBER 2; 5 residents, 3 users; Colorado: 723; savings in 5/5 bills
@@ -458,6 +458,7 @@ puts "all neighborhoods of Denver added"
               gold_add = Address.create(address_line1: "747 Vine St",
                           neighborhood: dn1,
                           city: city1,
+                          county_id: county.id,
                           zipcode_id: gzip.id)
 
                   house = House.create(total_sq_ft: rand(1000..3000), no_residents: 5, address_id: gold_add.id)
@@ -488,7 +489,7 @@ puts "all neighborhoods of Denver added"
     # 1 bill for first -- unknown savings (random)
     z2 = Zipcode.create(zipcode: zip4)
       fadd = Address.create(address_line1: "1155 Park Ave", address_line2: '#114',
-                  neighborhood: dn2, city: city1,
+                  neighborhood: dn2, city: city1, county_id: county.id,
                   zipcode_id: z2.id)
 
           house = House.create(total_sq_ft: rand(1000..3000), no_residents: rand(1..6), address_id: fadd.id)
@@ -542,7 +543,7 @@ puts "all neighborhoods of Denver added"
   # 2 addresses in Highlands (same neighborhood) with different zips
   # first house: 4 residents, 2 users; 1 bill, no savings
       gadd = Address.create(address_line1: "4109 32nd St",
-                  neighborhood: dn3, city: city1,
+                  neighborhood: dn3, city: city1, county_id: county.id,
                   zipcode_id: z2.id)
           house = House.create(total_sq_ft: 3500, no_residents: 2, address_id: gadd.id)
             puts "#{house} added in #{gadd.city} at #{gadd.address_line1} in #{gadd.neighborhood.name}"
@@ -564,7 +565,7 @@ puts "all neighborhoods of Denver added"
   # second house: 4 residents, 2 users; 1 bill, net savings
     z3 = Zipcode.create(zipcode: zip3)
       dadd = Address.create!(address_line1: "4589 Zuni St",
-                neighborhood: dn3, city: city1,
+                neighborhood: dn3, city: city1, county_id: county.id,
                 zipcode_id: z3.id)
             dan = User.create(first: "Daniel", last: "Vog",
                               email: 'dvog@gmail.com',
@@ -587,11 +588,13 @@ puts "all neighborhoods of Denver added"
 # random everything; no idea how much savings -- WITH NEIGHBORHOOD
   bzip= Zipcode.create(zipcode: 80305)
         rand_add = Address.create(address_line1: "1981 E 18th St", address_line2: "#202",
-                    city_id: city1.id, neighborhood: Neighborhood.find(rand(10..18)),
+                    city_id: city1.id, county_id: county.id,
+                    neighborhood: Neighborhood.find(rand(10..18)),
                     zipcode_id: bzip.id)
         # this address is a trial to test for address validations of address_line1 + address_line2
         rand_two = Address.create(address_line1: "1981 E 18th St", address_line2: "#204",
-                    city_id: city1.id, neighborhood: rand_add.neighborhood, zipcode_id: bzip.id)
+                    city_id: city1.id, county_id: county.id,
+                    neighborhood: rand_add.neighborhood, zipcode_id: bzip.id)
 
                 house2 = House.create(total_sq_ft: 400, no_residents: 1, address_id: rand_two.id)
                 bind_new_user(house)
@@ -640,6 +643,11 @@ Region.all.each{|r| r.set_default_ranks}
 state.update_data
 
 User.all.each{|u| u.email_activate}
+
+County.all.each do |c|
+  c.set_default_ranks
+  c.update_data
+end
 
 City.all.each do |c|
     c.set_default_ranks

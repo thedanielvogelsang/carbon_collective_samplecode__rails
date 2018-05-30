@@ -22,6 +22,10 @@ module UserGasHelper
     household ? household.address.city.total_gas_saved : nil
   end
 
+  def county_total_gas_savings
+    household ? household.address.county.total_gas_saved : nil
+  end
+
   def region_total_gas_savings
     household ? household.address.city.region.total_gas_saved : nil
   end
