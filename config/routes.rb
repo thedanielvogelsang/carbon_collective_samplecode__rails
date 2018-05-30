@@ -124,6 +124,27 @@ Rails.application.routes.draw do
         get '/neighborhoods/:id/carbon/users', to: 'neighborhood_carbon#users'
         get '/neighborhoods/:id/carbon', to: 'neighborhood_carbon#show'
         put '/neighborhoods/:id/carbon', to: 'neighborhood_carbon#update'
+
+        get '/counties', to: 'county#index'
+        get '/counties/electricity', to: 'county_electricity#index'
+        get '/counties/:id/electricity', to: 'county_electricity#show'
+        get '/counties/:id/electricity/users', to: 'county_electricity#users'
+        put '/counties/:id/electricity', to: 'county_electricity#update'
+
+        get '/counties/water', to: 'county_water#index'
+        get '/counties/:id/water', to: 'county_water#show'
+        get '/counties/:id/water/users', to: 'county_water#users'
+        put '/counties/:id/water', to: 'county_water#update'
+
+        get '/counties/gas', to: 'county_gas#index'
+        get '/counties/:id/gas', to: 'county_gas#show'
+        get '/counties/:id/gas/users', to: 'county_gas#users'
+        put '/counties/:id/gas', to: 'county_gas#update'
+
+        get '/counties/carbon', to: 'county_carbon#index'
+        get '/counties/:id/carbon/users', to: 'county_carbon#users'
+        get '/counties/:id/carbon', to: 'county_carbon#show'
+        put '/counties/:id/carbon', to: 'county_carbon#update'
       end
       # resources :admins, only: [:index, :show]
       # resources :trips
