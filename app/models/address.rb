@@ -19,6 +19,8 @@ class Address < ApplicationRecord
   has_one :country, through: :region
 
   before_validation :parse_attrs_for_nil
+  before_validation :capitalize_first_line
+  before_validation :append_second_line
   before_validation :check_ids, on: [:create, :update]
 
 end
