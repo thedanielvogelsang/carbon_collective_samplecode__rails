@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180530011630) do
+ActiveRecord::Schema.define(version: 20180530012720) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,7 +25,9 @@ ActiveRecord::Schema.define(version: 20180530011630) do
     t.bigint "zipcode_id"
     t.bigint "neighborhood_id"
     t.bigint "city_id"
+    t.bigint "county_id"
     t.index ["city_id"], name: "index_addresses_on_city_id"
+    t.index ["county_id"], name: "index_addresses_on_county_id"
     t.index ["neighborhood_id"], name: "index_addresses_on_neighborhood_id"
     t.index ["zipcode_id"], name: "index_addresses_on_zipcode_id"
   end
@@ -428,6 +430,7 @@ ActiveRecord::Schema.define(version: 20180530011630) do
   end
 
   add_foreign_key "addresses", "cities"
+  add_foreign_key "addresses", "counties"
   add_foreign_key "addresses", "neighborhoods"
   add_foreign_key "addresses", "zipcodes"
   add_foreign_key "admins", "users"

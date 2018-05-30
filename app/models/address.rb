@@ -13,6 +13,7 @@ class Address < ApplicationRecord
   belongs_to :zipcode
   belongs_to :city
   belongs_to :neighborhood, optional: true
+  belongs_to :county, optional: true
 
   has_one :region, through: :city
   has_one :country, through: :region
