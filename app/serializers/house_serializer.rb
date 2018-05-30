@@ -1,6 +1,7 @@
 class HouseSerializer < ActiveModel::Serializer
   attributes :id, :total_sq_ft, :no_residents, :address, :neighborhood,
                   :users_names, :no_users, :number_of_bills_entered,
+                  :apartment,
                   :total_electricity_consumption_to_date,
                   :total_electricity_savings_to_date,
                   :avg_total_electricity_consumption_per_resident,

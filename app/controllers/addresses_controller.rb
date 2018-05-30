@@ -12,8 +12,12 @@ class AddressesController < ApplicationController
       address = @address.address_line1
       old_address = Address.where(address_line1: address, city_id: city_id)[0]
       @house = old_address.house
-      error = "House already exists"
-      render :json => {:errors => error, :house => @house.id}, status: 401
+      if @house
+        error = "House already exists"
+        render :json => {:errors => error, :house => @house.id}, status: 401
+      else
+        render json: old_address, status: 202
+      end
     else
       error = "Address did not save, please try again"
       render :json => {:errors => error}, status: 401
