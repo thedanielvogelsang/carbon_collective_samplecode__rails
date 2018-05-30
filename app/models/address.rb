@@ -1,5 +1,6 @@
 class Address < ApplicationRecord
   # Address Helper currently not being used
+  include ParserHelper
   include AddressHelper
 
   validates_presence_of :address_line1
@@ -16,6 +17,7 @@ class Address < ApplicationRecord
   has_one :region, through: :city
   has_one :country, through: :region
 
+  before_validation :parse_attrs_for_nil
   before_validation :check_ids, on: [:create, :update]
 
 end
