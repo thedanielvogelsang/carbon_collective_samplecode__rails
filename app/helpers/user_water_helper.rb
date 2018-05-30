@@ -22,6 +22,10 @@ module UserWaterHelper
     household ? household.address.city.total_water_saved : nil
   end
 
+  def county_total_water_savings
+    household ? household.address.county.total_water_saved : nil
+  end
+
   def region_total_water_savings
     household ? household.address.city.region.total_water_saved : nil
   end

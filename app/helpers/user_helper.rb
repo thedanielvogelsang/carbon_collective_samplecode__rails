@@ -16,6 +16,10 @@ module UserHelper
       self.houses.empty? ? nil : household.address.city
     end
 
+    def county
+      self.houses.empty? ? nil : household.address.county
+    end
+
     def region
       self.houses.empty? ? nil : household.address.region
     end

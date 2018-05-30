@@ -23,6 +23,10 @@ module UserElectricityHelper
     household ? household.address.city.total_electricity_saved : nil
   end
 
+  def county_total_electricity_savings
+    household ? household.address.county.total_electricity_saved : nil
+  end
+
   def region_total_electricity_savings
     household ? household.address.city.region.total_electricity_saved : nil
   end

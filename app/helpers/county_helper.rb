@@ -18,7 +18,7 @@ module CountyHelper
   end
 
   def update_total_electricity_and_carbon_savings
-    if ElectricBill.joins(:house => {:address => :region}).where(:regions => {country_id: self.id}).count != 0
+    if ElectricBill.joins(:house => :address).where(:addresses => {county_id: self.id}).count != 0
       energy_saved = self.users.map{|u| u.total_electricity_savings}
                 .flatten.reject(&:nan?)
                 .reduce(0){|sum, num| sum + num}
@@ -30,7 +30,7 @@ module CountyHelper
   end
 
   def update_daily_avg_electricity_savings
-    if ElectricBill.joins(:house => :address).where(:addresses => {city_id: self.id}).count != 0
+    if ElectricBill.joins(:house => :address).where(:addresses => {county_id: self.id}).count != 0
       energy_savings = self.users.map{|u| u.total_electricity_savings }
               .flatten.reject(&:nan?)
               .reduce(0){|sum, num| sum + num } / self.users.count if self.users.count != 0
@@ -39,7 +39,7 @@ module CountyHelper
   end
 
   def update_daily_avg_electricity_consumption
-    if ElectricBill.joins(:house => :address).where(:addresses => {city_id: self.id}).count != 0
+    if ElectricBill.joins(:house => :address).where(:addresses => {county_id: self.id}).count != 0
       energy_consumed = self.users.map{|u| u.avg_daily_electricity_consumption }
               .flatten.reject(&:nan?)
               .reduce(0){|sum, num| sum + num} / self.users.count if self.users.count != 0
@@ -48,7 +48,7 @@ module CountyHelper
   end
 
   def update_total_water_savings
-    if WaterBill.joins(:house => :address).where(:addresses => {city_id: self.id}).count != 0
+    if WaterBill.joins(:house => :address).where(:addresses => {county_id: self.id}).count != 0
       water_saved = self.users.map{|u| u.total_water_savings}
                 .flatten
                 .reject(&:nan?)
@@ -58,7 +58,7 @@ module CountyHelper
   end
 
   def update_daily_avg_water_savings
-    if WaterBill.joins(:house => :address).where(:addresses => {city_id: self.id}).count != 0
+    if WaterBill.joins(:house => :address).where(:addresses => {county_id: self.id}).count != 0
       water_savings = self.users.map{|u| u.total_water_savings }
               .flatten
               .reject(&:nan?)
@@ -68,7 +68,7 @@ module CountyHelper
   end
 
   def update_daily_avg_water_consumption
-    if WaterBill.joins(:house => :address).where(:addresses => {city_id: self.id}).count != 0
+    if WaterBill.joins(:house => :address).where(:addresses => {county_id: self.id}).count != 0
       water_consumed = self.users.map{|u| u.avg_daily_water_consumption }
               .flatten
               .reject(&:nan?)
@@ -78,7 +78,7 @@ module CountyHelper
   end
 
   def update_total_gas_and_carbon_savings
-    if HeatBill.joins(:house => :address).where(:addresses => {city_id: self.id}).count != 0
+    if HeatBill.joins(:house => :address).where(:addresses => {county_id: self.id}).count != 0
       gas_saved = self.users.map{|u| u.total_gas_savings}
                 .flatten.reject(&:nan?)
                 .reduce(0){|sum, num| sum + num}
@@ -90,7 +90,7 @@ module CountyHelper
   end
 
   def update_daily_avg_gas_savings
-    if HeatBill.joins(:house => :address).where(:addresses => {city_id: self.id}).count != 0
+    if HeatBill.joins(:house => :address).where(:addresses => {county_id: self.id}).count != 0
       gas_savings = self.users.map{|u| u.total_gas_savings }
               .flatten.reject(&:nan?)
               .reduce(0){|sum, num| sum + num } / self.users.count if self.users.count != 0
@@ -99,7 +99,7 @@ module CountyHelper
   end
 
   def update_daily_avg_gas_consumption
-    if HeatBill.joins(:house => :address).where(:addresses => {city_id: self.id}).count != 0
+    if HeatBill.joins(:house => :address).where(:addresses => {county_id: self.id}).count != 0
       gas_consumed = self.users.map{|u| u.avg_daily_gas_consumption }
               .flatten.reject(&:nan?)
               .reduce(0){|sum, num| sum + num} / self.users.count if self.users.count != 0
