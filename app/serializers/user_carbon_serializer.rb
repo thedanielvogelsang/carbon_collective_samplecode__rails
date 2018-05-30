@@ -43,21 +43,23 @@ class UserCarbonSerializer < ActiveModel::Serializer
   end
 
   def neighborhood_total_savings
-    object.neighborhood.carbon_ranking.total_carbon_saved.round(3)
+    object.neighborhood.carbon_ranking.total_carbon_saved.round(3) if !object.houses.empty?
   end
 
   def city_total_savings
-    object.city.carbon_ranking.total_carbon_saved.round(3)
+    object.city.carbon_ranking.total_carbon_saved.round(3) if !object.houses.empty?
+  end
 
+  def county_total_savings
+    object.county.carbon_ranking.total_carbon_saved.round(3) if !object.houses.empty?
   end
 
   def region_total_savings
-    object.region.carbon_ranking.total_carbon_saved.round(3)
-
+    object.region.carbon_ranking.total_carbon_saved.round(3) if !object.houses.empty?
   end
 
   def country_total_savings
-    object.country.carbon_ranking.total_carbon_saved.round(3)
+    object.country.carbon_ranking.total_carbon_saved.round(3) if !object.houses.empty?
   end
   def metric_sym
     'lbsCO2'

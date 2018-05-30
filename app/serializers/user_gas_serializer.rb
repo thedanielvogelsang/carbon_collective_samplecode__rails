@@ -4,7 +4,7 @@ class UserGasSerializer < ActiveModel::Serializer
                   :rank, :arrow, :last_updated,
                   :personal_savings_to_date,
                   :global_collective_savings,
-                  :household, :neighborhood, :city, :county :region, :country,
+                  :household, :neighborhood, :city, :county, :region, :country,
                   :household_total_savings,
                   :neighborhood_total_savings,
                   :city_total_savings,
@@ -69,6 +69,9 @@ class UserGasSerializer < ActiveModel::Serializer
   end
   def city_total_savings
     object.city_total_gas_savings.to_f.round(2).to_s if !object.houses.empty?
+  end
+  def county_total_savings 
+    object.county_total_gas_savings.to_f.round(2).to_s if !object.houses.empty?
   end
   def region_total_savings
     object.region_total_gas_savings.to_f.round(2).to_s if !object.houses.empty?

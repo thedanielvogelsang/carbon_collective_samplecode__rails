@@ -66,6 +66,9 @@ class UserElectricitySerializer < ActiveModel::Serializer
   def city_total_savings
     object.city_total_electricity_savings.to_f.round(2).to_s if !object.houses.empty?
   end
+  def county_total_savings
+    object.county_total_electricity_savings.to_f.round(2).to_s if !object.houses.empty?
+  end
   def region_total_savings
     object.region_total_electricity_savings.to_f.round(2).to_s if !object.houses.empty?
   end
