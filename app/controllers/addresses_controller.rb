@@ -40,6 +40,6 @@ class AddressesController < ApplicationController
 
   private
     def safe_params
-      params.require(:address).permit(:address_line1, :address_line2, :city_id, :neighborhood_id)
+      params.require(:address).permit(:address_line1, :address_line2, :city_id, :neighborhood_id, :county_id)
     end
 end
