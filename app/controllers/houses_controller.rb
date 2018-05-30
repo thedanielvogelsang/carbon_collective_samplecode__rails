@@ -14,6 +14,6 @@ class HousesController < ApplicationController
 
   private
      def safe_params
-        params.require(:house).permit(:total_sq_ft, :no_residents, :address_id)
+        params.require(:house).permit(:total_sq_ft, :no_residents, :address_id, :apartment)
      end
 end

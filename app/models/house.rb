@@ -2,6 +2,7 @@ class House < ApplicationRecord
   include HouseHelper
 
   belongs_to :address
+
   validates_presence_of :total_sq_ft
   validates_presence_of :no_residents
 
@@ -18,5 +19,6 @@ class House < ApplicationRecord
   def bills
     self.electric_bills
   end
+
 
 end

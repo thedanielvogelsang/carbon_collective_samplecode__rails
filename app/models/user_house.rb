@@ -2,6 +2,8 @@ class UserHouse < ApplicationRecord
   belongs_to :user
   belongs_to :house
 
+  validates_uniqueness_of :user_id, :scope => :house_id
+
   before_create :update_house_no_residents_add
   before_destroy :update_house_no_residents_less
 
