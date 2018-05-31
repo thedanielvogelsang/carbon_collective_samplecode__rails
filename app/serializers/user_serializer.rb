@@ -12,6 +12,9 @@ class UserSerializer < ActiveModel::Serializer
   def city
     [object.city.id, object.city.name] if object.city
   end
+  def county
+    [object.county.id, object.county.name] if object.county
+  end
   def region
     [object.region.id, object.region.name] if object.region
   end
