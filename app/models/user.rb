@@ -37,7 +37,8 @@ class User < ApplicationRecord
   validate :check_email_format
 
   before_create :add_zeros,
-                :add_confirm_token
+                :add_confirm_token,
+                :add_invite_token
 
   after_create :set_default_ranks
 
@@ -105,6 +106,12 @@ private
   def add_confirm_token
     if self.confirm_token.blank?
         self.confirm_token = SecureRandom.urlsafe_base64.to_s
+    end
+  end
+
+  def add_invite_token
+    if self.invite_token.blank?
+      self.invite_token = SecureRandom.urlsafe_base64.to_s
     end
   end
 
