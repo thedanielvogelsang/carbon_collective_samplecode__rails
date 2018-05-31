@@ -575,7 +575,7 @@ puts "all neighborhoods of Denver added"
 
       fort_add = Address.create(address_line1: "125 Main St", address_line2: "#202",
                   city_id: city1.id, neighborhood: Neighborhood.find_by(name: "Five Points"),
-                  zipcode_id: z2.id)
+                  zipcode_id: z2.id, county_id: county.id)
 
     # 3 bill for second -- unknown savings (random)
           house = House.create(total_sq_ft: rand(1000..3000), no_residents: rand(1..6), address_id: fort_add.id)
