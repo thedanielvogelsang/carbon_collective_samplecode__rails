@@ -303,6 +303,73 @@ CANADA_REGIONS = [
   "Labrador",
 ]
 
+CO_COUNTIES = [
+  "Adams County",
+  "Alamosa County",
+  "Arapahoe County",
+  "Archuleta County",
+  "Baca County",
+  "Bent County",
+  "Boulder County",
+  "Broomfield County",
+  "Caffee County",
+  "Cheyenne County",
+  "Clear Creek County",
+  "Conejos County",
+  "Costilla County",
+  "Crowley County",
+  "Custer County",
+  "Delta County",
+  "Denver County",
+  "Dolores County",
+  "Douglas County",
+  "Eagle County",
+  "El Paso County",
+  "Elbert County",
+  "Fremont County",
+  "Garfield County",
+  "Gilpin County",
+  "Grand County",
+  "Gunnison County",
+  "Hinsdale County",
+  "Huerfano County",
+  "Jackson County",
+  "Jefferson County",
+  "Kiowa County",
+  "Kit Carson County",
+  "La Plata County",
+  "Lake County",
+  "Larimer County",
+  "Las Animas County",
+  "Lincoln County",
+  "Logan County",
+  "Mesa County",
+  "Mineral County",
+  "Moffat County",
+  "Montezuma County",
+  "Montrose County",
+  "Morgan County",
+  "Otero County",
+  "Ouray County",
+  "Park County",
+  "Phillips County",
+  "Pitkin County",
+  "Prowers County",
+  "Pueblo County",
+  "Rio Blanco County",
+  "Rio Grande County",
+  "Routt County",
+  "Saguache County",
+  "San Juan County",
+  "San Miguel County",
+  "Sedgwick County",
+  "Summit County",
+  "Teller County",
+  "Washington County",
+  "Weld County",
+  "Yuma County"
+]
+
 STATES.each do |r|
   state_avg = "%0.6f" % (("%0.6f" % r[1]).to_f / ("%0.6f" % 30).to_f)
   Region.create(name: r[0], avg_daily_electricity_consumed_per_capita: state_avg,
@@ -336,7 +403,10 @@ end
 # Creates multiple addresses in colorado
 country = Country.find_by(name: "United States of America")
 state = Region.find_by(name: "Colorado")
-county = County.create(name: "Denver", region_id: state.id)
+CO_COUNTIES.each do |countie|
+  County.create(name: countie, region_id: state.id)
+end
+county = County.find_by(name: "Denver County")
 city1 = City.create(name: "Denver", region_id: state.id)
 
 zip1 = "80218"
@@ -505,7 +575,7 @@ puts "all neighborhoods of Denver added"
 
       fort_add = Address.create(address_line1: "125 Main St", address_line2: "#202",
                   city_id: city1.id, neighborhood: Neighborhood.find_by(name: "Five Points"),
-                  zipcode_id: z2.id)
+                  zipcode_id: z2.id, county_id: county.id)
 
     # 3 bill for second -- unknown savings (random)
           house = House.create(total_sq_ft: rand(1000..3000), no_residents: rand(1..6), address_id: fort_add.id)

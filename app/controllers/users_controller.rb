@@ -45,8 +45,8 @@ class UsersController < ApplicationController
 
   def confirm_email
     user = User.find_by_confirm_token(params[:format])
-    host = 'https://carbon-collective.github.io'
-    # host = 'http://localhost:3001'
+    # host = 'https://carbon-collective.github.io'
+    host = 'http://localhost:3001'
     if user
       user.email_activate
       flash[:success] = "Welcome to Carbon Collective! Your email has been confirmed.
