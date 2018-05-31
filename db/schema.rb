@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180531224256) do
+ActiveRecord::Schema.define(version: 20180531234235) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -405,9 +405,11 @@ ActiveRecord::Schema.define(version: 20180531224256) do
     t.boolean "email_confirmed"
     t.string "confirm_token"
     t.string "invite_token"
+    t.bigint "user_id"
     t.index ["total_electricity_savings"], name: "index_users_on_total_electricity_savings"
     t.index ["total_gas_savings"], name: "index_users_on_total_gas_savings"
     t.index ["total_water_savings"], name: "index_users_on_total_water_savings"
+    t.index ["user_id"], name: "index_users_on_user_id"
   end
 
   create_table "water_bills", force: :cascade do |t|
@@ -469,5 +471,6 @@ ActiveRecord::Schema.define(version: 20180531224256) do
   add_foreign_key "user_houses", "houses"
   add_foreign_key "user_houses", "users"
   add_foreign_key "user_water_rankings", "users"
+  add_foreign_key "users", "users"
   add_foreign_key "water_bills", "houses"
 end
