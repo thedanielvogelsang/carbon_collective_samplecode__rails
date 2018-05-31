@@ -62,6 +62,7 @@ Rails.application.routes.draw do
         put '/countries/:id/carbon', to: 'country_carbon#update'
 
         get '/regions', to: 'region#index'
+        get '/regions/show/:id', to: 'region#show'
         get '/regions/electricity', to: 'region_electricity#index'
         get '/regions/:id/electricity', to: 'region_electricity#show'
         get '/regions/:id/electricity/:users', to: 'region_electricity#users'

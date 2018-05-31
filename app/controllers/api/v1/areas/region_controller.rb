@@ -7,4 +7,12 @@ class Api::V1::Areas::RegionController < ApplicationController
       render json: Region.all.order(:name)
     end
   end
+
+  def show
+    if params[:id]
+      render json: Region.find(params[:id]), serializer: RegionElectricitySerializer
+    else
+      render json: {:error => "Region does not exist"}, status: 404
+    end
+  end
 end
