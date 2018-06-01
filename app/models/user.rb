@@ -19,6 +19,9 @@ class User < ApplicationRecord
   has_many :admins
   has_many :trips
 
+  has_many :user_generations, :foreign_key => :parent_id, :dependent => :destroy
+  belongs_to :parent, :class_name => "User",  optional: true
+  has_many :children, :through => :user_generations, :source => :child
   # has_many :user_addresses
 
   has_many :user_houses, dependent: :destroy
@@ -37,7 +40,8 @@ class User < ApplicationRecord
   validate :check_email_format
 
   before_create :add_zeros,
-                :add_confirm_token
+                :add_confirm_token,
+                :add_invite_token
 
   after_create :set_default_ranks
 
@@ -105,6 +109,12 @@ private
   def add_confirm_token
     if self.confirm_token.blank?
         self.confirm_token = SecureRandom.urlsafe_base64.to_s
+    end
+  end
+
+  def add_invite_token
+    if self.invite_token.blank?
+      self.invite_token = SecureRandom.urlsafe_base64.to_s
     end
   end
 

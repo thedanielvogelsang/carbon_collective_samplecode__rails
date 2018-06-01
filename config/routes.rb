@@ -9,9 +9,11 @@ Rails.application.routes.draw do
   resources :gas_bills, only: [:create]
   resources :users, only: [:create, :update]
   post '/users/:user_id/old_houses/:house_id', to: 'users#old_houses'
+  post '/users/invite/:id', to: 'users#invite'
   resource :users do
     member do
       get :confirm_email
+      get :invite_accepted, as: "invite"
     end
   end
   resources :addresses, only: [:create]

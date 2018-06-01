@@ -45,8 +45,8 @@ class UsersController < ApplicationController
 
   def confirm_email
     user = User.find_by_confirm_token(params[:format])
-    # host = 'https://carbon-collective.github.io'
-    host = 'http://localhost:3001'
+    host = 'https://carbon-collective.github.io'
+    # host = 'http://localhost:3001'
     if user
       user.email_activate
       flash[:success] = "Welcome to Carbon Collective! Your email has been confirmed.
@@ -68,6 +68,21 @@ class UsersController < ApplicationController
       error = "User could not be added to existing house"
       render json: {errors: error}, status: 401
     end
+  end
+
+  def invite
+    user = User.find(params[:id])
+    emails = params[:emails]
+    UserMailer.invite(user, emails).deliver_now
+    # host = 'https://carbon-collective.github.io'
+    host = 'http://localhost:3001'
+    flash[:success] = "Your invites were sent. Let your friend(s) know we're excited to welcome them to the Collective, and to check their inbox!"
+    redirect_to "#{host}/dashboard"
+  end
+
+  def invite_accepted
+    byebug
+    user = User.find(params[:id])
   end
 
   private
