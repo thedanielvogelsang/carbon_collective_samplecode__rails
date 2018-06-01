@@ -19,8 +19,9 @@ class User < ApplicationRecord
   has_many :admins
   has_many :trips
 
-  belongs_to :parent, :class_name => "User", :foreign_key => "user_id", optional: true
-  has_many :children, :class_name => "User"
+  has_many :user_generations, :foreign_key => :parent_id, :dependent => :destroy
+  belongs_to :parent, :class_name => "User",  optional: true
+  has_many :children, :through => :user_generations, :source => :child
   # has_many :user_addresses
 
   has_many :user_houses, dependent: :destroy

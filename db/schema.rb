@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180531234235) do
+ActiveRecord::Schema.define(version: 20180601002300) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -194,6 +194,11 @@ ActiveRecord::Schema.define(version: 20180531234235) do
     t.index ["area_type", "area_id"], name: "index_gas_rankings_on_area_type_and_area_id"
   end
 
+  create_table "generations", id: false, force: :cascade do |t|
+    t.integer "parent_id"
+    t.integer "child_id"
+  end
+
   create_table "globals", force: :cascade do |t|
     t.decimal "total_energy_saved"
     t.decimal "total_water_saved"
@@ -353,6 +358,15 @@ ActiveRecord::Schema.define(version: 20180531234235) do
     t.index ["user_id"], name: "index_user_gas_rankings_on_user_id"
   end
 
+  create_table "user_generations", force: :cascade do |t|
+    t.integer "parent_id"
+    t.integer "child_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["child_id", "parent_id"], name: "index_user_generations_on_child_id_and_parent_id", unique: true
+    t.index ["parent_id", "child_id"], name: "index_user_generations_on_parent_id_and_child_id", unique: true
+  end
+
   create_table "user_groups", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "group_id"
@@ -405,11 +419,10 @@ ActiveRecord::Schema.define(version: 20180531234235) do
     t.boolean "email_confirmed"
     t.string "confirm_token"
     t.string "invite_token"
-    t.bigint "user_id"
+    t.integer "parent_id"
     t.index ["total_electricity_savings"], name: "index_users_on_total_electricity_savings"
     t.index ["total_gas_savings"], name: "index_users_on_total_gas_savings"
     t.index ["total_water_savings"], name: "index_users_on_total_water_savings"
-    t.index ["user_id"], name: "index_users_on_user_id"
   end
 
   create_table "water_bills", force: :cascade do |t|
@@ -471,6 +484,5 @@ ActiveRecord::Schema.define(version: 20180531234235) do
   add_foreign_key "user_houses", "houses"
   add_foreign_key "user_houses", "users"
   add_foreign_key "user_water_rankings", "users"
-  add_foreign_key "users", "users"
   add_foreign_key "water_bills", "houses"
 end
