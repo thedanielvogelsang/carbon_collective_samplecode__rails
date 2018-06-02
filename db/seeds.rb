@@ -391,6 +391,7 @@ def bind_new_user(house)
                   password: 'banana',
                   first: Faker::Name.first_name,
                   last: Faker::Name.last_name,
+                  generation: 0,
                   )
   user.houses << house
   user.save
