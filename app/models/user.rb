@@ -37,6 +37,7 @@ class User < ApplicationRecord
   has_one :user_carbon_ranking, dependent: :destroy
 
   validates :email, presence: true, uniqueness: true
+  validates :generation, presence: true
   validate :check_email_format
 
   before_create :add_zeros,

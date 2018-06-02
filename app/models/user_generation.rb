@@ -10,4 +10,12 @@ class UserGeneration < ApplicationRecord
     child.parent_id = parent.id
     child.save
   end
+
+  def self.bind_generations(user, orig_id)
+    if user.parent
+      parent = user.parent
+      UserGeneration.create(parent_id: parent.id, child_id: orig_id)
+      bind_generations(parent, orig_id)
+    end
+  end
 end

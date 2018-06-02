@@ -4,7 +4,7 @@ class UserMailer < ApplicationMailer
     mail(:to => "#{user.first + ' ' + user.last} <#{user.email}>", :subject => "Registration Confirmation")
   end
 
-  def invite(user, email_hash)
+  def invite(user, email_hash, prev_gen)
     @user = user
     ct = email_hash.keys.length - 1
     (0..ct).each do |e|
@@ -15,6 +15,7 @@ class UserMailer < ApplicationMailer
       if !new_user.errors.messages.empty?
         @new = new_user
         @new.password = 'placeholder'
+        @new.generation = prev_gen + 1
         @new.save
         mail(:to => email_hash[e],
              :subject => "Carbon Collective Invite from #{@user.first}"
@@ -22,6 +23,7 @@ class UserMailer < ApplicationMailer
       # email in system but unregistered, resend to recipient
       elsif !new_user.email_confirmed
         @new = new_user
+        @new.generation = prev_gen + 1
         mail(:to => email_hash[e],
              :subject => "Carbon Collective Invite from #{@user.first}"
             )
