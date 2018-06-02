@@ -640,6 +640,7 @@ puts "all neighborhoods of Denver added"
                 zipcode_id: z3.id)
             dan = User.create(first: "Daniel", last: "Vog",
                               email: 'dvog@gmail.com',
+                              generation: 0,
                               password: 'password')
 
         house = House.create!(total_sq_ft: rand(1000..3000), no_residents: 2, address_id: dadd.id)
