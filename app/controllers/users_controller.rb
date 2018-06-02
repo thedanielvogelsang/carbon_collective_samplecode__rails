@@ -9,7 +9,7 @@ class UsersController < ApplicationController
         if @user.email_confirmed
           format.json {render :json => @user, :status => 201}
         else
-        # For delivering to unregistered emails; signup without invite will work with other FE new_user component
+        # Not being used currently; For delivering to unregistered emails; signup without invite will work with other FE new_user component
           UserMailer.registration(@user).deliver_now
           error = "Please confirm your email address to continue"
           format.json {render :json => {:errors => error}, :status => 401}
