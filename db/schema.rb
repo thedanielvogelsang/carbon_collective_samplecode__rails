@@ -416,7 +416,7 @@ ActiveRecord::Schema.define(version: 20180601002300) do
     t.decimal "total_gas_savings"
     t.decimal "total_carbon_savings"
     t.decimal "total_pounds_logged"
-    t.boolean "email_confirmed"
+    t.boolean "email_confirmed", default: false
     t.string "confirm_token"
     t.string "invite_token"
     t.integer "parent_id"

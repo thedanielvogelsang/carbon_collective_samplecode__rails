@@ -2,12 +2,18 @@ class UsersController < ApplicationController
   respond_to :json
 
   def create
-    @user = User.new(safe_params)
+    #update here for new_users: instead of NEW lets use UPDATE after find_or_create_by
+    @user = User.find(params[:user][:id])
     respond_to do |format|
-      if params[:user][:password] == params[:user][:passwordConfirmation] && @user.save
-        UserMailer.registration(@user).deliver_now
-        error = "Please confirm your email address to continue"
-        format.json {render :json => {:errors => error}, :status => 401}
+      if params[:user][:password] == params[:user][:passwordConfirmation] && @user.update(safe_params)
+        if @user.email_confirmed
+          format.json {render :json => @user, :status => 201}
+        else
+        # For delivering to unregistered emails; signup without invite will work with other FE new_user component
+          UserMailer.registration(@user).deliver_now
+          error = "Please confirm your email address to continue"
+          format.json {render :json => {:errors => error}, :status => 401}
+        end
       elsif params[:user][:password] != params[:user][:passwordConfirmation]
         error = 'Passwords did not match. Please try again'
         format.json {render :json => {:errors => error}, :status => 401 }
@@ -81,8 +87,13 @@ class UsersController < ApplicationController
   end
 
   def invite_accepted
-    byebug
-    user = User.find(params[:id])
+    # host = 'https://carbon-collective.github.io'
+    host = 'http://localhost:3001'
+    prev_user = User.find_by_invite_token(params[:token])
+    new_user = User.find(params[:id])
+    new_user.email_activate
+    UserGeneration.create(parent_id: prev_user.id , child_id: new_user.id)
+    redirect_to "#{host}/signup/#{new_user.id}"
   end
 
   private
@@ -120,6 +131,6 @@ class UsersController < ApplicationController
     # end
 
     def safe_params
-      params.require('user').permit(:first, :last, :email, :password)
+      params.require('user').permit(:id, :first, :last, :email, :password)
     end
 end
