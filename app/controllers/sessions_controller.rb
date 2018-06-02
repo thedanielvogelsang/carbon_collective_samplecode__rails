@@ -11,11 +11,13 @@ class SessionsController < ApplicationController
   end
 
   def create
+    # Not being used currently; facebook login
     if request.env['omniauth.auth']
       user = User.create_with_omniauth(request.env['omniauth.auth'])
       session[:user_id] = user.id
       redirect_to new_user_path({:user => {uid: user.uid}}) if user.addresses.empty?
       redirect_to user_path(user.id) if !user.addresses.empty?
+    # regular app functions for new_user creation
     else
       user = User.find_by(email: safe_params[:email])
       respond_to do |format|

@@ -6,6 +6,6 @@
   <body>
     <h1> Hello!</h1>
     <h3>Your friend <%= @user.first %> <%= @user.last %> has invited you to join Carbon Collective! To begin your registration click the URL below.</h3>
-    <%= invite_users_url(:id => @user.id, :token => @user.invite_token) %>
+    <%= invite_users_url(:id => @new.id, :token => @user.invite_token) %>
   </body>
 </html>
