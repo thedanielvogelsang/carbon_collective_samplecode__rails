@@ -80,15 +80,15 @@ class UsersController < ApplicationController
     user = User.find(params[:id])
     emails = params[:emails]
     UserMailer.invite(user, emails, user.generation).deliver_now
-    # host = 'https://carbon-collective.github.io'
-    host = 'http://localhost:3001'
+    host = 'https://carbon-collective.github.io'
+    # host = 'http://localhost:3001'
     flash[:success] = "Your invites were sent. Let your friend(s) know we're excited to welcome them to the Collective, and to check their inbox!"
     redirect_to "#{host}/dashboard"
   end
 
   def invite_accepted
-    # host = 'https://carbon-collective.github.io'
-    host = 'http://localhost:3001'
+    host = 'https://carbon-collective.github.io'
+    # host = 'http://localhost:3001'
     prev_user = User.find_by_invite_token(params[:token])
     new_user = User.find(params[:id])
     new_user.email_activate
