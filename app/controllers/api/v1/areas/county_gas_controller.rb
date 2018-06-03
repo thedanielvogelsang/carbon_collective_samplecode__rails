@@ -1,7 +1,7 @@
 class Api::V1::Areas::CountyGasController < ApplicationController
 
   def index
-    render json: County.order(avg_daily_gas_consumed_per_user: :asc)
+    render json: County.order(avg_daily_gas_consumed_per_user: :asc).joins(:users)
     .distinct, each_serializer: CountyGasSerializer
   end
 

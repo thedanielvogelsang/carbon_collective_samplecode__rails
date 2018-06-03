@@ -2,7 +2,7 @@ class Api::V1::Areas::CountyElectricityController < ApplicationController
 
   # used for rankings -- all countries listed
   def index
-    render json: County.order(avg_daily_electricity_consumed_per_user: :asc)
+    render json: County.order(avg_daily_electricity_consumed_per_user: :asc).joins(:users)
     .distinct, each_serializer: CountyElectricitySerializer
   end
 

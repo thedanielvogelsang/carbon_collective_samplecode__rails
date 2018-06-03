@@ -1,4 +1,4 @@
-class HeatBillsController < ApplicationController
+class GasBillsController < ApplicationController
 
   def create
     bill = HeatBill.new(safe_params)

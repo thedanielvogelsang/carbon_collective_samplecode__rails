@@ -2,7 +2,7 @@ class Api::V1::Areas::CountyWaterController < ApplicationController
 
   # used for rankings
   def index
-    render json: County.order(avg_daily_water_consumed_per_user: :asc)
+    render json: County.order(avg_daily_water_consumed_per_user: :asc).joins(:users)
       .distinct, each_serializer: CountyWaterSerializer
   end
 
