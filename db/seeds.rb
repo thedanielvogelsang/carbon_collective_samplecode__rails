@@ -391,6 +391,7 @@ def bind_new_user(house)
                   password: 'banana',
                   first: Faker::Name.first_name,
                   last: Faker::Name.last_name,
+                  generation: 0,
                   )
   user.houses << house
   user.save
@@ -639,6 +640,7 @@ puts "all neighborhoods of Denver added"
                 zipcode_id: z3.id)
             dan = User.create(first: "Daniel", last: "Vog",
                               email: 'dvog@gmail.com',
+                              generation: 0,
                               password: 'password')
 
         house = House.create!(total_sq_ft: rand(1000..3000), no_residents: 2, address_id: dadd.id)
