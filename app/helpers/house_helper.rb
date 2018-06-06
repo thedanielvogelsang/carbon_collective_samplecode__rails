@@ -25,7 +25,7 @@ module HouseHelper
   ## used for snapshots -- pending api use ##
   # 0.5 ms
   def average_daily_electricity_consumption_per_resident
-    self.users.map{|u| u.avg_daily_electricity_consumption}.flatten
+    self.users.map{|u| u.avg_daily_electricity_consumption}.flatten.reject(&:nan?)
               .reduce(0){|s,n| s + n} / self.no_residents
   end
 
@@ -34,8 +34,50 @@ module HouseHelper
     total_electricity_savings_to_date / self.no_residents
   end
 
+  def average_daily_water_consumption_per_resident
+    self.users.map{|u| u.avg_daily_water_consumption}.flatten.reject(&:nan?)
+              .reduce(0){|s,n| s + n} / self.no_residents
+  end
+
+  #
+  def average_total_water_saved_per_resident
+    total_water_savings_to_date / self.no_residents
+  end
+
+  def average_daily_gas_consumption_per_resident
+    self.users.map{|u| u.avg_daily_gas_consumption}.flatten.reject(&:nan?)
+              .reduce(0){|s,n| s + n} / self.no_residents
+  end
+
+  #
+  def average_total_gas_saved_per_resident
+    total_gas_savings_to_date / self.no_residents
+  end
+  
+  def average_daily_carbon_consumption_per_resident
+    self.users.map{|u| u.avg_daily_carbon_consumption}.flatten.reject(&:nan?)
+              .reduce(0){|s,n| s + n} / self.no_residents
+  end
+
+  #
+  def average_total_carbon_saved_per_resident
+    total_carbon_savings_to_date / self.no_residents
+  end
+
   def total_electricity_saved
     total_electricity_savings_to_date
+  end
+
+  def total_water_saved
+    total_water_savings_to_date
+  end
+
+  def total_gas_saved
+    total_gas_savings_to_date
+  end
+
+  def total_days_recorded
+    self.bills.map{|b| (b.end_date - b.start_date).to_i }.reduce(0){|s, n| s + n}
   end
 
   def total_electricity_consumption_to_date
@@ -48,6 +90,44 @@ module HouseHelper
 
   def avg_total_electricity_savings_per_resident
     total_electricity_saved / self.no_residents
+  end
+
+  def total_water_consumption_to_date
+    self.water_bills.map{|b| b.total_gallons }.flatten.reduce(0){|s,n| s+n}
+  end
+
+  def avg_total_water_consumption_per_resident
+    total_water_consumption_to_date / self.no_residents
+  end
+
+  def avg_total_water_savings_per_resident
+    total_water_saved / self.no_residents
+  end
+
+  def total_gas_consumption_to_date
+    self.heat_bills.map{|b| b.total_therms }.flatten.reduce(0){|s,n| s+n}
+  end
+
+  def avg_total_gas_consumption_per_resident
+    total_gas_consumption_to_date / self.no_residents
+  end
+
+  def avg_total_gas_savings_per_resident
+    total_gas_saved / self.no_residents
+  end
+
+  def total_carbon_consumption_to_date
+    combine_average_use(
+        total_electricity_consumption_to_date, total_gas_consumption_to_date
+        )
+  end
+
+  def avg_total_carbon_consumption_per_resident
+    total_carbon_consumption_to_date / self.no_residents
+  end
+
+  def avg_total_carbon_savings_per_resident
+    total_gas_saved / self.no_residents
   end
   #
 

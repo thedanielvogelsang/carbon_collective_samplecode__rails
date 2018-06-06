@@ -1,5 +1,9 @@
 module UserHelper
 
+    def account_length_time
+      DateTime.now - self.created_at.to_datetime
+    end
+    
     def household
       self.houses.first if !self.houses.empty?
     end

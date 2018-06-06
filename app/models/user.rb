@@ -4,6 +4,7 @@ class User < ApplicationRecord
   include UserElectricityHelper
   include UserWaterHelper
   include UserGasHelper
+  include UserCarbonHelper
 
   has_and_belongs_to_many :friendships,
         class_name: "User",
