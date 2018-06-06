@@ -53,7 +53,7 @@ module HouseHelper
   def average_total_gas_saved_per_resident
     total_gas_savings_to_date / self.no_residents
   end
-  
+
   def average_daily_carbon_consumption_per_resident
     self.users.map{|u| u.avg_daily_carbon_consumption}.flatten.reject(&:nan?)
               .reduce(0){|s,n| s + n} / self.no_residents
