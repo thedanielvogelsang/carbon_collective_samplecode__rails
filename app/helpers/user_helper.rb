@@ -33,6 +33,7 @@ module UserHelper
     end
 
   def set_default_ranks
+    if self.user_electricity_rankings.empty? && self.user_water_rankings.empty? 
     #Country
     UserElectricityRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.country.id, area_type: "Country")
     UserWaterRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.country.id, area_type: "Country")
@@ -67,6 +68,7 @@ module UserHelper
     UserWaterRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.household.id, area_type: "House")
     UserGasRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.household.id, area_type: "House")
     UserCarbonRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.household.id, area_type: "House")
+    end
   end
 
   def confirm_accounts

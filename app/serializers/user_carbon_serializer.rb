@@ -1,6 +1,6 @@
 class UserCarbonSerializer < ActiveModel::Serializer
   attributes :id, :first, :last, :avatar_url, :global_collective_savings,
-                  :personal_savings_to_date,
+                  :personal_savings_to_date, :arrow, :rank, :last_updated,
                   :household, :neighborhood, :city, :county, :region, :country,
                   :household_daily_consumption, :neighborhood_daily_consumption,
                   :city_daily_consumption, :county_daily_consumption, :region_daily_consumption,
@@ -64,4 +64,23 @@ class UserCarbonSerializer < ActiveModel::Serializer
   def metric_sym
     'lbsCO2'
   end
+
+  def arrow
+    ops__ = @instance_options[:region]
+    object.user_carbon_rankings
+      .where(area_type: ops__[:area_type], area_id: ops__[:area_id])[0].arrow
+  end
+
+  def rank
+    ops__ = @instance_options[:region]
+    object.user_carbon_rankings
+      .where(area_type: ops__[:area_type], area_id: ops__[:area_id])[0].rank
+  end
+
+  def last_updated
+    ops__ = @instance_options[:region]
+    object.user_carbon_rankings
+          .where(area_type: ops__[:area_type], area_id: ops__[:area_id])[0].updated_at
+  end
+
 end

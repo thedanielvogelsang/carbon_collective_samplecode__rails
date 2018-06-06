@@ -1,7 +1,7 @@
 class UserElectricitySerializer < ActiveModel::Serializer
   attributes :id, :avg_daily_consumption, :first, :last, :email,
                   :avatar_url, :house_ids,
-                  :last_updated,
+                  :last_updated, :rank, :arrow,
                   :personal_savings_to_date,
                   :global_collective_savings,
                   :household, :neighborhood, :city, :county, :region, :country,

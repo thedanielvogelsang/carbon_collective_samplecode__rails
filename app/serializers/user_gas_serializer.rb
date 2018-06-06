@@ -84,7 +84,10 @@ class UserGasSerializer < ActiveModel::Serializer
   end
 
   def last_updated
-    object.user_gas_rankings.first.updated_at
+    ops__ = @instance_options[:region]
+    object.user_gas_rankings
+      .where(area_type: ops__[:area_type], area_id: ops__[:area_id])
+      .updated_at
   end
 
   def arrow
