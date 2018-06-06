@@ -45,7 +45,7 @@ class User < ApplicationRecord
                 :add_confirm_token,
                 :add_invite_token
 
-  after_create :set_default_ranks
+  # after_create :set_default_ranks
 
 def self.create_with_omniauth(auth)
   uid = auth['uid']

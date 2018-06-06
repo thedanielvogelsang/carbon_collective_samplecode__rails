@@ -714,7 +714,10 @@ Region.all.each{|r| r.set_default_ranks}
 
 state.update_data
 
-User.all.each{|u| u.email_activate}
+User.all.each{|u|
+   u.email_activate
+   u.set_default_ranks
+ }
 
 County.all.each do |c|
   c.set_default_ranks
