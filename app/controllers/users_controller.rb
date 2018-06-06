@@ -69,6 +69,7 @@ class UsersController < ApplicationController
     house = House.find(params[:house_id])
     if user && house
       user.houses << house
+      user.set_default_ranks
       render json: user
     else
       error = "User could not be added to existing house"
