@@ -1,7 +1,7 @@
 class UserWaterSerializer < ActiveModel::Serializer
   attributes :id, :avg_daily_consumption, :first, :last, :email,
                   :avatar_url, :house_ids,
-                  :rank, :arrow, :last_updated,
+                  :last_updated,
                   :personal_savings_to_date,
                   :global_collective_savings,
                   :household, :neighborhood, :city, :county, :region, :country,
@@ -81,13 +81,6 @@ class UserWaterSerializer < ActiveModel::Serializer
     object.avg_daily_water_consumption.round(2).to_s + " gals"
   end
 
-  def rank
-    object.user_water_ranking.rank
-  end
-
-  def arrow
-    object.user_water_ranking.arrow
-  end
   def last_updated
     object.user_water_ranking.updated_at
   end
