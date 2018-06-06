@@ -4,32 +4,35 @@ class Api::V1::HousesController < ApplicationController
   end
 
   def show
-    if House.exists?(params[:id])
-      render json: House.find(params[:id]), serializer: HouseElectricitySerializer if params[:resource] == 'electricity'
-      render json: House.find(params[:id]), serializer: HouseWaterSerializer if params[:resource] == 'water'
-      render json: House.find(params[:id]), serializer: HouseGasSerializer if params[:resource] == 'gas'
-      render json: House.find(params[:id]), serializer: HouseCarbonSerializer if params[:resource] == 'carbon'
-      render json: House.find(params[:id]), serializer: HouseElectricitySerializer if params[:resource] == nil
+    id = params[:id]
+    if House.exists?(id)
+      render json: House.find(id), serializer: HouseElectricitySerializer if params[:resource] == 'electricity'
+      render json: House.find(id), serializer: HouseWaterSerializer if params[:resource] == 'water'
+      render json: House.find(id), serializer: HouseGasSerializer if params[:resource] == 'gas'
+      render json: House.find(id), serializer: HouseCarbonSerializer if params[:resource] == 'carbon'
+      render json: House.find(id), serializer: HouseElectricitySerializer if params[:resource] == nil
     else
       render json: {error: "House does not exist"}, status: 404
     end
   end
 
   def users
-    if House.exists?(params[:id])
-      render json: House.find(params[:id]).users, each_serializer: UserElectricitySerializer if params[:resource] == 'electricity'
-      render json: House.find(params[:id]).users, each_serializer: UserWaterSerializer if params[:resource] == 'water'
-      render json: House.find(params[:id]).users, each_serializer: UserGasSerializer if params[:resource] == 'gas'
-      render json: House.find(params[:id]).users, each_serializer: UserCarbonSerializer if params[:resource] == 'carbon'
-      render json: House.find(params[:id]).users, each_serializer: UserSerializer if params[:resource] == nil
+    id = params[:id]
+    if House.exists?(id)
+      render json: House.find(id).users, each_serializer: UserElectricitySerializer, region: {area_type: "House", area_id: id} if params[:resource] == 'electricity'
+      render json: House.find(id).users, each_serializer: UserWaterSerializer, region: {area_type: "House", area_id: id} if params[:resource] == 'water'
+      render json: House.find(id).users, each_serializer: UserGasSerializer, region: {area_type: "House", area_id: id} if params[:resource] == 'gas'
+      render json: House.find(id).users, each_serializer: UserCarbonSerializer, region: {area_type: "House", area_id: id} if params[:resource] == 'carbon'
+      render json: House.find(id).users, each_serializer: UserSerializer if params[:resource] == nil
     else
       render json: {error: "House does not exist"}, status: 404
     end
   end
 
   def update
-    if House.exists?(params[:id])
-      house = House.find(params[:id])
+    id = params[:id]
+    if House.exists?(id)
+      house = House.find(id)
       if house.update(safe_params)
         render json: house
       else
@@ -43,8 +46,8 @@ class Api::V1::HousesController < ApplicationController
   end
 
   def destroy
-    if User.exists?(params[:user_id]) && House.exists?(params[:id])
-      house = House.find(params[:id])
+    if User.exists?(params[:user_id]) && House.exists?(id)
+      house = House.find(id)
       userhouse = UserHouse.where(user_id: params[:user_id], house: house.id)[0]
       UserHouse.destroy(userhouse.id)
       if house.users.count == 0

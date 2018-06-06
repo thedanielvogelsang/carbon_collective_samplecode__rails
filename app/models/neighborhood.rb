@@ -15,6 +15,11 @@ class Neighborhood < ApplicationRecord
   has_one :gas_ranking, :as => :area
   has_one :carbon_ranking, :as => :area
 
+  has_many :user_electricity_rankings, :as => :area
+  has_many :user_water_rankings, :as => :area
+  has_many :user_gas_rankings, :as => :area
+  has_many :user_carbon_rankings, :as => :area
+  
   before_validation :capitalize_name
   before_create :add_zeros
 

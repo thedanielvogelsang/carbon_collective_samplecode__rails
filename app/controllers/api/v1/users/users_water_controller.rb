@@ -1,9 +1,12 @@
 class Api::V1::Users::UsersWaterController < ApplicationController
 
+  #updating userboard arrows and rankings
   def update
     if User.exists?(params[:user_id])
       user = User.find(params[:user_id])
-      rank = UserWaterRanking.find_by(user_id: user.id)
+      area = params[:region_type]
+      a_id = params[:region_id]
+      rank = UserWaterRanking.find_by(user_id: user.id, area_type: area, area_id: a_id)
       if rank.update(safe_params)
         render json: user, serializer: UserWaterSerializer
       else

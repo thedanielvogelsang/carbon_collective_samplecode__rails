@@ -22,9 +22,11 @@ class Api::V1::Areas::NeighborhoodWaterController < ApplicationController
 
   def users
     if Neighborhood.exists?(params[:id])
-      render json: Neighborhood.find(params[:id])
+      users = Neighborhood.find(params[:id])
         .users.order(total_water_savings: :desc)
-        .limit(10), each_serializer: UserWaterSerializer
+        .limit(10)
+      render json: users, each_serializer: UserWaterSerializer, region: {area_type: "Neighborhood", area_id: params[:id]}
+
     else
       render json: {error: "neighborhood not in database. try again!"}, status: 404
     end

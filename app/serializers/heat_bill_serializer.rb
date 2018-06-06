@@ -1,10 +1,13 @@
 class HeatBillSerializer < ActiveModel::Serializer
   include Co2Helper
 
-  attributes :id, :start_date, :end_date, :total_used,
+  attributes :id, :start_date, :end_date, :total_used, :no_days,
                   :total_saved, :carbon_impact,
                   :house_info, :price
 
+  def no_days
+    (object.end_date - object.start_date).to_i
+  end
   def total_used
     object.total_therms.to_s + ' therms'
   end

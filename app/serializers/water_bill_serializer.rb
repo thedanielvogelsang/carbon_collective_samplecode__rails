@@ -1,9 +1,12 @@
 class WaterBillSerializer < ActiveModel::Serializer
 
   attributes :id, :start_date, :end_date, :total_used,
-                  :total_saved,
+                  :total_saved, :no_days,
                   :house_info, :price
 
+  def no_days
+    (object.end_date - object.start_date).to_i
+  end
   def total_used
     object.total_gallons.to_s + ' gallons'
   end

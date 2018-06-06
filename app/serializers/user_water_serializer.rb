@@ -1,8 +1,8 @@
 class UserWaterSerializer < ActiveModel::Serializer
   attributes :id, :avg_daily_consumption, :first, :last, :email,
                   :avatar_url, :house_ids,
-                  :rank, :arrow, :last_updated,
-                  :personal_savings_to_date,
+                  :last_updated, :rank, :arrow,
+                  :personal_savings_to_date, :personal_usage_to_date,
                   :global_collective_savings,
                   :household, :neighborhood, :city, :county, :region, :country,
                   :household_daily_consumption,
@@ -27,6 +27,10 @@ class UserWaterSerializer < ActiveModel::Serializer
   end
   def country
     [object.country.id, object.country.name] if object.country
+  end
+
+  def personal_usage_to_date
+    object.total_gallons_logged.to_f.round(2).to_s + " gallons"
   end
 
   def personal_savings_to_date
@@ -81,15 +85,34 @@ class UserWaterSerializer < ActiveModel::Serializer
     object.avg_daily_water_consumption.round(2).to_s + " gals"
   end
 
-  def rank
-    object.user_water_ranking.rank
+  def arrow
+    ops__ = @instance_options[:region]
+    if ops__
+      object.user_water_rankings
+        .where(area_type: ops__[:area_type], area_id: ops__[:area_id])[0].arrow
+    else
+      nil
+    end
   end
 
-  def arrow
-    object.user_water_ranking.arrow
+  def rank
+    ops__ = @instance_options[:region]
+    if ops__
+      object.user_water_rankings
+        .where(area_type: ops__[:area_type], area_id: ops__[:area_id])[0].rank
+    else
+      nil
+    end
   end
+
   def last_updated
-    object.user_water_ranking.updated_at
+    ops__ = @instance_options[:region]
+    if ops__
+    object.user_water_rankings
+          .where(area_type: ops__[:area_type], area_id: ops__[:area_id])[0].updated_at
+    else
+      nil
+    end
   end
 
   def metric_sym

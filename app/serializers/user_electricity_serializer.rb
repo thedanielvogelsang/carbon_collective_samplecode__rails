@@ -1,8 +1,8 @@
 class UserElectricitySerializer < ActiveModel::Serializer
   attributes :id, :avg_daily_consumption, :first, :last, :email,
                   :avatar_url, :house_ids,
-                  :rank, :arrow, :last_updated,
-                  :personal_savings_to_date,
+                  :last_updated, :rank, :arrow,
+                  :personal_savings_to_date, :personal_usage_to_date,
                   :global_collective_savings,
                   :household, :neighborhood, :city, :county, :region, :country,
                   :household_daily_consumption,
@@ -31,6 +31,10 @@ class UserElectricitySerializer < ActiveModel::Serializer
 
   def personal_savings_to_date
     object.total_electricity_savings.to_f.round(2).to_s + " kwhs"
+  end
+
+  def personal_usage_to_date
+    object.total_kwhs_logged.to_f.round(2).to_s + " kwhs"
   end
 
   def global_collective_savings
@@ -78,16 +82,35 @@ class UserElectricitySerializer < ActiveModel::Serializer
   def avg_daily_consumption
     object.avg_daily_electricity_consumption.round(2).to_s + " kwhs"
   end
-  def rank
-    object.user_electricity_ranking.rank
-  end
 
   def arrow
-    object.user_electricity_ranking.arrow
+    ops__ = @instance_options[:region]
+    if ops__
+      object.user_electricity_rankings
+        .where(area_type: ops__[:area_type], area_id: ops__[:area_id])[0].arrow
+    else
+      nil
+    end
+  end
+
+  def rank
+    ops__ = @instance_options[:region]
+    if ops__
+      object.user_electricity_rankings
+        .where(area_type: ops__[:area_type], area_id: ops__[:area_id])[0].rank
+    else
+      nil
+    end
   end
 
   def last_updated
-    object.user_electricity_ranking.updated_at
+    ops__ = @instance_options[:region]
+    if ops__
+    object.user_electricity_rankings
+          .where(area_type: ops__[:area_type], area_id: ops__[:area_id])[0].updated_at
+    else
+      nil
+    end
   end
 
   def metric_sym

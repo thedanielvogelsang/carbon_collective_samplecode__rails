@@ -20,6 +20,11 @@ class Country < ApplicationRecord
   has_one :gas_ranking, :as => :area
   has_one :carbon_ranking, :as => :area
 
+  has_many :user_electricity_rankings, :as => :area
+  has_many :user_water_rankings, :as => :area
+  has_many :user_gas_rankings, :as => :area
+  has_many :user_carbon_rankings, :as => :area
+  
   def capitalize_name
     self.name = self.name.split(' ')
     .map{|w| w.downcase == 'of' || w.downcase == 'and' ? lowercase(w) : capitalize(w)}

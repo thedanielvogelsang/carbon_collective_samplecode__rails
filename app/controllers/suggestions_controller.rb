@@ -4,7 +4,7 @@ class SuggestionsController < ApplicationController
     user = User.find(params[:user][:id])
     mail = SuggestionMailer.send_suggestion(user, params[:email_body])
     mail.deliver_now
-    render json: {:success => "Message sent"}, status: 204
+    render json: {:success => "Message sent"}, status: 202
   end
 
   def region_expansion

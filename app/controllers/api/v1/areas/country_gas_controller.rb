@@ -14,10 +14,12 @@ class Api::V1::Areas::CountryGasController < ApplicationController
   end
 
   def users
-    if Country.exists?(params[:id])
-      render json: Country.find(params[:id])
+    id = params[:id]
+    if Country.exists?(id)
+      users = Country.find(id)
         .users.order(total_gas_savings: :desc)
-        .limit(10), each_serializer: UserGasSerializer
+          .limit(10)
+      render json: users,  each_serializer: UserGasSerializer, region: {area_type: "Country", area_id: id}
     else
       render json: {error: "Country not in database. try again!"}, status: 404
     end

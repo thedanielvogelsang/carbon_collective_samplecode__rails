@@ -5,6 +5,7 @@ class HousesController < ApplicationController
     @house = House.new(safe_params)
     if @house.save
       user.houses << @house
+      user.set_default_ranks
       render json: @house, status: 202
     else
       error = "house did not save, please try again"

@@ -16,6 +16,11 @@ class House < ApplicationRecord
   has_many :household_snapshots
   has_one :neighborhood, through: :address
 
+  has_many :user_electricity_rankings, :as => :area
+  has_many :user_water_rankings, :as => :area
+  has_many :user_gas_rankings, :as => :area
+  has_many :user_carbon_rankings, :as => :area
+  
   def bills
     self.electric_bills
   end

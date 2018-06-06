@@ -1,8 +1,11 @@
 class Api::V1::UsersController < ApplicationController
+
+  # development;
   def index
     render json: User.all.order(:id)
   end
 
+  #handy for development and used for user_settings, etc.
   def show
     if User.exists?(params[:id])
       render json: User.find(params[:id])
@@ -11,6 +14,7 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
+  #used for dashboard get fetch
   def resources
     if User.exists?(params[:id])
       render json: User.find(params[:id]), serializer: UserElectricitySerializer if params[:resource] == 'electricity'
