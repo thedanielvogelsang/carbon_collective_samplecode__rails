@@ -32,10 +32,10 @@ class User < ApplicationRecord
   has_many :regions, through: :cities
   has_many :countries, through: :regions
 
-  has_one :user_electricity_ranking, dependent: :destroy
-  has_one :user_water_ranking, dependent: :destroy
-  has_one :user_gas_ranking, dependent: :destroy
-  has_one :user_carbon_ranking, dependent: :destroy
+  has_many :user_electricity_rankings, dependent: :destroy
+  has_many :user_water_rankings, dependent: :destroy
+  has_many :user_gas_rankings, dependent: :destroy
+  has_many :user_carbon_rankings, dependent: :destroy
 
   validates :email, presence: true, uniqueness: true
   validates :generation, presence: true

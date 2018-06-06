@@ -33,10 +33,40 @@ module UserHelper
     end
 
   def set_default_ranks
-    UserElectricityRanking.create(user_id: self.id, rank: nil, arrow: nil)
-    UserWaterRanking.create(user_id: self.id, rank: nil, arrow: nil)
-    UserGasRanking.create(user_id: self.id, rank: nil, arrow: nil)
-    UserCarbonRanking.create(user_id: self.id, rank: nil, arrow: nil)
+    #Country
+    UserElectricityRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.country.id, area_type: "Country")
+    UserWaterRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.country.id, area_type: "Country")
+    UserGasRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.country.id, area_type: "Country")
+    UserCarbonRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.country.id, area_type: "Country")
+    #Region
+    UserElectricityRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.region.id, area_type: "Region")
+    UserWaterRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.region.id, area_type: "Region")
+    UserGasRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.region.id, area_type: "Region")
+    UserCarbonRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.region.id, area_type: "Region")
+
+    #County
+    UserElectricityRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.county.id, area_type: "County")
+    UserWaterRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.county.id, area_type: "Country")
+    UserGasRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.county.id, area_type: "Country")
+    UserCarbonRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.county.id, area_type: "County")
+
+    #City
+    UserElectricityRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.city.id, area_type: "City")
+    UserWaterRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.city.id, area_type: "City")
+    UserGasRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.city.id, area_type: "City")
+    UserCarbonRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.city.id, area_type: "City")
+
+    #Neighborhood
+    UserElectricityRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.neighborhood.id, area_type: "Neighborhood")
+    UserWaterRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.neighborhood.id, area_type: "Neighborhood")
+    UserGasRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.neighborhood.id, area_type: "Neighborhood")
+    UserCarbonRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.neighborhood.id, area_type: "Neighborhood")
+
+    #Household
+    UserElectricityRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.household.id, area_type: "House")
+    UserWaterRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.household.id, area_type: "House")
+    UserGasRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.household.id, area_type: "House")
+    UserCarbonRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.household.id, area_type: "House")
   end
 
   def confirm_accounts
