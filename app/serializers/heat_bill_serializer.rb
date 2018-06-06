@@ -12,7 +12,7 @@ class HeatBillSerializer < ActiveModel::Serializer
     object.gas_saved.round(2).to_s + ' therms'
   end
   def carbon_impact
-    therms_to_carbon(object.gas_saved).round(3).to_s + " lbs co2"
+    therms_to_carbon(object.total_therms).round(2).to_s + " lbs co2"
   end
   def house_info
     object.house
