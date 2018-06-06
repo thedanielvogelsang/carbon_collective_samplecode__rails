@@ -13,28 +13,28 @@ module UserCarbonHelper
   end
 
 # check
-  def household_total_carbon_savings
-    household ? household.total_carbon_savings_to_date : nil
+  def household_daily_carbon_consumption
+    household ? household.average_daily_carbon_consumption_per_resident : nil
   end
 
-  def neighborhood_total_carbon_savings
-    household.address.neighborhood ? household.address.neighborhood.total_carbon_saved : nil
+  def neighborhood_daily_carbon_consumption
+    household.address.neighborhood ? household.address.neighborhood.avg_daily_carbon_consumption : nil
   end
 
-  def city_total_carbon_savings
-    household ? household.address.city.total_carbon_saved : nil
+  def city_daily_carbon_consumption
+    household ? household.address.city.avg_daily_carbon_consumption : nil
   end
 
-  def county_total_carbon_savings
-    household ? household.address.county.total_carbon_saved : nil
+  def county_daily_carbon_consumption
+    household ? household.address.county.avg_daily_carbon_consumption : nil
   end
 
-  def region_total_carbon_savings
-    household ? household.address.city.region.total_carbon_saved : nil
+  def region_daily_carbon_consumption
+    household ? household.address.city.region.avg_daily_carbon_consumption : nil
   end
 
-  def country_total_carbon_savings
-    household ? household.address.city.region.country.total_carbon_saved : nil
+  def country_daily_carbon_consumption
+    household ? household.address.city.region.country.avg_daily_carbon_consumption : nil
   end
 
 end
