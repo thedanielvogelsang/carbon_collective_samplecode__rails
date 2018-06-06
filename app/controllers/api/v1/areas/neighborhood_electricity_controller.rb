@@ -24,9 +24,9 @@ class Api::V1::Areas::NeighborhoodElectricityController < ApplicationController
 
   def users
     if Neighborhood.exists?(params[:id])
-      render json: Neighborhood.find(params[:id])
+      users = Neighborhood.find(params[:id])
         .users.order(total_electricity_savings: :desc)
-        .limit(10), each_serializer: UserElectricitySerializer
+     render json: users, each_serializer: UserElectricitySerializer, region: {area_type: "Neighborhood", area_id: params[:id]}
     else
       render json: {error: "neighborhood not in database. try again!"}, status: 404
     end

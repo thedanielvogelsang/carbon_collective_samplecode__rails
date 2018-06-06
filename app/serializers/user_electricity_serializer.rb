@@ -79,8 +79,22 @@ class UserElectricitySerializer < ActiveModel::Serializer
     object.avg_daily_electricity_consumption.round(2).to_s + " kwhs"
   end
 
+  def arrow
+    ops__ = @instance_options[:region]
+    object.user_electricity_rankings
+      .where(area_type: ops__[:area_type], area_id: ops__[:area_id])[0].arrow
+  end
+
+  def rank
+    ops__ = @instance_options[:region]
+    object.user_electricity_rankings
+      .where(area_type: ops__[:area_type], area_id: ops__[:area_id])[0].rank
+  end
+
   def last_updated
-    object.user_electricity_ranking.updated_at
+    ops__ = @instance_options[:region]
+    object.user_electricity_rankings
+          .where(area_type: ops__[:area_type], area_id: ops__[:area_id])[0].updated_at
   end
 
   def metric_sym

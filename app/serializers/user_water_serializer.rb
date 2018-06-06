@@ -80,6 +80,18 @@ class UserWaterSerializer < ActiveModel::Serializer
   def avg_daily_consumption
     object.avg_daily_water_consumption.round(2).to_s + " gals"
   end
+  
+  def arrow
+    ops__ = @instance_options[:region]
+    object.user_gas_rankings
+      .where(area_type: ops__[:area_type], area_id: ops__[:area_id]).arrow
+  end
+
+  def rank
+    ops__ = @instance_options[:region]
+    object.user_gas_rankings
+      .where(area_type: ops__[:area_type], area_id: ops__[:area_id]).rank
+  end
 
   def last_updated
     object.user_water_ranking.updated_at

@@ -1,7 +1,7 @@
 class UserGasSerializer < ActiveModel::Serializer
   attributes :id, :avg_daily_consumption, :first, :last, :email,
                   :avatar_url, :house_ids,
-                  :last_updated,
+                  :rank, :arrow, :last_updated,
                   :personal_usage_to_date,
                   :global_collective_savings,
                   :household, :neighborhood, :city, :county, :region, :country,
@@ -84,9 +84,20 @@ class UserGasSerializer < ActiveModel::Serializer
   end
 
   def last_updated
-    object.user_gas_ranking.updated_at
+    object.user_gas_rankings.first.updated_at
   end
 
+  def arrow
+    ops__ = @instance_options[:region]
+    object.user_gas_rankings
+      .where(area_type: ops__[:area_type], area_id: ops__[:area_id]).arrow
+  end
+
+  def rank
+    ops__ = @instance_options[:region]
+    object.user_gas_rankings
+      .where(area_type: ops__[:area_type], area_id: ops__[:area_id]).rank
+  end
   def metric_sym
     'therms'
   end
