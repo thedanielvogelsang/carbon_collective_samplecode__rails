@@ -11,28 +11,28 @@ module UserElectricityHelper
   end
 
 # check
-  def household_total_electricity_savings
-    household ? household.total_electricity_savings_to_date : nil
+  def household_daily_electricity_consumption
+    household ? household.average_daily_electricity_consumption_per_resident : nil
   end
 
-  def neighborhood_total_electricity_savings
-    household.address.neighborhood ? household.address.neighborhood.total_electricity_saved : nil
+  def neighborhood_daily_electricity_consumption
+    household.address.neighborhood ? household.address.neighborhood.avg_daily_electricity_consumed_per_user : nil
   end
 
-  def city_total_electricity_savings
-    household ? household.address.city.total_electricity_saved : nil
+  def city_daily_electricity_consumption
+    household ? household.address.city.avg_daily_electricity_consumed_per_user : nil
   end
 
-  def county_total_electricity_savings
-    household ? household.address.county.total_electricity_saved : nil
+  def county_daily_electricity_consumption
+    household ? household.address.county.avg_daily_electricity_consumed_per_user : nil
   end
 
-  def region_total_electricity_savings
-    household ? household.address.city.region.total_electricity_saved : nil
+  def region_daily_electricity_consumption
+    household ? household.address.city.region.avg_daily_electricity_consumed_per_user : nil
   end
 
-  def country_total_electricity_savings
-    household ? household.address.city.region.country.total_electricity_saved : nil
+  def country_daily_electricity_consumption
+    household ? household.address.city.region.country.avg_daily_electricity_consumed_per_user : nil
   end
 
 end

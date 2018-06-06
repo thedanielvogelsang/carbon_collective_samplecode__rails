@@ -10,28 +10,28 @@ module UserGasHelper
   end
 
 # check
-  def household_total_gas_savings
-    household ? household.total_gas_savings_to_date : nil
+  def household_daily_gas_consumption
+    household ? household.average_daily_gas_consumption_per_resident : nil
   end
 
-  def neighborhood_total_gas_savings
-    household.address.neighborhood ? household.address.neighborhood.total_gas_saved : nil
+  def neighborhood_daily_gas_consumption
+    household.address.neighborhood ? household.address.neighborhood.avg_daily_gas_consumed_per_user : nil
   end
 
-  def city_total_gas_savings
-    household ? household.address.city.total_gas_saved : nil
+  def city_daily_gas_consumption
+    household ? household.address.city.avg_daily_gas_consumed_per_user : nil
   end
 
-  def county_total_gas_savings
-    household ? household.address.county.total_gas_saved : nil
+  def county_daily_gas_consumption
+    household ? household.address.county.avg_daily_gas_consumed_per_user : nil
   end
 
-  def region_total_gas_savings
-    household ? household.address.city.region.total_gas_saved : nil
+  def region_daily_gas_consumption
+    household ? household.address.city.region.avg_daily_gas_consumed_per_user : nil
   end
 
-  def country_total_gas_savings
-    household ? household.address.city.region.country.total_gas_saved : nil
+  def country_daily_gas_consumption
+    household ? household.address.city.region.country.avg_daily_gas_consumed_per_user : nil
   end
 
 end

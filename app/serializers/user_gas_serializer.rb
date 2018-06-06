@@ -1,16 +1,16 @@
 class UserGasSerializer < ActiveModel::Serializer
-  attributes :id, :total_savings, :first, :last, :email,
+  attributes :id, :avg_daily_consumption, :first, :last, :email,
                   :avatar_url, :house_ids,
                   :rank, :arrow, :last_updated,
-                  :personal_savings_to_date,
+                  :personal_usage_to_date,
                   :global_collective_savings,
                   :household, :neighborhood, :city, :county, :region, :country,
-                  :household_total_savings,
-                  :neighborhood_total_savings,
-                  :city_total_savings,
-                  :county_total_savings,
-                  :region_total_savings,
-                  :country_total_savings,
+                  :household_daily_consumption,
+                  :neighborhood_daily_consumption,
+                  :city_daily_consumption,
+                  :county_daily_consumption,
+                  :region_daily_consumption,
+                  :country_daily_consumption,
                   :metric_sym
 
   def neighborhood
@@ -33,8 +33,8 @@ class UserGasSerializer < ActiveModel::Serializer
     object.houses.map{|h| h.id} if object.houses.length > 0
   end
 
-  def personal_savings_to_date
-    object.total_gas_savings.to_f.round(2).to_s + " therms"
+  def personal_usage_to_date
+    object.total_therms_logged.to_f.round(2).to_s + " therms"
   end
 
   def global_collective_savings
@@ -61,26 +61,26 @@ class UserGasSerializer < ActiveModel::Serializer
     object.url
   end
 
-  def household_total_savings
-    object.household_total_gas_savings.to_f.round(2).to_s if !object.houses.empty?
+  def household_daily_consumption
+    object.household_daily_gas_consumption.to_f.round(2).to_s if !object.houses.empty?
   end
-  def neighborhood_total_savings
-    object.neighborhood_total_gas_savings.to_f.round(2).to_s if !object.houses.empty?
+  def neighborhood_daily_consumption
+    object.neighborhood_daily_gas_consumption.to_f.round(2).to_s if !object.houses.empty?
   end
-  def city_total_savings
-    object.city_total_gas_savings.to_f.round(2).to_s if !object.houses.empty?
+  def city_daily_consumption
+    object.city_daily_gas_consumption.to_f.round(2).to_s if !object.houses.empty?
   end
-  def county_total_savings 
-    object.county_total_gas_savings.to_f.round(2).to_s if !object.houses.empty?
+  def county_daily_consumption
+    object.county_daily_gas_consumption.to_f.round(2).to_s if !object.houses.empty?
   end
-  def region_total_savings
-    object.region_total_gas_savings.to_f.round(2).to_s if !object.houses.empty?
+  def region_daily_consumption
+    object.region_daily_gas_consumption.to_f.round(2).to_s if !object.houses.empty?
   end
-  def country_total_savings
-    object.country_total_gas_savings.to_f.round(2).to_s if !object.houses.empty?
+  def country_daily_consumption
+    object.country_daily_gas_consumption.to_f.round(2).to_s if !object.houses.empty?
   end
-  def total_savings
-    object.total_gas_savings.round(2).to_s + " therms"
+  def avg_daily_consumption
+    object.avg_daily_gas_consumption.round(2).to_s + " therms"
   end
   def rank
     object.user_gas_ranking.rank

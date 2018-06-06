@@ -12,7 +12,7 @@ class ElectricBillSerializer < ActiveModel::Serializer
     object.electricity_saved.round(2).to_s + ' kwhs'
   end
   def carbon_impact
-    kwhs_to_carbon(object.electricity_saved).round(3).to_s + " lbs co2"
+    kwhs_to_carbon(object.total_kwhs).round(2).to_s + " lbs co2"
   end
   def house_info
     object.house

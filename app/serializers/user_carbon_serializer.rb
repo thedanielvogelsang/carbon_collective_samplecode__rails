@@ -2,12 +2,12 @@ class UserCarbonSerializer < ActiveModel::Serializer
   attributes :id, :first, :last, :avatar_url, :global_collective_savings,
                   :personal_savings_to_date,
                   :household, :neighborhood, :city, :county, :region, :country,
-                  :household_total_savings, :neighborhood_total_savings,
-                  :city_total_savings, :county_total_savings, :region_total_savings,
-                  :country_total_savings, :total_savings,
+                  :household_daily_consumption, :neighborhood_daily_consumption,
+                  :city_daily_consumption, :county_daily_consumption, :region_daily_consumption,
+                  :country_daily_consumption, :avg_daily_consumption,
                   :metric_sym,
 
-  def total_savings
+  def avg_daily_consumption
     object.total_carbon_savings.to_f.round(2).to_s + " lbs"
   end
   def neighborhood
@@ -38,28 +38,28 @@ class UserCarbonSerializer < ActiveModel::Serializer
     Global.first.total_carbon_saved.to_f.round(2).to_s + " lbs"
   end
 
-  def household_total_savings
+  def household_daily_consumption
     object.household.total_carbon_savings_to_date.round(3) if !object.houses.empty?
   end
 
-  def neighborhood_total_savings
-    object.neighborhood.carbon_ranking.total_carbon_saved.round(3) if !object.houses.empty?
+  def neighborhood_daily_consumption
+    object.neighborhood.carbon_ranking.avg_daily_carbon_consumed_per_user.round(3) if !object.houses.empty?
   end
 
-  def city_total_savings
-    object.city.carbon_ranking.total_carbon_saved.round(3) if !object.houses.empty?
+  def city_daily_consumption
+    object.city.carbon_ranking.avg_daily_carbon_consumed_per_user.round(3) if !object.houses.empty?
   end
 
-  def county_total_savings
-    object.county.carbon_ranking.total_carbon_saved.round(3) if !object.houses.empty?
+  def county_daily_consumption
+    object.county.carbon_ranking.avg_daily_carbon_consumed_per_user.round(3) if !object.houses.empty?
   end
 
-  def region_total_savings
-    object.region.carbon_ranking.total_carbon_saved.round(3) if !object.houses.empty?
+  def region_daily_consumption
+    object.region.carbon_ranking.avg_daily_carbon_consumed_per_user.round(3) if !object.houses.empty?
   end
 
-  def country_total_savings
-    object.country.carbon_ranking.total_carbon_saved.round(3) if !object.houses.empty?
+  def country_daily_consumption
+    object.country.carbon_ranking.avg_daily_carbon_consumed_per_user.round(3) if !object.houses.empty?
   end
   def metric_sym
     'lbsCO2'
