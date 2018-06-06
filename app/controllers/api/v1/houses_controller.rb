@@ -9,6 +9,7 @@ class Api::V1::HousesController < ApplicationController
       render json: House.find(params[:id]), serializer: HouseWaterSerializer if params[:resource] == 'water'
       render json: House.find(params[:id]), serializer: HouseGasSerializer if params[:resource] == 'gas'
       render json: House.find(params[:id]), serializer: HouseCarbonSerializer if params[:resource] == 'carbon'
+      render json: House.find(params[:id]), serializer: HouseElectricitySerializer if params[:resource] == nil
     else
       render json: {error: "House does not exist"}, status: 404
     end

@@ -5,12 +5,12 @@ class UserGasSerializer < ActiveModel::Serializer
                   :personal_usage_to_date,
                   :global_collective_savings,
                   :household, :neighborhood, :city, :county, :region, :country,
-                  :household_average_usage,
-                  :neighborhood_average_usage,
-                  :city_average_usage,
-                  :county_average_usage,
-                  :region_average_usage,
-                  :country_average_usage,
+                  :household_daily_consumption,
+                  :neighborhood_daily_consumption,
+                  :city_daily_consumption,
+                  :county_daily_consumption,
+                  :region_daily_consumption,
+                  :country_daily_consumption,
                   :metric_sym
 
   def neighborhood
@@ -61,22 +61,22 @@ class UserGasSerializer < ActiveModel::Serializer
     object.url
   end
 
-  def household_average_usage
+  def household_daily_consumption
     object.household_daily_gas_consumption.to_f.round(2).to_s if !object.houses.empty?
   end
-  def neighborhood_average_usage
+  def neighborhood_daily_consumption
     object.neighborhood_daily_gas_consumption.to_f.round(2).to_s if !object.houses.empty?
   end
-  def city_average_usage
+  def city_daily_consumption
     object.city_daily_gas_consumption.to_f.round(2).to_s if !object.houses.empty?
   end
-  def county_average_usage
+  def county_daily_consumption
     object.county_daily_gas_consumption.to_f.round(2).to_s if !object.houses.empty?
   end
-  def region_average_usage
+  def region_daily_consumption
     object.region_daily_gas_consumption.to_f.round(2).to_s if !object.houses.empty?
   end
-  def country_average_usage
+  def country_daily_consumption
     object.country_daily_gas_consumption.to_f.round(2).to_s if !object.houses.empty?
   end
   def avg_daily_consumption
