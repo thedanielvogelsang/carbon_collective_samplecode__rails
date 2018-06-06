@@ -29,6 +29,7 @@ Rails.application.routes.draw do
           put '/electricity', to: 'users/users_electricity#update'
           put '/water', to: 'users/users_water#update'
           put '/gas', to: 'users/users_gas#update'
+          put '/carbon', to: 'users/users_carbon#update'
           get '/bills/electricity', to: 'users/users_electric_bills#index'
           get '/bills/water', to: 'users/users_water_bills#index'
           get '/bills/gas', to: 'users/users_gas_bills#index'

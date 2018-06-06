@@ -22,11 +22,12 @@ class Api::V1::Areas::CityElectricityController < ApplicationController
   end
 
   def users
-    if City.exists?(params[:id])
-      users = City.find(params[:id] )
+    id = params[:id]
+    if City.exists?(id)
+      users = City.find(id)
         .users.order(total_electricity_savings: :desc)
-        .limit(10)
-      render json: users, each_serializer: UserElectricitySerializer
+          .limit(10)
+      render json: users,  each_serializer: UserElectricitySerializer, region: {area_type: "City", area_id: id}
     else
       render json: {error: "City not in database. try again!"}, status: 404
     end

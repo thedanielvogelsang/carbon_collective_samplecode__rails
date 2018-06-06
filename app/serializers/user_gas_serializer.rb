@@ -2,7 +2,7 @@ class UserGasSerializer < ActiveModel::Serializer
   attributes :id, :avg_daily_consumption, :first, :last, :email,
                   :avatar_url, :house_ids,
                   :rank, :arrow, :last_updated,
-                  :personal_usage_to_date,
+                  :personal_usage_to_date, :personal_savings_to_date,
                   :global_collective_savings,
                   :household, :neighborhood, :city, :county, :region, :country,
                   :household_daily_consumption,
@@ -35,6 +35,10 @@ class UserGasSerializer < ActiveModel::Serializer
 
   def personal_usage_to_date
     object.total_therms_logged.to_f.round(2).to_s + " therms"
+  end
+
+  def personal_savings_to_date
+    object.total_gas_savings.to_f.round(2).to_s + " therms"
   end
 
   def global_collective_savings
@@ -83,23 +87,34 @@ class UserGasSerializer < ActiveModel::Serializer
     object.avg_daily_gas_consumption.round(2).to_s + " therms"
   end
 
-  def last_updated
-    ops__ = @instance_options[:region]
-    object.user_gas_rankings
-      .where(area_type: ops__[:area_type], area_id: ops__[:area_id])
-      .updated_at
-  end
-
   def arrow
     ops__ = @instance_options[:region]
-    object.user_gas_rankings
-      .where(area_type: ops__[:area_type], area_id: ops__[:area_id]).arrow
+    if ops__
+      object.user_gas_rankings
+        .where(area_type: ops__[:area_type], area_id: ops__[:area_id])[0].arrow
+    else
+      nil
+    end
   end
 
   def rank
     ops__ = @instance_options[:region]
+    if ops__
+      object.user_gas_rankings
+        .where(area_type: ops__[:area_type], area_id: ops__[:area_id])[0].rank
+    else
+      nil
+    end
+  end
+
+  def last_updated
+    ops__ = @instance_options[:region]
+    if ops__
     object.user_gas_rankings
-      .where(area_type: ops__[:area_type], area_id: ops__[:area_id]).rank
+          .where(area_type: ops__[:area_type], area_id: ops__[:area_id])[0].updated_at
+    else
+      nil
+    end
   end
   def metric_sym
     'therms'

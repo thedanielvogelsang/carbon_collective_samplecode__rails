@@ -1,6 +1,6 @@
 class CityCarbonSerializer < ActiveModel::Serializer
-  attributes :id, :name, :parent, :total_saved, :avg_daily_consumed_per_user,
-                  :metric_sym, :metric_name, :rank, :arrow
+  attributes :id, :name, :total_saved, :avg_daily_consumed_per_user,
+                  :metric_sym, :metric_name, :rank, :arrow, :parent
 
     def region
       object.region.name
@@ -20,6 +20,10 @@ class CityCarbonSerializer < ActiveModel::Serializer
 
     def avg_daily_consumed_per_user
       object.carbon_ranking.avg_daily_carbon_consumed_per_user.round(4)
+    end
+
+    def parent
+      object.region.name
     end
 
     def metric_name

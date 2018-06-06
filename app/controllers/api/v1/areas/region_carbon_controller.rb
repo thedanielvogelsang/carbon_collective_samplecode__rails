@@ -22,10 +22,12 @@ class Api::V1::Areas::RegionCarbonController < ApplicationController
   end
 
   def users
-    if Region.exists?(params[:id])
-      render json: Region.find(params[:id])
+    id = params[:id]
+    if Region.exists?(id)
+      users = Region.find(id)
         .users.order(total_carbon_savings: :desc)
-          .limit(10), each_serializer: UserCarbonSerializer
+          .limit(10)
+      render json: users,  each_serializer: UserCarbonSerializer, region: {area_type: "Region", area_id: id}
     else
       render json: {error: "Region not in database. try again!"}, status: 404
     end

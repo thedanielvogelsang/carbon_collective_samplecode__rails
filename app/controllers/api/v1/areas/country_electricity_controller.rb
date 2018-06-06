@@ -17,10 +17,12 @@ class Api::V1::Areas::CountryElectricityController < ApplicationController
 
   # used for userboard for each regional area
   def users
-    if Country.exists?(params[:id])
-      render json: Country.find(params[:id])
-          .users.order(total_electricity_savings: :desc)
-          .limit(10), each_serializer: UserElectricitySerializer
+    id = params[:id]
+    if Country.exists?(id)
+      users = Country.find(id)
+        .users.order(total_electricity_savings: :desc)
+          .limit(10)
+      render json: users,  each_serializer: UserElectricitySerializer, region: {area_type: "Country", area_id: id}
     else
       render json: {error: "Country not in database. try again!"}, status: 404
     end

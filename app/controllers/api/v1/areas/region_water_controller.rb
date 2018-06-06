@@ -27,10 +27,12 @@ class Api::V1::Areas::RegionWaterController < ApplicationController
 
   # used for userboard for each regional area
   def users
-    if Region.exists?(params[:id])
-      render json: Region.find(params[:id])
+    id = params[:id]
+    if Region.exists?(id)
+      users = Region.find(id)
         .users.order(total_water_savings: :desc)
-          .limit(10), each_serializer: UserWaterSerializer
+          .limit(10)
+      render json: users,  each_serializer: UserWaterSerializer, region: {area_type: "Region", area_id: id}
     else
       render json: {error: "Region not in database. try again!"}, status: 404
     end
