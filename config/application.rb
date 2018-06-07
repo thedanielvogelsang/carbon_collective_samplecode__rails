@@ -12,8 +12,9 @@ module CarbonCollective
     config.load_defaults 5.1
     config.middleware.insert_before 0, Rack::Cors do
           allow do
-            origins '*'
-            resource '*', :headers => :any, :methods => [:get, :post, :options, :put, :delete]
+            origins 'https://carbon-collective.github.io/'
+            resource '*',
+              :headers => :any, :methods => [:get, :post, :options, :put, :delete]
           end
         end
     # Settings in config/environments/* take precedence over those specified here.
