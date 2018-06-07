@@ -12,7 +12,7 @@ module CarbonCollective
     config.load_defaults 5.1
     config.middleware.insert_before 0, Rack::Cors do
           allow do
-            origins 'https://carbon-collective.github.io/'
+            origins 'https://carbon-collective.github.io'
             resource '*',
               :headers => :any, :methods => [:get, :post, :options, :put, :delete]
           end
