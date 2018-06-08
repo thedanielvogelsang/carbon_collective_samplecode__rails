@@ -42,6 +42,6 @@ class Api::V1::Areas::CountyElectricityController < ApplicationController
   private
 
   def safe_params
-    params.require("countries").permit(:rank, :arrow)
+    params.require("counties").permit(:rank, :arrow)
   end
 end
