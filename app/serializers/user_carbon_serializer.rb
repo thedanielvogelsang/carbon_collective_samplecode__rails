@@ -1,18 +1,26 @@
 class UserCarbonSerializer < ActiveModel::Serializer
   attributes :id, :first, :last, :avatar_url, :global_collective_savings,
                   :personal_savings_to_date, :personal_usage_to_date,
-                  :arrow, :rank, :last_updated,
+                  :arrow, :rank, :last_updated, :avg_daily_footprint,
                   :household, :neighborhood, :city, :county, :region, :country,
                   :household_daily_consumption, :neighborhood_daily_consumption,
                   :city_daily_consumption, :county_daily_consumption, :region_daily_consumption,
                   :country_daily_consumption, :avg_daily_consumption,
                   :metric_sym,
 
+  def avg_daily_footprint
+    object.avg_daily_carbon_consumption.to_f.round(2).to_s + " lbs"
+  end
+
   def avg_daily_consumption
-    object.total_carbon_savings.to_f.round(2).to_s + " lbs"
+    object.avg_daily_carbon_consumption.to_f.round(2).to_s + " lbs"
   end
   def neighborhood
     [object.neighborhood.id, object.neighborhood.name] if object.neighborhood
+  end
+
+  def total_daily_footprint
+    object.total_pounds_logged.round(2).to_s + " lbs"
   end
   def city
     [object.city.id, object.city.name] if object.city

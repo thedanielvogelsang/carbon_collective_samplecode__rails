@@ -3,7 +3,7 @@ class UserElectricitySerializer < ActiveModel::Serializer
                   :avatar_url, :house_ids,
                   :last_updated, :rank, :arrow,
                   :personal_savings_to_date, :personal_usage_to_date,
-                  :global_collective_savings,
+                  :global_collective_savings, :avg_daily_footprint,
                   :household, :neighborhood, :city, :county, :region, :country,
                   :household_daily_consumption,
                   :neighborhood_daily_consumption,
@@ -13,6 +13,9 @@ class UserElectricitySerializer < ActiveModel::Serializer
                   :country_daily_consumption,
                   :metric_sym
 
+  def avg_daily_footprint
+    object.avg_daily_carbon_consumption.round(2).to_s + " lbs"
+  end
   def neighborhood
     [object.neighborhood.id, object.neighborhood.name] if object.neighborhood
   end

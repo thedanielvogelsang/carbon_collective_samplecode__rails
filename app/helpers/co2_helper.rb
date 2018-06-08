@@ -9,6 +9,8 @@ module Co2Helper
   end
 
   def combine_average_use(kwh_avg, therm_avg)
+    kwh_avg = 0 if kwh_avg.to_f.nan?
+    therm_avg = 0 if therm_avg.to_f.nan?
     return ((kwh_avg * 0.000744) + (therm_avg * 0.0053))
   end
 end
