@@ -9,7 +9,7 @@ class UserCarbonSerializer < ActiveModel::Serializer
                   :metric_sym,
 
   def avg_daily_footprint
-    object.avg_daily_carbon_consumption.to_f.round(2).to_s + " lbs"
+    object.avg_daily_carbon_consumption.to_f.round(2).to_s + " lbs" if object.avg_daily_carbon_consumption
   end
 
   def avg_daily_consumption

@@ -14,7 +14,7 @@ class UserElectricitySerializer < ActiveModel::Serializer
                   :metric_sym
 
   def avg_daily_footprint
-    object.avg_daily_carbon_consumption.round(2).to_s + " lbs"
+    object.avg_daily_carbon_consumption.round(2).to_s + " lbs" if object.avg_daily_carbon_consumption
   end
   def neighborhood
     [object.neighborhood.id, object.neighborhood.name] if object.neighborhood
