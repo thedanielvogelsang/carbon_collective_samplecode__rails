@@ -25,7 +25,7 @@ module HouseHelper
   ## used for snapshots -- pending api use ##
   # 0.5 ms
   def average_daily_electricity_consumption_per_resident
-    self.users.map{|u| u.avg_daily_electricity_consumption}.flatten.reject(&:nan?)
+    self.users.map{|u| u.avg_daily_electricity_consumption}.compact.flatten.reject(&:nan?)
               .reduce(0){|s,n| s + n} / self.no_residents
   end
 
@@ -35,7 +35,7 @@ module HouseHelper
   end
 
   def average_daily_water_consumption_per_resident
-    self.users.map{|u| u.avg_daily_water_consumption}.flatten.reject(&:nan?)
+    self.users.map{|u| u.avg_daily_water_consumption}.compact.flatten.reject(&:nan?)
               .reduce(0){|s,n| s + n} / self.no_residents
   end
 
@@ -45,7 +45,7 @@ module HouseHelper
   end
 
   def average_daily_gas_consumption_per_resident
-    self.users.map{|u| u.avg_daily_gas_consumption}.flatten.reject(&:nan?)
+    self.users.map{|u| u.avg_daily_gas_consumption}.compact.flatten.reject(&:nan?)
               .reduce(0){|s,n| s + n} / self.no_residents
   end
 
@@ -55,7 +55,7 @@ module HouseHelper
   end
 
   def average_daily_carbon_consumption_per_resident
-    self.users.map{|u| u.avg_daily_carbon_consumption}.flatten.reject(&:nan?)
+    self.users.map{|u| u.avg_daily_carbon_consumption}.compact.flatten.reject(&:nan?)
               .reduce(0){|s,n| s + n} / self.no_residents
   end
 
