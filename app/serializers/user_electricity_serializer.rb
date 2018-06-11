@@ -83,7 +83,8 @@ class UserElectricitySerializer < ActiveModel::Serializer
     object.country_daily_electricity_consumption.to_f.round(2).to_s if !object.houses.empty?
   end
   def avg_daily_consumption
-    object.avg_daily_electricity_consumption.round(2).to_s + " kwhs"
+    avg = object.avg_daily_electricity_consumption.to_f
+    avg.nan? ? "0 kwhs" : avg.round(2).to_s + " kwhs"
   end
 
   def arrow

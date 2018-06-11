@@ -86,7 +86,8 @@ class UserGasSerializer < ActiveModel::Serializer
     object.country_daily_gas_consumption.to_f.round(2).to_s if !object.houses.empty?
   end
   def avg_daily_consumption
-    object.avg_daily_gas_consumption.round(2).to_s + " therms"
+    avg = object.avg_daily_gas_consumption.to_f
+    avg.nan? ? "0 therms" : avg.round(2).to_s + " therms"
   end
 
   def arrow

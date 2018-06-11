@@ -86,7 +86,8 @@ class UserWaterSerializer < ActiveModel::Serializer
   end
 
   def avg_daily_consumption
-    object.avg_daily_water_consumption.round(2).to_s + " gals"
+    avg = object.avg_daily_water_consumption.to_f
+    avg.nan? ? "0 gals" : avg.round(2).to_s + " gals"
   end
 
   def arrow
