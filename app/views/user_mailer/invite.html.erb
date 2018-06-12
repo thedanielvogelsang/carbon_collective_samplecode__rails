@@ -2,10 +2,31 @@
 <html>
   <head>
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <style>
+        body {background-color: powderblue;}
+        h1 {color: black;}
+        h3 {color: black;}
+        a {color: navy; margin-bottom: 30px; padding-left: 20px}
+        p {color: #15c;}
+        .native-msg{margin: 10px 0px 30px 20px;}
+        .personal-msg{width: 40%; border-top: 2px dotted black; margin-left: 40px;}
+    </style>
   </head>
   <body>
     <h1> Hello!</h1>
-    <h3>Your friend <%= @user.first %> <%= @user.last %> has invited you to join Carbon Collective! To begin your registration click the URL below.</h3>
-    <%= invite_users_url(:id => @new.id, :token => @user.invite_token) %>
+    <div class="native-msg">
+      <h3>Your friend <%= @user.first %> <%= @user.last %> has invited you to join Carbon Collective! To begin your registration click the URL below.</h3>
+
+      <%= invite_users_url(:id => @new.id, :token => @user.invite_token) %>
+    </div>
+    <% if @message %>
+    <div class="personal-msg">
+      <h3>A message from <%= @user.first %>: </h3>
+      <p><%= @message %></p>
+    </div>
+    <% end %>
+    <br/>
+    <h2>Sincerely</h2>
+    <h2>The Carbon Collective</h2>
   </body>
 </html>

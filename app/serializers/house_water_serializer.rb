@@ -11,7 +11,7 @@ class HouseWaterSerializer < ActiveModel::Serializer
     object.total_water_consumption_to_date.round(1).to_s + " gallons"
   end
   def total_savings_to_date
-    object.total_water_savings_to_date
+    object.total_water_savings_to_date.round(2)
   end
   def avg_daily_consumption_per_resident
     (object.average_daily_water_consumption_per_resident).round(2) if object.average_daily_water_consumption_per_resident != nil

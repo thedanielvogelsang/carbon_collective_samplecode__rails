@@ -3,9 +3,12 @@ class HeatBill < ApplicationRecord
 
   belongs_to :house
 
+
   validates_presence_of :start_date,
                         :end_date,
                         :total_therms
+
+  validate :confirm_valid_dates
 
   after_validation :gas_saved?,
                    :update_users_savings
@@ -57,5 +60,19 @@ class HeatBill < ApplicationRecord
      u.total_carbon_savings += therms_to_carbon(gas_saved)
      u.save
    end
+ end
+
+ def confirm_valid_dates
+   start_ = self.start_date
+   end_ = self.end_date
+   past_bills = HeatBill.where(house_id: self.house_id)
+   overlaps = past_bills.select do |b|
+     check_overlap(start_, end_, b.start_date, b.end_date)
+   end
+   overlaps.empty? ? true : errors.add(:start_date, "start or end date overlaps with another bill")
+ end
+
+ def check_overlap(a_st, a_end, b_st, b_end)
+   (a_st < b_end) && (a_end > b_st)
  end
 end

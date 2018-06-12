@@ -4,8 +4,9 @@ class UserMailer < ApplicationMailer
     mail(:to => "#{user.first + ' ' + user.last} <#{user.email}>", :subject => "Registration Confirmation")
   end
 
-  def invite(user, email_hash, prev_gen)
+  def invite(user, email_hash, message, prev_gen)
     @user = user
+    @message = message
     ct = email_hash.keys.length - 1
     (0..ct).each do |e|
       e = e.to_s

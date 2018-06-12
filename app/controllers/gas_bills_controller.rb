@@ -5,7 +5,7 @@ class GasBillsController < ApplicationController
     if bill.save
       render json: bill, status: 201
     else
-      error = "Something went wrong, try again"
+      error = bill.errors.messages.first[1][0]
       render :json => {errors: error}, status: 401
     end
   end

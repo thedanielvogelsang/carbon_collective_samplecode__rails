@@ -31,7 +31,7 @@ class SessionsController < ApplicationController
           error = 'Password/Email did not match. Please try again'
           format.json {render :json => {:errors => error}, :status => 401 }
         else
-          error = 'Email not found. Please try again'
+          error = 'Email not found. Please try again. If you havent made a CarbonCollective account yet, remember youll need an invite!'
           format.json {render :json => {:errors => error}, :status => 401 }
         end
       end
