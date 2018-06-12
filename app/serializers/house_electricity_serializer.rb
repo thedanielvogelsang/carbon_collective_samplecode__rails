@@ -8,16 +8,16 @@ class HouseElectricitySerializer < ActiveModel::Serializer
                   :avg_total_savings_per_resident,
 
   def total_consumption_to_date
-    object.total_electricity_consumption_to_date.to_s + " kwhs"
+    object.total_electricity_consumption_to_date.round(2).to_s + " kwhs" if object.total_electricity_consumption_to_date
   end
   def total_savings_to_date
-    object.total_electricity_savings_to_date
+    object.total_electricity_savings_to_date.round(2) if object.total_electricity_savings_to_date
   end
   def avg_daily_consumption_per_resident
     (object.average_daily_electricity_consumption_per_resident).round(2) if object.average_daily_electricity_consumption_per_resident != nil
   end
   def avg_total_savings_per_resident
-    (object.avg_total_electricity_savings_per_resident) if object.avg_total_electricity_savings_per_resident != nil
+    (object.avg_total_electricity_savings_per_resident).round(2) if object.avg_total_electricity_savings_per_resident != nil
   end
 
   def total_price

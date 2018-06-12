@@ -16,7 +16,7 @@ class NeighborhoodWaterSerializer < ActiveModel::Serializer
     (object.avg_daily_water_consumed_per_user).round(2) if object.avg_daily_water_consumed_per_user != nil
   end
   def avg_daily_consumed_per_capita
-    (object.avg_daily_water_consumed_per_capita) if object.avg_daily_water_consumed_per_capita != nil
+    (object.avg_daily_water_consumed_per_capita).round(2) if object.avg_daily_water_consumed_per_capita != nil
   end
 
   def parent
