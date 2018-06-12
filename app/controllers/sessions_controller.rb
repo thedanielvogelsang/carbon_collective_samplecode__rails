@@ -28,10 +28,10 @@ class SessionsController < ApplicationController
             format.json {render :json => {:errors => error}, :status => 401 }
           end
         elsif user && !user.authenticate(safe_params[:password])
-          error = 'Password/Email did not match. Please try again'
+          error = 'Password/Email did not match. Please try again. Remember both are case sensitive!'
           format.json {render :json => {:errors => error}, :status => 401 }
         else
-          error = 'Email not found. Please try again. If you havent made a CarbonCollective account yet, remember youll need an invite!'
+          error = 'Email not found. Email/Password are case-sensitive. Please try again. If you havent made a CarbonCollective account yet, remember youll need an invite!'
           format.json {render :json => {:errors => error}, :status => 401 }
         end
       end
