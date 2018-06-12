@@ -46,6 +46,7 @@ class Api::V1::HousesController < ApplicationController
   end
 
   def destroy
+    id = params[:id]
     if User.exists?(params[:user_id]) && House.exists?(id)
       house = House.find(id)
       userhouse = UserHouse.where(user_id: params[:user_id], house: house.id)[0]
