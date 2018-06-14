@@ -11,7 +11,7 @@ class UserWaterSerializer < ActiveModel::Serializer
                   :county_daily_consumption,
                   :region_daily_consumption,
                   :country_daily_consumption,
-                  :metric_sym
+                  :metric_sym, :num_bills
 
   def avg_daily_footprint
     object.avg_daily_carbon_consumption.round(2).to_s + " lbs" if object.avg_daily_carbon_consumption
@@ -122,5 +122,8 @@ class UserWaterSerializer < ActiveModel::Serializer
 
   def metric_sym
     'gallons'
+  end
+  def num_bills
+    object.household.water_bills.count
   end
 end

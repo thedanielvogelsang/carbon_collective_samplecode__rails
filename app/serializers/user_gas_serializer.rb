@@ -11,7 +11,7 @@ class UserGasSerializer < ActiveModel::Serializer
                   :county_daily_consumption,
                   :region_daily_consumption,
                   :country_daily_consumption,
-                  :metric_sym
+                  :metric_sym, :num_bills
   def avg_daily_footprint
     object.avg_daily_carbon_consumption.round(2).to_s + " lbs" if object.avg_daily_carbon_consumption
   end
@@ -121,5 +121,8 @@ class UserGasSerializer < ActiveModel::Serializer
   end
   def metric_sym
     'therms'
+  end
+  def num_bills
+    object.household.heat_bills.count
   end
 end
