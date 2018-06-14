@@ -5,6 +5,7 @@ class UserMailer < ApplicationMailer
   end
 
   def invite(user, email_hash, message, prev_gen)
+    puts "Sending mail now"
     @user = user
     @message = message
     ct = email_hash.keys.length - 1
@@ -12,6 +13,7 @@ class UserMailer < ApplicationMailer
       e = e.to_s
       addr = email_hash[e]
       new_user = User.find_or_create_by(email: addr)
+      puts new_user.email_confirmed
       # no password error upon first creation lets us know they're not in the system
       if !new_user.errors.messages.empty?
         @new = new_user
