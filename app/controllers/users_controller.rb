@@ -82,10 +82,9 @@ class UsersController < ApplicationController
     emails = params[:emails]
     message = params[:message]
     UserMailer.invite(user, emails, message, user.generation).deliver_now
-    host = 'https://carbon-collective.github.io'
-    # host = 'http://localhost:3001'
-    flash[:success] = "Your invites were sent. Let your friend(s) know we're excited to welcome them to the Collective, and to check their inbox!"
-    redirect_to "#{host}/dashboard"
+    message = sort_emails(emails)
+    message == 'success' ? status = 201 : status = 404
+    render json: {message: message}, status: status
   end
 
   def invite_accepted
@@ -103,6 +102,22 @@ class UsersController < ApplicationController
 
     def authenticate_old_password(u, pass)
       u.authenticate(pass)
+    end
+
+    def sort_emails(emails)
+      ct = emails.keys.length - 1
+      invited_yet = (0..ct).map do |e|
+          e = e.to_s
+          addr = emails[e]
+          u = User.find_by(email: addr)
+          u.email_confirmed ? u.email : nil
+      end
+      if invited_yet.compact.empty?
+        message = 'success'
+      else
+        message = invited_yet.compact
+      end
+      message
     end
 
     # def authenticate(user)

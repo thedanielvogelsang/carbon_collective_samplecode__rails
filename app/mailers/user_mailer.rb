@@ -5,7 +5,6 @@ class UserMailer < ApplicationMailer
   end
 
   def invite(user, email_hash, message, prev_gen)
-    puts 'Sending email'
     @user = user
     @message = message
     ct = email_hash.keys.length - 1

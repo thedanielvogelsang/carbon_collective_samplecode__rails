@@ -4,7 +4,11 @@ class HousesController < ApplicationController
     user = User.find(params[:user_id])
     @house = House.new(safe_params)
     if @house.save
+      hId = @house.id
       user.houses << @house
+      UserElectricityQuestion.create(user_id: user.id, house_id: hId)
+      UserWaterQuestion.create(user_id: user.id, house_id: hId)
+      UserGasQuestion.create(user_id: user.id, house_id: hId)
       user.set_default_ranks
       render json: @house, status: 202
     else

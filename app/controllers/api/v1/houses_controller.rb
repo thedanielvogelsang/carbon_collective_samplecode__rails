@@ -51,6 +51,12 @@ class Api::V1::HousesController < ApplicationController
       house = House.find(id)
       userhouse = UserHouse.where(user_id: params[:user_id], house: house.id)[0]
       UserHouse.destroy(userhouse.id)
+      ue = UserElectricityQuestion.where(user_id: user.id, house_id: hId)[0]
+      uw = UserWaterQuestion.where(user_id: user.id, house_id: hId)[0]
+      ug = UserGasQuestion.where(user_id: user.id, house_id: hId)[0]
+      UserElectricityQuestion.destroy(ue.id)
+      UserWaterQuestion.destroy(uw.id)
+      UserGasQuestion.destroy(ug.id)
       if house.users.count == 0
         House.destroy(house.id)
       end
