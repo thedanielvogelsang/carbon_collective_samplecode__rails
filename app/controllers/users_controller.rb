@@ -82,6 +82,10 @@ class UsersController < ApplicationController
     emails = params[:emails]
     message = params[:message]
     UserMailer.invite(user, emails, message, user.generation).deliver_now
+    message = sort_emails(emails)
+    message == 'success' ? status = 201 : status = 404
+    render json: {message: message}, status: status
+
   end
 
   def invite_accepted
@@ -101,33 +105,21 @@ class UsersController < ApplicationController
       u.authenticate(pass)
     end
 
-    # def authenticate(user)
-    #   if user.authenticate(params[:user][:confirm_password])
-    #     update_with_password(user)
-    #   else
-    #     flash[:error] = "Password confirmation incorrect"
-    #     redirect_to settings_path
-    #   end
-    # end
-    #
-    # def update_with_password(user)
-    #   if user.update(safe_params)
-    #     redirect_to user_path(user)
-    #   else
-    #     flash[:error] = "New password didnt match confirmation"
-    #     redirect_to settings_path
-    #   end
-    # end
-    #
-    # def update_user(user)
-    #   if user.update(safe_params)
-    #     redirect_to user_path(user.id) if !user.addresses.empty?
-    #     redirect_to new_address_path({id: user.id}) if user.addresses.empty?
-    #   else
-    #     flash[:error] = "Unsuccessful update, please try again"
-    #     redirect_back(fallback_location: user_path(user))
-    #   end
-    # end
+    def sort_emails(emails)
+      ct = emails.keys.length - 1
+      invited_yet = (0..ct).map do |e|
+          e = e.to_s
+          addr = emails[e]
+          u = User.find_by(email: addr)
+          u.email_confirmed ? u.email : nil
+      end
+      if invited_yet.compact.empty?
+        message = 'success'
+      else
+        message = invited_yet.compact
+      end
+      message
+    end
 
     def safe_params
       params.require('user').permit(:id, :first, :last, :email, :password)

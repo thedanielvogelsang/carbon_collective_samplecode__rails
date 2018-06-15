@@ -41,6 +41,10 @@ class User < ApplicationRecord
   validates :generation, presence: true
   validate :check_email_format
 
+  has_many :user_electricity_questions
+  has_many :user_water_questions
+  has_many :user_gas_questions
+
   before_create :add_zeros,
                 :add_confirm_token,
                 :add_invite_token

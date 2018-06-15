@@ -20,7 +20,7 @@ class House < ApplicationRecord
   has_many :user_water_rankings, :as => :area
   has_many :user_gas_rankings, :as => :area
   has_many :user_carbon_rankings, :as => :area
-  
+
   def bills
     self.electric_bills
   end

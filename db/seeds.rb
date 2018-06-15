@@ -715,6 +715,10 @@ Region.all.each{|r| r.set_default_ranks}
 state.update_data
 
 User.all.each{|u|
+   hId = u.household.id
+   UserElectricityQuestion.create(user_id: u.id, house_id: hId)
+   UserWaterQuestion.create(user_id: u.id, house_id: hId)
+   UserGasQuestion.create(user_id: u.id, house_id: hId)
    u.email_activate
    u.set_default_ranks
  }
