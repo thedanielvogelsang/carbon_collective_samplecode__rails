@@ -17,4 +17,29 @@ class UserElectricityQuestion < ApplicationRecord
     self.completion_percentage = self.a_count.fdiv(self.q_count) * 100
     self.completion_percentage.to_i == 100 ? self.completed = true : nil
   end
+
+  def update_with_params(q, a)
+    if q == 'quest1'
+      self.quest1 = a
+    elsif q == 'quest2'
+      self.quest2 = a
+    elsif q == 'quest3'
+      self.quest3 = a
+    elsif q == 'quest4'
+      self.quest4 = a
+    elsif q == 'quest5'
+      self.quest5 = a
+    end
+    self.save
+  end
+
+  def clear_all
+    self.quest1 = nil
+    self.quest2 = nil
+    self.quest3 = nil
+    self.quest4 = nil
+    self.quest5 = nil
+    self.save
+  end
+
 end

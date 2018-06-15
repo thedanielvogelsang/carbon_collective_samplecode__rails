@@ -26,6 +26,8 @@ Rails.application.routes.draw do
       get 'houses/:id/users', to: 'houses#users'
       resources :users, only: [:index, :show] do
           resources :houses
+          get '/houses/:house_id/questions', to: 'users/questions#show'
+          put '/houses/:house_id/questions', to: 'users/questions#update'
           put '/electricity', to: 'users/users_electricity#update'
           put '/water', to: 'users/users_water#update'
           put '/gas', to: 'users/users_gas#update'
