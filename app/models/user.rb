@@ -12,6 +12,12 @@ class User < ApplicationRecord
         foreign_key: :user_id,
         association_foreign_key: :friend_user_id
 
+  has_and_belongs_to_many :user_invites,
+        class_name: "User",
+        join_table: :user_invites,
+        foreign_key: :user_id,
+        association_foreign_key: :invite_id 
+
   has_secure_password
 
   has_many :user_groups
