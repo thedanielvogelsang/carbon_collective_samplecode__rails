@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180616154033) do
+ActiveRecord::Schema.define(version: 20180616162558) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -501,6 +501,9 @@ ActiveRecord::Schema.define(version: 20180616154033) do
     t.string "invite_token"
     t.integer "parent_id"
     t.integer "generation"
+    t.datetime "last_login"
+    t.integer "total_logins"
+    t.float "avg_time_btw_logins"
     t.index ["total_electricity_savings"], name: "index_users_on_total_electricity_savings"
     t.index ["total_gas_savings"], name: "index_users_on_total_gas_savings"
     t.index ["total_water_savings"], name: "index_users_on_total_water_savings"
