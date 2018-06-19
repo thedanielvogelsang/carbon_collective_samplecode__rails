@@ -16,7 +16,7 @@ class User < ApplicationRecord
         class_name: "User",
         join_table: :user_invites,
         foreign_key: :user_id,
-        association_foreign_key: :invite_id 
+        association_foreign_key: :invite_id
 
   has_secure_password
 
@@ -53,7 +53,8 @@ class User < ApplicationRecord
 
   before_create :add_zeros,
                 :add_confirm_token,
-                :add_invite_token
+                :add_invite_token,
+                :set_avg_login_time
 
   # after_create :set_default_ranks
 
@@ -97,6 +98,19 @@ def email_activate
   self.save!(:validate => false)
 end
 
+def update_login
+  self.last_login = DateTime.now
+  self.save
+end
+
+def calc_avg
+  span = DateTime.now - last_login
+  val = avg_time_btw_logins * total_logins
+  self.total_logins += 1
+  self.avg_time_btw_logins = (span + val) / self.total_logins
+  self.save
+end
+
 private
   def check_email_format
     return if errors.key?(:email)
@@ -128,6 +142,11 @@ private
     if self.invite_token.blank?
       self.invite_token = SecureRandom.urlsafe_base64.to_s
     end
+  end
+
+  def set_avg_login_time
+    self.total_logins = 0
+    self.avg_time_btw_logins = 0
   end
 
 end
