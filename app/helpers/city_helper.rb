@@ -1,6 +1,10 @@
 module CityHelper
   include Co2Helper
-
+  # serializer functions
+  def out_of
+    City.where(region: self.region).count
+  end
+  # update data and set data functions
   def update_data
     if self.users.count != 0
       update_total_electricity_and_carbon_savings

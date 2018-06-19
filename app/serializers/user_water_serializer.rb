@@ -18,19 +18,19 @@ class UserWaterSerializer < ActiveModel::Serializer
   end
 
   def neighborhood
-    [object.neighborhood.id, object.neighborhood.name] if object.neighborhood
+    [object.neighborhood.id, object.neighborhood.name, object.neighborhood.water_ranking.rank, object.neighborhood.out_of] if object.neighborhood
   end
   def city
-    [object.city.id, object.city.name] if object.city
+    [object.city.id, object.city.name, object.city.water_ranking.rank, object.city.out_of] if object.city
   end
   def county
-    [object.county.id, object.county.name] if object.county
+    [object.county.id, object.county.name, object.county.water_ranking.rank, object.county.out_of] if object.county
   end
   def region
-    [object.region.id, object.region.name] if object.region
+    [object.region.id, object.region.name, object.region.water_ranking.rank, object.region.out_of] if object.region
   end
   def country
-    [object.country.id, object.country.name] if object.country
+    [object.country.id, object.country.name, object.country.water_ranking.rank, object.country.out_of] if object.country
   end
 
   def personal_usage_to_date
@@ -127,21 +127,23 @@ class UserWaterSerializer < ActiveModel::Serializer
     object.household.water_bills.count
   end
   def out_of
-    ops_ = @instance_options[:region]
-    if ops_[:area_type] == "County"
-      c = County.find(ops_[:area_id])
-      County.where(region: c.region).count
-    elsif ops_[:area_type] == "Neighborhood"
-      n = Neighborhood.find(ops_[:area_type])
-      Neighborhood.where(city: n.city).count
-    elsif ops_[:area_type] == "City"
-      c = City.find(ops_[:area_id])
-      City.where(region: c.region).count
-    elsif ops_[:area_type] == "Region"
-      r = Region.find(ops_[:area_id])
-      Region.where(country: r.country).count
-    elsif ops_[:area_type] == "Country"
-      Country.count
+    ops_ = @instance_options[:region] if @instance_options[:region]
+    if ops_
+      if ops_[:area_type] == "County"
+        c = County.find(ops_[:area_id])
+        County.where(region: c.region).count
+      elsif ops_[:area_type] == "Neighborhood"
+        n = Neighborhood.find(ops_[:area_type])
+        Neighborhood.where(city: n.city).count
+      elsif ops_[:area_type] == "City"
+        c = City.find(ops_[:area_id])
+        City.where(region: c.region).count
+      elsif ops_[:area_type] == "Region"
+        r = Region.find(ops_[:area_id])
+        Region.where(country: r.country).count
+      elsif ops_[:area_type] == "Country"
+        Country.count
+      end
     else
       nil
     end

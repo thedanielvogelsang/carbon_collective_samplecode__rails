@@ -1,6 +1,10 @@
 module RegionHelper
   include Co2Helper
 
+  def out_of
+    Region.where(country: self.country).count
+  end
+  
   def check_abbreviation
     check_state
   end
