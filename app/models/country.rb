@@ -10,8 +10,8 @@ class Country < ApplicationRecord
   has_many :users, through: :houses
   has_many :country_snapshots
 
-  before_validation :capitalize_name,
-                    :check_name
+  # before_validation :capitalize_name,
+                    # :check_name
 
   before_create :add_zeros, :copy_default_per_capita
 
@@ -24,7 +24,7 @@ class Country < ApplicationRecord
   has_many :user_water_rankings, :as => :area
   has_many :user_gas_rankings, :as => :area
   has_many :user_carbon_rankings, :as => :area
-  
+
   def capitalize_name
     self.name = self.name.split(' ')
     .map{|w| w.downcase == 'of' || w.downcase == 'and' ? lowercase(w) : capitalize(w)}

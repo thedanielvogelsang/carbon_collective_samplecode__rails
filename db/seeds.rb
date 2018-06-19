@@ -31,10 +31,10 @@ COUNTRIES = {
   ["Bosnia & Herzegovina", 2848, 23735.8542, nil, 3.9787],
   ["Botswana", 1674, 28926.834, nil, 2.2771],
   ["Brazil", 2516, 80678.1288, nil, 2.1393],
-  ["Brunei Darussalam", 8625, 78406.2496, nil 19.5201],
-  ["Bulgaria", 4338, 212896.2148, nil 6.1754],
+  ["Brunei Darussalam", 8625, 78406.2496, nil, 19.5201],
+  ["Bulgaria", 4338, 212896.2148, nil, 6.1754],
   ["Burkina Faso", 61, 20919.78068, nil, 0.0898],
-  ["Myanmar/Burma", 193, 185343.0752, nil, 0.2376],
+  ["Myanmar/ Burma", 193, 185343.0752, nil, 0.2376],
   ["Burundi", 36, 11243.16032, nil, 0.0388],
   ["Cambodia", 256, 40286.23, nil, 0.2764],
   ["Cameroon", 250, 15242.7244, nil, 0.3966],
@@ -71,7 +71,7 @@ COUNTRIES = {
   ["Fiji", 874, 26549.286, nil, 2.563],
   ["Finland", 14732, 81708.3996, nil, 9.9329],
   ["France", 6448, 135361.7328, nil, 6.2978],
-  ["French Polynesia", 2453 nil, nil, 3.7224],
+  ["French Polynesia", 2453, nil, nil, 3.7224],
   ["Gabon", 1207, 26654.9548, nil, 3.031],
   ["Gambia", 149, 13541.45672, nil, 0.2455],
   # ["Gaza Strip", 0.1, nil, nil, nil],
@@ -198,7 +198,7 @@ COUNTRIES = {
   ["Turkey", 2578, 145109.6796, nil, 3.2948],
   ["Turkmenistan", 2456, 1419924.5, nil, 11.5969],
   ["Turks & Caicos Islands", 3888, nil, nil, 3.3896],
-  ["Uganda", 70, 3344.41752, nil, , nil, 0.0589],
+  ["Uganda", 70, 3344.41752, nil, 0.0589],
   ["Ukraine", 3234, 211654.6064, nil, 5.5245],
   ["United Arab Emirates", 16195, 242007.9692, nil, 40.3006],
   ["United Kingdom (Great Britain)", 4796, 56136.55, nil, 8.3514],
@@ -221,7 +221,7 @@ GLOBE = Global.create
 
 COUNTRIES[:countries].each do |c|
   edaily_avg = c[1].fdiv(30)
-  wdaily_avg = c[2].fdiv(365)
+  wdaily_avg = c[2].fdiv(365) if c[2]
   Country.create!(name: c[0], avg_daily_electricity_consumed_per_capita: edaily_avg,
                   avg_daily_electricity_consumed_per_user: edaily_avg,
                   avg_daily_water_consumed_per_capita: wdaily_avg,
@@ -241,7 +241,8 @@ COUNTRIES[:countries].each do |c|
   name = c[0]
   country = Country.find_by(name: name)
   ranking = country.carbon_ranking
-  ranking.avg_daily_carbon_consumed_per_user = c[4]
+  arg = c[4] || 0
+  ranking.avg_daily_carbon_consumed_per_user = (arg * 2204.6).fdiv(365)
   ranking.save
 end
 
