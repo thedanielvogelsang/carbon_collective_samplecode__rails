@@ -104,7 +104,7 @@ def update_login
 end
 
 def calc_avg
-  span = DateTime.now - last_login
+  span = DateTime.now - last_login.to_datetime
   val = avg_time_btw_logins * total_logins
   self.total_logins += 1
   self.avg_time_btw_logins = (span + val) / self.total_logins
