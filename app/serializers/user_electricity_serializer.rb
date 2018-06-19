@@ -11,7 +11,7 @@ class UserElectricitySerializer < ActiveModel::Serializer
                   :county_daily_consumption,
                   :region_daily_consumption,
                   :country_daily_consumption,
-                  :metric_sym, :num_bills
+                  :metric_sym, :num_bills, :out_of
 
   def avg_daily_footprint
     object.avg_daily_carbon_consumption.round(2).to_s + " lbs" if object.avg_daily_carbon_consumption
@@ -121,7 +121,27 @@ class UserElectricitySerializer < ActiveModel::Serializer
     'kWhs'
   end
 
-  def num_bills 
+  def num_bills
     object.household.bills.count
+  end
+  def out_of
+    ops_ = @instance_options[:region]
+    if ops_[:area_type] == "County"
+      c = County.find(ops_[:area_id])
+      County.where(region: c.region).count
+    elsif ops_[:area_type] == "Neighborhood"
+      n = Neighborhood.find(ops_[:area_type])
+      Neighborhood.where(city: n.city).count
+    elsif ops_[:area_type] == "City"
+      c = City.find(ops_[:area_id])
+      City.where(region: c.region).count
+    elsif ops_[:area_type] == "Region"
+      r = Region.find(ops_[:area_id])
+      Region.where(country: r.country).count
+    elsif ops_[:area_type] == "Country"
+      Country.count
+    else
+      nil
+    end
   end
 end

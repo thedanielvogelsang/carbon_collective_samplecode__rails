@@ -6,7 +6,7 @@ class UserCarbonSerializer < ActiveModel::Serializer
                   :household_daily_consumption, :neighborhood_daily_consumption,
                   :city_daily_consumption, :county_daily_consumption, :region_daily_consumption,
                   :country_daily_consumption, :avg_daily_consumption,
-                  :metric_sym,
+                  :metric_sym, :out_of
 
   def avg_daily_footprint
     object.avg_daily_carbon_consumption.to_f.round(2).to_s + " lbs" if object.avg_daily_carbon_consumption
@@ -103,6 +103,27 @@ class UserCarbonSerializer < ActiveModel::Serializer
     if ops__
     object.user_carbon_rankings
           .where(area_type: ops__[:area_type], area_id: ops__[:area_id])[0].updated_at
+    else
+      nil
+    end
+  end
+
+  def out_of
+    ops_ = @instance_options[:region]
+    if ops_[:area_type] == "County"
+      c = County.find(ops_[:area_id])
+      County.where(region: c.region).count
+    elsif ops_[:area_type] == "Neighborhood"
+      n = Neighborhood.find(ops_[:area_type])
+      Neighborhood.where(city: n.city).count
+    elsif ops_[:area_type] == "City"
+      c = City.find(ops_[:area_id])
+      City.where(region: c.region).count
+    elsif ops_[:area_type] == "Region"
+      r = Region.find(ops_[:area_id])
+      Region.where(country: r.country).count
+    elsif ops_[:area_type] == "Country"
+      Country.count
     else
       nil
     end
