@@ -105,8 +105,7 @@ end
 
 def calc_avg
   span = DateTime.now - last_login
-  byebug
-  val = avg_time_btw_login * total_logins
+  val = avg_time_btw_logins * total_logins
   self.total_logins += 1
   self.avg_time_btw_logins = (span + val) / self.total_logins
   self.save
@@ -147,7 +146,7 @@ private
 
   def set_avg_login_time
     self.total_logins = 0
-    self.avg_time_btw_login = 0
+    self.avg_time_btw_logins = 0
   end
 
 end
