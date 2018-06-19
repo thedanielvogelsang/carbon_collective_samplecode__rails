@@ -4,7 +4,8 @@ class CityWaterSerializer < ActiveModel::Serializer
                   :rank, :arrow,
                   :metric_name, :metric_sym,
                   :avg_daily_consumed_per_user,
-                  :avg_daily_consumed_per_capita
+                  :avg_daily_consumed_per_capita, 
+                  :out_of
 
 
   def total_saved
@@ -40,5 +41,8 @@ class CityWaterSerializer < ActiveModel::Serializer
   end
   def metric_sym
     "gal."
+  end
+  def out_of
+    City.where(region: object.region).count
   end
 end

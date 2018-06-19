@@ -3,7 +3,7 @@ class CountryWaterSerializer < ActiveModel::Serializer
                   :metric_sym, :total_saved,
                   :total_saved,
                   :avg_daily_consumed_per_user,
-                  :avg_daily_consumed_per_capita
+                  :avg_daily_consumed_per_capita, :out_of
 
   def total_saved
     object.total_water_saved.round(2)
@@ -31,5 +31,8 @@ class CountryWaterSerializer < ActiveModel::Serializer
   end
   def arrow
     object.water_ranking.arrow
+  end
+  def out_of
+    Country.count
   end
 end

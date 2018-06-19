@@ -3,7 +3,7 @@ class RegionGasSerializer < ActiveModel::Serializer
                   :total_saved, :rank, :arrow,
                   :metric_name, :metric_sym,
                   :avg_daily_consumed_per_user,
-                  :avg_daily_consumed_per_capita
+                  :avg_daily_consumed_per_capita, :out_of
 
   def total_saved
     object.total_gas_saved
@@ -35,5 +35,8 @@ class RegionGasSerializer < ActiveModel::Serializer
   end
   def metric_sym
     "therms"
+  end
+  def out_of
+    Region.where(country: object.country).count
   end
 end
