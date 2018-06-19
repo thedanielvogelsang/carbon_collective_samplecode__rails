@@ -33,7 +33,7 @@ class UserCarbonSerializer < ActiveModel::Serializer
     [object.region.id, object.region.name, object.region.carbon_ranking.rank, object.region.out_of] if object.region
   end
   def country
-    [object.country.id, object.country.name, object.country.carbon_ranking.rank, object.county.out_of] if object.country
+    [object.country.id, object.country.name, object.country.carbon_ranking.rank, object.country.out_of] if object.country
   end
 
   def avatar_url
