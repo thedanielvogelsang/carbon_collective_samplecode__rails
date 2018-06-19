@@ -2,7 +2,7 @@ class Api::V1::Areas::CountryWaterController < ApplicationController
 
   # used for rankings
   def index
-    render json: Country.order(avg_daily_water_consumed_per_user: :asc)
+    render json: Country.order(avg_daily_water_consumed_per_capita: :asc)
       .distinct, each_serializer: CountryWaterSerializer
   end
 
