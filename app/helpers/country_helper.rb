@@ -1,5 +1,10 @@
 module CountryHelper
   include Co2Helper
+
+  def out_of
+    Country.count
+  end
+  
   def update_data
     if self.users.count != 0
       update_total_electricity_and_carbon_savings

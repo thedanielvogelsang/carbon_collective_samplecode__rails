@@ -1,4 +1,5 @@
 class UserCarbonSerializer < ActiveModel::Serializer
+
   attributes :id, :first, :last, :avatar_url, :global_collective_savings,
                   :personal_savings_to_date, :personal_usage_to_date,
                   :arrow, :rank, :last_updated, :avg_daily_footprint,
@@ -6,7 +7,7 @@ class UserCarbonSerializer < ActiveModel::Serializer
                   :household_daily_consumption, :neighborhood_daily_consumption,
                   :city_daily_consumption, :county_daily_consumption, :region_daily_consumption,
                   :country_daily_consumption, :avg_daily_consumption,
-                  :metric_sym,
+                  :metric_sym, :out_of
 
   def avg_daily_footprint
     object.avg_daily_carbon_consumption.to_f.round(2).to_s + " lbs" if object.avg_daily_carbon_consumption
@@ -16,23 +17,23 @@ class UserCarbonSerializer < ActiveModel::Serializer
     object.avg_daily_carbon_consumption.to_f.round(2).to_s + " lbs"
   end
   def neighborhood
-    [object.neighborhood.id, object.neighborhood.name] if object.neighborhood
+    [object.neighborhood.id, object.neighborhood.name, object.neighborhood.carbon_ranking.rank, object.neighborhood.out_of] if object.neighborhood
   end
 
   def total_daily_footprint
     object.total_pounds_logged.round(2).to_s + " lbs"
   end
   def city
-    [object.city.id, object.city.name] if object.city
+    [object.city.id, object.city.name, object.city.carbon_ranking.rank, object.city.out_of] if object.city
   end
   def county
-    [object.county.id, object.county.name] if object.county
+    [object.county.id, object.county.name, object.county.carbon_ranking.rank, object.county.out_of] if object.county
   end
   def region
-    [object.region.id, object.region.name] if object.region
+    [object.region.id, object.region.name, object.region.carbon_ranking.rank, object.region.out_of] if object.region
   end
   def country
-    [object.country.id, object.country.name] if object.country
+    [object.country.id, object.country.name, object.country.carbon_ranking.rank, object.county.out_of] if object.country
   end
 
   def avatar_url
@@ -103,6 +104,29 @@ class UserCarbonSerializer < ActiveModel::Serializer
     if ops__
     object.user_carbon_rankings
           .where(area_type: ops__[:area_type], area_id: ops__[:area_id])[0].updated_at
+    else
+      nil
+    end
+  end
+
+  def out_of
+    ops_ = @instance_options[:region] if @instance_options[:region]
+    if ops_
+      if ops_[:area_type] == "County"
+        c = County.find(ops_[:area_id])
+        County.where(region: c.region).count
+      elsif ops_[:area_type] == "Neighborhood"
+        n = Neighborhood.find(ops_[:area_type])
+        Neighborhood.where(city: n.city).count
+      elsif ops_[:area_type] == "City"
+        c = City.find(ops_[:area_id])
+        City.where(region: c.region).count
+      elsif ops_[:area_type] == "Region"
+        r = Region.find(ops_[:area_id])
+        Region.where(country: r.country).count
+      elsif ops_[:area_type] == "Country"
+        Country.count
+      end
     else
       nil
     end

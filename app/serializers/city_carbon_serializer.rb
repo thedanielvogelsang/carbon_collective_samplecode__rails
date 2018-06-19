@@ -1,6 +1,7 @@
 class CityCarbonSerializer < ActiveModel::Serializer
   attributes :id, :name, :total_saved, :avg_daily_consumed_per_user,
-                  :metric_sym, :metric_name, :rank, :arrow, :parent
+                  :metric_sym, :metric_name, :rank, :arrow, :parent,
+                  :out_of
 
     def region
       object.region.name
@@ -37,5 +38,8 @@ class CityCarbonSerializer < ActiveModel::Serializer
     end
     def arrow
       object.carbon_ranking.arrow
+    end
+    def out_of
+      City.where(region: object.region).count
     end
 end

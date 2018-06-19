@@ -1,6 +1,6 @@
 class CountryCarbonSerializer < ActiveModel::Serializer
   attributes :id, :name, :total_saved, :avg_daily_consumed_per_user,
-                  :metric_sym, :metric_name, :rank, :arrow
+                  :metric_sym, :metric_name, :rank, :arrow, :out_of
 
     # def number_of_users
     #   object.users.count
@@ -25,5 +25,8 @@ class CountryCarbonSerializer < ActiveModel::Serializer
     end
     def arrow
       object.carbon_ranking.arrow
+    end
+    def out_of
+      Country.count
     end
 end

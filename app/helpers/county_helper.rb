@@ -1,6 +1,10 @@
 module CountyHelper
   include Co2Helper
 
+  def out_of
+    County.where(region: self.region).count
+  end
+  
   def update_data
     if self.users.count != 0
       update_total_electricity_and_carbon_savings

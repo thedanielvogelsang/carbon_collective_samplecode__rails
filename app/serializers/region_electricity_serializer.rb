@@ -3,7 +3,7 @@ class RegionElectricitySerializer < ActiveModel::Serializer
                   :total_saved, :rank, :arrow,
                   :metric_sym, :metric_name,
                   :avg_daily_consumed_per_user,
-                  :avg_daily_consumed_per_capita
+                  :avg_daily_consumed_per_capita, :out_of
 
   def total_saved
     object.total_electricity_saved
@@ -31,5 +31,8 @@ class RegionElectricitySerializer < ActiveModel::Serializer
   end
   def arrow
     object.electricity_ranking.arrow
+  end
+  def out_of
+    Region.where(country: object.country).count
   end
 end

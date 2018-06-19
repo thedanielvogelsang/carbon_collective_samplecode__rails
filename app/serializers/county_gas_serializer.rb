@@ -2,7 +2,7 @@ class CountyGasSerializer < ActiveModel::Serializer
   attributes :id, :name, :metric_name, :metric_sym,
                   :total_saved, :rank, :arrow,
                   :avg_daily_consumed_per_user,
-                  :avg_daily_consumed_per_capita
+                  :avg_daily_consumed_per_capita, :out_of
 
   def total_saved
     object.total_gas_saved.round(2).to_s + ' therms gas saved to date'
@@ -30,5 +30,8 @@ class CountyGasSerializer < ActiveModel::Serializer
   end
   def arrow
     object.gas_ranking.arrow
+  end
+  def out_of
+    County.where(region: object.region).count
   end
 end

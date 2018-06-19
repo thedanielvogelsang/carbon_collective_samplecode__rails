@@ -3,7 +3,7 @@ class RegionWaterSerializer < ActiveModel::Serializer
                   :total_saved, :rank, :arrow,
                   :metric_name, :metric_sym,
                   :avg_daily_consumed_per_user,
-                  :avg_daily_consumed_per_capita
+                  :avg_daily_consumed_per_capita, :out_of
 
   def total_saved
     object.total_water_saved
@@ -27,6 +27,9 @@ class RegionWaterSerializer < ActiveModel::Serializer
   def rank
     object.water_ranking.rank
   end
+  def out_of
+
+  end
   def arrow
     object.water_ranking.arrow
   end
@@ -35,5 +38,8 @@ class RegionWaterSerializer < ActiveModel::Serializer
   end
   def metric_sym
     "gal."
+  end
+  def out_of
+    Region.where(country: object.country).count
   end
 end

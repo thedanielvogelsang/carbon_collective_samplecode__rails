@@ -1,9 +1,9 @@
 class CountryElectricitySerializer < ActiveModel::Serializer
-  attributes :id, :name, :metric_name, 
+  attributes :id, :name, :metric_name,
                   :rank, :arrow,
                   :metric_sym, :total_saved,
                   :avg_daily_consumed_per_user,
-                  :avg_daily_consumed_per_capita
+                  :avg_daily_consumed_per_capita, :out_of
 
   def total_saved
     object.total_electricity_saved.round(2)
@@ -31,5 +31,8 @@ class CountryElectricitySerializer < ActiveModel::Serializer
   end
   def arrow
     object.electricity_ranking.arrow
+  end
+  def out_of
+    Country.count
   end
 end

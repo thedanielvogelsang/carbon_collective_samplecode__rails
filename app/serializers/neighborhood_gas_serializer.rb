@@ -3,7 +3,7 @@ class NeighborhoodGasSerializer < ActiveModel::Serializer
                   :metric_name, :metric_sym,
                   :total_saved, :rank, :arrow,
                   :avg_daily_consumed_per_user,
-                  :avg_daily_consumed_per_capita
+                  :avg_daily_consumed_per_capita, :out_of
 
 
   def total_saved
@@ -42,5 +42,8 @@ class NeighborhoodGasSerializer < ActiveModel::Serializer
   end
   def metric_sym
     "therms"
+  end
+  def out_of
+    Neighborhood.where(city: object.city).count
   end
 end
