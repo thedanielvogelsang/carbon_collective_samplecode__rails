@@ -2,8 +2,8 @@ class CityElectricitySerializer < ActiveModel::Serializer
   attributes :id, :name, :parent,
                   :total_saved, :rank, :arrow,
                   :metric_name, :metric_sym,
-                  :avg_daily_consumed_per_user,
-                  :avg_daily_consumed_per_capita,
+                  :avg_monthly_consumed_per_user,
+                  :avg_monthly_consumed_per_capita,
                   :out_of
 
   def total_saved
@@ -17,6 +17,13 @@ class CityElectricitySerializer < ActiveModel::Serializer
   end
   def avg_daily_consumed_per_capita
     (object.avg_daily_electricity_consumed_per_capita).round(2) if object.avg_daily_electricity_consumed_per_capita != nil
+  end
+
+  def avg_monthly_consumed_per_user
+    (object.avg_daily_electricity_consumed_per_user * 29.53).round(2) if object.avg_daily_electricity_consumed_per_user != nil
+  end
+  def avg_monthly_consumed_per_capita
+    (object.avg_daily_electricity_consumed_per_capita * 29.53).round(2) if object.avg_daily_electricity_consumed_per_capita != nil
   end
 
   def parent

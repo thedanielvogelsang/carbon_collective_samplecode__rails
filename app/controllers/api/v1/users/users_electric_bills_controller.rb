@@ -6,7 +6,7 @@ class Api::V1::Users::UsersElectricBillsController < ApplicationController
       house = user.household
       render json: ElectricBill.joins(:house)
             .where(:houses => {id: house.id})
-            .order(created_at: :desc), each_serializer: ElectricBillSerializer
+            .order(end_date: :desc), each_serializer: ElectricBillSerializer
     end
   end
 end
