@@ -89,8 +89,8 @@ class UsersController < ApplicationController
   end
 
   def invite_accepted
-    host = 'https://carbon-collective.github.io'
-    # host = 'http://localhost:3001'
+    # host = 'https://carbon-collective.github.io'
+    host = 'http://localhost:3001'
     prev_user = User.find_by_invite_token(params[:token])
     new_user = User.find(params[:id])
     new_user.email_activate

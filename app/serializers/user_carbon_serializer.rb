@@ -1,6 +1,6 @@
 class UserCarbonSerializer < ActiveModel::Serializer
 
-  attributes :id, :first, :last, :avatar_url, :global_collective_savings,
+  attributes :id, :first, :last, :avatar_url, :global_collective_savings, :privacy_policy,
                   :personal_savings_to_date, :personal_usage_to_date,
                   :arrow, :rank, :last_updated, :avg_daily_footprint, :avg_monthly_footprint,
                   :household, :neighborhood, :city, :county, :region, :country,
