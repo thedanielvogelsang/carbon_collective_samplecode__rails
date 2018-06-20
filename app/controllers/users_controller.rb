@@ -31,9 +31,7 @@ class UsersController < ApplicationController
     user = User.find(params[:id])
     oldpass = params[:user][:old_password]
     authenticated = authenticate_old_password(user, oldpass)
-
     # put in clause for updating email to reset email confirm"
-
     if oldpass && authenticated
       if user.update(safe_params)
         render json: user, status: 200
@@ -122,6 +120,6 @@ class UsersController < ApplicationController
     end
 
     def safe_params
-      params.require('user').permit(:id, :first, :last, :email, :password)
+      params.require('user').permit(:id, :first, :last, :email, :password, :privacy_policy)
     end
 end
