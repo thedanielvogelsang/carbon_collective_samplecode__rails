@@ -4,7 +4,7 @@ module RegionHelper
   def out_of
     Region.where(country: self.country).count
   end
-  
+
   def check_abbreviation
     check_state
   end
@@ -20,7 +20,7 @@ module RegionHelper
       update_total_gas_and_carbon_savings
       update_daily_avg_gas_savings
       update_daily_avg_gas_consumption
-      update_carbon_consumption
+      # update_carbon_consumption
       self.save
     end
   end
@@ -112,9 +112,10 @@ module RegionHelper
     end
   end
 
-  def update_carbon_consumption
+  def update_carbon_consumption(n)
     carbon_ranking = self.carbon_ranking
-    carbon_ranking.avg_daily_carbon_consumed_per_user = combine_average_use(self.avg_daily_electricity_consumed_per_user, self.avg_daily_gas_consumed_per_user)
+    # carbon_ranking.avg_daily_carbon_consumed_per_user = combine_average_use(self.avg_daily_electricity_consumed_per_user, self.avg_daily_gas_consumed_per_user)
+    carbon_ranking.avg_daily_carbon_consumed_per_user = n
     carbon_ranking.save
   end
 
