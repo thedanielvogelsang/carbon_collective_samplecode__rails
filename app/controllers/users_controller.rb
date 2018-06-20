@@ -31,9 +31,7 @@ class UsersController < ApplicationController
     user = User.find(params[:id])
     oldpass = params[:user][:old_password]
     authenticated = authenticate_old_password(user, oldpass)
-
     # put in clause for updating email to reset email confirm"
-
     if oldpass && authenticated
       if user.update(safe_params)
         render json: user, status: 200
@@ -89,8 +87,8 @@ class UsersController < ApplicationController
   end
 
   def invite_accepted
-    host = 'https://carbon-collective.github.io'
-    # host = 'http://localhost:3001'
+    # host = 'https://carbon-collective.github.io'
+    host = 'http://localhost:3001'
     prev_user = User.find_by_invite_token(params[:token])
     new_user = User.find(params[:id])
     new_user.email_activate
@@ -122,6 +120,6 @@ class UsersController < ApplicationController
     end
 
     def safe_params
-      params.require('user').permit(:id, :first, :last, :email, :password)
+      params.require('user').permit(:id, :first, :last, :email, :password, :privacy_policy)
     end
 end

@@ -18,7 +18,7 @@ class RegionWaterSerializer < ActiveModel::Serializer
     (object.avg_daily_water_consumed_per_capita) if object.avg_daily_water_consumed_per_capita != nil
   end
   def avg_monthly_consumed_per_user
-    (object.avg_daily_water_consumed_per_user * 29.53).round(2) if object.avg_daily_water_consumed_per_user != nil
+    (object.avg_daily_water_consumed_per_capita * 29.53).round(2) if object.avg_daily_water_consumed_per_user != nil
   end
   def avg_monthly_consumed_per_capita
     (object.avg_daily_water_consumed_per_capita * 29.53) if object.avg_daily_water_consumed_per_capita != nil

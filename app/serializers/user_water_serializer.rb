@@ -1,6 +1,7 @@
 class UserWaterSerializer < ActiveModel::Serializer
   attributes :id, :avg_daily_consumption, :first, :last, :email,
                   :avatar_url, :house_ids, :avg_monthly_consumption,
+                  :privacy_policy,
                   :last_updated, :rank, :arrow,
                   :personal_savings_to_date, :personal_usage_to_date,
                   :global_collective_savings, :avg_daily_footprint, :avg_monthly_footprint,
