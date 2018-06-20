@@ -12,7 +12,7 @@ class UserElectricitySerializer < ActiveModel::Serializer
                   :region_monthly_consumption,
                   :country_monthly_consumption,
                   :metric_sym, :num_bills, :out_of
- * 29.53
+                  
   def avg_daily_footprint
     object.avg_daily_carbon_consumption.round(2).to_s + " lbs" if object.avg_daily_carbon_consumption
   end
