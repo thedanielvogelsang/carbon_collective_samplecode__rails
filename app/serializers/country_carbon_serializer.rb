@@ -1,5 +1,5 @@
 class CountryCarbonSerializer < ActiveModel::Serializer
-  attributes :id, :name, :total_saved, :avg_daily_consumed_per_user,
+  attributes :id, :name, :total_saved, :avg_monthly_consumed_per_user,
                   :metric_sym, :metric_name, :rank, :arrow, :out_of
 
     # def number_of_users
@@ -12,6 +12,9 @@ class CountryCarbonSerializer < ActiveModel::Serializer
 
     def avg_daily_consumed_per_user
       object.carbon_ranking.avg_daily_carbon_consumed_per_user.round(4)
+    end
+    def avg_monthly_consumed_per_user
+      (object.carbon_ranking.avg_daily_carbon_consumed_per_user * 29.53).round(4)
     end
 
     def metric_name

@@ -1,18 +1,21 @@
 class UserGasSerializer < ActiveModel::Serializer
   attributes :id, :avg_daily_consumption, :first, :last, :email,
-                  :avatar_url, :house_ids,
+                  :avatar_url, :house_ids, :avg_monthly_consumption,
                   :rank, :arrow, :last_updated,
                   :personal_usage_to_date, :personal_savings_to_date,
-                  :global_collective_savings, :avg_daily_footprint,
+                  :global_collective_savings, :avg_daily_footprint, :avg_monthly_footprint,
                   :household, :neighborhood, :city, :county, :region, :country,
-                  :household_daily_consumption,
-                  :neighborhood_daily_consumption,
-                  :city_daily_consumption,
-                  :county_daily_consumption,
-                  :region_daily_consumption,
-                  :country_daily_consumption,
+                  :household_monthly_consumption,
+                  :neighborhood_monthly_consumption,
+                  :city_monthly_consumption,
+                  :county_monthly_consumption,
+                  :region_monthly_consumption,
+                  :country_monthly_consumption,
                   :metric_sym, :num_bills, :out_of
   def avg_daily_footprint
+    object.avg_daily_carbon_consumption.round(2).to_s + " lbs" if object.avg_daily_carbon_consumption
+  end
+  def avg_monthly_footprint
     object.avg_daily_carbon_consumption.round(2).to_s + " lbs" if object.avg_daily_carbon_consumption
   end
   def neighborhood
@@ -87,6 +90,30 @@ class UserGasSerializer < ActiveModel::Serializer
   end
   def avg_daily_consumption
     avg = object.avg_daily_gas_consumption.to_f
+    avg.nan? ? "0 therms" : avg.round(2).to_s + " therms"
+  end
+
+  #monthly averages
+  def household_monthly_consumption
+    (object.household_daily_gas_consumption * 29.53).to_f.round(2).to_s if !object.houses.empty?
+  end
+  def neighborhood_monthly_consumption
+    (object.neighborhood_daily_gas_consumption * 29.53).to_f.round(2).to_s if !object.houses.empty?
+  end
+  def city_monthly_consumption
+    (object.city_daily_gas_consumption.to_f * 29.53).round(2).to_s if !object.houses.empty?
+  end
+  def county_monthly_consumption
+    (object.county_daily_gas_consumption.to_f * 29.53).round(2).to_s if !object.houses.empty?
+  end
+  def region_monthly_consumption
+    (object.region_daily_gas_consumption.to_f * 29.53).round(2).to_s if !object.houses.empty?
+  end
+  def country_monthly_consumption
+    (object.country_daily_gas_consumption.to_f * 29.53).round(2).to_s if !object.houses.empty?
+  end
+  def avg_monthly_consumption
+    avg = (object.avg_daily_gas_consumption * 29.53).to_f
     avg.nan? ? "0 therms" : avg.round(2).to_s + " therms"
   end
 

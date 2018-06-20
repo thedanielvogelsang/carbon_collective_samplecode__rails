@@ -4,6 +4,7 @@ class UserSerializer < ActiveModel::Serializer
                   :total_carbon_savings_to_date,
                   :global_collective_carbon_savings,
                   :avg_daily_footprint,
+                  :avg_monthly_footprint,
                   :household, :neighborhood, :city, :county, :region, :country,
 
 
@@ -22,9 +23,15 @@ class UserSerializer < ActiveModel::Serializer
   def country
     [object.country.id, object.country.name] if object.country
   end
-  def avg_daily_footprint
-    object.total_pounds_logged.to_s + " lbs"
-  end
+
+  # needs to be erased or fixed
+
+  # def avg_daily_footprint
+  #   object.total_pounds_logged.to_s + " lbs"
+  # end
+  # def avg_monthly_footprint
+  #   (object.total_pounds_logged).to_s + " lbs"
+  # end
   def house_ids
     object.houses.map{|h| h.id} if object.houses.length > 0
   end
