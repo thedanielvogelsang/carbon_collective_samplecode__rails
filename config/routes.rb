@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   resources :addresses, only: [:create]
   resources :houses, only: [:create]
   post '/suggestions', to: 'suggestions#send_suggestion'
+  post '/bugs', to: "suggestions#send_bug"
   namespace :api do
     namespace :v1 do
       resources :addresses, only: [:index, :show]
