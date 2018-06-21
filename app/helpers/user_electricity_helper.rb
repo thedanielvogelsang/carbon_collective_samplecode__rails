@@ -2,9 +2,9 @@ module UserElectricityHelper
 
   include UserHelper
 
-  def avg_daily_electricity_savings
-    self.total_kwhs_logged / self.total_electricitybill_days_logged
-  end
+  # def avg_daily_electricity_savings
+  #   self.total_kwhs_logged / self.total_electricitybill_days_logged
+  # end
 
   def avg_daily_electricity_consumption
     self.total_kwhs_logged.fdiv(self.total_electricitybill_days_logged)

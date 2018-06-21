@@ -2,10 +2,10 @@ module UserCarbonHelper
   include UserHelper
   include Co2Helper
 
-  def avg_daily_carbon_savings
-    user_date = account_length_time
-    self.total_pounds_logged / user_date.to_i
-  end
+  # def avg_daily_carbon_savings
+  #   user_date = account_length_time
+  #   self.total_pounds_logged / user_date.to_i
+  # end
 
   # big question marks around this method
   def avg_daily_carbon_consumption

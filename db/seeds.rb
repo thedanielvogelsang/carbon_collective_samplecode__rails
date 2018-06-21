@@ -383,6 +383,9 @@ STATES.each do |r|
   Region.create(name: r[0], avg_daily_electricity_consumed_per_capita: state_avg,
                 avg_daily_water_consumed_per_capita: r[2],
                 avg_daily_gas_consumed_per_capita: r[3],
+                avg_daily_electricity_consumed_per_user: state_avg,
+                avg_daily_water_consumed_per_user: r[2],
+                avg_daily_gas_consumed_per_user: r[3],
                 country_id: Country.find_by(name: "United States of America").id,
                )
 end

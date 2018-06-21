@@ -1,9 +1,9 @@
 module UserWaterHelper
   include UserHelper
-
-  def avg_daily_water_savings
-    self.total_gallons_logged / self.total_waterbill_days_logged
-  end
+  #
+  # def avg_daily_water_savings
+  #   self.total_gallons_logged / self.total_waterbill_days_logged
+  # end
 
   def avg_daily_water_consumption
     self.total_gallons_logged.fdiv(self.total_waterbill_days_logged)

@@ -14,4 +14,11 @@ class SuggestionMailer < ApplicationMailer
             subject: "New Requested Area")
     end
 
+    def send_bug_fix_request(user, body)
+      @bug = body
+      @user = user
+      mail(to: 'carboncollective.devops@gmail.com',
+            subject: "Bug Fix request")
+    end
+
 end

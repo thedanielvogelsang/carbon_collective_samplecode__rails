@@ -4,7 +4,7 @@ class UserWaterSerializer < ActiveModel::Serializer
                   :privacy_policy,
                   :last_updated, :rank, :arrow,
                   :personal_savings_to_date, :personal_usage_to_date,
-                  :global_collective_savings, :avg_daily_footprint, :avg_monthly_footprint,
+                  :avg_daily_footprint, :avg_monthly_footprint,
                   :household, :neighborhood, :city, :county, :region, :country,
                   :household_monthly_consumption,
                   :neighborhood_monthly_consumption,
@@ -45,9 +45,9 @@ class UserWaterSerializer < ActiveModel::Serializer
     object.total_water_savings.to_f.round(2).to_s + " gallons"
   end
 
-  def global_collective_savings
-    Global.first.total_water_saved.to_f.round(2).to_s + " gallons"
-  end
+  # def global_collective_savings
+  #   Global.first.total_water_saved.to_f.round(2).to_s + " gallons"
+  # end
 
   def current_location
     object.location
