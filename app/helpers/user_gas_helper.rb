@@ -1,9 +1,9 @@
 module UserGasHelper
   include UserHelper
-
-  def avg_daily_gas_savings
-    self.total_therms_logged / self.total_heatbill_days_logged
-  end
+  # 
+  # def avg_daily_gas_savings
+  #   self.total_therms_logged / self.total_heatbill_days_logged
+  # end
 
   def avg_daily_gas_consumption
     self.total_therms_logged.fdiv(self.total_heatbill_days_logged)

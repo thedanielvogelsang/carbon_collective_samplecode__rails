@@ -4,7 +4,7 @@ class UserGasSerializer < ActiveModel::Serializer
                   :privacy_policy,
                   :rank, :arrow, :last_updated,
                   :personal_usage_to_date, :personal_savings_to_date,
-                  :global_collective_savings, :avg_daily_footprint, :avg_monthly_footprint,
+                  :avg_daily_footprint, :avg_monthly_footprint,
                   :household, :neighborhood, :city, :county, :region, :country,
                   :household_monthly_consumption,
                   :neighborhood_monthly_consumption,
@@ -46,10 +46,10 @@ class UserGasSerializer < ActiveModel::Serializer
   def personal_savings_to_date
     object.total_gas_savings.to_f.round(2).to_s + " therms"
   end
-
-  def global_collective_savings
-    nil
-  end
+  # 
+  # def global_collective_savings
+  #   nil
+  # end
 
   def current_location
     object.location

@@ -1,15 +1,14 @@
 class CityGasSerializer < ActiveModel::Serializer
   attributes :id, :name, :parent,
-                  :total_saved,
                   :rank, :arrow,
                   :metric_name, :metric_sym,
                   :avg_monthly_consumed_per_user,
                   :avg_monthly_consumed_per_capita,
                   :out_of
-
-  def total_saved
-    object.total_gas_saved.round(2)
-  end
+  #
+  # def total_saved
+  #   object.total_gas_saved.round(2)
+  # end
   # def avg_total_saved_per_user
   #   object.avg_total_gas_saved_per_user.round(2)
   # end

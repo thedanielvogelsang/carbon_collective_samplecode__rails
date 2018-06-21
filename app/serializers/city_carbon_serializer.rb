@@ -1,5 +1,5 @@
 class CityCarbonSerializer < ActiveModel::Serializer
-  attributes :id, :name, :total_saved, :avg_monthly_consumed_per_user,
+  attributes :id, :name, :avg_monthly_consumed_per_user,
                   :metric_sym, :metric_name, :rank, :arrow, :parent,
                   :out_of
 
@@ -15,9 +15,9 @@ class CityCarbonSerializer < ActiveModel::Serializer
     #   object.users.count
     # end
 
-    def total_saved
-      object.carbon_ranking.total_carbon_saved.round(2)
-    end
+    # def total_saved
+    #   object.carbon_ranking.total_carbon_saved.round(2)
+    # end
 
     def avg_daily_consumed_per_user
       object.carbon_ranking.avg_daily_carbon_consumed_per_user.round(4)

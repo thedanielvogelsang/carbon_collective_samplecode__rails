@@ -1,12 +1,12 @@
 class CountyGasSerializer < ActiveModel::Serializer
   attributes :id, :name, :metric_name, :metric_sym,
-                  :total_saved, :rank, :arrow,
+                  :rank, :arrow,
                   :avg_monthly_consumed_per_user,
                   :avg_monthly_consumed_per_capita, :out_of
 
-  def total_saved
-    object.total_gas_saved.round(2).to_s + ' therms gas saved to date'
-  end
+  # def total_saved
+  #   object.total_gas_saved.round(2).to_s + ' therms gas saved to date'
+  # end
   # def avg_total_saved_per_user
   #   object.avg_total_gas_saved_per_user.round(2)
   # end

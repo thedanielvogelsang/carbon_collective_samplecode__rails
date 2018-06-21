@@ -1,6 +1,6 @@
 class UserCarbonSerializer < ActiveModel::Serializer
 
-  attributes :id, :first, :last, :avatar_url, :global_collective_savings, :privacy_policy,
+  attributes :id, :first, :last, :avatar_url, :privacy_policy,
                   :personal_savings_to_date, :personal_usage_to_date,
                   :arrow, :rank, :last_updated, :avg_daily_footprint, :avg_monthly_footprint,
                   :household, :neighborhood, :city, :county, :region, :country,
@@ -56,9 +56,9 @@ class UserCarbonSerializer < ActiveModel::Serializer
     object.total_pounds_logged.to_f.round(2).to_s + " lbs"
   end
 
-  def global_collective_savings
-    Global.first.total_carbon_saved.to_f.round(2).to_s + " lbs"
-  end
+  # def global_collective_savings
+  #   Global.first.total_carbon_saved.to_f.round(2).to_s + " lbs"
+  # end
 
   def household_daily_consumption
     object.household.total_carbon_savings_to_date.round(3) if !object.houses.empty?
