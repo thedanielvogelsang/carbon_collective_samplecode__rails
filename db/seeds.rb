@@ -727,9 +727,7 @@ puts "all neighborhoods of Denver added"
                     puts "created address in #{house.address.neighborhood.name}\n\n\n"
 
 GLOBE.update_data
-Country.all.each do |c|
-  # set carbon_avg_user and dont update it on countries
-end
+
 country.update_data
 
 state.update_data
