@@ -111,10 +111,10 @@ module NeighborhoodHelper
     end
   end
 
-  def update_carbon_consumption(n)
+  def update_carbon_consumption
     carbon_ranking = self.carbon_ranking
-    # carbon_ranking.avg_daily_carbon_consumed_per_user = combine_average_use(self.avg_daily_electricity_consumed_per_user, self.avg_daily_gas_consumed_per_user)
-    carbon_ranking.avg_daily_carbon_consumed_per_user = n
+    carbon_ranking.avg_daily_carbon_consumed_per_user = combine_average_use(self.avg_daily_electricity_consumed_per_user, self.avg_daily_gas_consumed_per_user)
+    # carbon_ranking.avg_daily_carbon_consumed_per_user = n
     carbon_ranking.save
   end
 
