@@ -46,7 +46,7 @@ class UserGasSerializer < ActiveModel::Serializer
   def personal_savings_to_date
     object.total_gas_savings.to_f.round(2).to_s + " therms"
   end
-  # 
+  #
   # def global_collective_savings
   #   nil
   # end
@@ -160,7 +160,7 @@ class UserGasSerializer < ActiveModel::Serializer
         c = County.find(ops_[:area_id])
         County.where(region: c.region).count
       elsif ops_[:area_type] == "Neighborhood"
-        n = Neighborhood.find(ops_[:area_type])
+        n = Neighborhood.find(ops_[:area_id])
         Neighborhood.where(city: n.city).count
       elsif ops_[:area_type] == "City"
         c = City.find(ops_[:area_id])
