@@ -16,7 +16,7 @@ class SuggestionMailer < ApplicationMailer
 
     def send_bug_fix_request(user, body)
       @bug = body
-      @mail = user
+      @user = user
       mail(to: 'carboncollective.devops@gmail.com',
             subject: "Bug Fix request")
     end
