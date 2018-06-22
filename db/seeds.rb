@@ -689,12 +689,12 @@ puts "all neighborhoods of Denver added"
                     neighborhood: rand_add.neighborhood, zipcode_id: bzip.id)
 
                 house2 = House.create(total_sq_ft: 400, no_residents: 1, address_id: rand_two.id)
-                bind_new_user(house)
+                bind_new_user(house2)
                 puts "#{house2} added at #{rand_add.address_line1}, #{rand_add.address_line2} in #{rand_add.neighborhood.name} with no bills"
 
                 house = House.create(total_sq_ft: 600, no_residents: rand(0..4), address_id: rand_add.id)
                 puts "#{house} added in #{rand_add.city} at same address, different apartment: #{rand_add.address_line1}, #{rand_add.address_line2}"
-                user = bind_new_user(house)
+                user = bind_new_user(house2)
                 puts "#{user.first} created with email #{user.email} & password #{user.password}"
 
                       kwhs = rand(100..3000)

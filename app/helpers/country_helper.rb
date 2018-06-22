@@ -51,23 +51,23 @@ module CountryHelper
     end
   end
 
-  def update_total_water_savings
-    if WaterBill.joins(:house => {:address => :region}).where(:regions => {country_id: self.id}).count != 0
-      water_saved = self.users.map{|u| u.total_water_savings}
-                .flatten.reject(&:nan?)
-                .reduce(0){|sum, num| sum + num}
-      self.total_water_saved = water_saved
-    end
-  end
-
-  def update_daily_avg_water_savings
-    if WaterBill.joins(:house => {:address => :region}).where(:regions => {country_id: self.id}).count != 0
-      water_savings = self.users.map{|u| u.total_water_savings }
-      .flatten.reject(&:nan?)
-      .reduce(0){|sum, num| sum + num } / self.users.count if self.users.count != 0
-      self.avg_total_water_saved_per_user = water_savings
-    end
-  end
+  # def update_total_water_savings
+  #   if WaterBill.joins(:house => {:address => :region}).where(:regions => {country_id: self.id}).count != 0
+  #     water_saved = self.users.map{|u| u.total_water_savings}
+  #               .flatten.reject(&:nan?)
+  #               .reduce(0){|sum, num| sum + num}
+  #     self.total_water_saved = water_saved
+  #   end
+  # end
+  #
+  # def update_daily_avg_water_savings
+  #   if WaterBill.joins(:house => {:address => :region}).where(:regions => {country_id: self.id}).count != 0
+  #     water_savings = self.users.map{|u| u.total_water_savings }
+  #     .flatten.reject(&:nan?)
+  #     .reduce(0){|sum, num| sum + num } / self.users.count if self.users.count != 0
+  #     self.avg_total_water_saved_per_user = water_savings
+  #   end
+  # end
 
   def update_daily_avg_water_consumption
     if WaterBill.joins(:house => {:address => :region}).where(:regions => {country_id: self.id}).count != 0
