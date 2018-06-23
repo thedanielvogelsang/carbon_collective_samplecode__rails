@@ -42,7 +42,7 @@ class NeighborhoodElectricitySerializer < ActiveModel::Serializer
     "kilowatt hours"
   end
   def metric_sym
-    "kwhs"
+    "kWhs"
   end
   def rank
     object.electricity_ranking.rank

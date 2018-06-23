@@ -18,7 +18,7 @@ class UserMailer < ApplicationMailer
         @new.password = 'placeholder'
         @new.generation = prev_gen + 1
         @new.save
-          UserInvite.create(user_id: @user.id, invite_id: @new.id)
+          UserInvite.find_or_create_by(user_id: @user.id, invite_id: @new.id)
         mail(:to => email_hash[e],
              :subject => "Carbon Collective Invite from #{@user.first}"
             )
@@ -26,7 +26,7 @@ class UserMailer < ApplicationMailer
       elsif !new_user.email_confirmed
         @new = new_user
         @new.generation = prev_gen + 1
-          UserInvite.create(user_id: @user.id, invite_id: @new.id)
+          UserInvite.find_or_create_by(user_id: @user.id, invite_id: @new.id)
         mail(:to => email_hash[e],
              :subject => "Carbon Collective Invite from #{@user.first}"
             )
