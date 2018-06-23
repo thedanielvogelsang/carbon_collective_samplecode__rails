@@ -469,25 +469,25 @@ puts "all neighborhoods of Denver added"
               puts "#{house} added in #{tadd.city} at #{tadd.address_line1} in #{tadd.neighborhood.name}"
                 kwhs = 1400
                 price = rand(1..100)
-                bill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house.id)
+                bill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house.id, no_residents: 2)
               puts "bill added to house ##{house.id} in #{house.address.city.name}: #{bill}"
                 kwhs2 = 1200
                 price2 = rand(1..100)
                 sdate = @start_date - 30
                 edate = @end_date - 30
-                bill2 = ElectricBill.create(start_date: sdate, end_date: edate, total_kwhs: kwhs2, price: price2, house_id: house.id)
+                bill2 = ElectricBill.create(start_date: sdate, end_date: edate, total_kwhs: kwhs2, price: price2, house_id: house.id, no_residents: 2)
               puts "second bill added to house ##{house.id} in #{house.address.city.name}: #{bill2}"
                 kwhs3 = 1000
                 price3 = rand(1..100)
                 sdate3 = @start_date - 60
                 edate3 = @end_date - 60
-                bill3 = ElectricBill.create(start_date: sdate3, end_date: edate3, total_kwhs: kwhs3, price: price3, house_id: house.id)
+                bill3 = ElectricBill.create(start_date: sdate3, end_date: edate3, total_kwhs: kwhs3, price: price3, house_id: house.id, no_residents: 2)
               puts "third bill added to house ##{house.id} in #{house.address.city.name}: #{bill3}"
                 kwhs4 = 2000
                 price4 = rand(1..100)
                 sdate4 = @start_date - 90
                 edate4 = @end_date - 90
-                bill4 = ElectricBill.create(start_date: sdate4, end_date: edate4, total_kwhs: kwhs4, price: price4, house_id: house.id)
+                bill4 = ElectricBill.create(start_date: sdate4, end_date: edate4, total_kwhs: kwhs4, price: price4, house_id: house.id, no_residents: 2)
               puts "fourth bill added to house ##{house.id} in #{house.address.city.name}: #{bill4}"
 
     sadd = Address.create!(address_line1: "1284 Race St",
@@ -506,40 +506,40 @@ puts "all neighborhoods of Denver added"
 
               kwhs = rand(1000..3000)
               price = rand(1..100)
-              ebill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house2.id)
-              wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: 12000, price: price, house_id: house2.id)
+              ebill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house2.id, no_residents: 5)
+              wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: 12000, price: price, house_id: house2.id, no_residents: 5)
             puts "2 bills added to house ##{house2.id} in #{house2.address.city}: #{ebill}, #{wbill}"
               kwhs2 = rand(1000..3000)
               price2 = rand(1..100)
               sdate = @start_date - 30
               edate = @end_date - 30
-              bill2 = ElectricBill.create(start_date: sdate, end_date: edate, total_kwhs: kwhs2, price: price2, house_id: house2.id)
-              wbill2 = WaterBill.create(start_date: sdate, end_date: edate, total_gallons: 15000, price: price, house_id: house2.id)
+              bill2 = ElectricBill.create(start_date: sdate, end_date: edate, total_kwhs: kwhs2, price: price2, house_id: house2.id, no_residents: 5)
+              wbill2 = WaterBill.create(start_date: sdate, end_date: edate, total_gallons: 15000, price: price, house_id: house2.id, no_residents: 5)
 
             puts "second bill added to house ##{house2.id} in #{house2.address.city}: #{bill2}, #{wbill2}"
               kwhs2 = rand(1000..3000)
               price2 = rand(100..200)
               sdate = @start_date - 60
               edate = @end_date - 60
-              bill3 = ElectricBill.create(start_date: sdate, end_date: edate, total_kwhs: kwhs2, price: price2, house_id: house2.id)
-              wbill3 = WaterBill.create(start_date: sdate, end_date: edate, total_gallons: 14000, price: price2, house_id: house2.id)
+              bill3 = ElectricBill.create(start_date: sdate, end_date: edate, total_kwhs: kwhs2, price: price2, house_id: house2.id, no_residents: 5)
+              wbill3 = WaterBill.create(start_date: sdate, end_date: edate, total_gallons: 14000, price: price2, house_id: house2.id, no_residents: 5)
 
             puts "third bill added to house ##{house2.id} in #{house2.address.city}: #{bill3}, #{wbill3}"
               kwhs2 = rand(1000..3000)
               price2 = rand(100..200)
               sdate = @start_date - 90
               edate = @end_date - 90
-              bill4 = ElectricBill.create(start_date: sdate, end_date: edate, total_kwhs: kwhs2, price: price2, house_id: house2.id)
-              wbill4 = WaterBill.create(start_date: sdate, end_date: edate, total_gallons: 13670, price: price2, house_id: house2.id)
+              bill4 = ElectricBill.create(start_date: sdate, end_date: edate, total_kwhs: kwhs2, price: price2, house_id: house2.id, no_residents: 5)
+              wbill4 = WaterBill.create(start_date: sdate, end_date: edate, total_gallons: 13670, price: price2, house_id: house2.id, no_residents: 5)
 
             puts "fourth bill added to house ##{house2.id} in #{house2.address.city}: #{bill4}, #{wbill4}"
               kwhs2 = rand(1000..3000)
               price2 = rand(100..200)
               sdate = @start_date - 120
               edate = @end_date - 120
-              bill5 = ElectricBill.create(start_date: sdate, end_date: edate, total_kwhs: kwhs2, price: price2, house_id: house2.id)
+              bill5 = ElectricBill.create(start_date: sdate, end_date: edate, total_kwhs: kwhs2, price: price2, house_id: house2.id, no_residents: 5)
               # no save here suspected
-              wbill5 = WaterBill.create(start_date: sdate, end_date: edate, total_gallons: 16670, price: price2, house_id: house2.id)
+              wbill5 = WaterBill.create(start_date: sdate, end_date: edate, total_gallons: 16670, price: price2, house_id: house2.id, no_residents: 5)
 
             puts "fifth bill added to house ##{house2.id} in #{house2.address.city}: #{bill5}, #{wbill5}"
 
@@ -559,20 +559,20 @@ puts "all neighborhoods of Denver added"
 
                         kwhs = rand(1000..3000)
                         price = rand(1..100)
-                        bill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house.id)
-                        wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: 17830, price: price, house_id: house.id)
+                        bill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house.id, no_residents: 6)
+                        wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: 17830, price: price, house_id: house.id, no_residents: 6)
 
                       puts "bill added to house ##{house.id} in #{house.address.city.name}: #{bill}"
                         kwhs2 = rand(1000..3000)
                         price2 = rand(1..100)
                         sdate = @start_date - 30
                         edate = @end_date - 30
-                        bill2 = ElectricBill.create(start_date: sdate, end_date: edate, total_kwhs: kwhs2, price: price2, house_id: house.id)
-                        wbill2 = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: 15000, price: price, house_id: house.id)
+                        bill2 = ElectricBill.create(start_date: sdate, end_date: edate, total_kwhs: kwhs2, price: price2, house_id: house.id, no_residents: 6)
+                        wbill2 = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: 15000, price: price, house_id: house.id, no_residents: 6)
 
                       puts "second set of bills added to house ##{house.id} in #{house.address.city.name}: #{bill2}, #{wbill2}\n"
-                      wbill3 = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: 20000, price: price, house_id: house.id)
-                      puts "third bill added to house ##{house.id} in #{house.address.city.name}: #{wbill3}\n"
+                      wbill3 = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: 20000, price: price, house_id: house.id, no_residents: 6)
+                      puts "third water bill added to house ##{house.id} in #{house.address.city.name}: #{wbill3}\n"
 
                       puts "created #{Address.where(city_id: city1.id).count} address in CapHill\n\n\n"
 
@@ -590,8 +590,8 @@ puts "all neighborhoods of Denver added"
 
               kwhs = rand(10..3000)
               price = rand(1..100)
-              bill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house.id)
-              wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: 17270, price: price, house_id: house.id)
+              bill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house.id, no_residents: 2)
+              wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: 17270, price: price, house_id: house.id, no_residents: 2)
             puts "1 bill added to house ##{house.id} in #{house.address.city.name}: #{bill}, #{wbill}"
 
       fort_add = Address.create(address_line1: "125 Main St", address_line2: "#202",
@@ -607,8 +607,8 @@ puts "all neighborhoods of Denver added"
                 kwhs = rand(100..3000)
                 price = rand(40..100)
                 gals = rand(10000..30000)
-                bill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house.id)
-                wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gals, price: price, house_id: house.id)
+                bill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house.id, no_residents: 2)
+                wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gals, price: price, house_id: house.id, no_residents: 2)
 
               puts "bill added to house ##{house.id} in #{house.address.city.name}: #{bill}, #{wbill}"
                 kwhs2 = rand(100..3000)
@@ -616,8 +616,8 @@ puts "all neighborhoods of Denver added"
                 price2 = rand(40..100)
                 sdate = @start_date - 30
                 edate = @end_date - 30
-                bill2 = ElectricBill.create(start_date: sdate, end_date: edate, total_kwhs: kwhs2, price: price2, house_id: house.id)
-                wbill2 = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gals2, price: price, house_id: house.id)
+                bill2 = ElectricBill.create(start_date: sdate, end_date: edate, total_kwhs: kwhs2, price: price2, house_id: house.id, no_residents: 2)
+                wbill2 = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gals2, price: price, house_id: house.id, no_residents: 2)
 
               puts "second bill added to house ##{house.id} in #{house.address.city.name}: #{bill2}, #{wbill2}\n"
                 kwhs3 = rand(100..3000)
@@ -625,8 +625,8 @@ puts "all neighborhoods of Denver added"
                 sdate3 = @start_date - 60
                 edate3 = @end_date - 60
                 gals3 = rand(1000..15000)
-                bill3 = ElectricBill.create(start_date: sdate3, end_date: edate3, total_kwhs: kwhs3, price: price3, house_id: house.id)
-                wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gals3, price: price, house_id: house.id)
+                bill3 = ElectricBill.create(start_date: sdate3, end_date: edate3, total_kwhs: kwhs3, price: price3, house_id: house.id, no_residents: 2)
+                wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gals3, price: price, house_id: house.id, no_residents: 2)
 
               puts "third bill added to house ##{house.id} in #{house.address.city.name}: #{bill3}\n"
               puts "created #{Address.where(city: 'Fort Collins').count} address in Fort Collins\n\n\n"
@@ -649,8 +649,8 @@ puts "all neighborhoods of Denver added"
 
               kwhs = 34000
               price = rand(200..300)
-              bill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house.id)
-              wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: 17270, price: price, house_id: house.id)
+              bill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house.id, no_residents: 4)
+              wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: 17270, price: price, house_id: house.id, no_residents: 4)
             puts "1 bill added to house ##{house.id} in #{house.address.city.name}: #{bill}, #{wbill}\n"
 
   # second house: 4 residents, 2 users; 1 bill, net savings
@@ -671,8 +671,8 @@ puts "all neighborhoods of Denver added"
           puts "#{user2.first} created with email #{user2.email} & password #{user2.password}, added to house(#{house.id})"
         kwhs = rand(10..100)
         price = rand(1..100)
-        bill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house.id)
-        wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: 10000, price: 34.66, house_id: house.id)
+        bill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house.id, no_residents: 2)
+        wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: 10000, price: 34.66, house_id: house.id, no_residents: 2)
           puts "1 bill added to house ##{house.id} in #{house.address.city.name}: #{bill}\n"
 
 
@@ -700,8 +700,8 @@ puts "all neighborhoods of Denver added"
                       kwhs = rand(100..3000)
                       price = rand(40..100)
                       gals = rand(1000..40000)
-                      bill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house.id)
-                      wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gals, price: price, house_id: house.id)
+                      bill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house.id, no_residents: 2)
+                      wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gals, price: price, house_id: house.id, no_residents: 1)
 
                     puts "bill added to house ##{house.id} in #{house.address.city.name}: #{bill}"
                       kwhs2 = rand(100..3000)
@@ -710,8 +710,8 @@ puts "all neighborhoods of Denver added"
                       edate = @end_date - 30
                       gals = rand(1000..40000)
 
-                      bill2 = ElectricBill.create(start_date: sdate, end_date: edate, total_kwhs: kwhs2, price: price2, house_id: house.id)
-                      wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gals, price: price, house_id: house.id)
+                      bill2 = ElectricBill.create(start_date: sdate, end_date: edate, total_kwhs: kwhs2, price: price2, house_id: house.id, no_residents: 1)
+                      wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gals, price: price, house_id: house.id, no_residents: 1)
 
                     puts "second bill added to house ##{house.id} in #{house.address.city.name}: #{bill2}\n"
                       kwhs3 = rand(100..3000)
@@ -720,8 +720,8 @@ puts "all neighborhoods of Denver added"
                       edate3 = @end_date - 60
                       gals = rand(1000..40000)
 
-                      bill3 = ElectricBill.create(start_date: sdate3, end_date: edate3, total_kwhs: kwhs3, price: price3, house_id: house.id)
-                      wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gals, price: price, house_id: house.id)
+                      bill3 = ElectricBill.create(start_date: sdate3, end_date: edate3, total_kwhs: kwhs3, price: price3, house_id: house.id, no_residents: 2)
+                      wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gals, price: price, house_id: house.id, no_residents: 2)
 
                     puts "third bill added to house ##{house.id} in #{house.address.city.name}: #{bill3}\n"
                     puts "created address in #{house.address.neighborhood.name}\n\n\n"

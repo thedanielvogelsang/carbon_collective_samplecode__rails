@@ -3,10 +3,11 @@ class WaterBill < ApplicationRecord
 
   validates_presence_of :start_date,
                         :end_date,
-                        :total_gallons
+                        :total_gallons,
+                        :no_residents
 
   validate :confirm_valid_dates
-  
+
   after_validation :water_saved?,
                    :update_users_savings
 
@@ -35,7 +36,7 @@ class WaterBill < ApplicationRecord
   end
 
   def update_users_savings
-    num_res = self.house.no_residents
+    num_res = self.no_residents
     num_days = self.end_date - self.start_date
     gals = self.total_gallons.fdiv(num_res)
     users = house.users

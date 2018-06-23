@@ -5,7 +5,8 @@ class ElectricBill < ApplicationRecord
 
     validates_presence_of :start_date,
                           :end_date,
-                          :total_kwhs
+                          :total_kwhs,
+                          :no_residents
 
     validate :confirm_valid_dates
 
@@ -41,7 +42,7 @@ class ElectricBill < ApplicationRecord
 
   # at the end of bill making, updates all users in house at current time to hold their totals
   def update_users_savings
-    num_res = self.house.no_residents
+    num_res = self.no_residents
     num_days = self.end_date - self.start_date
     kwhs = self.total_kwhs.fdiv(num_res)
     users = house.users

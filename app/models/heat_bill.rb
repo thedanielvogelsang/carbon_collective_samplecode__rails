@@ -6,7 +6,8 @@ class HeatBill < ApplicationRecord
 
   validates_presence_of :start_date,
                         :end_date,
-                        :total_therms
+                        :total_therms,
+                        :no_residents
 
   validate :confirm_valid_dates
 
@@ -47,7 +48,7 @@ class HeatBill < ApplicationRecord
 
  # at the end of bill making, updates all users in house at current time to hold their totals
  def update_users_savings
-   num_res = self.house.no_residents
+   num_res = self.no_residents
    num_days = self.end_date - self.start_date
    therms = self.total_therms.fdiv(num_res)
    users = house.users
