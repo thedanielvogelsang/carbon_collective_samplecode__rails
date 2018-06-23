@@ -72,22 +72,22 @@ class UserGasSerializer < ActiveModel::Serializer
   end
 
   def household_daily_consumption
-    object.household_daily_gas_consumption.to_f.round(2).to_s if !object.houses.empty?
+    object.household_daily_gas_consumption_per_user.to_f.round(2).to_s if !object.houses.empty?
   end
   def neighborhood_daily_consumption
-    object.neighborhood_daily_gas_consumption.to_f.round(2).to_s if !object.houses.empty?
+    object.neighborhood_daily_gas_consumption_per_user.to_f.round(2).to_s if !object.houses.empty?
   end
   def city_daily_consumption
-    object.city_daily_gas_consumption.to_f.round(2).to_s if !object.houses.empty?
+    object.city_daily_gas_consumption_per_user.to_f.round(2).to_s if !object.houses.empty?
   end
   def county_daily_consumption
-    object.county_daily_gas_consumption.to_f.round(2).to_s if !object.houses.empty?
+    object.county_daily_gas_consumption_per_user.to_f.round(2).to_s if !object.houses.empty?
   end
   def region_daily_consumption
-    object.region_daily_gas_consumption.to_f.round(2).to_s if !object.houses.empty?
+    object.region_daily_gas_consumption_per_user.to_f.round(2).to_s if !object.houses.empty?
   end
   def country_daily_consumption
-    object.country_daily_gas_consumption.to_f.round(2).to_s if !object.houses.empty?
+    object.country_daily_gas_consumption_per_user.to_f.round(2).to_s if !object.houses.empty?
   end
   def avg_daily_consumption
     avg = object.avg_daily_gas_consumption.to_f
@@ -96,22 +96,22 @@ class UserGasSerializer < ActiveModel::Serializer
 
   #monthly averages
   def household_monthly_consumption
-    (object.household_daily_gas_consumption * 29.53).to_f.round(2).to_s if !object.houses.empty?
+    (object.household_daily_gas_consumption_per_user * 29.53).to_f.round(2).to_s if !object.houses.empty?
   end
   def neighborhood_monthly_consumption
-    (object.neighborhood_daily_gas_consumption * 29.53).to_f.round(2).to_s if !object.houses.empty?
+    (object.neighborhood_daily_gas_consumption_per_user * 29.53).to_f.round(2).to_s if !object.houses.empty?
   end
   def city_monthly_consumption
-    (object.city_daily_gas_consumption.to_f * 29.53).round(2).to_s if !object.houses.empty?
+    (object.city_daily_gas_consumption_per_user.to_f * 29.53).round(2).to_s if !object.houses.empty?
   end
   def county_monthly_consumption
-    (object.county_daily_gas_consumption.to_f * 29.53).round(2).to_s if !object.houses.empty?
+    (object.county_daily_gas_consumption_per_user.to_f * 29.53).round(2).to_s if !object.houses.empty?
   end
   def region_monthly_consumption
-    (object.region_daily_gas_consumption.to_f * 29.53).round(2).to_s if !object.houses.empty?
+    (object.region_daily_gas_consumption_per_user.to_f * 29.53).round(2).to_s if !object.houses.empty?
   end
   def country_monthly_consumption
-    (object.country_daily_gas_consumption.to_f * 29.53).round(2).to_s if !object.houses.empty?
+    (object.country_daily_gas_consumption_per_user.to_f * 29.53).round(2).to_s if !object.houses.empty?
   end
   def avg_monthly_consumption
     avg = (object.avg_daily_gas_consumption * 29.53).to_f

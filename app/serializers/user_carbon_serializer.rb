@@ -77,11 +77,11 @@ class UserCarbonSerializer < ActiveModel::Serializer
   end
 
   def region_daily_consumption
-    object.region.carbon_ranking.avg_daily_carbon_consumed_per_user.round(3) if !object.houses.empty?
+    object.region.carbon_ranking.avg_daily_carbon_consumed_per_user.round(2) if !object.houses.empty?
   end
 
   def country_daily_consumption
-    object.country.carbon_ranking.avg_daily_carbon_consumed_per_user.round(3) if !object.houses.empty?
+    object.country.carbon_ranking.avg_daily_carbon_consumed_per_user.round(2) if !object.houses.empty?
   end
   def household_monthly_consumption
     (object.household.total_carbon_savings_to_date * 29.53).round(2) if !object.houses.empty?

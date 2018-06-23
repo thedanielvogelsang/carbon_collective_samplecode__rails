@@ -24,9 +24,11 @@ module HouseHelper
 
   ## used for snapshots -- pending api use ##
   # 0.5 ms
-  def average_daily_electricity_consumption_per_resident
+  def average_daily_electricity_consumption_per_user
+    # self.electric_bills.map{|b| b.total_kwhs_logged}.compact.flatten.reject(&:nan?)
+    #           .reduce(0){|s, n| s + n} / self.no_residents
     self.users.map{|u| u.avg_daily_electricity_consumption}.compact.flatten.reject(&:nan?)
-              .reduce(0){|s,n| s + n} / self.no_residents
+              .reduce(0){|s,n| s + n} / self.users.count
   end
 
   #
@@ -34,9 +36,11 @@ module HouseHelper
     total_electricity_savings_to_date / self.no_residents
   end
 
-  def average_daily_water_consumption_per_resident
+  def average_daily_water_consumption_per_user
+    # self.water_bills.map{|b| b.total_gallons_logged}.compact.flatten.reject(&:nan?)
+    #           .reduce(0){|s, n| s + n} / self.users.count
     self.users.map{|u| u.avg_daily_water_consumption}.compact.flatten.reject(&:nan?)
-              .reduce(0){|s,n| s + n} / self.no_residents
+              .reduce(0){|s,n| s + n} / self.users.count
   end
 
   #
@@ -44,9 +48,11 @@ module HouseHelper
     total_water_savings_to_date / self.no_residents
   end
 
-  def average_daily_gas_consumption_per_resident
+  def average_daily_gas_consumption_per_user
+    # self.heat_bills.map{|b| b.total_therms_logged}.compact.flatten.reject(&:nan?)
+    #           .reduce(0){|s, n| s + n} / self.users.count
     self.users.map{|u| u.avg_daily_gas_consumption}.compact.flatten.reject(&:nan?)
-              .reduce(0){|s,n| s + n} / self.no_residents
+              .reduce(0){|s,n| s + n} / self.users.count
   end
 
   #
@@ -54,9 +60,9 @@ module HouseHelper
     total_gas_savings_to_date / self.no_residents
   end
 
-  def average_daily_carbon_consumption_per_resident
+  def average_daily_carbon_consumption_per_user
     self.users.map{|u| u.avg_daily_carbon_consumption}.compact.flatten.reject(&:nan?)
-              .reduce(0){|s,n| s + n} / self.no_residents
+              .reduce(0){|s,n| s + n} / self.users.count
   end
 
   #

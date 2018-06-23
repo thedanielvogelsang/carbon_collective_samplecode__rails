@@ -11,10 +11,10 @@ class CountryCarbonSerializer < ActiveModel::Serializer
     # end
 
     def avg_daily_consumed_per_user
-      object.carbon_ranking.avg_daily_carbon_consumed_per_user.round(4)
+      object.carbon_ranking.avg_daily_carbon_consumed_per_user.round(2)
     end
     def avg_monthly_consumed_per_user
-      (object.carbon_ranking.avg_daily_carbon_consumed_per_user * 29.53).round(4)
+      (object.carbon_ranking.avg_daily_carbon_consumed_per_user * 29.53).round(2)
     end
 
     def metric_name

@@ -1,7 +1,7 @@
 class UserWaterSerializer < ActiveModel::Serializer
   attributes :id, :avg_daily_consumption, :first, :last, :email,
                   :avatar_url, :house_ids, :avg_monthly_consumption,
-                  :privacy_policy,
+                  :privacy_policy, 
                   :last_updated, :rank, :arrow,
                   :personal_savings_to_date, :personal_usage_to_date,
                   :avg_daily_footprint, :avg_monthly_footprint,
@@ -70,23 +70,23 @@ class UserWaterSerializer < ActiveModel::Serializer
   end
 
   def household_daily_consumption
-    object.household_daily_water_consumption.to_f.round(2).to_s if !object.houses.empty?
+    object.household_daily_water_consumption_per_user.to_f.round(2).to_s if !object.houses.empty?
   end
   def neighborhood_daily_consumption
-    object.neighborhood_daily_water_consumption.to_f.round(2).to_s if !object.houses.empty?
+    object.neighborhood_daily_water_consumption_per_user.to_f.round(2).to_s if !object.houses.empty?
   end
   def city_daily_consumption
-    object.city_daily_water_consumption.to_f.round(2).to_s if !object.houses.empty?
+    object.city_daily_water_consumption_per_user.to_f.round(2).to_s if !object.houses.empty?
   end
 
   def county_daily_consumption
-    object.country_daily_water_consumption.to_f.round(2).to_s if !object.houses.empty?
+    object.country_daily_water_consumption_per_user.to_f.round(2).to_s if !object.houses.empty?
   end
   def region_daily_consumption
-    object.region_daily_water_consumption.to_f.round(2).to_s if !object.houses.empty?
+    object.region_daily_water_consumption_per_user.to_f.round(2).to_s if !object.houses.empty?
   end
   def country_daily_consumption
-    object.country_daily_water_consumption.to_f.round(2).to_s if !object.houses.empty?
+    object.country_daily_water_consumption_per_user.to_f.round(2).to_s if !object.houses.empty?
   end
 
   def avg_daily_consumption
@@ -97,23 +97,23 @@ class UserWaterSerializer < ActiveModel::Serializer
   # monthly averages
 
   def household_monthly_consumption
-    (object.household_daily_water_consumption * 29.53).to_f.round(2).to_s if !object.houses.empty?
+    (object.household_daily_water_consumption_per_user * 29.53).to_f.round(2).to_s if !object.houses.empty?
   end
   def neighborhood_monthly_consumption
-    (object.neighborhood_daily_water_consumption * 29.53).to_f.round(2).to_s if !object.houses.empty?
+    (object.neighborhood_daily_water_consumption_per_user * 29.53).to_f.round(2).to_s if !object.houses.empty?
   end
   def city_monthly_consumption
-    (object.city_daily_water_consumption * 29.53).to_f.round(2).to_s if !object.houses.empty?
+    (object.city_daily_water_consumption_per_user * 29.53).to_f.round(2).to_s if !object.houses.empty?
   end
 
   def county_monthly_consumption
-    (object.country_daily_water_consumption * 29.53).to_f.round(2).to_s if !object.houses.empty?
+    (object.country_daily_water_consumption_per_user * 29.53).to_f.round(2).to_s if !object.houses.empty?
   end
   def region_monthly_consumption
-    (object.region_daily_water_consumption * 29.53).to_f.round(2).to_s if !object.houses.empty?
+    (object.region_daily_water_consumption_per_user * 29.53).to_f.round(2).to_s if !object.houses.empty?
   end
   def country_monthly_consumption
-    (object.country_daily_water_consumption * 29.53).to_f.round(2).to_s if !object.houses.empty?
+    (object.country_daily_water_consumption_per_user * 29.53).to_f.round(2).to_s if !object.houses.empty?
   end
 
   def avg_monthly_consumption
