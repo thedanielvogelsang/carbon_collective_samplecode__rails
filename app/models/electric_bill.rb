@@ -23,7 +23,7 @@ class ElectricBill < ApplicationRecord
     region_per_cap_daily_average = self.house.address.city.region.avg_daily_electricity_consumed_per_capita
     num_days = self.end_date - self.start_date
     bill_daily_average = self.total_kwhs.fdiv(num_days)
-    avg_daily_use_per_resident = bill_daily_average.fdiv(self.house.no_residents)
+    avg_daily_use_per_resident = bill_daily_average.fdiv(self.no_residents)
     region_per_cap_daily_average > avg_daily_use_per_resident ? res = true : res = false
     res ? self.electricity_saved = ((region_per_cap_daily_average - avg_daily_use_per_resident) * num_days) : self.electricity_saved = 0
     res
@@ -34,7 +34,7 @@ class ElectricBill < ApplicationRecord
     country_per_cap_daily_average = self.house.address.city.region.country.avg_daily_electricity_consumed_per_capita
     num_days = self.end_date - self.start_date
     bill_daily_average = self.total_kwhs.fdiv(num_days)
-    avg_daily_use_per_resident = bill_daily_average.fdiv(self.house.no_residents)
+    avg_daily_use_per_resident = bill_daily_average.fdiv(self.no_residents)
     country_per_cap_daily_average > avg_daily_use_per_resident ? res = true : res = false
     res ? self.electricity_saved = ((country_per_cap_daily_average - avg_daily_use_per_resident) * num_days) : self.electricity_saved = 0
     res
