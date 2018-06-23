@@ -1,15 +1,15 @@
 class HouseElectricitySerializer < ActiveModel::Serializer
   attributes :id, :total_sq_ft, :no_residents, :address, :neighborhood,
                   :users_names, :users_ids, :no_users, :number_of_bills_entered,
-                  :apartment, :total_price, :total_days_recorded,
-                  :total_consumption_to_date,
+                  :apartment, :total_spent, :total_days_recorded,
+                  :total_consumption_to_date, :metric_sym,
                   :total_savings_to_date,
-                  :avg_daily_consumption_per_resident,
-                  :avg_monthly_consumption_per_resident,
-                  :avg_total_savings_per_resident,
+                  :avg_daily_consumption,
+                  :avg_monthly_consumption,
+                  :avg_total_savings,
 
   def total_consumption_to_date
-    object.total_electricity_consumption_to_date.round(2).to_s + " kwhs" if object.total_electricity_consumption_to_date
+    object.total_electricity_consumption_to_date.round(2).to_s + " kWhs" if object.total_electricity_consumption_to_date
   end
   def total_savings_to_date
     object.total_electricity_savings_to_date.round(2) if object.total_electricity_savings_to_date
@@ -23,9 +23,18 @@ class HouseElectricitySerializer < ActiveModel::Serializer
   def avg_total_savings_per_resident
     (object.avg_total_electricity_savings_per_resident).round(2) if object.avg_total_electricity_savings_per_resident != nil
   end
+  def avg_daily_consumption
+    (object.average_daily_electricity_consumption_per_resident * object.no_residents).round(2) if object.average_daily_electricity_consumption_per_resident != nil
+  end
+  def avg_monthly_consumption
+    (object.average_daily_electricity_consumption_per_resident * 29.53 * object.no_residents).round(2) if object.average_daily_electricity_consumption_per_resident != nil
+  end
+  def avg_total_savings
+    (object.avg_total_electricity_savings_per_resident * object.no_residents).round(2) if object.avg_total_electricity_savings_per_resident != nil
+  end
 
-  def total_price
-    500
+  def total_spent
+    object.bills.map{|b| b.price}.reduce(0){|s, n| s+ n} if !object.bills.empty?
   end
 
   def number_of_bills_entered
@@ -56,5 +65,8 @@ class HouseElectricitySerializer < ActiveModel::Serializer
 
   def neighborhood
     object.neighborhood
+  end
+  def metric_sym
+    "kWhs"
   end
 end

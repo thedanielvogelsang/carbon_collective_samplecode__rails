@@ -71,6 +71,22 @@ module UserHelper
     end
   end
 
+  def remove_old_ranks
+    self.user_electricity_rankings.destroy_all
+    self.user_water_rankings.destroy_all
+    self.user_gas_rankings.destroy_all
+    self.user_carbon_rankings.destroy_all
+  end
+
+  def remove_all_questions(hId)
+    ue = UserElectricityQuestion.where(user_id: self.id, house_id: hId)[0]
+    uw = UserWaterQuestion.where(user_id: self.id, house_id: hId)[0]
+    ug = UserGasQuestion.where(user_id: self.id, house_id: hId)[0]
+    UserElectricityQuestion.destroy(ue.id)
+    UserWaterQuestion.destroy(uw.id)
+    UserGasQuestion.destroy(ug.id)
+  end
+
   def confirm_accounts
     self.email_activate
   end

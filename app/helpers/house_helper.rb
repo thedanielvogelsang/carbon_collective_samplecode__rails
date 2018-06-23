@@ -129,7 +129,14 @@ module HouseHelper
   def avg_total_carbon_savings_per_resident
     total_gas_saved / self.no_residents
   end
-  #
+
+  def total_spent
+    total = []
+    self.water_bills.empty? ? nil : self.water_bills.each{ |b| total.push(b.price)}
+    self.heat_bills.empty? ? nil : self.heat_bills.each{|b| total.push(b.price)}
+    self.electric_bills.empty? ? nil : self.bills.each{|b| total.push(b.price)}
+    total.reduce(0){|s, n| s + n}.to_f.round(2)
+  end
 
   #
   # def avg_total_electricity_savings_per_resident

@@ -8,10 +8,10 @@ class ElectricBillSerializer < ActiveModel::Serializer
     (object.end_date - object.start_date).to_i
   end
   def total_used
-    object.total_kwhs.to_s + ' kwhs'
+    object.total_kwhs.to_s + ' kWhs'
   end
   def total_saved
-    object.electricity_saved.round(2).to_s + ' kwhs'
+    object.electricity_saved.round(2).to_s + ' kWhs'
   end
   def carbon_impact
     kwhs_to_carbon(object.total_kwhs).round(2).to_s + " lbs co2"

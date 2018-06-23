@@ -48,15 +48,12 @@ class Api::V1::HousesController < ApplicationController
   def destroy
     id = params[:id]
     if User.exists?(params[:user_id]) && House.exists?(id)
+      user = User.find(params[:user_id])
       house = House.find(id)
-      userhouse = UserHouse.where(user_id: params[:user_id], house: house.id)[0]
-      UserHouse.destroy(userhouse.id)
-      ue = UserElectricityQuestion.where(user_id: user.id, house_id: hId)[0]
-      uw = UserWaterQuestion.where(user_id: user.id, house_id: hId)[0]
-      ug = UserGasQuestion.where(user_id: user.id, house_id: hId)[0]
-      UserElectricityQuestion.destroy(ue.id)
-      UserWaterQuestion.destroy(uw.id)
-      UserGasQuestion.destroy(ug.id)
+        userhouse = UserHouse.where(user_id: user.id, house: house.id)[0]
+        UserHouse.destroy(userhouse.id)
+        user.remove_old_ranks
+        user.remove_all_questions(house.id)
       if house.users.count == 0
         House.destroy(house.id)
       end
