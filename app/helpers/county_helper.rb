@@ -10,12 +10,15 @@ module CountyHelper
       # update_total_electricity_and_carbon_savings
       # update_daily_avg_electricity_savings
       update_daily_avg_electricity_consumption
+      update_total_electricity_consumption
       # update_total_water_savings
       # update_daily_avg_water_savings
       update_daily_avg_water_consumption
+      update_total_water_consumption
       # update_total_gas_and_carbon_savings
       # update_daily_avg_gas_savings
       update_daily_avg_gas_consumption
+      update_total_gas_consumption
       # update_carbon_consumption
       self.save
     end
@@ -111,11 +114,36 @@ module CountyHelper
     end
   end
 
-  def update_carbon_consumption(n)
+  def update_carbon_consumption
     carbon_ranking = self.carbon_ranking
     # carbon_ranking.avg_daily_carbon_consumed_per_user = combine_average_use(self.avg_daily_electricity_consumed_per_user, self.avg_daily_gas_consumed_per_user)
     carbon_ranking.avg_daily_carbon_consumed_per_user = n
     carbon_ranking.save
+  end
+
+  def update_total_electricity_consumption
+    if ElectricBill.joins(:house => :address).where(:addresses => {county_id: self.id}).count != 0
+      energy_consumed = self.users.map{|u| u.total_kwhs_logged }
+              .flatten.reject(&:nan?)
+              .reduce(0){|sum, num| sum + num}
+      self.total_electricity_consumed = energy_consumed
+    end
+  end
+  def update_total_water_consumption
+    if WaterBill.joins(:house => :address).where(:addresses => {county_id: self.id}).count != 0
+      water_consumed = self.users.map{|u| u.total_gallons_logged}
+              .flatten.reject(&:nan?)
+              .reduce(0){|sum, num| sum + num}
+      self.total_water_consumed = water_consumed
+    end
+  end
+  def update_total_gas_consumption
+    if HeatBill.joins(:house => :address).where(:addresses => {county_id: self.id}).count != 0
+      gas_consumed = self.users.map{|u| u.total_therms_logged }
+              .flatten.reject(&:nan?)
+              .reduce(0){|sum, num| sum + num}
+      self.total_gas_consumed = gas_consumed
+    end
   end
 
   def set_default_ranks

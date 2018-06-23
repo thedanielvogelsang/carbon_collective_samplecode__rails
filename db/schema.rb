@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180620044148) do
+ActiveRecord::Schema.define(version: 20180623163528) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,10 +67,16 @@ ActiveRecord::Schema.define(version: 20180620044148) do
     t.bigint "region_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "total_gas_consumed", default: "0.0"
+    t.decimal "total_electricity_consumed", default: "0.0"
+    t.decimal "total_water_consumed", default: "0.0"
     t.index ["name"], name: "index_cities_on_name", unique: true
     t.index ["region_id"], name: "index_cities_on_region_id"
+    t.index ["total_electricity_consumed"], name: "index_cities_on_total_electricity_consumed"
     t.index ["total_electricity_saved"], name: "index_cities_on_total_electricity_saved"
+    t.index ["total_gas_consumed"], name: "index_cities_on_total_gas_consumed"
     t.index ["total_gas_saved"], name: "index_cities_on_total_gas_saved"
+    t.index ["total_water_consumed"], name: "index_cities_on_total_water_consumed"
     t.index ["total_water_saved"], name: "index_cities_on_total_water_saved"
   end
 
@@ -101,10 +107,16 @@ ActiveRecord::Schema.define(version: 20180620044148) do
     t.bigint "region_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "total_electricity_consumed", default: "0.0"
+    t.decimal "total_water_consumed", default: "0.0"
+    t.decimal "total_gas_consumed", default: "0.0"
     t.index ["name"], name: "index_counties_on_name", unique: true
     t.index ["region_id"], name: "index_counties_on_region_id"
+    t.index ["total_electricity_consumed"], name: "index_counties_on_total_electricity_consumed"
     t.index ["total_electricity_saved"], name: "index_counties_on_total_electricity_saved"
+    t.index ["total_gas_consumed"], name: "index_counties_on_total_gas_consumed"
     t.index ["total_gas_saved"], name: "index_counties_on_total_gas_saved"
+    t.index ["total_water_consumed"], name: "index_counties_on_total_water_consumed"
     t.index ["total_water_saved"], name: "index_counties_on_total_water_saved"
   end
 
@@ -124,9 +136,15 @@ ActiveRecord::Schema.define(version: 20180620044148) do
     t.decimal "avg_daily_water_consumed_per_user"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "total_electricity_consumed", default: "0.0"
+    t.decimal "total_water_consumed", default: "0.0"
+    t.decimal "total_gas_consumed", default: "0.0"
     t.index ["name"], name: "index_countries_on_name", unique: true
+    t.index ["total_electricity_consumed"], name: "index_countries_on_total_electricity_consumed"
     t.index ["total_electricity_saved"], name: "index_countries_on_total_electricity_saved"
+    t.index ["total_gas_consumed"], name: "index_countries_on_total_gas_consumed"
     t.index ["total_gas_saved"], name: "index_countries_on_total_gas_saved"
+    t.index ["total_water_consumed"], name: "index_countries_on_total_water_consumed"
     t.index ["total_water_saved"], name: "index_countries_on_total_water_saved"
   end
 
@@ -165,6 +183,7 @@ ActiveRecord::Schema.define(version: 20180620044148) do
     t.float "price"
     t.bigint "house_id"
     t.float "electricity_saved"
+    t.integer "no_residents"
     t.index ["electricity_saved"], name: "index_electric_bills_on_electricity_saved"
     t.index ["house_id"], name: "index_electric_bills_on_house_id"
   end
@@ -225,6 +244,7 @@ ActiveRecord::Schema.define(version: 20180620044148) do
     t.bigint "house_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "no_residents"
     t.index ["gas_saved"], name: "index_heat_bills_on_gas_saved"
     t.index ["house_id"], name: "index_heat_bills_on_house_id"
   end
@@ -276,10 +296,16 @@ ActiveRecord::Schema.define(version: 20180620044148) do
     t.bigint "city_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "total_electricity_consumed", default: "0.0"
+    t.decimal "total_water_consumed", default: "0.0"
+    t.decimal "total_gas_consumed", default: "0.0"
     t.index ["city_id"], name: "index_neighborhoods_on_city_id"
     t.index ["name"], name: "index_neighborhoods_on_name", unique: true
+    t.index ["total_electricity_consumed"], name: "index_neighborhoods_on_total_electricity_consumed"
     t.index ["total_electricity_saved"], name: "index_neighborhoods_on_total_electricity_saved"
+    t.index ["total_gas_consumed"], name: "index_neighborhoods_on_total_gas_consumed"
     t.index ["total_gas_saved"], name: "index_neighborhoods_on_total_gas_saved"
+    t.index ["total_water_consumed"], name: "index_neighborhoods_on_total_water_consumed"
     t.index ["total_water_saved"], name: "index_neighborhoods_on_total_water_saved"
   end
 
@@ -310,10 +336,16 @@ ActiveRecord::Schema.define(version: 20180620044148) do
     t.bigint "country_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "total_electricity_consumed", default: "0.0"
+    t.decimal "total_water_consumed", default: "0.0"
+    t.decimal "total_gas_consumed", default: "0.0"
     t.index ["country_id"], name: "index_regions_on_country_id"
     t.index ["name"], name: "index_regions_on_name", unique: true
+    t.index ["total_electricity_consumed"], name: "index_regions_on_total_electricity_consumed"
     t.index ["total_electricity_saved"], name: "index_regions_on_total_electricity_saved"
+    t.index ["total_gas_consumed"], name: "index_regions_on_total_gas_consumed"
     t.index ["total_gas_saved"], name: "index_regions_on_total_gas_saved"
+    t.index ["total_water_consumed"], name: "index_regions_on_total_water_consumed"
     t.index ["total_water_saved"], name: "index_regions_on_total_water_saved"
   end
 
@@ -519,6 +551,7 @@ ActiveRecord::Schema.define(version: 20180620044148) do
     t.bigint "house_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "no_residents"
     t.index ["house_id"], name: "index_water_bills_on_house_id"
     t.index ["water_saved"], name: "index_water_bills_on_water_saved"
   end

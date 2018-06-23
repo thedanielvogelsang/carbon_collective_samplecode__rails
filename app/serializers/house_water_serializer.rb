@@ -6,7 +6,8 @@ class HouseWaterSerializer < ActiveModel::Serializer
                   :total_savings_to_date,
                   :avg_daily_consumption,
                   :avg_monthly_consumption,
-                  :avg_total_savings,
+                  :avg_daily_consumption_per_user,
+                  :avg_monthly_consumption_per_user,
 
   def total_consumption_to_date
     object.total_water_consumption_to_date.round(1).to_s + " gallons"
@@ -14,25 +15,25 @@ class HouseWaterSerializer < ActiveModel::Serializer
   def total_savings_to_date
     object.total_water_savings_to_date.round(2)
   end
-  def avg_daily_consumption_per_resident
-    (object.average_daily_water_consumption_per_resident).round(2) if object.average_daily_water_consumption_per_resident != nil
+  def avg_daily_consumption_per_user
+    (object.average_daily_water_consumption_per_user).round(2) if object.average_daily_water_consumption_per_user != nil
   end
-  def avg_monthly_consumption_per_resident
-    (object.average_daily_water_consumption_per_resident * 29.53).round(2) if object.average_daily_water_consumption_per_resident != nil
+  def avg_monthly_consumption_per_user
+    (object.average_daily_water_consumption_per_user * 29.53).round(2) if object.average_daily_water_consumption_per_user != nil
   end
-  def avg_total_savings_per_resident
-    (object.avg_total_water_savings_per_resident).round(2) if object.avg_total_water_savings_per_resident != nil
+  def avg_total_savings_per_user
+    (object.avg_total_water_savings_per_user).round(2) if object.avg_total_water_savings_per_user != nil
   end
 
   def avg_daily_consumption
-    (object.average_daily_water_consumption_per_resident * object.no_residents).round(2) if object.average_daily_water_consumption_per_resident != nil
+    (object.average_daily_water_consumption_per_user * object.no_residents).round(2) if object.average_daily_water_consumption_per_user != nil
   end
   def avg_monthly_consumption
-    (object.average_daily_water_consumption_per_resident * 29.53 * object.no_residents).round(2) if object.average_daily_water_consumption_per_resident != nil
+    (object.average_daily_water_consumption_per_user * 29.53 * object.no_residents).round(2) if object.average_daily_water_consumption_per_user != nil
   end
-  def avg_total_savings
-    (object.avg_total_water_savings_per_resident * object.no_residents).round(2) if object.avg_total_water_savings_per_resident != nil
-  end
+  # def avg_total_savings
+  #   (object.avg_total_water_savings_per_resident * object.no_residents).round(2) if object.avg_total_water_savings_per_user != nil
+  # end
 
   def total_spent
     object.water_bills.map{|b| b.price}.reduce(0){|s, n| s+ n} if !object.water_bills.empty?

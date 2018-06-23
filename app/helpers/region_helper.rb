@@ -14,12 +14,15 @@ module RegionHelper
       # update_total_electricity_and_carbon_savings
       # update_daily_avg_electricity_savings
       update_daily_avg_electricity_consumption
+      update_total_electricity_consumption
       # update_total_water_savings
       # update_daily_avg_water_savings
       update_daily_avg_water_consumption
+      update_total_water_consumption
       # update_total_gas_and_carbon_savings
       # update_daily_avg_gas_savings
       update_daily_avg_gas_consumption
+      update_total_gas_consumption
       # update_carbon_consumption
       self.save
     end
@@ -81,7 +84,7 @@ module RegionHelper
       self.avg_daily_water_consumed_per_user = water_consumed
     end
   end
-  # 
+  #
   # def update_total_gas_and_carbon_savings
   #   if HeatBill.joins(:house => {:address => :city}).where(:cities => {region_id: self.id}).count != 0
   #     gas_saved = self.users.map{|u| u.total_gas_savings}
@@ -118,6 +121,32 @@ module RegionHelper
     carbon_ranking.avg_daily_carbon_consumed_per_user = n
     carbon_ranking.save
   end
+
+  def update_total_electricity_consumption
+    if ElectricBill.joins(:house => {:address => :city}).where(:cities => {region_id: self.id}).count != 0
+      energy_consumed = self.users.map{|u| u.total_kwhs_logged}
+              .flatten.reject(&:nan?)
+              .reduce(0){|sum, num| sum + num}
+      self.total_electricity_consumed = energy_consumed
+    end
+  end
+  def update_total_water_consumption
+    if WaterBill.joins(:house => {:address => :city}).where(:cities => {region_id: self.id}).count != 0
+      water_consumed = self.users.map{|u| u.total_gallons_logged }.flatten
+              .reject(&:nan?)
+              .reduce(0){|sum, num| sum + num}
+      self.total_water_consumed = water_consumed
+    end
+  end
+  def update_total_gas_consumption
+    if HeatBill.joins(:house => {:address => :city}).where(:cities => {region_id: self.id}).count != 0
+      gas_consumed = self.users.map{|u| u.total_therms_logged }
+              .flatten.reject(&:nan?)
+              .reduce(0){|sum, num| sum + num}
+      self.total_gas_consumed = gas_consumed
+    end
+  end
+
 
   def set_default_ranks
     WaterRanking.create(area_type: "Region", area_id: self.id, rank: nil, arrow: nil)

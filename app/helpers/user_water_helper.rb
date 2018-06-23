@@ -10,27 +10,27 @@ module UserWaterHelper
   end
 
 # check
-  def household_daily_water_consumption
-    household ? household.average_daily_water_consumption_per_resident : nil
+  def household_daily_water_consumption_per_user
+    household ? household.average_daily_water_consumption_per_user : nil
   end
 
-  def neighborhood_daily_water_consumption
+  def neighborhood_daily_water_consumption_per_user
     household.address.neighborhood ? household.address.neighborhood.avg_daily_water_consumed_per_user : nil
   end
 
-  def city_daily_water_consumption
+  def city_daily_water_consumption_per_user
     household ? household.address.city.avg_daily_water_consumed_per_user : nil
   end
 
-  def county_daily_water_consumption
+  def county_daily_water_consumption_per_user
     household ? household.address.county.avg_daily_water_consumed_per_user : nil
   end
 
-  def region_daily_water_consumption
+  def region_daily_water_consumption_per_user
     household ? household.address.city.region.avg_daily_water_consumed_per_user : nil
   end
 
-  def country_daily_water_consumption
+  def country_daily_water_consumption_per_user
     household ? household.address.city.region.country.avg_daily_water_consumed_per_user : nil
   end
 end
