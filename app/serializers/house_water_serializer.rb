@@ -10,7 +10,7 @@ class HouseWaterSerializer < ActiveModel::Serializer
                   :avg_monthly_consumption_per_user,
 
   def total_consumption_to_date
-    object.total_water_consumption_to_date.round(1).to_s + " gallons"
+    object.total_water_consumption_to_date.round(2).to_s + " gallons"
   end
   def total_savings_to_date
     object.total_water_savings_to_date.round(2)
