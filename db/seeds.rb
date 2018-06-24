@@ -462,6 +462,7 @@ puts "all neighborhoods of Denver added"
                   zipcode_id: z.id)
       user = User.create(first: "OG", last: "GEN0", password: "password", generation: 0, email: 'dvog@gmail.com')
       house = House.create(total_sq_ft: rand(1000..3000), no_residents: 0, address_id: tadd.id)
+      user.houses << house
 
     #HOUSE NUMBER 1; 2 resident users; savings in 3/4 bills;
     #       user1 = bind_new_user(house)
@@ -736,13 +737,13 @@ country.update_data
 state.update_data
 
 User.all.each{|u|
-   hId = u.household.id
-   UserElectricityQuestion.create(user_id: u.id, house_id: hId)
-   UserWaterQuestion.create(user_id: u.id, house_id: hId)
-   UserGasQuestion.create(user_id: u.id, house_id: hId)
+   # hId = u.household.id
+   # UserElectricityQuestion.create(user_id: u.id, house_id: hId)
+   # UserWaterQuestion.create(user_id: u.id, house_id: hId)
+   # UserGasQuestion.create(user_id: u.id, house_id: hId)
    u.email_activate
    u.privacy_policy = true
-   u.set_default_ranks
+   # u.set_default_ranks
  }
 
 County.all.each do |c|
