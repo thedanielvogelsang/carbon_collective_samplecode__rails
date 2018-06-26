@@ -22,7 +22,7 @@ class SessionsController < ApplicationController
         if user && user.authenticate(safe_params[:password])
           if user.email_confirmed
             user.update_login
-            user.calc_avg 
+            user.calc_avg
             session[:user_id] = user.id
             format.json {render :json => user}
           else

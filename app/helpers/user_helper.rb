@@ -78,6 +78,12 @@ module UserHelper
     self.user_carbon_rankings.destroy_all
   end
 
+  def set_all_questions(hId)
+    UserElectricityQuestion.create(user_id: self.id, house_id: hId)
+    UserWaterQuestion.create(user_id: self.id, house_id: hId)
+    UserGasQuestion.create(user_id: self.id, house_id: hId)
+  end
+
   def remove_all_questions(hId)
     ue = UserElectricityQuestion.where(user_id: self.id, house_id: hId)[0]
     uw = UserWaterQuestion.where(user_id: self.id, house_id: hId)[0]
