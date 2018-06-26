@@ -151,7 +151,7 @@ class UserElectricitySerializer < ActiveModel::Serializer
   end
 
   def num_bills
-    object.household.bills.count
+    object.household.bills.count if object.household
   end
   def out_of
     ops_ = @instance_options[:region] if @instance_options[:region]
