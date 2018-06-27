@@ -83,7 +83,6 @@ class UsersController < ApplicationController
     message = sort_emails(emails)
     message == 'success' ? status = 201 : status = 404
     render json: {message: message}, status: status
-
   end
 
   def invite_accepted
