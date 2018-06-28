@@ -117,6 +117,7 @@ end
 
 def force_zeros
   add_zeros
+  self.save
 end
 
 private
