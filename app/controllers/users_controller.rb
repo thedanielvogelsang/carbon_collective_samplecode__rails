@@ -7,6 +7,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if params[:user][:password] == params[:user][:passwordConfirmation] && @user.update(safe_params)
         if @user.email_confirmed
+          @user.remove_token
           format.json {render :json => @user, :status => 201}
         else
         # Not being used currently; For delivering to unregistered emails; signup without invite will work with other FE new_user component
@@ -90,10 +91,14 @@ class UsersController < ApplicationController
     # host = 'http://localhost:3001'
     prev_user = User.find_by_invite_token(params[:token])
     new_user = User.find(params[:id])
-    new_user.email_activate
-    UserGeneration.find_or_create_by(parent_id: prev_user.id , child_id: new_user.id)
-    UserGeneration.bind_generations(prev_user, new_user.id)
-    redirect_to "#{host}/signup/#{new_user.id}"
+    if !new_user.confirm_token
+      render :file => 'public/404.html', :status => :not_found, :layout => false
+    else
+      new_user.email_activate
+      UserGeneration.find_or_create_by(parent_id: prev_user.id , child_id: new_user.id)
+      UserGeneration.bind_generations(prev_user, new_user.id)
+      redirect_to "#{host}/signup/#{new_user.id}"
+    end
   end
 
   private

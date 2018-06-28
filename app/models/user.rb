@@ -94,6 +94,10 @@ end
 
 def email_activate
   self.email_confirmed = true
+  self.save!(:validate => false)
+end
+
+def remove_token
   self.confirm_token = nil
   self.save!(:validate => false)
 end
