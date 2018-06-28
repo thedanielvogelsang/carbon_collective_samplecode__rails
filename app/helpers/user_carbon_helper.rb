@@ -15,7 +15,7 @@ module UserCarbonHelper
 
 # check
   def household_daily_carbon_consumption
-    household ? household.average_daily_carbon_consumption_per_resident : nil
+    household ? household.average_daily_carbon_consumption_per_user : nil
   end
 
   def neighborhood_daily_carbon_consumption

@@ -54,6 +54,7 @@ class UsersController < ApplicationController
     # host = 'http://localhost:3001'
     if user
       user.email_activate
+      user.remove_token
       flash[:success] = "Welcome to Carbon Collective! Your email has been confirmed.
       Please sign in to the app to continue."
       redirect_to "#{host}/login-first-time"
