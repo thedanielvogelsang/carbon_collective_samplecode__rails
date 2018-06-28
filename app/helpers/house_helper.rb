@@ -29,7 +29,11 @@ module HouseHelper
     #           .reduce(0){|s, n| s + n} / self.no_residents
     users = self.users.map{|u| u.avg_daily_electricity_consumption}.compact.flatten.reject(&:nan?)
     ct = users.length
-    users.reduce(0){|s,n| s + n} / ct
+    if ct > 0
+      users.reduce(0){|s,n| s + n} / ct
+    else
+      0
+    end
   end
 
   def average_daily_electricity_consumption_per_resident
@@ -49,7 +53,11 @@ module HouseHelper
     #           .reduce(0){|s, n| s + n} / self.users.count
     users = self.users.map{|u| u.avg_daily_water_consumption}.compact.flatten.reject(&:nan?)
     ct = users.length
-              .reduce(0){|s,n| s + n} / self.users.count
+    if ct > 0
+      users.reduce(0){|s,n| s + n} / ct
+    else
+      0
+    end
   end
 
   def average_daily_water_consumption_per_resident
@@ -69,8 +77,13 @@ module HouseHelper
     #           .reduce(0){|s, n| s + n} / self.users.count
     users = self.users.map{|u| u.avg_daily_gas_consumption}.compact.flatten.reject(&:nan?)
     ct = users.length
-    users.reduce(0){|s,n| s + n} / ct
+    if ct > 0
+      users.reduce(0){|s,n| s + n} / ct
+    else
+      0
+    end
   end
+
   def average_daily_gas_consumption_per_resident
     # self.heat_bills.map{|b| b.total_therms_logged}.compact.flatten.reject(&:nan?)
     #           .reduce(0){|s, n| s + n} / self.users.count
@@ -86,7 +99,11 @@ module HouseHelper
   def average_daily_carbon_consumption_per_user
     users = self.users.map{|u| u.avg_daily_carbon_consumption}.compact.flatten.reject(&:nan?)
     ct = users.length
-    users.reduce(0){|s,n| s + n} / ct
+    if ct > 0
+      users.reduce(0){|s,n| s + n} / ct
+    else
+      0
+    end
   end
 
   #

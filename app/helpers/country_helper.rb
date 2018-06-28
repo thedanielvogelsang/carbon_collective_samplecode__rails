@@ -50,7 +50,7 @@ module CountryHelper
       users = self.users.map{|u| u.avg_daily_electricity_consumption }
               .flatten.reject(&:nan?)
       ct = users.length
-      energy_consumed = users.reduce(0){|sum, num| sum + num} / ct if self.users.count != 0
+      energy_consumed = users.reduce(0){|sum, num| sum + num} / ct if ct != 0
       self.avg_daily_electricity_consumed_per_user = energy_consumed
     end
   end
@@ -79,7 +79,7 @@ module CountryHelper
               .flatten
               .reject(&:nan?)
       ct = users.length
-      water_consumed = users.reduce(0){|sum, num| sum + num} / ct if self.users.count != 0
+      water_consumed = users.reduce(0){|sum, num| sum + num} / ct if ct != 0
       self.avg_daily_water_consumed_per_user = water_consumed
     end
   end
@@ -110,7 +110,7 @@ module CountryHelper
       users = self.users.map{|u| u.avg_daily_gas_consumption }
         .flatten.reject(&:nan?)
       ct = users.length
-      gas_consumed = users.reduce(0){|sum, num| sum + num} / ct if self.users.count != 0
+      gas_consumed = users.reduce(0){|sum, num| sum + num} / ct if ct != 0
       self.avg_daily_gas_consumed_per_user = gas_consumed
     end
   end
