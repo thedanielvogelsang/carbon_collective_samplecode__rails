@@ -27,6 +27,7 @@ class HouseElectricitySerializer < ActiveModel::Serializer
   def avg_daily_consumption
     (object.average_daily_electricity_consumption_per_user * object.no_residents).round(2) if object.average_daily_electricity_consumption_per_user != nil
   end
+  
   def avg_monthly_consumption
     (object.average_daily_electricity_consumption_per_user * 29.53 * object.no_residents).round(2) if object.average_daily_electricity_consumption_per_user != nil
   end
@@ -35,7 +36,7 @@ class HouseElectricitySerializer < ActiveModel::Serializer
   # end
 
   def total_spent
-    object.bills.map{|b| b.price}.reduce(0){|s, n| s+ n} if !object.bills.empty?
+    object.bills.map{|b| b.price}.reject(&:nil?).reduce(0){|s, n| s+ n} if !object.bills.empty?
   end
 
   def number_of_bills_entered

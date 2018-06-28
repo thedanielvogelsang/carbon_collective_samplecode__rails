@@ -161,7 +161,7 @@ module HouseHelper
     self.water_bills.empty? ? nil : self.water_bills.each{ |b| total.push(b.price)}
     self.heat_bills.empty? ? nil : self.heat_bills.each{|b| total.push(b.price)}
     self.electric_bills.empty? ? nil : self.bills.each{|b| total.push(b.price)}
-    total.reduce(0){|s, n| s + n}.to_f.round(2)
+    total.reject(&:nil?).reduce(0){|s, n| s + n}.to_f.round(2)
   end
 
   #

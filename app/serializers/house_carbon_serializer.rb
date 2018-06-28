@@ -4,8 +4,8 @@ class HouseCarbonSerializer < ActiveModel::Serializer
                   :apartment, :total_spent, :total_days_recorded,
                   :total_consumption_to_date, :metric_sym,
                   :total_savings_to_date,
-                  :avg_daily_consumption,
-                  :avg_monthly_consumption,
+                  :avg_daily_consumption_per_user,
+                  :avg_monthly_consumption_per_user,
                   :avg_total_savings,
 
   def total_consumption_to_date
@@ -18,7 +18,7 @@ class HouseCarbonSerializer < ActiveModel::Serializer
     (object.average_daily_carbon_consumption_per_user).round(2) if object.average_daily_carbon_consumption_per_user != nil
   end
   def avg_monthly_consumption_per_user
-    (object.average_daily_carbon_consumption_per_user * 29.53).round(2) if object.average_daily_carbon_consumption__per_user != nil
+    (object.average_daily_carbon_consumption_per_user * 29.53).round(2) if object.average_daily_carbon_consumption_per_user != nil
   end
   def avg_total_savings_per_resident
     (object.avg_total_carbon_savings_per_resident).round(2) if object.avg_total_carbon_savings_per_resident != nil
