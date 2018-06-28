@@ -11,7 +11,7 @@ class ElectricBill < ApplicationRecord
     validate :confirm_valid_dates
 
     after_validation :electricity_saved?,
-                   :update_users_savings
+                     :update_users_savings
 
   #checks if region_comparisons can be made or not; returns boolean either way
   def electricity_saved?

@@ -38,11 +38,11 @@ class UserWaterSerializer < ActiveModel::Serializer
   end
 
   def personal_usage_to_date
-    object.total_gallons_logged.to_f.round(2).to_s + " gallons"
+    object.total_gallons_logged.to_f.round(2).to_s
   end
 
   def personal_savings_to_date
-    object.total_water_savings.to_f.round(2).to_s + " gallons"
+    object.total_water_savings.to_f.round(2).to_s
   end
 
   # def global_collective_savings
@@ -91,7 +91,7 @@ class UserWaterSerializer < ActiveModel::Serializer
 
   def avg_daily_consumption
     avg = object.avg_daily_water_consumption.to_f
-    avg.nan? ? "0 gal." : avg.round(2).to_s + " gal."
+    avg.nan? ? "0" : avg.round(2).to_s
   end
 
   # monthly averages
@@ -118,7 +118,7 @@ class UserWaterSerializer < ActiveModel::Serializer
 
   def avg_monthly_consumption
     avg = (object.avg_daily_water_consumption * 29.53).to_f
-    avg.nan? ? "0 gal." : avg.round(2).to_s + " gal."
+    avg.nan? ? "0" : avg.round(2).to_s
   end
 
   def arrow
@@ -154,6 +154,7 @@ class UserWaterSerializer < ActiveModel::Serializer
   def metric_sym
     'gallons'
   end
+
   def num_bills
     object.household.water_bills.count if object.household
   end

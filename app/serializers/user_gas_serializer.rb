@@ -40,11 +40,11 @@ class UserGasSerializer < ActiveModel::Serializer
   end
 
   def personal_usage_to_date
-    object.total_therms_logged.to_f.round(2).to_s + " therms"
+    object.total_therms_logged.to_f.round(2).to_s
   end
 
   def personal_savings_to_date
-    object.total_gas_savings.to_f.round(2).to_s + " therms"
+    object.total_gas_savings.to_f.round(2).to_s
   end
   #
   # def global_collective_savings
@@ -91,7 +91,7 @@ class UserGasSerializer < ActiveModel::Serializer
   end
   def avg_daily_consumption
     avg = object.avg_daily_gas_consumption.to_f
-    avg.nan? ? "0 therms" : avg.round(2).to_s + " therms"
+    avg.nan? ? "0" : avg.round(2).to_s
   end
 
   #monthly averages
@@ -115,7 +115,7 @@ class UserGasSerializer < ActiveModel::Serializer
   end
   def avg_monthly_consumption
     avg = (object.avg_daily_gas_consumption * 29.53).to_f
-    avg.nan? ? "0 therms" : avg.round(2).to_s + " therms"
+    avg.nan? ? "0" : avg.round(2).to_s
   end
 
   def arrow

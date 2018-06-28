@@ -38,11 +38,11 @@ class UserElectricitySerializer < ActiveModel::Serializer
   end
 
   def personal_savings_to_date
-    object.total_electricity_savings.to_f.round(2).to_s + " kWhs"
+    object.total_electricity_savings.to_f.round(2).to_s
   end
 
   def personal_usage_to_date
-    object.total_kwhs_logged.to_f.round(2).to_s + " kWhs"
+    object.total_kwhs_logged.to_f.round(2).to_s
   end
 
   # def global_collective_savings
@@ -89,7 +89,7 @@ class UserElectricitySerializer < ActiveModel::Serializer
   end
   def avg_daily_consumption
     avg = object.avg_daily_electricity_consumption.to_f
-    avg.nan? ? "0 kWhs" : avg.round(2).to_s + " kWhs"
+    avg.nan? ? "0" : avg.round(2).to_s
   end
 
   # monthly averages
@@ -113,7 +113,7 @@ class UserElectricitySerializer < ActiveModel::Serializer
   end
   def avg_monthly_consumption
     avg = (object.avg_daily_electricity_consumption * 29.53).to_f
-    avg.nan? ? "0 kWhs" : avg.round(2).to_s + " kWhs"
+    avg.nan? ? "0" : avg.round(2).to_s
   end
 
   def arrow

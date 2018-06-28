@@ -10,28 +10,28 @@ class UserCarbonSerializer < ActiveModel::Serializer
                   :metric_sym, :out_of
 
   def avg_daily_footprint
-    object.avg_daily_carbon_consumption.to_f.round(2).to_s + " lbs" if object.avg_daily_carbon_consumption
-    "0 lbs" if !object.avg_daily_carbon_consumption
+    object.avg_daily_carbon_consumption.to_f.round(2).to_s if object.avg_daily_carbon_consumption
+    "0" if !object.avg_daily_carbon_consumption
   end
 
   def avg_daily_consumption
-    object.avg_daily_carbon_consumption.to_f.round(2).to_s + " lbs" if object.avg_daily_carbon_consumption
+    object.avg_daily_carbon_consumption.to_f.round(2).to_s if object.avg_daily_carbon_consumption
   end
 
   def avg_monthly_footprint
-    (object.avg_daily_carbon_consumption * 29.53).to_f.round(2).to_s + " lbs" if object.avg_daily_carbon_consumption
+    (object.avg_daily_carbon_consumption * 29.53).to_f.round(2).to_s if object.avg_daily_carbon_consumption
   end
 
   def avg_monthly_consumption
-    (object.avg_daily_carbon_consumption * 29.53).to_f.round(2).to_s + " lbs" if object.avg_daily_carbon_consumption
-    "0 lbs" if !object.avg_daily_carbon_consumption
+    (object.avg_daily_carbon_consumption * 29.53).to_f.round(2).to_s if object.avg_daily_carbon_consumption
+    "0" if !object.avg_daily_carbon_consumption
   end
   def neighborhood
     [object.neighborhood.id, object.neighborhood.name, object.neighborhood.carbon_ranking.rank, object.neighborhood.out_of] if object.neighborhood
   end
 
   def total_daily_footprint
-    object.total_pounds_logged.round(2).to_s + " lbs"
+    object.total_pounds_logged.round(2).to_s
   end
   def city
     [object.city.id, object.city.name, object.city.carbon_ranking.rank, object.city.out_of] if object.city
@@ -51,11 +51,11 @@ class UserCarbonSerializer < ActiveModel::Serializer
   end
 
   def personal_savings_to_date
-    object.total_carbon_savings.to_f.round(2).to_s + " lbs"
+    object.total_carbon_savings.to_f.round(2).to_s
   end
 
   def personal_usage_to_date
-    object.total_pounds_logged.to_f.round(2).to_s + " lbs"
+    object.total_pounds_logged.to_f.round(2).to_s
   end
 
   # def global_collective_savings
@@ -86,7 +86,7 @@ class UserCarbonSerializer < ActiveModel::Serializer
     object.country.carbon_ranking.avg_daily_carbon_consumed_per_user.round(2) if !object.houses.empty?
   end
   def household_monthly_consumption
-    (object.household.total_carbon_savings_to_date * 29.53).round(2) if !object.houses.empty?
+    (object.household.average_daily_carbon_consumption_per_user * 29.53).round(2) if !object.houses.empty?
   end
 
   def neighborhood_monthly_consumption
