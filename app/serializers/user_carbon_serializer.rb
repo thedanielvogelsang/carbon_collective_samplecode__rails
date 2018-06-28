@@ -63,7 +63,7 @@ class UserCarbonSerializer < ActiveModel::Serializer
   # end
 
   def household_daily_consumption
-    object.household.total_carbon_savings_to_date.round(2) if !object.houses.empty?
+    object.household.average_daily_carbon_consumption_per_user.round(2) if !object.houses.empty?
   end
 
   def neighborhood_daily_consumption
