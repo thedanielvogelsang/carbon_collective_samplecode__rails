@@ -11,6 +11,7 @@ class UserCarbonSerializer < ActiveModel::Serializer
 
   def avg_daily_footprint
     object.avg_daily_carbon_consumption.to_f.round(2).to_s + " lbs" if object.avg_daily_carbon_consumption
+    "0 lbs" if !object.avg_daily_carbon_consumption
   end
 
   def avg_daily_consumption
@@ -23,6 +24,7 @@ class UserCarbonSerializer < ActiveModel::Serializer
 
   def avg_monthly_consumption
     (object.avg_daily_carbon_consumption * 29.53).to_f.round(2).to_s + " lbs" if object.avg_daily_carbon_consumption
+    "0 lbs" if !object.avg_daily_carbon_consumption
   end
   def neighborhood
     [object.neighborhood.id, object.neighborhood.name, object.neighborhood.carbon_ranking.rank, object.neighborhood.out_of] if object.neighborhood
