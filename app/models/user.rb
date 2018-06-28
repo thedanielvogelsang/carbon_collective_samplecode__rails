@@ -115,6 +115,10 @@ def calc_avg
   self.save
 end
 
+def force_zeros
+  add_zeros
+end
+
 private
   def check_email_format
     return if errors.key?(:email)
