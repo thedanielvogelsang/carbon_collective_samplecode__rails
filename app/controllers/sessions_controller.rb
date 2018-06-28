@@ -26,7 +26,7 @@ class SessionsController < ApplicationController
             session[:user_id] = user.id
             format.json {render :json => user}
           else
-            error = "Email Not Confirmed! Please confirm your email address to continue..."
+            error = "Email Not Confirmed! Please use the link sent to your email to continue..."
             format.json {render :json => {:errors => error}, :status => 401 }
           end
         elsif user && !user.authenticate(safe_params[:password])
