@@ -46,11 +46,12 @@ module UserHelper
     UserCarbonRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.region.id, area_type: "Region")
 
     #County
-    UserElectricityRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.county.id, area_type: "County")
-    UserWaterRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.county.id, area_type: "County")
-    UserGasRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.county.id, area_type: "County")
-    UserCarbonRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.county.id, area_type: "County")
-
+    if self.county
+      UserElectricityRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.county.id, area_type: "County")
+      UserWaterRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.county.id, area_type: "County")
+      UserGasRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.county.id, area_type: "County")
+      UserCarbonRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.county.id, area_type: "County")
+    end
     #City
     UserElectricityRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.city.id, area_type: "City")
     UserWaterRanking.create(user_id: self.id, rank: nil, arrow: nil, area_id: self.city.id, area_type: "City")

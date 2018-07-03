@@ -4,7 +4,6 @@ class AddressesController < ApplicationController
   def create
     zipcode = Zipcode.find_or_create_by(zipcode: params[:zipcode]) if params[:zipcode]
     @address = Address.new(safe_params)
-    byebug
     @address.zipcode_id = zipcode.id
     if @address.save
       render json: @address, status: 202
