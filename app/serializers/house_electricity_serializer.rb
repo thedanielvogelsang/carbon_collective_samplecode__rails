@@ -6,6 +6,8 @@ class HouseElectricitySerializer < ActiveModel::Serializer
                   :total_savings_to_date,
                   :avg_daily_consumption_per_resident,
                   :avg_monthly_consumption_per_resident,
+                  :avg_daily_consumption_per_user,
+                  :avg_monthly_consumption_per_user,
                   :avg_daily_consumption
                   :avg_monthly_consumption
 
