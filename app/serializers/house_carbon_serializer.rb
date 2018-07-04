@@ -20,6 +20,12 @@ class HouseCarbonSerializer < ActiveModel::Serializer
   def avg_monthly_consumption_per_user
     (object.average_daily_carbon_consumption_per_user * 29.53).round(2) if object.average_daily_carbon_consumption_per_user != nil
   end
+  def avg_daily_consumption_per_resident
+    (object.average_daily_carbon_consumption_per_resident).round(2) if object.average_daily_carbon_consumption_per_resident != nil
+  end
+  def avg_monthly_consumption_per_resident
+    (object.average_daily_carbon_consumption_per_resident * 29.53).round(2) if object.average_daily_carbon_consumption_per_resident != nil
+  end
   def avg_total_savings_per_resident
     (object.avg_total_carbon_savings_per_resident).round(2) if object.avg_total_carbon_savings_per_resident != nil
   end
