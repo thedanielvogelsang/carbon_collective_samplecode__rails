@@ -21,4 +21,10 @@ module ParserHelper
       self.address_line2 = addr.scan(/\d+/).map{|n| '#' + n.to_s }.join('')
     end
   end
+
+  def remove_county_nil
+    if self.county_id == 0
+      self.county_id = nil
+    end
+  end
 end

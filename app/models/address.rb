@@ -18,6 +18,8 @@ class Address < ApplicationRecord
   has_one :region, through: :city
   has_one :country, through: :region
 
+  before_save :remove_county_nil
+
   before_validation :parse_attrs_for_nil
   before_validation :capitalize_first_line
   before_validation :append_second_line
