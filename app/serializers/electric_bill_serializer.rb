@@ -2,7 +2,7 @@ class ElectricBillSerializer < ActiveModel::Serializer
   include Co2Helper
 
   attributes :id, :start_date, :end_date, :no_days, :total_used,
-                  :total_saved, :carbon_impact,
+                  :total_saved, :carbon_impact, :who,
                   :house_info, :price, :year
   def start_date
     object.start_date.strftime('%B%e')
@@ -27,5 +27,8 @@ class ElectricBillSerializer < ActiveModel::Serializer
   end
   def year
     object.start_date.strftime('%Y')
+  end
+  def who 
+    object.who.first
   end
 end

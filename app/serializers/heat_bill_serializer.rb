@@ -2,9 +2,9 @@ class HeatBillSerializer < ActiveModel::Serializer
   include Co2Helper
 
   attributes :id, :start_date, :end_date, :total_used, :no_days,
-                  :total_saved, :carbon_impact,
+                  :total_saved, :carbon_impact, :who,
                   :house_info, :price, :year
-                  
+
   def start_date
     object.start_date.strftime('%B%e')
   end
@@ -28,5 +28,8 @@ class HeatBillSerializer < ActiveModel::Serializer
   end
   def year
     object.start_date.strftime('%Y')
+  end
+  def who
+    object.who.first
   end
 end

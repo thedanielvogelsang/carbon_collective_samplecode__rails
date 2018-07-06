@@ -421,6 +421,9 @@ puts "#{Region.count} Provinces created in Regions table"
 @start_date = DateTime.now - 30
 @end_date = DateTime.now
 
+@last_year_start = DateTime.new(2017, 10, 2)
+@last_year_end = DateTime.new(2017, 11, 2)
+
 # Creates multiple addresses in colorado
 country = Country.find_by(name: "United States of America")
 state = Region.find_by(name: "Colorado")
@@ -470,30 +473,36 @@ puts "all neighborhoods of Denver added"
     #       puts "#{user1.first} created with email #{user1.email} & password #{user1.password}"
     #       puts "#{user2.first} created with email #{user2.email} & password #{user1.password}"
     #
-    #           puts "#{house} added in #{tadd.city} at #{tadd.address_line1} in #{tadd.neighborhood.name}"
-    #             kwhs = 1400
-    #             price = rand(1..100)
-    #             bill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house.id, no_residents: 2)
-    #           puts "bill added to house ##{house.id} in #{house.address.city.name}: #{bill}"
-    #             kwhs2 = 1200
-    #             price2 = rand(1..100)
-    #             sdate = @start_date - 30
-    #             edate = @end_date - 30
-    #             bill2 = ElectricBill.create(start_date: sdate, end_date: edate, total_kwhs: kwhs2, price: price2, house_id: house.id, no_residents: 2)
-    #           puts "second bill added to house ##{house.id} in #{house.address.city.name}: #{bill2}"
-    #             kwhs3 = 1000
-    #             price3 = rand(1..100)
-    #             sdate3 = @start_date - 60
-    #             edate3 = @end_date - 60
-    #             bill3 = ElectricBill.create(start_date: sdate3, end_date: edate3, total_kwhs: kwhs3, price: price3, house_id: house.id, no_residents: 2)
-    #           puts "third bill added to house ##{house.id} in #{house.address.city.name}: #{bill3}"
-    #             kwhs4 = 2000
-    #             price4 = rand(1..100)
-    #             sdate4 = @start_date - 90
-    #             edate4 = @end_date - 90
-    #             bill4 = ElectricBill.create(start_date: sdate4, end_date: edate4, total_kwhs: kwhs4, price: price4, house_id: house.id, no_residents: 2)
-    #           puts "fourth bill added to house ##{house.id} in #{house.address.city.name}: #{bill4}"
-    #
+              puts "#{house} added in #{tadd.city} at #{tadd.address_line1} in #{tadd.neighborhood.name}"
+                kwhs = 1400
+                price = rand(1..100)
+                bill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house.id, no_residents: 2, user_id: user.id)
+              puts "bill added to house ##{house.id} in #{house.address.city.name}: #{bill}"
+                kwhs2 = 1200
+                price2 = rand(1..100)
+                sdate = @start_date - 30
+                edate = @end_date - 30
+                bill2 = ElectricBill.create(start_date: sdate, end_date: edate, total_kwhs: kwhs2, price: price2, house_id: house.id, no_residents: 2, user_id: user.id)
+              puts "second bill added to house ##{house.id} in #{house.address.city.name}: #{bill2}"
+                kwhs3 = 1000
+                price3 = rand(1..100)
+                sdate3 = @start_date - 60
+                edate3 = @end_date - 60
+                bill3 = ElectricBill.create(start_date: sdate3, end_date: edate3, total_kwhs: kwhs3, price: price3, house_id: house.id, no_residents: 2, user_id: user.id)
+              puts "third bill added to house ##{house.id} in #{house.address.city.name}: #{bill3}"
+                kwhs4 = 2000
+                price4 = rand(1..100)
+                sdate4 = @start_date - 90
+                edate4 = @end_date - 90
+                bill4 = ElectricBill.create(start_date: sdate4, end_date: edate4, total_kwhs: kwhs4, price: price4, house_id: house.id, no_residents: 2, user_id: user.id)
+              puts "fourth bill added to house ##{house.id} in #{house.address.city.name}: #{bill4}"
+                kwhs5 = 2000
+                price5 = rand(1..100)
+                sdate5 = @last_year_start
+                edate5 = @last_year_end
+                bill5 = ElectricBill.create(start_date: sdate5, end_date: edate5, total_kwhs: kwhs5, price: price5, house_id: house.id, no_residents: 2, user_id: user.id)
+              puts "fifth bill added to house ##{house.id} in #{house.address.city.name}: #{bill5}"
+
     # sadd = Address.create!(address_line1: "1284 Race St",
     #             neighborhood: dn1, city: city1, county_id: county.id,
     #             zipcode_id: z.id)

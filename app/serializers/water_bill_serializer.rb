@@ -1,7 +1,7 @@
 class WaterBillSerializer < ActiveModel::Serializer
 
   attributes :id, :start_date, :end_date, :total_used,
-                  :total_saved, :no_days,
+                  :total_saved, :no_days, :who,
                   :house_info, :price, :year
   def start_date
     object.start_date.strftime('%B%e')
@@ -23,5 +23,8 @@ class WaterBillSerializer < ActiveModel::Serializer
   end
   def year
     object.start_date.strftime('%Y')
+  end
+  def who
+    object.who.first
   end
 end
