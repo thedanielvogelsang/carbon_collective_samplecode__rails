@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180623163528) do
+ActiveRecord::Schema.define(version: 20180706175726) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -184,8 +184,10 @@ ActiveRecord::Schema.define(version: 20180623163528) do
     t.bigint "house_id"
     t.float "electricity_saved"
     t.integer "no_residents"
+    t.bigint "user_id"
     t.index ["electricity_saved"], name: "index_electric_bills_on_electricity_saved"
     t.index ["house_id"], name: "index_electric_bills_on_house_id"
+    t.index ["user_id"], name: "index_electric_bills_on_user_id"
   end
 
   create_table "electricity_rankings", force: :cascade do |t|
@@ -245,8 +247,10 @@ ActiveRecord::Schema.define(version: 20180623163528) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "no_residents"
+    t.bigint "user_id"
     t.index ["gas_saved"], name: "index_heat_bills_on_gas_saved"
     t.index ["house_id"], name: "index_heat_bills_on_house_id"
+    t.index ["user_id"], name: "index_heat_bills_on_user_id"
   end
 
   create_table "household_snapshots", force: :cascade do |t|
@@ -552,7 +556,9 @@ ActiveRecord::Schema.define(version: 20180623163528) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "no_residents"
+    t.bigint "user_id"
     t.index ["house_id"], name: "index_water_bills_on_house_id"
+    t.index ["user_id"], name: "index_water_bills_on_user_id"
     t.index ["water_saved"], name: "index_water_bills_on_water_saved"
   end
 
@@ -584,8 +590,10 @@ ActiveRecord::Schema.define(version: 20180623163528) do
   add_foreign_key "country_snapshots", "countries"
   add_foreign_key "county_snapshots", "counties"
   add_foreign_key "electric_bills", "houses"
+  add_foreign_key "electric_bills", "users"
   add_foreign_key "groups", "admins"
   add_foreign_key "heat_bills", "houses"
+  add_foreign_key "heat_bills", "users"
   add_foreign_key "household_snapshots", "houses"
   add_foreign_key "houses", "addresses"
   add_foreign_key "neighborhood_snapshots", "neighborhoods"
@@ -609,4 +617,5 @@ ActiveRecord::Schema.define(version: 20180623163528) do
   add_foreign_key "user_water_questions", "users"
   add_foreign_key "user_water_rankings", "users"
   add_foreign_key "water_bills", "houses"
+  add_foreign_key "water_bills", "users"
 end
