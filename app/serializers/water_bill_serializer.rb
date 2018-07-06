@@ -2,7 +2,7 @@ class WaterBillSerializer < ActiveModel::Serializer
 
   attributes :id, :start_date, :end_date, :total_used,
                   :total_saved, :no_days,
-                  :house_info, :price
+                  :house_info, :price, :year
 
   def no_days
     (object.end_date - object.start_date).to_i
@@ -15,5 +15,8 @@ class WaterBillSerializer < ActiveModel::Serializer
   end
   def house_info
     object.house
+  end
+  def year
+    object.start_date.strftime('%Y')
   end
 end
