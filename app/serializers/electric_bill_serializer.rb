@@ -3,7 +3,13 @@ class ElectricBillSerializer < ActiveModel::Serializer
 
   attributes :id, :start_date, :end_date, :no_days, :total_used,
                   :total_saved, :carbon_impact,
-                  :house_info, :price
+                  :house_info, :price, :year
+  def start_date
+    object.start_date.strftime('%B%e')
+  end
+  def end_date
+    object.end_date.strftime('%B%e')
+  end
   def no_days
     (object.end_date - object.start_date).to_i
   end
@@ -18,5 +24,8 @@ class ElectricBillSerializer < ActiveModel::Serializer
   end
   def house_info
     object.house
+  end
+  def year
+    object.start_date.strftime('%Y')
   end
 end
