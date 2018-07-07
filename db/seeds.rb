@@ -752,7 +752,9 @@ User.all.each{|u|
    # UserGasQuestion.create(user_id: u.id, house_id: hId)
    u.email_activate
    u.privacy_policy = true
-   # u.set_default_ranks
+   u.set_default_ranks
+   u.set_all_questions
+   u.save
  }
 
 County.all.each do |c|
