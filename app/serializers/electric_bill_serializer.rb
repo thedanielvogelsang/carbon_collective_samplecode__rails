@@ -2,8 +2,8 @@ class ElectricBillSerializer < ActiveModel::Serializer
   include Co2Helper
 
   attributes :id, :start_date, :end_date, :no_days, :total_used,
-                  :total_saved, :carbon_impact, :who,
-                  :house_info, :price, :year
+                  :total_saved, :carbon_impact, :who, :average_use,
+                  :house_info, :price, :year, :no_residents
   def start_date
     object.start_date.strftime('%B%e')
   end
@@ -28,7 +28,10 @@ class ElectricBillSerializer < ActiveModel::Serializer
   def year
     object.start_date.strftime('%Y')
   end
-  def who 
+  def who
     object.who.first
+  end
+  def average_use
+    (object.total_kwhs / object.no_residents).to_s + " kWhs"
   end
 end

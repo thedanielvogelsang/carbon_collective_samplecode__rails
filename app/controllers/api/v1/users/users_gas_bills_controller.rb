@@ -9,6 +9,17 @@ class Api::V1::Users::UsersGasBillsController < ApplicationController
                 .order(end_date: :desc), each_serializer: HeatBillSerializer
     end
   end
+  
+  def create
+    bill = HeatBill.new(safe_params)
+    bill.user_id = User.find(params[:user_id]).id
+    if bill.save
+      render json: bill, status: 201
+    else
+      error = bill.errors.messages.first[1][0]
+      render :json => {errors: error}, status: 401
+    end
+  end
 
   def update
     if params[:id] && User.exists(params[:user_id])
