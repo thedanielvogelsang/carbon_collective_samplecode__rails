@@ -4,9 +4,7 @@ Rails.application.routes.draw do
 
 # reconfigure and clean up routes
 
-  resources :electric_bills, only: [:create]
-  resources :water_bills, only: [:create]
-  resources :gas_bills, only: [:create]
+
   resources :users, only: [:create, :update]
   post '/users/:user_id/old_houses/:house_id', to: 'users#old_houses'
   post '/users/invite/:id', to: 'users#invite'
@@ -36,10 +34,13 @@ Rails.application.routes.draw do
           get '/bills/electricity', to: 'users/users_electric_bills#index'
           get '/bills/water', to: 'users/users_water_bills#index'
           get '/bills/gas', to: 'users/users_gas_bills#index'
-          put '/bills/electricity/:id', to: 'users/users_electric_bills#index'
-          put '/bills/water/:id', to: 'users/users_water_bills#index'
-          put '/bills/gas/:id', to: 'users/users_gas_bills#index'
-          # get '/trips', to: 'users/trips#index'
+          put '/bills/electricity/:id', to: 'users/users_electric_bills#update'
+          put '/bills/water/:id', to: 'users/users_water_bills#update'
+          put '/bills/gas/:id', to: 'users/users_gas_bills#update'
+          post '/electric_bills', to: 'users/users_electric_bills#create'
+          post '/water_bills', to: 'users/users_water_bills#create'
+          post '/gas_bills', to: 'users/users_gas_bills#create'
+            # get '/trips', to: 'users/trips#index'
             # get '/groups', to: 'users/groups#index'
             # get '/groups/:id', to: 'users/groups#show'
                 # get '/friends', to: 'users/friends#index'

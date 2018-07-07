@@ -10,6 +10,17 @@ class Api::V1::Users::UsersWaterBillsController < ApplicationController
     end
   end
 
+  def create
+    bill = WaterBill.new(safe_params)
+    bill.user_id = User.find(params[:user_id]).id
+    if bill.save
+      render json: bill, status: 201
+    else
+      error = bill.errors.messages.first[1][0]
+      render :json => {errors: error}, status: 401
+    end
+  end
+
   def update
     if params[:id] && User.exists(params[:user_id])
       bill = WaterBill.find(params[:id])
