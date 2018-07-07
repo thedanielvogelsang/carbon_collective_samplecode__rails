@@ -4,7 +4,7 @@ class UserHouse < ApplicationRecord
 
   validates_uniqueness_of :user_id, :scope => :house_id
 
-  # before_create :update_house_no_residents_add
+  before_create :update_house_no_residents_add
   before_destroy :update_house_no_residents_less
 
   def update_house_no_residents_add

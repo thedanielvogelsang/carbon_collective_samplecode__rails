@@ -746,13 +746,12 @@ country.update_data
 state.update_data
 
 User.all.each{|u|
-   # hId = u.household.id
-   # UserElectricityQuestion.create(user_id: u.id, house_id: hId)
-   # UserWaterQuestion.create(user_id: u.id, house_id: hId)
-   # UserGasQuestion.create(user_id: u.id, house_id: hId)
+   hId = u.household.id
    u.email_activate
    u.privacy_policy = true
-   # u.set_default_ranks
+   u.set_default_ranks
+   u.set_all_questions(hId)
+   u.save
  }
 
 County.all.each do |c|

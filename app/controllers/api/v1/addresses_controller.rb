@@ -6,7 +6,7 @@ class Api::V1::AddressesController < ApplicationController
 
   def show
     if Address.exists?(params[:id])
-      render json: Address.find(params[:id]), serializer: AddressBasicSerializer
+      render json: Address.find(params[:id]), serializer: AddressSerializer
     else
       render json: {error: "Address does not exist"}, status: 404
     end

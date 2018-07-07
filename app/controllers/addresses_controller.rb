@@ -6,6 +6,9 @@ class AddressesController < ApplicationController
     @address = Address.new(safe_params)
     @address.zipcode_id = zipcode.id
     if @address.save
+      user = User.find(params[:user_id])
+      House.create(address_id: @address.id, no_residents: 1)
+      user.houses << House.last
       render json: @address, status: 202
     elsif !@address.save && @address.errors.messages[:address_line1][0] == 'has already been taken'
       city_id = @address.city_id
@@ -16,6 +19,9 @@ class AddressesController < ApplicationController
         error = "House already exists"
         render :json => {:errors => error, :house => @house.id}, status: 401
       else
+        user = User.find(params[:user_id])
+        House.create(address_id: old_address.id, no_residents: 1)
+        user.houses << House.last
         render json: old_address, status: 202
       end
     else
