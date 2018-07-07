@@ -1,4 +1,4 @@
-class AddressBasicSerializer < ActiveModel::Serializer
+class AddressSerializer < ActiveModel::Serializer
   attributes :id, :full_address, :house
 
   def full_address
