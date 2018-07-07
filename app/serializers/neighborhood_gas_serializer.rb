@@ -50,6 +50,6 @@ class NeighborhoodGasSerializer < ActiveModel::Serializer
     "therms"
   end
   def out_of
-    Neighborhood.where(city: object.city).count
+    Neighborhood.where(city: object.city).joins(:users).count
   end
 end

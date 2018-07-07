@@ -25,15 +25,15 @@ module HouseHelper
   ## used for snapshots -- pending api use ##
   # 0.5 ms
   def average_daily_electricity_consumption_per_user
-    self.electric_bills.map{|b| b.total_kwhs}.compact.flatten.reject(&:nan?)
-              .reduce(0){|s, n| s + n} / self.no_residents
-    # users = self.users.map{|u| u.avg_daily_electricity_consumption}.compact.flatten.reject(&:nan?)
-    # ct = users.length
-    # if ct > 0
-    #   users.reduce(0){|s,n| s + n} / ct
-    # else
-    #   0
-    # end
+    # self.electric_bills.map{|b| b.total_kwhs}.compact.flatten.reject(&:nan?)
+    #           .reduce(0){|s, n| s + n} / self.no_residents
+    users = self.users.map{|u| u.avg_daily_electricity_consumption}.compact.flatten.reject(&:nan?)
+    ct = users.length
+    if ct > 0
+      users.reduce(0){|s,n| s + n} / ct
+    else
+      0
+    end
   end
 
   def average_daily_electricity_consumption_per_resident

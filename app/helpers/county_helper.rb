@@ -2,7 +2,7 @@ module CountyHelper
   include Co2Helper
 
   def out_of
-    County.where(region: self.region).count
+    County.where(region: self.region).joins(:users).count
   end
 
   def update_data

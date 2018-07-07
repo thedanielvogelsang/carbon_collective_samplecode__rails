@@ -43,6 +43,6 @@ class NeighborhoodCarbonSerializer < ActiveModel::Serializer
       object.carbon_ranking.arrow
     end
     def out_of
-      Neighborhood.where(city: object.city).count
+      Neighborhood.where(city: object.city).joins(:users).count
     end
 end

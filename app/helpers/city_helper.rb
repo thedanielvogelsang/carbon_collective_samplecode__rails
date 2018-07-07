@@ -2,7 +2,7 @@ module CityHelper
   include Co2Helper
   # serializer functions
   def out_of
-    City.where(region: self.region).count
+    City.where(region: self.region).joins(:users).count
   end
   # update data and set data functions
   def update_data

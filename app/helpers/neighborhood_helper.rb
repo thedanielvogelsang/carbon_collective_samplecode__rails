@@ -2,7 +2,7 @@ module NeighborhoodHelper
   include Co2Helper
 
   def out_of
-    Neighborhood.where(city: self.city).count
+    Neighborhood.where(city: self.city).joins(:users).count
   end
 
   def update_data
