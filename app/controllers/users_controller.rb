@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   respond_to :json
 
   def create
-    #update here for new_users: instead of NEW lets use UPDATE after find_or_create_by
+    #update here for new_users: instead of NEW lets use UPDATE after finding users we've already created
     @user = User.find(params[:user][:id])
     respond_to do |format|
       if params[:user][:password] == params[:user][:passwordConfirmation] && @user.update(safe_params)
