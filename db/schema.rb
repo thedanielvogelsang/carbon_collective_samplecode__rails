@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180706175726) do
+ActiveRecord::Schema.define(version: 20180709182057) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,11 +82,11 @@ ActiveRecord::Schema.define(version: 20180706175726) do
 
   create_table "city_snapshots", force: :cascade do |t|
     t.bigint "city_id"
-    t.decimal "total_energy_saved"
-    t.decimal "average_daily_energy_consumption_per_user"
-    t.decimal "average_total_energy_saved_per_user"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "average_daily_electricity_consumption_per_user"
+    t.decimal "average_daily_water_consumption_per_user"
+    t.decimal "average_daily_gas_consumption_per_user"
     t.index ["city_id"], name: "index_city_snapshots_on_city_id"
   end
 
@@ -150,21 +150,21 @@ ActiveRecord::Schema.define(version: 20180706175726) do
 
   create_table "country_snapshots", force: :cascade do |t|
     t.bigint "country_id"
-    t.decimal "total_energy_saved"
-    t.decimal "average_daily_energy_consumption_per_user"
-    t.decimal "average_total_energy_saved_per_user"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "average_daily_electricity_consumption_per_user"
+    t.decimal "average_daily_water_consumption_per_user"
+    t.decimal "average_daily_gas_consumption_per_user"
     t.index ["country_id"], name: "index_country_snapshots_on_country_id"
   end
 
   create_table "county_snapshots", force: :cascade do |t|
     t.bigint "county_id"
-    t.decimal "total_energy_saved"
-    t.decimal "average_daily_energy_consumption_per_user"
-    t.decimal "average_total_energy_saved_per_user"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "average_daily_electricity_consumption_per_user"
+    t.decimal "average_daily_water_consumption_per_user"
+    t.decimal "average_daily_gas_consumption_per_user"
     t.index ["county_id"], name: "index_county_snapshots_on_county_id"
   end
 
@@ -255,11 +255,11 @@ ActiveRecord::Schema.define(version: 20180706175726) do
 
   create_table "household_snapshots", force: :cascade do |t|
     t.bigint "house_id"
-    t.decimal "average_daily_energy_consumption_per_resident"
-    t.decimal "average_total_energy_saved_per_resident"
-    t.decimal "total_energy_saved"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "average_daily_electricity_consumption_per_user"
+    t.decimal "average_daily_water_consumption_per_user"
+    t.decimal "average_daily_gas_consumption_per_user"
     t.index ["house_id"], name: "index_household_snapshots_on_house_id"
   end
 
@@ -275,11 +275,11 @@ ActiveRecord::Schema.define(version: 20180706175726) do
 
   create_table "neighborhood_snapshots", force: :cascade do |t|
     t.bigint "neighborhood_id"
-    t.decimal "average_daily_energy_consumption_per_user"
-    t.decimal "average_total_energy_saved_per_user"
-    t.decimal "total_energy_saved"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "average_daily_electricity_consumption_per_user"
+    t.decimal "average_daily_water_consumption_per_user"
+    t.decimal "average_daily_gas_consumption_per_user"
     t.index ["neighborhood_id"], name: "index_neighborhood_snapshots_on_neighborhood_id"
   end
 
@@ -315,11 +315,11 @@ ActiveRecord::Schema.define(version: 20180706175726) do
 
   create_table "region_snapshots", force: :cascade do |t|
     t.bigint "region_id"
-    t.decimal "total_energy_saved"
-    t.decimal "average_daily_energy_consumption_per_user"
-    t.decimal "average_total_energy_saved_per_user"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "average_daily_electricity_consumption_per_user"
+    t.decimal "average_daily_water_consumption_per_user"
+    t.decimal "average_daily_gas_consumption_per_user"
     t.index ["region_id"], name: "index_region_snapshots_on_region_id"
   end
 
