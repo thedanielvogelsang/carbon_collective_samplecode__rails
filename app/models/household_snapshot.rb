@@ -3,9 +3,9 @@ class HouseholdSnapshot < ApplicationRecord
 
   def self.take_snapshot(house)
     create(house_id: house.id,
-      average_daily_energy_consumption_per_resident: house.average_daily_energy_consumption_per_resident,
-      average_total_energy_saved_per_resident: house.average_total_energy_saved_per_resident,
-      total_energy_saved: house.total_energy_saved
+      average_daily_electricity_consumption_per_user: house.average_daily_electricity_consumption_per_user,
+      average_daily_water_consumption_per_user: house.average_daily_water_consumption_per_user,
+      average_daily_gas_consumption_per_user: house.average_daily_gas_consumption_per_user
       )
   end
 end
