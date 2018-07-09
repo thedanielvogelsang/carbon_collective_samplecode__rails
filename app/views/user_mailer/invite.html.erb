@@ -14,19 +14,21 @@
   </head>
   <body>
     <h1> Hello!</h1>
-    <div class="native-msg">
-      <h3>Your friend <%= @user.first %> <%= @user.last %> has invited you to join Carbon Collective! To begin your registration click the URL below.</h3>
 
-      <%= invite_users_url(:id => @new.id, :token => @user.invite_token) %>
-    </div>
-    <% if @message %>
     <div class="personal-msg">
-      <h3>A message from <%= @user.first %>: </h3>
+      <h2>A message from <%= @user.first %>: </h2>
       <p><%= @message %></p>
     </div>
+
+    <div class="native-msg">
+      <h3>Your friend <%= @user.first %> <%= @user.last %> has invited you to join Carbon Collective! To begin your registration click the URL below.</h3>
+      <h3><%= invite_users_url(:id => @new.id, :token => @user.invite_token) %></h3>
+    </div>
+    <% if @message %>
+
     <% end %>
     <br/>
-    <h2>Sincerely</h2>
-    <h2>The Carbon Collective</h2>
+    <h3>Sincerely</h3>
+    <h3>The Carbon Collective</h3>
   </body>
 </html>
