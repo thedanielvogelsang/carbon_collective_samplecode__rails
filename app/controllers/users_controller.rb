@@ -81,7 +81,8 @@ class UsersController < ApplicationController
     user = User.find(params[:id])
     emails = params[:emails]
     msg = params[:message]
-    respns = MailerHelper.invite(user, emails, msg)
+    MailerHelper.invite(user, emails, msg, user.generation)
+    respns = MailerHelper.sort_emails(emails)
     respns == 'success' ? status = 201 : status = 404
     puts respns
     render json: {message: respns}, status: status

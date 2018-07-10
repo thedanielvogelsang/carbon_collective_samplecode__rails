@@ -8,7 +8,7 @@ class UserMailer < ApplicationMailer
     @user = user
     @new = new_user
     @message = message
-    mail(:to => email_hash[e],
+    mail(:to => new_user.email,
          :subject => "Carbon Collective Invite from #{@user.first}"
         )
   end
