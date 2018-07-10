@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180709182057) do
+ActiveRecord::Schema.define(version: 20180710000406) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -477,6 +477,16 @@ ActiveRecord::Schema.define(version: 20180709182057) do
     t.index ["user_id", "invite_id"], name: "index_user_invites_on_user_id_and_invite_id", unique: true
   end
 
+  create_table "user_request_areas", force: :cascade do |t|
+    t.string "area_type"
+    t.bigint "area_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["area_type", "area_id"], name: "index_user_request_areas_on_area_type_and_area_id"
+    t.index ["user_id"], name: "index_user_request_areas_on_user_id"
+  end
+
   create_table "user_water_questions", force: :cascade do |t|
     t.integer "a_count", default: 0
     t.integer "q_count", default: 4
@@ -613,6 +623,7 @@ ActiveRecord::Schema.define(version: 20180709182057) do
   add_foreign_key "user_groups", "users"
   add_foreign_key "user_houses", "houses"
   add_foreign_key "user_houses", "users"
+  add_foreign_key "user_request_areas", "users"
   add_foreign_key "user_water_questions", "houses"
   add_foreign_key "user_water_questions", "users"
   add_foreign_key "user_water_rankings", "users"

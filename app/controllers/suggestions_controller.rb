@@ -16,7 +16,7 @@ class SuggestionsController < ApplicationController
 
   def region_data
     user = User.find(params[:user][:id])
-    mail = SuggestionMailer.send_geographical_data
+    mail = SuggestionMailer.send_geographical_data(user, params[:geographical_data])
     mail.deliver_now
     render json: {:success => "regions stored"}, status: 202
   end
