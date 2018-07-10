@@ -84,6 +84,7 @@ class UsersController < ApplicationController
     UserMailer.invite(user, emails, message, user.generation).deliver_now
     message = sort_emails(emails)
     message == 'success' ? status = 201 : status = 404
+    puts message
     render json: {message: message}, status: status
   end
 
