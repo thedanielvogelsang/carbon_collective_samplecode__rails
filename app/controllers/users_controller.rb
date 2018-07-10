@@ -80,12 +80,11 @@ class UsersController < ApplicationController
   def invite
     user = User.find(params[:id])
     emails = params[:emails]
-    message = params[:message]
-    UserMailer.invite(user, emails, message, user.generation).deliver_now
-    message = sort_emails(emails)
-    message == 'success' ? status = 201 : status = 404
-    puts message
-    render json: {message: message}, status: status
+    msg = params[:message]
+    respns = MailerHelper.invite(user, emails, msg)
+    respns == 'success' ? status = 201 : status = 404
+    puts respns
+    render json: {message: respns}, status: status
   end
 
   def invite_accepted
@@ -107,22 +106,6 @@ class UsersController < ApplicationController
 
     def authenticate_old_password(u, pass)
       u.authenticate(pass)
-    end
-
-    def sort_emails(emails)
-      ct = emails.keys.length - 1
-      invited_yet = (0..ct).map do |e|
-          e = e.to_s
-          addr = emails[e]
-          u = User.find_by(email: addr)
-          u.email_confirmed ? u.email : nil
-      end
-      if invited_yet.compact.empty?
-        message = 'success'
-      else
-        message = invited_yet.compact
-      end
-      message
     end
 
     def safe_params
