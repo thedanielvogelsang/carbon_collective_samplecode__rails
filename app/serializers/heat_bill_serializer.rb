@@ -15,10 +15,10 @@ class HeatBillSerializer < ActiveModel::Serializer
     (object.end_date - object.start_date).to_i
   end
   def total_used
-    object.total_therms.to_s + ' therms'
+    object.total_therms.to_s
   end
   def total_saved
-    object.gas_saved.round(2).to_s
+    object.gas_saved.round(2).to_s + ' therms'
   end
   def carbon_impact
     therms_to_carbon(object.total_therms).round(2).to_s + " lbs co2"
