@@ -11,7 +11,18 @@ class SuggestionMailer < ApplicationMailer
       @body = body
       @mail = user
       mail(to: 'carboncollective.devops@gmail.com',
-            subject: "New Requested Area")
+            subject: "User Requested Area")
+    end
+
+    def send_geographical_data(user, geog_body)
+      area = geog_body[:area]
+      id = geog_body[:id]
+      @user = user
+      uId = user.id
+      req = UserRequestArea.create(area_type: area, area_id: id, user_id: uId)
+      @area = req.area.name
+      mail(to: 'carboncollective.devops@gmail.com',
+            subject: "Automatic Area Request")
     end
 
     def send_bug_fix_request(user, body)

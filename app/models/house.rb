@@ -10,7 +10,7 @@ class House < ApplicationRecord
   has_many :electric_bills, dependent: :destroy
   has_many :heat_bills, dependent: :destroy
   has_many :water_bills, dependent: :destroy
-  has_many :household_snapshots
+  has_many :household_snapshots, dependent: :destroy
   has_one :neighborhood, through: :address
 
   has_many :user_electricity_rankings, :as => :area
@@ -21,5 +21,5 @@ class House < ApplicationRecord
   def bills
     self.electric_bills
   end
-  
+
 end

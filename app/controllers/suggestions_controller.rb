@@ -25,6 +25,6 @@ class SuggestionsController < ApplicationController
     user = User.find(params[:user][:id])
     mail = SuggestionMailer.send_bug_fix_request(user, params[:email_body])
     mail.deliver_now
-    render json: {:success => "Message sent"}, status: 202
+    render json: {:success => "Bug fix request sent"}, status: 202
   end
 end
