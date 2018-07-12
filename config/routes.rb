@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   post '/:user_id/page-land', to: 'user_behaviors#page_land'
   post '/:user_id/page-leave', to: 'user_behaviors#page_leave'
   post '/:user_id/presses-nav-btn', to: 'user_behaviors#presses_navbar_button'
+  post '/:user_id/user-logs-in', to: 'user_behaviors#logs_in'
   resource :users do
     member do
       get :confirm_email

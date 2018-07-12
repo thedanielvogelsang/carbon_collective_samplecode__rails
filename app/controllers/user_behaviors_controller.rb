@@ -7,9 +7,9 @@ class UserBehaviorsController < ApplicationController
       name = params[:buttonName]
       page = params[:pageName]
       UserLogHelper.user_presses_button(id, name, page)
-      return status: 202
+      render json: {}, status: 202
     else
-      return status: 404
+      render json: {}, status: 404
     end
   end
 
@@ -19,9 +19,9 @@ class UserBehaviorsController < ApplicationController
     if User.exists?(id)
       page = params[:pageName]
       UserLogHelper.user_lands_on_page(id, page)
-      return status: 202
+      render json: {}, status: 202
     else
-      return status: 404
+      render json: {}, status: 404
     end
   end
 
@@ -32,9 +32,9 @@ class UserBehaviorsController < ApplicationController
       prev_page = params[:pageName]
       new_page = params[:nextPage]
       UserLogHelper.user_leaves_page(id, prev_page, new_page)
-      return status: 202
+      render json: {}, status: 202
     else
-      return status: 404
+      render json: {}, status: 404
     end
   end
 
@@ -45,9 +45,19 @@ class UserBehaviorsController < ApplicationController
       prev_page = params[:pageName]
       type = [params[:buttonName]]
       UserLogHelper.user_hits_nav_button(id, type, prev_page)
-      return status: 202
+      render json: {}, status: 202
     else
-      return status: 404
+      render json: {}, status: 404
+    end
+  end
+
+  def logs_in
+    id = params[:user_id]
+    if User.exists?(id)
+      UserLogHelper.user_logs_in(id)
+      render json: {}, status: 202
+    else
+      render json: {}, status: 404
     end
   end
 
