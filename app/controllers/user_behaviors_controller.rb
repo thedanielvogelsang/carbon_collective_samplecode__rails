@@ -1,6 +1,6 @@
 class UserBehaviorsController < ApplicationController
 
-  def button_press
+  def presses_button
     #give id, name={button name} and pageName={currentPageName}
     id = params[:user_id]
     if User.exists?(id)
@@ -38,45 +38,13 @@ class UserBehaviorsController < ApplicationController
     end
   end
 
-  def back_button
+  def presses_navbar_button
     #give id and pageName={currentPageName}
     id = params[:user_id]
     if User.exists?(id)
       prev_page = params[:pageName]
-      UserLogHelper.user_hits_nav_button(id, 'back', prev_page)
-      return status: 202
-    else
-      return status: 404
-    end
-  end
-  def dash_button
-    #give id and pageName={currentPageName}
-    id = params[:user_id]
-    if User.exists?(id)
-      prev_page = params[:pageName]
-      UserLogHelper.user_hits_nav_button(id, 'dashboard', prev_page)
-      return status: 202
-    else
-      return status: 404
-    end
-  end
-  def invite_someone_button
-    #give id and pageName={currentPageName}
-    id = params[:user_id]
-    if User.exists?(id)
-      prev_page = params[:pageName]
-      UserLogHelper.user_hits_nav_button(id, 'inviteSomeone', prev_page)
-      return status: 202
-    else
-      return status: 404
-    end
-  end
-  def settings_button
-    #give id and pageName={currentPageName}
-    id = params[:user_id]
-    if User.exists?(id)
-      prev_page = params[:pageName]
-      UserLogHelper.user_hits_nav_button(id, 'settings', prev_page)
+      type = [params[:buttonName]]
+      UserLogHelper.user_hits_nav_button(id, type, prev_page)
       return status: 202
     else
       return status: 404
