@@ -61,4 +61,26 @@ class UserBehaviorsController < ApplicationController
     end
   end
 
+  def logs_out
+    id = params[:user_id]
+    if User.exists?(id)
+      UserLogHelper.user_logs_out(id)
+      render json: {}, status: 202
+    else
+      render json: {}, status: 404
+    end
+  end
+
+  def page_mounted
+    id = params[:user_id]
+    page = params[:pageName]
+    time = Time.now.strftime("%Y-%m-%d %H:%M:%S.%L")
+    if User.exists?(id)
+      UserLogHelper.page_mounted(id, page, time)
+      render json: {}, status: 202
+    else
+      render json: {}, status: 404
+    end
+  end
+
 end

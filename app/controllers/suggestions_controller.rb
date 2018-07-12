@@ -2,7 +2,9 @@ class SuggestionsController < ApplicationController
 
   def send_suggestion
     user = User.find(params[:user][:id])
-    mail = SuggestionMailer.send_suggestion(user, params[:email_body])
+    msg = params[:email_body]
+    UserLogHelper.user_sends_suggestion(user, msg)
+    mail = SuggestionMailer.send_suggestion(user, msg)
     mail.deliver_now
     render json: {:success => "Message sent"}, status: 202
   end
@@ -23,7 +25,9 @@ class SuggestionsController < ApplicationController
 
   def send_bug
     user = User.find(params[:user][:id])
-    mail = SuggestionMailer.send_bug_fix_request(user, params[:email_body])
+    msg = params[:email_body]
+    UserLogHelper.user_finds_bug(user, msg)
+    mail = SuggestionMailer.send_bug_fix_request(user, msg)
     mail.deliver_now
     render json: {:success => "Bug fix request sent"}, status: 202
   end
