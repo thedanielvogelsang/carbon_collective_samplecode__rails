@@ -46,13 +46,12 @@ module CountryHelper
   # end
 
   def update_daily_avg_electricity_consumption
-    if ElectricBill.joins(:house => {:address => :region}).where(:regions => {country_id: self.id}).count != 0
       users = self.users.map{|u| u.avg_daily_electricity_consumption }
               .flatten.reject(&:nan?)
       ct = users.length
       energy_consumed = users.reduce(0){|sum, num| sum + num} / ct if ct != 0
+      energy_consumed ||= 0.0
       self.avg_daily_electricity_consumed_per_user = energy_consumed
-    end
   end
 
   # def update_total_water_savings
@@ -74,14 +73,13 @@ module CountryHelper
   # end
 
   def update_daily_avg_water_consumption
-    if WaterBill.joins(:house => {:address => :region}).where(:regions => {country_id: self.id}).count != 0
       users = self.users.map{|u| u.avg_daily_water_consumption }
               .flatten
               .reject(&:nan?)
       ct = users.length
       water_consumed = users.reduce(0){|sum, num| sum + num} / ct if ct != 0
+      water_consumed ||= 0.0
       self.avg_daily_water_consumed_per_user = water_consumed
-    end
   end
 
   # def update_total_gas_and_carbon_savings
@@ -106,13 +104,12 @@ module CountryHelper
   # end
 
   def update_daily_avg_gas_consumption
-    if HeatBill.joins(:house => {:address => :region}).where(:regions => {country_id: self.id}).count != 0
       users = self.users.map{|u| u.avg_daily_gas_consumption }
         .flatten.reject(&:nan?)
       ct = users.length
       gas_consumed = users.reduce(0){|sum, num| sum + num} / ct if ct != 0
+      gas_consumed ||= 0.0
       self.avg_daily_gas_consumed_per_user = gas_consumed
-    end
   end
 
   def update_carbon_consumption(n)
