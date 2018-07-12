@@ -15,6 +15,8 @@ class HeatBill < ApplicationRecord
   after_validation :gas_saved?,
                    :update_users_savings
 
+  after_create :log_user_activity
+
  #checks if region_comparisons can be made or not; returns boolean either way
  def gas_saved?
    self.house.address.city.region.has_gas_average? ? region_comparison : country_comparison
@@ -76,5 +78,9 @@ class HeatBill < ApplicationRecord
 
  def check_overlap(a_st, a_end, b_st, b_end)
    (a_st < b_end) && (a_end > b_st)
+ end
+
+ def log_user_activity
+   UserLogHelper.user_adds_bill(self.user_id, 'heat')
  end
 end

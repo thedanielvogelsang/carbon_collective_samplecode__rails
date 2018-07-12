@@ -82,6 +82,7 @@ class UsersController < ApplicationController
     emails = params[:emails]
     msg = params[:message]
     # write to invites text file here, use UserLogHelper in the MailerHelper
+    UserLogHelper.user_invites_someone(user, emails.keys.length, msg)
     MailerHelper.invite(user, emails, msg, user.generation)
     respns = MailerHelper.sort_emails(emails)
     respns == 'success' ? status = 201 : status = 404
