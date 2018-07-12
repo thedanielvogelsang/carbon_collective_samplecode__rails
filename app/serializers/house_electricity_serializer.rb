@@ -11,6 +11,9 @@ class HouseElectricitySerializer < ActiveModel::Serializer
                   :avg_daily_consumption
                   :avg_monthly_consumption
 
+  def total_sq_ft
+    object.total_sq_ft || 0
+  end
   def total_consumption_to_date
     object.total_electricity_consumption_to_date.round(2).to_s + " kWhs" if object.total_electricity_consumption_to_date
   end
