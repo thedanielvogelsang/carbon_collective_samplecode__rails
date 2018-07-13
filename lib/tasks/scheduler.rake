@@ -28,5 +28,8 @@ task :update_data => :environment do
     House.all.each{|h| HouseholdSnapshot.take_snapshot(h) }
   puts "Snapshots logged"
 
+  puts "Writing to S3 Bucket"
+    AwsService.new.create_new_logfile
+
   puts '...done'
 end

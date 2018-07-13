@@ -122,7 +122,7 @@ class UserLogHelper
 
   def self.user_invites_someone(user, num, msg)
     UserLog.create(time: Time.now.strftime("%Y-%m-%d %H:%M:%S.%L"),
-                   user_id: id,
+                   user_id: user.id,
                    action: "invitesSomeone",
                    num: num,
                    message: msg,
@@ -132,10 +132,10 @@ class UserLogHelper
   def self.user_sends_suggestion(user, msg)
 
     UserLog.create(time: Time.now.strftime("%Y-%m-%d %H:%M:%S.%L"),
-                   user_id: id,
+                   user_id: user.id,
                    action: "sendsSuggestion",
                    message: msg,
-                   description: "#{user.first} #{user.last} invited #{num} people to Carbon Collective!"
+                   description: "#{user.first} #{user.last} sends us a suggestion!"
             )
     # f = File.new("log/userlogs/#{user.filename}", "a")
     # f.write("#{user.first} #{user.last} sends suggestion: #{Time.now.strftime("%Y-%m-%d %H:%M:%S.%L")}\n---> saying this: #{msg}\n")
@@ -146,7 +146,7 @@ class UserLogHelper
                    user_id: user.id,
                    action: "sendsSuggestion",
                    message: msg,
-                   description: "#{user.first} #{user.last} invited #{num} people to Carbon Collective!"
+                   description: "#{user.first} #{user.last} found a bug"
             )
     # f = File.new("log/userlogs/#{user.filename}", "a")
     # f.write("#{user.first} #{user.last} finds a bug: #{Time.now.strftime("%Y-%m-%d %H:%M:%S.%L")}\n---> saying this: #{msg}\n")
