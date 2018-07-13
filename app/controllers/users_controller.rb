@@ -100,6 +100,7 @@ class UsersController < ApplicationController
       render :file => 'public/404.html', :status => :not_found, :layout => false
     else
       new_user.email_activate
+      UserLogHelper.user_accepts_invite(new_User)
       UserGeneration.find_or_create_by(parent_id: prev_user.id , child_id: new_user.id)
       UserGeneration.bind_generations(prev_user, new_user.id)
       redirect_to "#{host}/signup/#{new_user.id}"

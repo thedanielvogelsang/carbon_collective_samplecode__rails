@@ -79,4 +79,10 @@ class UserLogHelper
     f.close
   end
 
+  def self.user_accepts_invite(user)
+    f = File.new("log/userlogs/#{user.filename}", "a")
+    f.write("#{user.first} #{user.last} accepts invite: #{Time.now.strftime("%Y-%m-%d %H:%M:%S.%L")}\n")
+    f.close
+  end
+
 end

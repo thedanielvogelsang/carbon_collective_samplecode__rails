@@ -169,6 +169,7 @@ private
     f = File.new("log/userlogs/#{self.filename}", "w")
     f.write('File created: ' + Time.now.to_s + "\n")
     f.close
+    puts "success"
   end
 
 end
