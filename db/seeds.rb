@@ -464,7 +464,6 @@ puts "all neighborhoods of Denver added"
                   neighborhood_id: dn1.id, city_id: city1.id, county_id: county.id,
                   zipcode_id: z.id)
       user = User.create(first: "OG", last: "GEN0", password: "password", generation: 0, email: 'dvog@gmail.com')
-      puts user.filename
       house = House.create(total_sq_ft: rand(1000..3000), no_residents: 0, address_id: tadd.id)
       user.houses << house
 
