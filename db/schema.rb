@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180712201148) do
+ActiveRecord::Schema.define(version: 20180713203520) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -477,6 +477,19 @@ ActiveRecord::Schema.define(version: 20180712201148) do
     t.index ["user_id", "invite_id"], name: "index_user_invites_on_user_id_and_invite_id", unique: true
   end
 
+  create_table "user_logs", force: :cascade do |t|
+    t.time "time"
+    t.bigint "user_id"
+    t.string "action"
+    t.string "page"
+    t.string "next_page"
+    t.string "detail"
+    t.string "description"
+    t.integer "num"
+    t.string "msg"
+    t.index ["user_id"], name: "index_user_logs_on_user_id"
+  end
+
   create_table "user_request_areas", force: :cascade do |t|
     t.string "area_type"
     t.bigint "area_id"
@@ -624,6 +637,7 @@ ActiveRecord::Schema.define(version: 20180712201148) do
   add_foreign_key "user_groups", "users"
   add_foreign_key "user_houses", "houses"
   add_foreign_key "user_houses", "users"
+  add_foreign_key "user_logs", "users"
   add_foreign_key "user_request_areas", "users"
   add_foreign_key "user_water_questions", "houses"
   add_foreign_key "user_water_questions", "users"

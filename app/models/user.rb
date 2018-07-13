@@ -57,7 +57,7 @@ class User < ApplicationRecord
                 :set_avg_login_time,
                 :create_filename
 
-  # after_create :write_file
+  after_create :write_file
 
   # after_create :set_default_ranks
 
@@ -166,10 +166,7 @@ private
   end
 
   def write_file
-    f = File.new("log/userlogs/#{self.filename}", "w")
-    f.write('File created: ' + Time.now.to_s + "\n")
-    f.close
-    puts "success"
+    UserLogHelper.user_created(self.id)
   end
 
 end

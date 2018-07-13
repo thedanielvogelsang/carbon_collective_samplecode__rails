@@ -22,10 +22,6 @@ class UserHouse < ApplicationRecord
   end
 
   def log_house_creation
-    u = User.find(self.user_id)
-    h = House.find(self.house_id)
-    # f = File.new("log/userlogs/#{u.filename}", "a")
-    # f.write("#{u.first + ' ' + u.last} creates house at #{self.created_at}: #{h.id}: #{Time.now}\n")
-    # f.close
+    UserLogHelper.log_house_creation(self.user_id, self.house_id)
   end
 end
