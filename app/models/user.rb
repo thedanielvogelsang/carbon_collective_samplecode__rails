@@ -57,7 +57,7 @@ class User < ApplicationRecord
                 :set_avg_login_time,
                 :create_filename
 
-  after_create :write_file
+  # after_create :write_file
 
   # after_create :set_default_ranks
 
