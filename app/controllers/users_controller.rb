@@ -81,6 +81,8 @@ class UsersController < ApplicationController
     user = User.find(params[:id])
     emails = params[:emails]
     msg = params[:message]
+    # write to invites text file here, use UserLogHelper in the MailerHelper
+    UserLogHelper.user_invites_someone(user, emails.keys.length, msg)
     MailerHelper.invite(user, emails, msg, user.generation)
     respns = MailerHelper.sort_emails(emails)
     respns == 'success' ? status = 201 : status = 404
@@ -93,6 +95,7 @@ class UsersController < ApplicationController
     # host = 'http://localhost:3001'
     prev_user = User.find_by_invite_token(params[:token])
     new_user = User.find(params[:id])
+    # UserLogHelper.invite_accepted(prev, new) , write to text file that new_user accepted prev_users invite
     if !new_user.confirm_token
       render :file => 'public/404.html', :status => :not_found, :layout => false
     else

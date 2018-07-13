@@ -54,7 +54,10 @@ class User < ApplicationRecord
   before_create :add_zeros,
                 :add_confirm_token,
                 :add_invite_token,
-                :set_avg_login_time
+                :set_avg_login_time,
+                :create_filename
+
+  after_create :write_file
 
   # after_create :set_default_ranks
 
@@ -156,6 +159,16 @@ private
   def set_avg_login_time
     self.total_logins = 0
     self.avg_time_btw_logins = 0
+  end
+
+  def create_filename
+    self.filename = self.email + SecureRandom.urlsafe_base64.to_s
+  end
+
+  def write_file
+    f = File.new("log/userlogs/#{self.filename}", "w")
+    f.write('File created: ' + Time.now.to_s + "\n")
+    f.close
   end
 
 end

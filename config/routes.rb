@@ -4,10 +4,25 @@ Rails.application.routes.draw do
 
 # reconfigure and clean up routes
 
-
+  get '/', to: "sessions#index", as: :welcome
+  get '/auth/facebook', as: :facebook_login
+  get '/auth/facebook/callback', to: "sessions#create", as: :facebook_callback
+  get '/login', to: "sessions#new", as: :login
+  post '/login', to: "sessions#create", :defaults => {:format => :json}
+  post '/suggestions', to: 'suggestions#send_suggestion'
+  post '/expansions', to: 'suggestions#region_expansion'
+  post '/store_geo', to: 'suggestions#region_data'
+  post '/bugs', to: "suggestions#send_bug"
   resources :users, only: [:create, :update]
   post '/users/:user_id/old_houses/:house_id', to: 'users#old_houses'
   post '/users/invite/:id', to: 'users#invite'
+  post '/:user_id/presses-btn', to: 'user_behaviors#presses_button'
+  post '/:user_id/page-land', to: 'user_behaviors#page_land'
+  post '/:user_id/page-leave', to: 'user_behaviors#page_leave'
+  post '/:user_id/page-mounted', to: 'user_behaviors#page_mounted'
+  post '/:user_id/presses-nav-btn', to: 'user_behaviors#presses_navbar_button'
+  post '/:user_id/user-logs-in', to: 'user_behaviors#logs_in'
+  post '/:user_id/user-logs-out', to: 'user_behaviors#logs_out'
   resource :users do
     member do
       get :confirm_email
@@ -16,10 +31,6 @@ Rails.application.routes.draw do
   end
   resources :addresses, only: [:create]
   resources :houses, only: [:create]
-  post '/suggestions', to: 'suggestions#send_suggestion'
-  post '/expansions', to: 'suggestions#region_expansion'
-  post '/store_geo', to: 'suggestions#region_data'
-  post '/bugs', to: "suggestions#send_bug"
   namespace :api do
     namespace :v1 do
       resources :addresses, only: [:index, :show]
@@ -167,9 +178,4 @@ Rails.application.routes.draw do
       # resources :days, only: [:index, :show]
     end
   end
-  get '/', to: "sessions#index", as: :welcome
-  get '/auth/facebook', as: :facebook_login
-  get '/auth/facebook/callback', to: "sessions#create", as: :facebook_callback
-  get '/login', to: "sessions#new", as: :login
-  post '/login', to: "sessions#create", :defaults => {:format => :json}
 end

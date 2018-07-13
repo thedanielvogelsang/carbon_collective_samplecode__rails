@@ -12,6 +12,8 @@ class WaterBill < ApplicationRecord
   after_validation :water_saved?,
                    :update_users_savings
 
+  after_create :log_user_activity
+
   def water_saved?
     self.house.address.city.region.has_water_average? ? region_comparison : country_comparison
   end
@@ -62,5 +64,9 @@ class WaterBill < ApplicationRecord
 
   def check_overlap(a_st, a_end, b_st, b_end)
     (a_st < b_end) && (a_end > b_st)
+  end
+
+  def log_user_activity
+    UserLogHelper.user_adds_bill(self.user_id, 'water')
   end
 end

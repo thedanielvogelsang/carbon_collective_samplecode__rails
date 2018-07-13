@@ -16,7 +16,12 @@ class UserGasQuestion < ApplicationRecord
     self.quest6 ? ct += 1 : nil
     self.a_count = ct
     self.completion_percentage = self.a_count.fdiv(self.q_count) * 100
-    self.completion_percentage.to_i == 100 ? self.completed = true : self.completed = false
+    self.completion_percentage.to_i == 100 ? questionairre_complete : nil
+  end
+
+  def questionairre_complete
+    self.completed = true
+    UserLogHelper.user_completes_questionairre(self.user_id, "heat")
   end
 
   def update_with_params(q, a)

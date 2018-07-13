@@ -84,7 +84,7 @@ module RegionHelper
               .reject(&:nan?)
       ct = users.length
       water_consumed = users.reduce(0){|sum, num| sum + num} / ct if ct != 0
-      energy_consumed ||= 0.0
+      water_consumed ||= 0.0
       self.avg_daily_water_consumed_per_user = water_consumed
     # end
   end
