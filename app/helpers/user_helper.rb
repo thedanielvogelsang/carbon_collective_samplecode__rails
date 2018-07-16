@@ -94,6 +94,16 @@ module UserHelper
     UserGasQuestion.destroy(ug.id)
   end
 
+  def clear_totals
+    self.total_kwhs_logged = 0.0;
+    self.total_electricitybill_days_logged = 0;
+    self.total_gallons_logged = 0.0;
+    self.total_waterbill_days_logged = 0;
+    self.total_therms_logged = 0.0;
+    self.total_heatbill_days_logged = 0;
+    self.save
+  end
+
   def confirm_accounts
     self.email_activate
   end
