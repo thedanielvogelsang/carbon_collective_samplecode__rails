@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'county consumption averages' do
+RSpec.describe 'County consumption averages' do
   before :each do
     avg = 12071.fdiv(30)
     wavg = 409466.6
