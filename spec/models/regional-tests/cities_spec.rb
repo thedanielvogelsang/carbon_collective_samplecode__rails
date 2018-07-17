@@ -268,16 +268,24 @@ RSpec.describe 'city consumption averages' do
       therms2 = 600
       price = rand(1..100)
       HeatBill.create(start_date: @start_date1, end_date: @end_date1, total_therms: therms, price: price, house_id: house.id, no_residents: 2, user_id: user.id)
+      user = User.first
+      u_avg1 = user.avg_daily_gas_consumption
       city.update_daily_avg_gas_consumption
+      #users first average:
+      expect(u_avg1.to_f.round(2)).to eq(5.0)
       c1_avg1 = city.avg_daily_gas_consumed_per_user
+      #same as city
       expect(c1_avg1.to_f.round(2)).to eq(5.0)
       #-- add second bill --#
       HeatBill.create(start_date: @start_date2, end_date: @end_date2, total_therms: therms2, price: price, house_id: house.id, no_residents: 2, user_id: user.id)
       user = User.first
-      u_avg = user.avg_daily_gas_consumption
+      u_avg2 = user.avg_daily_gas_consumption
       c1_new_avg = city.avg_daily_gas_consumed_per_user
-      expect(u_avg.to_f.round(2)).to eq(7.50)
+      #users average changes
+      expect(u_avg2.to_f.round(2)).to eq(7.50)
+      expect(u_avg2.to_f.round(2)).to_not eq(u_avg1)
       expect(c1_new_avg.to_f.round(2)).to eq(5.0)
+      #same as before (without update)
       expect(c1_new_avg).to eq(c1_avg1)
       #user consumed twice as much second month
       expect(therms * 2).to eq(therms2)
@@ -285,8 +293,8 @@ RSpec.describe 'city consumption averages' do
       city = City.first
       city.update_daily_avg_gas_consumption
       c1_avg2 = city.avg_daily_gas_consumed_per_user
-      #new average is twice as
-      expect(c1_avg2).to eq(u_avg)
+      #new city average is same as new users avg
+      expect(c1_avg2).to eq(u_avg2)
     end
     it 'city avgs reflect accurate mean between two users' do
       #add users to separate houses within same city
