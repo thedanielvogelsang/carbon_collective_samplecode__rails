@@ -325,6 +325,4 @@ RSpec.describe 'City consumption averages' do
       expect(c1_avg.to_f.round(1)).to eq(7.50)
     end
   end
-  xcontext "two people within area affects entire score" do
-  end
 end

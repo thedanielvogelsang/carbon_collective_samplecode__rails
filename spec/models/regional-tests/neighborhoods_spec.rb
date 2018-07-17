@@ -315,7 +315,4 @@ RSpec.describe 'Neighborhood consumption averages' do
       expect(n1_avg.to_f.round(1)).to eq(7.50)
     end
   end
-  context "two people within area affects entire score" do
-
-  end
 end
