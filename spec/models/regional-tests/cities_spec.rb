@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'neighborhood consumption averages' do
+RSpec.describe 'city consumption averages' do
   before :each do
     avg = 12071.fdiv(30)
     wavg = 409466.6
