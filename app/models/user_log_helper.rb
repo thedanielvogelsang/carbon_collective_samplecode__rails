@@ -134,7 +134,7 @@ class UserLogHelper
                    user_id: user.id,
                    action: "invitesSomeone",
                    num: num,
-                   message: msg,
+                   msg: msg,
                    description: "#{user.first} #{user.last} invited #{num} people to Carbon Collective!"
             )
   end
@@ -143,7 +143,7 @@ class UserLogHelper
     UserLog.create(time: time,
                    user_id: user.id,
                    action: "sendsSuggestion",
-                   message: msg,
+                   msg: msg,
                    description: "#{user.first} #{user.last} sends us a suggestion!"
             )
     # f = File.new("log/userlogs/#{user.filename}", "a")
@@ -155,7 +155,7 @@ class UserLogHelper
     UserLog.create(time: time,
                    user_id: user.id,
                    action: "sendsSuggestion",
-                   message: msg,
+                   msg: msg,
                    description: "#{user.first} #{user.last} found a bug"
             )
     # f = File.new("log/userlogs/#{user.filename}", "a")
