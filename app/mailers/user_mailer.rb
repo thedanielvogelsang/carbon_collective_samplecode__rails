@@ -1,7 +1,7 @@
 class UserMailer < ApplicationMailer
   def registration(user)
     @user = user
-    mail(:to => "#{user.first + ' ' + user.last} <#{user.email}>", :subject => "Registration Confirmation")
+    mail(:to => "#{user.first + ' ' + user.last} <#{user.email}>", :from => @user.email, :subject => "Registration Confirmation")
   end
 
   def invite(user, new_user, message)

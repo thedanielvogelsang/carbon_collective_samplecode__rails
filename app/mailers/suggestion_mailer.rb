@@ -4,13 +4,15 @@ class SuggestionMailer < ApplicationMailer
         @suggestion = body
         @user = user
         mail(to: 'carboncollective.devops@gmail.com',
+             from: @user.email,
              subject: "App Suggestion")
     end
 
     def send_expansion_request(user, body)
       @body = body
-      @mail = user
+      @user = user
       mail(to: 'carboncollective.devops@gmail.com',
+            from: @user.email,
             subject: "User Requested Area")
     end
 
@@ -22,6 +24,7 @@ class SuggestionMailer < ApplicationMailer
       req = UserRequestArea.create(area_type: area, area_id: id, user_id: uId)
       @area = req.area.name
       mail(to: 'carboncollective.devops@gmail.com',
+            from: @user.email,
             subject: "Automatic Area Request")
     end
 
@@ -29,6 +32,7 @@ class SuggestionMailer < ApplicationMailer
       @bug = body
       @user = user
       mail(to: 'carboncollective.devops@gmail.com',
+            from: @user.email,
             subject: "Bug Fix request")
     end
 
