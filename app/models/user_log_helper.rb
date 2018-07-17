@@ -9,8 +9,9 @@ class UserLogHelper
 
   def self.user_logs_in(id)
     u = User.find(id)
+    time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
     # body = "#{Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60)},#{u.id},logsin,,,,#{u.first + ' ' + u.last} logs in\n"
-    UserLog.create(time: Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60),
+    UserLog.create(time: time,
                    user_id: id,
                    action: "logsin",
                    page: nil,
@@ -26,8 +27,9 @@ class UserLogHelper
 
   def self.user_logs_out(id)
     u = User.find(id)
+    time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
     # body = "#{Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60)},#{u.id},logsout,,,,#{u.first + ' ' + u.last} logs out\n"
-    UserLog.create(time: Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60),
+    UserLog.create(time: time,
                    user_id: id,
                    action: "logsout",
                    page: nil,
@@ -42,7 +44,8 @@ class UserLogHelper
   def self.user_presses_button(id, name, page)
     u = User.find(id)
     # body = "#{Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60)},#{u.id},pressesBtn,#{page},,#{name},#{u.first + ' ' + u.last} presses #{type} button on #{prev_page}\n"
-    UserLog.create(time: Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60),
+    time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
+    UserLog.create(time: time,
                    user_id: id,
                    action: "pressesBtn",
                    page: page,
@@ -56,7 +59,8 @@ class UserLogHelper
   def self.user_lands_on_page(id, page)
     u = User.find(id)
     # body = "#{Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60)},#{u.id},pageView,#{page},,,#{u.first + ' ' + u.last} lands on #{page}\n"
-    UserLog.create(time: Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60),
+    time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
+    UserLog.create(time: time,
                    user_id: id,
                    action: "pageView",
                    page: page,
@@ -69,7 +73,8 @@ class UserLogHelper
   def self.user_leaves_page(id, prev_page, next_page)
     u = User.find(id)
     # body = "#{Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60)},#{u.id},pageLeave,#{prev_page},#{next_page},,#{u.first + ' ' + u.last} leaves #{prev_page} for #{next_page}\n"
-    UserLog.create(time: Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60),
+    time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
+    UserLog.create(time: time,
                    user_id: id,
                    action: "pageLeave",
                    page: prev_page,
@@ -83,7 +88,8 @@ class UserLogHelper
   def self.user_hits_nav_button(id, type, prev_page)
     u = User.find(id)
     # body = "#{Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60)},#{u.id},hitsNavBtn,#{prev_page},,#{type},#{u.first + ' ' + u.last} hits #{type} button on navbar from #{prev_page}\n"
-    UserLog.create(time: Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60),
+    time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
+    UserLog.create(time: time,
                    user_id: id,
                    action: "hitsNavBtn",
                    page: prev_page,
@@ -97,7 +103,8 @@ class UserLogHelper
   def self.user_adds_bill(id, type)
     u = User.find(id)
     # body = "#{Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60)},#{u.id},addsBill,/manageBills,,#{type},#{u.first + ' ' + u.last} adds new #{type} bill\n"
-    UserLog.create(time: Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60),
+    time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
+    UserLog.create(time: time,
                    user_id: id,
                    action: "addsBill",
                    detail: type,
@@ -109,19 +116,21 @@ class UserLogHelper
 
   def self.user_completes_questionairre(id, type)
     u = User.find(id)
-    UserLog.create(time: Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60),
+    time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
+    UserLog.create(time: time,
                    user_id: id,
                    action: "completesQuestionairre",
                    detail: type,
                    description: "#{u.first + ' ' + u.last} completes #{type} bill questionairre"
             )
     # f = File.new("log/userlogs/#{u.filename}", "a")
-    # f.write("#{u.first} completes #{type} bill questionairre: #{Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60)}\n")
+    # f.write("#{u.first} completes #{type} bill questionairre: #{time}\n")
     # f.close
   end
 
   def self.user_invites_someone(user, num, msg)
-    UserLog.create(time: Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60),
+    time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
+    UserLog.create(time: time,
                    user_id: user.id,
                    action: "invitesSomeone",
                    num: num,
@@ -130,8 +139,8 @@ class UserLogHelper
             )
   end
   def self.user_sends_suggestion(user, msg)
-
-    UserLog.create(time: Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60),
+    time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
+    UserLog.create(time: time,
                    user_id: user.id,
                    action: "sendsSuggestion",
                    message: msg,
@@ -142,7 +151,8 @@ class UserLogHelper
     # f.close
   end
   def self.user_finds_bug(user, msg)
-    UserLog.create(time: Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60),
+    time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
+    UserLog.create(time: time,
                    user_id: user.id,
                    action: "sendsSuggestion",
                    message: msg,
@@ -154,6 +164,7 @@ class UserLogHelper
   end
 
   def self.page_mounted(id, page, time)
+    time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
     UserLog.create(time: time,
                    user_id: id,
                    action: "pageMounts",
@@ -166,7 +177,8 @@ class UserLogHelper
   end
 
   def self.user_accepts_invite(user)
-    UserLog.create(time: Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60),
+    time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
+    UserLog.create(time: time,
                    user_id: user.id,
                    action: "acceptsInvite",
                    description: "#{user.first} #{user.last} accepts invite"
@@ -178,7 +190,8 @@ class UserLogHelper
 
   def self. log_house_creation(id, hId)
     user = User.find(id)
-    UserLog.create(time: Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60),
+    time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
+    UserLog.create(time: time,
                    user_id: id,
                    action: "houseCreated",
                    description: "#{user.first} #{user.last} creates house with id: #{hId}"
@@ -190,7 +203,8 @@ class UserLogHelper
 
   def self.user_created(id)
     user = User.find(id)
-    UserLog.create(time: Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60),
+    time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
+    UserLog.create(time: time,
                    user_id: user.id,
                    action: "userCreated",
                    description: "New user created: #{user.email}"

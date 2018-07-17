@@ -1,4 +1,4 @@
-class AddressesController < ApplicationController
+  class AddressesController < ApplicationController
   # before_action :require_user
 
   def create
