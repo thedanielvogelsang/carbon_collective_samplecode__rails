@@ -65,6 +65,10 @@ class HouseGasSerializer < ActiveModel::Serializer
     object.users.map{|u| u.id}
   end
 
+  def total_days_recorded
+    object.heat_bills.count
+  end
+
   def address
     addy = object.address
     addy.address_line1 + " #{addy.address_line2.to_s}" +

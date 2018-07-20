@@ -77,6 +77,10 @@ class HouseWaterSerializer < ActiveModel::Serializer
     object.neighborhood
   end
 
+  def total_days_recorded
+    object.water_bills.count
+  end
+
   def metric_sym
     "gals"
   end

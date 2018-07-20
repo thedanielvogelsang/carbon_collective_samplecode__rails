@@ -20,7 +20,6 @@ class UserWaterSerializer < ActiveModel::Serializer
   def avg_monthly_footprint
     (object.avg_daily_carbon_consumption * 29.53).round(2).to_s + " lbs" if object.avg_daily_carbon_consumption
   end
-
   def neighborhood
     [object.neighborhood.id, object.neighborhood.name, object.neighborhood.water_ranking.rank, object.neighborhood.out_of] if object.neighborhood
   end
@@ -36,11 +35,9 @@ class UserWaterSerializer < ActiveModel::Serializer
   def country
     [object.country.id, object.country.name, object.country.water_ranking.rank, object.country.out_of] if object.country
   end
-
   def personal_usage_to_date
     object.total_gallons_logged.to_f.round(2).to_s
   end
-
   def personal_savings_to_date
     object.total_water_savings.to_f.round(2).to_s
   end
@@ -52,11 +49,9 @@ class UserWaterSerializer < ActiveModel::Serializer
   def current_location
     object.location
   end
-
   def trip_count
     object.trips.count
   end
-
   def admins
     admins = {}
     Group.joins(:admin)
@@ -64,11 +59,9 @@ class UserWaterSerializer < ActiveModel::Serializer
          .each_with_index{|g,i| admins[i+1] = g.name}
     admins
   end
-
   def avatar_url
     object.url
   end
-
   def household_daily_consumption
     object.household_daily_water_consumption_per_user.to_f.round(2).to_s if !object.houses.empty?
   end
@@ -88,7 +81,6 @@ class UserWaterSerializer < ActiveModel::Serializer
   def country_daily_consumption
     object.country_daily_water_consumption_per_user.to_f.round(2).to_s if !object.houses.empty?
   end
-
   def avg_daily_consumption
     avg = object.avg_daily_water_consumption.to_f
     avg.nan? ? "0" : avg.round(2).to_s
@@ -105,7 +97,6 @@ class UserWaterSerializer < ActiveModel::Serializer
   def city_monthly_consumption
     (object.city_daily_water_consumption_per_user * 29.53).to_f.round(2).to_s if !object.houses.empty?
   end
-
   def county_monthly_consumption
     (object.country_daily_water_consumption_per_user * 29.53).to_f.round(2).to_s if !object.houses.empty?
   end
@@ -115,12 +106,10 @@ class UserWaterSerializer < ActiveModel::Serializer
   def country_monthly_consumption
     (object.country_daily_water_consumption_per_user * 29.53).to_f.round(2).to_s if !object.houses.empty?
   end
-
   def avg_monthly_consumption
     avg = (object.avg_daily_water_consumption * 29.53).to_f
     avg.nan? ? "0" : avg.round(2).to_s
   end
-
   def arrow
     ops__ = @instance_options[:region]
     if ops__
@@ -130,7 +119,6 @@ class UserWaterSerializer < ActiveModel::Serializer
       nil
     end
   end
-
   def rank
     ops__ = @instance_options[:region]
     if ops__
@@ -140,7 +128,6 @@ class UserWaterSerializer < ActiveModel::Serializer
       nil
     end
   end
-
   def last_updated
     ops__ = @instance_options[:region]
     if ops__
@@ -150,11 +137,9 @@ class UserWaterSerializer < ActiveModel::Serializer
       nil
     end
   end
-
   def metric_sym
     'gallons'
   end
-
   def num_bills
     object.household.water_bills.count if object.household
   end
