@@ -165,7 +165,7 @@ module RegionHelper
 
   def check_state
     state_abb = self.name
-    US_STATES.keys.include?(state_abb) ? self.state = US_STATES[state_abb] : nil
+    US_STATES.keys.include?(state_abb) ? self.name = US_STATES[state_abb] : nil
   end
 
   US_STATES = {
