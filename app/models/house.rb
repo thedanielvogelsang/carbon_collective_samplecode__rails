@@ -22,4 +22,11 @@ class House < ApplicationRecord
     self.electric_bills
   end
 
+  def wbills
+    self.water_bills
+  end
+
+  def gbills
+    self.heat_bills
+  end
 end

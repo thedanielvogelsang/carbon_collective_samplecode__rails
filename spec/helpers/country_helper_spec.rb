@@ -249,5 +249,57 @@ RSpec.describe CountryHelper, type: :helper do
       expect(g_consumption.to_f.round(3)).to eq(0.0)
       expect(e_consumption.to_f.round(3)).to eq(0.0)
     end
+    it 'update all zeros data does not produce a carbon score for region' do
+      @region = Region.create(name: "Region-land", country_id: @country.id, avg_daily_electricity_consumed_per_capita: @avg, avg_daily_water_consumed_per_capita: @wavg, avg_daily_gas_consumed_per_capita: @gavg)
+      city = City.create(name: "City", region_id: @region.id)
+      county = County.create(name: "County-within", region_id: @region.id)
+      neighborhood = Neighborhood.create(name: "My Neighborhood", city_id: city.id)
+      zip = Zipcode.create(zipcode: 80291)
+      start_date1 = DateTime.now - 30
+      end_date1 = DateTime.now
+      start_date2 = DateTime.now - 61
+      end_date2 = DateTime.now - 31
+      address = Address.create(address_line1: "123 My Address", zipcode_id: zip.id,
+                                neighborhood_id: neighborhood.id,
+                                county_id: county.id,
+                                city_id: city.id,
+                                )
+      user = User.create(first: 'R', last: "Rajan", email: "r.rajan@gmail.com",
+                          password: 'password', generation: 1)
+      house = House.create(address_id: address.id, no_residents: 1, total_sq_ft: 3000)
+      user.houses << house
+
+      #has defaults equal to per_capita
+      expect(@country.avg_daily_water_consumed_per_capita.to_f.round(6)).to eq(@wavg.round(6))
+      expect(@country.avg_daily_water_consumed_per_user.to_f.round(6)).to eq(@wavg.round(6))
+      expect(@country.avg_daily_electricity_consumed_per_capita.to_f.round(6)).to eq(@avg.round(6))
+      expect(@country.avg_daily_electricity_consumed_per_user.to_f.round(6)).to eq(@avg.round(6))
+      expect(@country.avg_daily_gas_consumed_per_capita.to_f.round(6)).to eq(@gavg.round(6))
+      expect(@country.avg_daily_gas_consumed_per_user.to_f.round(6)).to eq(@gavg.round(6))
+
+      expect(user.country).to eq(@country)
+      kwhs = 1100
+      gals = 1400
+      therms = 18
+      price = rand(1..100)
+      ElectricBill.create(start_date: start_date1, end_date: end_date1, total_kwhs: kwhs, price: price, house_id: house.id, no_residents: 2, user_id: user.id)
+      WaterBill.create(start_date: start_date1, end_date: end_date1, total_gallons: gals, price: price, house_id: house.id, no_residents: 2, user_id: user.id)
+      HeatBill.create(start_date: start_date1, end_date: end_date1, total_therms: therms, price: price, house_id: house.id, no_residents: 2, user_id: user.id)
+
+      user = User.first
+
+      #regional per_user average changes to internal users' upon update_all
+      @country.update_data
+      r1_avg_water = @country.avg_daily_water_consumed_per_user
+      r1_avg_gas = @country.avg_daily_gas_consumed_per_user
+      r1_avg_elec = @country.avg_daily_electricity_consumed_per_user
+
+      #update changes water, elec and gas away from default
+      expect(r1_avg_water.to_f.round(5)).to_not eq(@wavg.to_f.round(5))
+      expect(r1_avg_gas.to_f.round(5)).to_not eq(@gavg.to_f.round(5))
+      expect(r1_avg_elec.to_f.round(5)).to_not eq(@avg.to_f.round(5))
+      #area average == user average
+      expect(@country.carbon_ranking).to be(nil)
+    end
   end
 end

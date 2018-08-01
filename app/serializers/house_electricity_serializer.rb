@@ -32,9 +32,6 @@ class HouseElectricitySerializer < ActiveModel::Serializer
   def avg_monthly_consumption_per_resident
     (object.average_daily_electricity_consumption_per_resident * 29.53).round(2) if object.average_daily_electricity_consumption_per_user != nil
   end
-  def avg_total_savings_per_user
-    (object.avg_total_electricity_savings_per_user).round(2) if object.avg_total_electricity_savings_per_user != nil
-  end
   def avg_daily_consumption
     (object.average_daily_electricity_consumption_per_user * object.no_residents).round(2) if object.average_daily_electricity_consumption_per_user != nil
   end
