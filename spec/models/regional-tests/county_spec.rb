@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Country, type: :model do
+RSpec.describe County, type: :model do
   before :each do
     avg = 12071.fdiv(30)
     wavg = 409466.6
@@ -55,36 +55,34 @@ RSpec.describe Country, type: :model do
   end
   context 'methods/ attributes' do
     it 'automatically capitalizes name' do
-      country = Country.create(name: "name")
-        # expect(country.name).to eq "Name"
+      country = County.create(name: "name", region_id: @region.id)
+        expect(country.name).to eq "Name"
     end
     it 'initializes with zeros for averages' do
-      country = Country.create(name: "name")
-        expect(country.total_electricity_saved).to eq 0
-        expect(country.total_water_saved).to eq 0
-        expect(country.total_gas_saved).to eq 0
-        expect(country.avg_total_electricity_saved_per_user).to eq 0
-        expect(country.avg_total_water_saved_per_user).to eq 0
-        expect(country.avg_total_gas_saved_per_user).to eq 0
-        expect(country.avg_daily_electricity_consumed_per_user).to eq 0
-        expect(country.avg_daily_water_consumed_per_user).to eq 0
-        expect(country.avg_daily_gas_consumed_per_user).to eq 0
-        expect(country.avg_daily_electricity_consumed_per_capita).to eq nil
-        expect(country.avg_daily_water_consumed_per_capita).to eq nil
-        expect(country.avg_daily_gas_consumed_per_capita).to eq nil
+      county = County.create(name: "name", region_id: @region.id)
+        expect(county.total_electricity_saved).to eq 0
+        expect(county.total_water_saved).to eq 0
+        expect(county.total_gas_saved).to eq 0
+        expect(county.avg_total_electricity_saved_per_user).to eq 0
+        expect(county.avg_total_water_saved_per_user).to eq 0
+        expect(county.avg_total_gas_saved_per_user).to eq 0
+        expect(county.avg_daily_electricity_consumed_per_user).to eq 0
+        expect(county.avg_daily_water_consumed_per_user).to eq 0
+        expect(county.avg_daily_gas_consumed_per_user).to eq 0
+        #per capitas are zeroed
+          expect(county.avg_daily_electricity_consumed_per_capita).to eq 0
+          expect(county.avg_daily_water_consumed_per_capita).to eq 0
+          expect(county.avg_daily_gas_consumed_per_capita).to eq 0
     end
   end
   context 'validations/ associations' do
     it {should validate_presence_of(:name)}
-    it {should validate_uniqueness_of(:name)}
-    it {should have_many(:regions)}
-    it {should have_many(:cities)}
-    it {should have_many(:counties)}
-    it {should have_many(:neighborhoods)}
+    it {should validate_uniqueness_of(:name).scoped_to(:region_id).case_insensitive}
+    it {should belong_to(:region)}
     it {should have_many(:addresses)}
     it {should have_many(:houses)}
     it {should have_many(:users)}
-    it {should have_many(:country_snapshots)}
+    it {should have_many(:county_snapshots)}
 
     it {should have_one(:electricity_ranking)}
     it {should have_one(:water_ranking)}

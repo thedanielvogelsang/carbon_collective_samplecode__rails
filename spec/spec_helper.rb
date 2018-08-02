@@ -15,6 +15,7 @@ require 'database_cleaner'
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
+  config.color = true
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.
@@ -95,6 +96,8 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
   RSpec.configure do |config|
+    config.formatter = 'Rainbow'
+
     config.before(:suite) do
       DatabaseCleaner.strategy = :transaction
       DatabaseCleaner.clean_with(:truncation)
