@@ -4,9 +4,11 @@ class Api::V1::Users::UsersWaterBillsController < ApplicationController
     if params[:user_id] && User.exists?(params[:user_id])
       user = User.find(params[:user_id])
       house = user.household
+      uh = UserHouse.where(user_id: user.id, house_id: house.id)[0]
       render json: WaterBill.joins(:house)
                     .where(:houses => {id: house.id})
-                    .order(end_date: :desc), each_serializer: WaterBillSerializer
+                    .order(end_date: :desc)
+                    .select{|b| b.start_date > uh.move_in_date}, each_serializer: WaterBillSerializer
     end
   end
 
