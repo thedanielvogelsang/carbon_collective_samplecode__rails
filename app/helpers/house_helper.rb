@@ -125,8 +125,8 @@ module HouseHelper
   #Still not accurate actually. Needs to be selected for unique dates...
   def total_days_recorded
     e_days = self.bills.map{|b| (b.end_date - b.start_date).to_i }.reduce(0){|s, n| s + n}
-    w_days = self.wbills.map{|b| (b.end_date - b.star_date).to_i }.reduce(0){|s, n| s + n}
-    g_days = self.gbills.map{|b| (b.end_date - b.star_date).to_i }.reduce(0){|s, n| s + n}
+    w_days = self.wbills.map{|b| (b.end_date - b.start_date).to_i }.reduce(0){|s, n| s + n}
+    g_days = self.gbills.map{|b| (b.end_date - b.start_date).to_i }.reduce(0){|s, n| s + n}
     return e_days + w_days + g_days
   end
 

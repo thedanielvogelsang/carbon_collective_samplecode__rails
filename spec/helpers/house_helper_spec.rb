@@ -113,7 +113,26 @@ RSpec.describe HouseHelper, type: :helper do
 
     end
     it 'calculates all household stats accurately' do
+      start_date1 = DateTime.now - 30
+      end_date1 = DateTime.now
+      start_date2 = DateTime.now - 61
+      end_date2 = DateTime.now - 31
+      kwhs = 1400
+      price = rand(1..100)
 
+        expect(@house.total_spent).to eq(0.0)
+
+      #add bills
+      ElectricBill.create(start_date: start_date1, end_date: end_date1, total_kwhs: kwhs, price: price, house_id: @house.id, no_residents: 2, user_id: @user.id)
+      WaterBill.create(start_date: start_date1, end_date: end_date1, total_gallons: kwhs, price: price, house_id: @house.id, no_residents: 2, user_id: @user.id)
+      HeatBill.create(start_date: start_date1, end_date: end_date1, total_therms: kwhs, price: price, house_id: @house.id, no_residents: 2, user_id: @user.id)
+
+        expect(@house.bills.count).to eq(1)
+        expect(@house.wbills.count).to eq(1)
+        expect(@house.gbills.count).to eq(1)
+
+        expect(@house.total_spent > 0).to be true
+        expect(@house.total_days_recorded).to eq(90)
     end
     it 'updates totals accurately via individual method (electricity)' do
       start_date1 = DateTime.now - 30
