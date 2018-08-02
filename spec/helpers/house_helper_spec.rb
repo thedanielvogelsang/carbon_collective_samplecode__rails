@@ -25,8 +25,7 @@ RSpec.describe HouseHelper, type: :helper do
     @user = User.create(first: 'R', last: "Rajan", email: "r.rajan@gmail.com",
                         password: 'password', generation: 1)
     @house = House.create(address_id: address.id, no_residents: 1, total_sq_ft: 3000)
-    @user.houses << @house
-    @user.set_default_ranks
+    UserHouse.create(house_id: @house.id, user_id: @user.id, move_in_date: DateTime.now - 90)
   end
   context 'house with no bills' do
     it 'can access all helper methods accurately' do
@@ -292,11 +291,9 @@ RSpec.describe HouseHelper, type: :helper do
         expect(@house.users.empty?).to be true
         expect(@house.average_daily_electricity_consumption_per_user.to_f.round(2)).to eq(0.0)
 #####
-
 ## THIS IS INCORRECT --- PER / RESIDENT METHODS ARE ALL SCREWY;
  # They should also get restarted when no one lives in the house.
         expect(@house.average_total_electricity_consumption_per_resident.to_f.round(2)).to eq(1400)
-
 #####
       daniel = User.create(first: "D", last: "John", email: "djohn@gmail.com", password: "password", generation: 1)
       carrie = User.create(first: "C", last: "Krask", email: "ckrask@gmail.com", password: "password", generation: 1)

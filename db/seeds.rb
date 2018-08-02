@@ -413,7 +413,7 @@ puts "#{Region.count} Provinces created in Regions table"
 #                   last: Faker::Name.last_name,
 #                   generation: 0,
 #                   )
-#   user.houses << house
+#   UserHouse.create(house_id: house.id, user_id: user.id, move_in_date: DateTime.now - 90)
 #   user.save
 #   puts "#{user} (with id: #{user.id}) created at #{house.address}"
 #   user
@@ -465,7 +465,7 @@ puts "all neighborhoods of Denver added"
                   zipcode_id: z.id)
       user = User.create(first: "OG", last: "GEN0", password: "password", generation: 0, email: 'dvog@gmail.com')
       house = House.create(total_sq_ft: rand(1000..3000), no_residents: 0, address_id: tadd.id)
-      user.houses << house
+      UserHouse.create(house_id: house.id, user_id: user.id, move_in_date: DateTime.now - 90)
 
     #HOUSE NUMBER 1; 2 resident users; savings in 3/4 bills;
     #       user1 = bind_new_user(house)

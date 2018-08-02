@@ -67,7 +67,7 @@ RSpec.describe CountryHelper, type: :helper do
       user = User.create(first: 'R', last: "Rajan", email: "r.rajan@gmail.com",
                           password: 'password', generation: 1)
       house = House.create(address_id: address.id, no_residents: 1, total_sq_ft: 3000)
-      user.houses << house
+      UserHouse.create(house_id: house.id, user_id: user.id, move_in_date: DateTime.now - 90)
 
       expect(@country.avg_daily_electricity_consumed_per_capita.to_f.round(6)).to eq(@avg.round(6))
       expect(@country.avg_daily_electricity_consumed_per_user.to_f.round(6)).to eq(@avg.round(6))
@@ -117,7 +117,7 @@ RSpec.describe CountryHelper, type: :helper do
       user = User.create(first: 'R', last: "Rajan", email: "r.rajan@gmail.com",
                           password: 'password', generation: 1)
       house = House.create(address_id: address.id, no_residents: 1, total_sq_ft: 3000)
-      user.houses << house
+      UserHouse.create(house_id: house.id, user_id: user.id, move_in_date: DateTime.now - 90)
 
       expect(@country.avg_daily_water_consumed_per_capita.to_f.round(6)).to eq(@wavg.round(6))
       expect(@country.avg_daily_water_consumed_per_user.to_f.round(6)).to eq(@wavg.round(6))
@@ -167,7 +167,7 @@ RSpec.describe CountryHelper, type: :helper do
       user = User.create(first: 'R', last: "Rajan", email: "r.rajan@gmail.com",
                           password: 'password', generation: 1)
       house = House.create(address_id: address.id, no_residents: 1, total_sq_ft: 3000)
-      user.houses << house
+      UserHouse.create(house_id: house.id, user_id: user.id, move_in_date: DateTime.now - 90)
 
       expect(@country.avg_daily_gas_consumed_per_capita.to_f.round(6)).to eq(@gavg.round(6))
       expect(@country.avg_daily_gas_consumed_per_user.to_f.round(6)).to eq(@gavg.round(6))
@@ -217,7 +217,7 @@ RSpec.describe CountryHelper, type: :helper do
       user = User.create(first: 'R', last: "Rajan", email: "r.rajan@gmail.com",
                           password: 'password', generation: 1)
       house = House.create(address_id: address.id, no_residents: 1, total_sq_ft: 3000)
-      user.houses << house
+      UserHouse.create(house_id: house.id, user_id: user.id, move_in_date: DateTime.now - 90)
 
       expect(@country.avg_daily_water_consumed_per_capita.to_f.round(6)).to eq(@wavg.round(6))
       expect(@country.avg_daily_water_consumed_per_user.to_f.round(6)).to eq(@wavg.round(6))
@@ -267,7 +267,7 @@ RSpec.describe CountryHelper, type: :helper do
       user = User.create(first: 'R', last: "Rajan", email: "r.rajan@gmail.com",
                           password: 'password', generation: 1)
       house = House.create(address_id: address.id, no_residents: 1, total_sq_ft: 3000)
-      user.houses << house
+      UserHouse.create(house_id: house.id, user_id: user.id, move_in_date: DateTime.now - 90)
 
       #has defaults equal to per_capita
       expect(@country.avg_daily_water_consumed_per_capita.to_f.round(6)).to eq(@wavg.round(6))

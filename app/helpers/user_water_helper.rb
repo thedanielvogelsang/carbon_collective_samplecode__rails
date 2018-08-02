@@ -10,6 +10,12 @@ module UserWaterHelper
     return res_.nan? ? 0.0 : res_
   end
 
+  def water_bills(house_id)
+    uh = UserHouse.where(house_id: house_id, user_id: self.id)
+    WaterBill.joins(:house).where(:houses => {id: house_id}).order(end_date: :desc)
+        .select{|b| b.start_date > uh.move_in_date}
+  end
+
 # check
   def household_daily_water_consumption_per_user
     household ? household.average_daily_water_consumption_per_user : nil

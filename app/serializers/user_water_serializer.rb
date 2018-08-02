@@ -137,12 +137,15 @@ class UserWaterSerializer < ActiveModel::Serializer
       nil
     end
   end
+
   def metric_sym
     'gallons'
   end
+
   def num_bills
-    object.household.water_bills.count if object.household
+    object.water_bills(household.id).count if object.household
   end
+
   def out_of
     ops_ = @instance_options[:region] if @instance_options[:region]
     if ops_

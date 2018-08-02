@@ -75,7 +75,7 @@ RSpec.describe CityHelper, type: :helper do
       user = User.create(first: 'R', last: "Rajan", email: "r.rajan@gmail.com",
                           password: 'password', generation: 1)
       house = House.create(address_id: address.id, no_residents: 1, total_sq_ft: 3000)
-      user.houses << house
+      UserHouse.create(house_id: house.id, user_id: user.id, move_in_date: DateTime.now - 90)
 
       #although initializing with zeros, it can be updated
       expect(@city.avg_daily_electricity_consumed_per_capita.to_f.round(6)).to eq(0.0)
@@ -130,7 +130,7 @@ RSpec.describe CityHelper, type: :helper do
       user = User.create(first: 'R', last: "Rajan", email: "r.rajan@gmail.com",
                           password: 'password', generation: 1)
       house = House.create(address_id: address.id, no_residents: 1, total_sq_ft: 3000)
-      user.houses << house
+      UserHouse.create(house_id: house.id, user_id: user.id, move_in_date: DateTime.now - 90)
 
       expect(@city.avg_daily_water_consumed_per_capita.to_f).to eq(0.0)
       expect(@city.avg_daily_water_consumed_per_user.to_f).to eq(0.0)
@@ -178,7 +178,7 @@ RSpec.describe CityHelper, type: :helper do
       user = User.create(first: 'R', last: "Rajan", email: "r.rajan@gmail.com",
                           password: 'password', generation: 1)
       house = House.create(address_id: address.id, no_residents: 1, total_sq_ft: 3000)
-      user.houses << house
+      UserHouse.create(house_id: house.id, user_id: user.id, move_in_date: DateTime.now - 90)
 
       expect(@city.avg_daily_gas_consumed_per_capita.to_f.round(6)).to eq(0.0)
       expect(@city.avg_daily_gas_consumed_per_user.to_f.round(6)).to eq(0.0)
@@ -227,7 +227,7 @@ RSpec.describe CityHelper, type: :helper do
       user = User.create(first: 'R', last: "Rajan", email: "r.rajan@gmail.com",
                           password: 'password', generation: 1)
       house = House.create(address_id: address.id, no_residents: 1, total_sq_ft: 3000)
-      user.houses << house
+      UserHouse.create(house_id: house.id, user_id: user.id, move_in_date: DateTime.now - 90)
 
       expect(@city.avg_daily_water_consumed_per_capita.to_f.round(6)).to eq(0.0)
       expect(@city.avg_daily_water_consumed_per_user.to_f.round(6)).to eq(0.0)
@@ -280,7 +280,7 @@ RSpec.describe CityHelper, type: :helper do
       user = User.create(first: 'R', last: "Rajan", email: "r.rajan@gmail.com",
                           password: 'password', generation: 1)
       house = House.create(address_id: address.id, no_residents: 1, total_sq_ft: 3000)
-      user.houses << house
+      UserHouse.create(house_id: house.id, user_id: user.id, move_in_date: DateTime.now - 90)
 
       # all initialize with zero, both per_cap and per_user
       expect(@city.avg_daily_electricity_consumed_per_capita.to_f.round(6)).to eq(0.0)
