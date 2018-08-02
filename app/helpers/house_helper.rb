@@ -9,7 +9,7 @@ module HouseHelper
 ## -- AVERAGE PER USER / RESIDENT -- ##
   # -- based on users -- #
     def average_daily_electricity_consumption_per_user
-      users = self.users.map{|u| u.avg_daily_electricity_consumption}.compact.flatten.reject(&:nan?)
+      users = self.users.map{|u| u.avg_daily_electricity_consumption}.compact.flatten.reject(&:nan?).reject(&:zero?)
       ct = users.length
       if ct > 0
         users.reduce(0){|s,n| s + n} / ct
@@ -19,7 +19,7 @@ module HouseHelper
     end
 
     def average_daily_carbon_consumption_per_user
-      users = self.users.map{|u| u.avg_daily_carbon_consumption}.compact.flatten.reject(&:nan?)
+      users = self.users.map{|u| u.avg_daily_carbon_consumption}.compact.flatten.reject(&:nan?).reject(&:zero?)
       ct = users.length
       if ct > 0
         users.reduce(0){|s,n| s + n} / ct
@@ -29,7 +29,7 @@ module HouseHelper
     end
 
     def average_daily_water_consumption_per_user
-      users = self.users.map{|u| u.avg_daily_water_consumption}.compact.flatten.reject(&:nan?)
+      users = self.users.map{|u| u.avg_daily_water_consumption}.compact.flatten.reject(&:nan?).reject(&:zero?)
       ct = users.length
       if ct > 0
         users.reduce(0){|s,n| s + n} / ct
@@ -39,7 +39,7 @@ module HouseHelper
     end
 
     def average_daily_gas_consumption_per_user
-      users = self.users.map{|u| u.avg_daily_gas_consumption}.compact.flatten.reject(&:nan?)
+      users = self.users.map{|u| u.avg_daily_gas_consumption}.compact.flatten.reject(&:nan?).reject(&:zero?)
       ct = users.length
       if ct > 0
         users.reduce(0){|s,n| s + n} / ct

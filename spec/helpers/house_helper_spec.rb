@@ -28,7 +28,7 @@ RSpec.describe HouseHelper, type: :helper do
     @user.houses << @house
     @user.set_default_ranks
   end
-  context 'country with no bills' do
+  context 'house with no bills' do
     it 'can access all helper methods accurately' do
       #consumption
       expect(@house.average_daily_electricity_consumption_per_user).to eq(0.0)
@@ -108,10 +108,7 @@ RSpec.describe HouseHelper, type: :helper do
         expect(daniel.avg_daily_water_consumption).to eq(0.0)
     end
   end
-  context 'house helper methods' do
-    it 'calculates consumption averages correctly' do
-
-    end
+  context 'house with users' do
     it 'calculates all household stats accurately' do
       start_date1 = DateTime.now - 30
       end_date1 = DateTime.now
@@ -266,6 +263,85 @@ RSpec.describe HouseHelper, type: :helper do
         expect(user.avg_daily_electricity_consumption).to eq(0.0)
         expect(house.average_daily_electricity_consumption_per_user).to eq(0.0)
     end
+  end
+  context 'house with inconsistent users / users with history' do
+    it 'calculates averages based on user logged behavior, not bills' do
+      start_date1 = DateTime.now - 30
+      end_date1 = DateTime.now
+      start_date2 = DateTime.now - 61
+      end_date2 = DateTime.now - 31
+      kwhs = 1400
+      price = rand(1..100)
+
+        expect(@house.total_spent).to eq(0.0)
+
+      #add bills
+      ElectricBill.create(start_date: start_date1, end_date: end_date1, total_kwhs: kwhs, price: price, house_id: @house.id, no_residents: 2, user_id: @user.id)
+      WaterBill.create(start_date: start_date1, end_date: end_date1, total_gallons: kwhs, price: price, house_id: @house.id, no_residents: 2, user_id: @user.id)
+      HeatBill.create(start_date: start_date1, end_date: end_date1, total_therms: kwhs, price: price, house_id: @house.id, no_residents: 2, user_id: @user.id)
+      #@user now has avg_daily_consumption
+        expect(User.first.avg_daily_electricity_consumption.to_f.round(2)).to eq(23.33)
+      #based on users personal averages; lost when no users exist in house
+        expect(House.last.average_daily_electricity_consumption_per_user.to_f.round(2)).to eq(23.33)
+      #based on bill no_residents and total kwhs; maintains over when no users exist in house
+        expect(House.last.average_total_electricity_consumption_per_resident.to_f.round(2)).to eq(700)
+
+      uhouse = UserHouse.where(user_id: @user.id, house_id: @house.id).first.destroy
+      #remove @user from house, empyting house
+        expect(User.first.houses.empty?).to be true
+        expect(@house.users.empty?).to be true
+        expect(@house.average_daily_electricity_consumption_per_user.to_f.round(2)).to eq(0.0)
+#####
+
+## THIS IS INCORRECT --- PER / RESIDENT METHODS ARE ALL SCREWY;
+ # They should also get restarted when no one lives in the house.
+        expect(@house.average_total_electricity_consumption_per_resident.to_f.round(2)).to eq(1400)
+
+#####
+      daniel = User.create(first: "D", last: "John", email: "djohn@gmail.com", password: "password", generation: 1)
+      carrie = User.create(first: "C", last: "Krask", email: "ckrask@gmail.com", password: "password", generation: 1)
+      daniel.houses << @house
+      carrie.houses << @house
+
+        expect(@house.users.count).to eq(2)
+        expect(@house.average_daily_electricity_consumption_per_user.to_f.round(2)).to eq(0.0)
+
+      daniel.total_kwhs_logged = 1000
+      daniel.total_electricitybill_days_logged = 30
+      daniel.total_therms_logged = 10
+      daniel.total_heatbill_days_logged = 30
+      daniel.save
+      daniel.total_gallons_logged = 1000
+      daniel.total_waterbill_days_logged = 30
+      daniel.save
+
+      carrie.total_gallons_logged = 2000
+      carrie.total_waterbill_days_logged = 30
+      carrie.save
+
+      house = House.last
+     #house average = daniel average, since only he has elect/gas logs
+        expect(house.average_daily_electricity_consumption_per_user.to_f.round(2)).to eq(33.33)
+        expect(house.average_daily_gas_consumption_per_user.to_f.round(2)).to eq(0.33)
+
+      #average of both users personal consumption avgs
+        expect(daniel.avg_daily_water_consumption.to_f.round(2)).to eq(33.33)
+        expect(carrie.avg_daily_water_consumption.to_f.round(2)).to eq(66.67)
+        expect(house.average_daily_water_consumption_per_user.to_f.round(2)).to eq(50.0)
+
+      UserHouse.last.destroy
+      house = House.last
+        #carrie removed from house
+        expect(house.users.count).to eq(1)
+        expect(house.users.first.email).to eq("djohn@gmail.com")
+        #house averages all match daniel now:
+        expect(house.average_daily_electricity_consumption_per_user.to_f.round(2)).to eq(33.33)
+        expect(house.average_daily_gas_consumption_per_user.to_f.round(2)).to eq(0.33)
+        expect(house.average_daily_water_consumption_per_user.to_f.round(2)).to eq(33.33)
+    end
+  end
+  context 'house _per_resident calculations' do
+
   end
   context 'carbon calculations' do
 
