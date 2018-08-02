@@ -1,4 +1,4 @@
-class WaterBill < ApplicationRecord
+class WaterBill < ApplicationRecord  
   belongs_to :house
   belongs_to :who, class_name: 'User', foreign_key: :user_id
 
