@@ -19,60 +19,78 @@ RSpec.describe ElectricBill, type: :model do
 
     @house = House.create(total_sq_ft: rand(1500..2000), no_residents: 2, address_id: add.id)
     @house2 = House.create(total_sq_ft: rand(2500..3000), no_residents: 3, address_id: add2.id)
-    # @user = User.new(email: "dvog@gmail.com",
-    #                 password: 'banana',
-    #                 first: "Drake",
-    #                 last: "Voogle",
-    #                 generation: 0,
-    #                 )
-    # @user.houses << @house
-    # @user.save
+    @user = User.new(email: "dvog@gmail.com",
+                    password: 'banana',
+                    first: "Drake",
+                    last: "Voogle",
+                    generation: 0,
+                    )
+    @user.houses << @house
+    @user.save
   end
   context 'a house' do
     it 'cant have bills with the same exact days' do
       today = DateTime.now
-      el1 = ElectricBill.new(total_kwhs: 1000, start_date: today, end_date: (today + 30), house_id: @house.id)
-      el2 = ElectricBill.new(total_kwhs: 1000,  start_date: today, end_date: (today + 30), house_id: @house.id)
+      el1 = ElectricBill.new(total_kwhs: 1000, start_date: today, end_date: (today + 30), house_id: @house.id, no_residents: 2, who: @user)
+      el2 = ElectricBill.new(total_kwhs: 1000,  start_date: today, end_date: (today + 30), house_id: @house.id, no_residents: 2, who: @user)
       expect(el1.save).to be true
       expect(el2.save).to be false
     end
     it 'bill B cant save if start_date before the end_date of bill A' do
       today = DateTime.now
-      bill_A = ElectricBill.new(total_kwhs: 1000, start_date: today, end_date: (today + 30), house_id: @house.id)
-      bill_B = ElectricBill.new(total_kwhs: 1000,  start_date: today + 29, end_date: (today + 40), house_id: @house.id)
+      bill_A = ElectricBill.new(total_kwhs: 1000, start_date: today, end_date: (today + 30), house_id: @house.id, no_residents: 2, who: @user)
+      bill_B = ElectricBill.new(total_kwhs: 1000,  start_date: today + 29, end_date: (today + 40), house_id: @house.id, no_residents: 2, who: @user)
       expect(bill_A.save).to be true
       expect(bill_B.save).to be false
     end
     it 'bill B cant save if end_date after the start_date of bill A' do
       today = DateTime.now
       ago = DateTime.now - 30
-      bill_A = ElectricBill.new(total_kwhs: 1000, start_date: today, end_date: (today + 30), house_id: @house.id)
-      bill_B = ElectricBill.new(total_kwhs: 1000,  start_date: ago, end_date: (today + 1), house_id: @house.id)
+      bill_A = ElectricBill.new(total_kwhs: 1000, start_date: today, end_date: (today + 30), house_id: @house.id, no_residents: 2, who: @user)
+      bill_B = ElectricBill.new(total_kwhs: 1000,  start_date: ago, end_date: (today + 1), house_id: @house.id, no_residents: 2, who: @user)
       expect(bill_A.save).to be true
       expect(bill_B.save).to be false
     end
     it 'bill B CAN save if start_date and end_date BEFORE bill A' do
       today = DateTime.now
       ago = DateTime.now - 30
-      bill_A = ElectricBill.new(total_kwhs: 1000, start_date: today, end_date: (today + 30), house_id: @house.id)
-      bill_B = ElectricBill.new(total_kwhs: 1000,  start_date: ago, end_date: (today - 1), house_id: @house.id)
+      bill_A = ElectricBill.new(total_kwhs: 1000, start_date: today, end_date: (today + 30), house_id: @house.id, no_residents: 2, who: @user)
+      bill_B = ElectricBill.new(total_kwhs: 1000,  start_date: ago, end_date: (today - 1), house_id: @house.id, no_residents: 2, who: @user)
       expect(bill_A.save).to be true
       expect(bill_B.save).to be true
     end
     it 'bill B CAN save if start_date and end_date AFTER bill A' do
       today = DateTime.now
       ago = DateTime.now - 30
-      bill_A = ElectricBill.new(total_kwhs: 1000, start_date: ago, end_date: (today - 1), house_id: @house.id)
-      bill_B = ElectricBill.new(total_kwhs: 1000,  start_date: today, end_date: (today + 20), house_id: @house.id)
+      bill_A = ElectricBill.new(total_kwhs: 1000, start_date: ago, end_date: (today - 1), house_id: @house.id, no_residents: 2, who: @user)
+      bill_B = ElectricBill.new(total_kwhs: 1000,  start_date: today, end_date: (today + 20), house_id: @house.id, no_residents: 2, who: @user)
       expect(bill_A.save).to be true
       expect(bill_B.save).to be true
+    end
+  end
+  context 'a house with revolving users' do
+    it 'cannon save bills BEFORE the earliest house-members move_in_date' do
+      #user tries to save a bill for a date that precedes his move_in_date
+
+    end
+    it 'saves bills only if the user has moved in BEFORE the supposed bill start-date' do
+      #user can successfully save bills which start AFTER his move_in_date, and
+       ##   BEFORE the current_date (+ 2?) ((Should not be able to place bill in future))
+    end
+    it 'cannot save bills past the current date' do
+      #future bill dates are rejected (MODEL LEVEL)
+    end
+    it 'bill saves update users whos move in dates precede bill date' do
+      #three users in house: 1 who just moved in, and 2 which have lived there awhile.
+      # one of the latter two save a bill, both are update, new_user is NOT
+      # new_user tries to save same bill and EITHER (A) is not updated, or (B) is told they weren't present for that bill cycle (ERROR MESSAGE)
     end
   end
   context 'a house with different bill types' do
     it 'can be saved on the same day' do
       today = DateTime.now
-      bill_1 = ElectricBill.new(total_kwhs: 1000, start_date: today, end_date: (today + 30), house_id: @house.id)
-      bill_2 = WaterBill.new(total_gallons: 1000,  start_date: today, end_date: (today + 30), house_id: @house.id)
+      bill_1 = ElectricBill.new(total_kwhs: 1000, start_date: today, end_date: (today + 30), house_id: @house.id, no_residents: 2, who: @user)
+      bill_2 = WaterBill.new(total_gallons: 1000,  start_date: today, end_date: (today + 30), house_id: @house.id, no_residents: 2, who: @user)
       expect(bill_1.save).to be true
       expect(bill_2.save).to be true
     end
@@ -80,8 +98,8 @@ RSpec.describe ElectricBill, type: :model do
   context 'two different houses' do
     it 'can save along the same dates' do
       today = DateTime.now
-      el1 = ElectricBill.new(total_kwhs: 1000, start_date: today, end_date: (today + 30), house_id: @house.id)
-      el2 = ElectricBill.new(total_kwhs: 1000,  start_date: today, end_date: (today + 30), house_id: @house2.id)
+      el1 = ElectricBill.new(total_kwhs: 1000, start_date: today, end_date: (today + 30), house_id: @house.id, no_residents: 2, who: @user)
+      el2 = ElectricBill.new(total_kwhs: 1000,  start_date: today, end_date: (today + 30), house_id: @house2.id, no_residents: 2, who: @user)
       expect(el1.save).to be true
       expect(el2.save).to be true
     end
