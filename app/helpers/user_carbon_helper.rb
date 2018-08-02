@@ -10,7 +10,11 @@ module UserCarbonHelper
   # big question marks around this method
   def avg_daily_carbon_consumption
     res_ = combine_average_use(self.avg_daily_electricity_consumption, self.avg_daily_gas_consumption)
-    return res_ if res_ != 0
+    if res_ != 0
+      return res_
+    else
+      return 0.0
+    end
   end
 
 # check

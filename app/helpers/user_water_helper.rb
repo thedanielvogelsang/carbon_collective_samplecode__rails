@@ -6,7 +6,8 @@ module UserWaterHelper
   # end
 
   def avg_daily_water_consumption
-    self.total_gallons_logged.fdiv(self.total_waterbill_days_logged)
+    res_ = self.total_gallons_logged.fdiv(self.total_waterbill_days_logged)
+    return res_.nan? ? 0.0 : res_
   end
 
 # check

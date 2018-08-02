@@ -7,7 +7,8 @@ module UserElectricityHelper
   # end
 
   def avg_daily_electricity_consumption
-    self.total_kwhs_logged.fdiv(self.total_electricitybill_days_logged)
+    res_ = self.total_kwhs_logged.fdiv(self.total_electricitybill_days_logged)
+    return res_.nan? ? 0.0 : res_ 
   end
 
 # check

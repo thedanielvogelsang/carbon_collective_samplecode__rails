@@ -119,7 +119,7 @@ module HouseHelper
     self.water_bills.empty? ? nil : self.wbills.each{ |b| total.push(b.price)}
     self.heat_bills.empty? ? nil : self.gbills.each{|b| total.push(b.price)}
     self.electric_bills.empty? ? nil : self.bills.each{|b| total.push(b.price)}
-    total.reject(&:nil?).reduce(0){|s, n| s + n}.to_f.round(2)
+    res_ = total.reject(&:nil?).reduce(0){|s, n| s + n}.to_f.round(2)
   end
 
   #Still not accurate actually. Needs to be selected for unique dates...

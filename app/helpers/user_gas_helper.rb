@@ -6,7 +6,8 @@ module UserGasHelper
   # end
 
   def avg_daily_gas_consumption
-    self.total_therms_logged.fdiv(self.total_heatbill_days_logged)
+    res_ = self.total_therms_logged.fdiv(self.total_heatbill_days_logged)
+    return res_.nan? ? 0.0 : res_ 
   end
 
 # check

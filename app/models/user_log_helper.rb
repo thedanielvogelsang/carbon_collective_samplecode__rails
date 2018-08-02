@@ -188,7 +188,7 @@ class UserLogHelper
     # f.close
   end
 
-  def self. log_house_creation(id, hId)
+  def self.log_house_creation(id, hId)
     user = User.find(id)
     time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
     UserLog.create(time: time,
