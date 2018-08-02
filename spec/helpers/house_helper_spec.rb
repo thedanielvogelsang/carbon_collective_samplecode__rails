@@ -133,6 +133,11 @@ RSpec.describe HouseHelper, type: :helper do
 
         expect(@house.total_spent > 0).to be true
         expect(@house.total_days_recorded).to eq(90)
+
+        expect(@house.total_electricity_consumption_to_date).to eq(1400)
+        expect(@house.total_water_consumption_to_date).to eq(1400)
+        expect(@house.total_gas_consumption_to_date).to eq(1400)
+        expect(@house.total_carbon_consumption_to_date.to_f.round(2)).to eq(18068.82)
     end
     it 'updates totals accurately via individual method (electricity)' do
       start_date1 = DateTime.now - 30
