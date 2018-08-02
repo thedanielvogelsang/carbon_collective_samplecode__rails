@@ -19,14 +19,14 @@ RSpec.describe ElectricBill, type: :model do
 
     @house = House.create(total_sq_ft: rand(1500..2000), no_residents: 2, address_id: add.id)
     @house2 = House.create(total_sq_ft: rand(2500..3000), no_residents: 3, address_id: add2.id)
-    @user = User.new(email: "dvog@gmail.com",
+    @user = User.create(email: "dvog@gmail.com",
                     password: 'banana',
                     first: "Drake",
                     last: "Voogle",
                     generation: 0,
                     )
-    @user.houses << @house
-    @user.save
+    UserHouse.create(house_id: @house.id, user_id: @user.id, move_in_date: DateTime.now - 30)
+    UserHouse.create(house_id: @house2.id, user_id: @user.id, move_in_date: DateTime.now - 30)
   end
   context 'a house' do
     it 'cant have bills with the same exact days' do
@@ -53,7 +53,7 @@ RSpec.describe ElectricBill, type: :model do
     end
     it 'bill B CAN save if start_date and end_date BEFORE bill A' do
       today = DateTime.now
-      ago = DateTime.now - 30
+      ago = DateTime.now - 29
       bill_A = ElectricBill.new(total_kwhs: 1000, start_date: today, end_date: (today + 30), house_id: @house.id, no_residents: 2, who: @user)
       bill_B = ElectricBill.new(total_kwhs: 1000,  start_date: ago, end_date: (today - 1), house_id: @house.id, no_residents: 2, who: @user)
       expect(bill_A.save).to be true
@@ -61,7 +61,7 @@ RSpec.describe ElectricBill, type: :model do
     end
     it 'bill B CAN save if start_date and end_date AFTER bill A' do
       today = DateTime.now
-      ago = DateTime.now - 30
+      ago = DateTime.now - 29
       bill_A = ElectricBill.new(total_kwhs: 1000, start_date: ago, end_date: (today - 1), house_id: @house.id, no_residents: 2, who: @user)
       bill_B = ElectricBill.new(total_kwhs: 1000,  start_date: today, end_date: (today + 20), house_id: @house.id, no_residents: 2, who: @user)
       expect(bill_A.save).to be true
@@ -69,8 +69,54 @@ RSpec.describe ElectricBill, type: :model do
     end
   end
   context 'a house with revolving users' do
-    it 'cannon save bills BEFORE the earliest house-members move_in_date' do
+    it 'cannot save bills BEFORE single house-members move_in_date' do
       #user tries to save a bill for a date that precedes his move_in_date
+      uH = UserHouse.first
+        expect(uH.user_id).to eq(@user.id)
+
+      #bill should not be able to save if dated before move-in of 'oldest' resident
+      move_in_date = uH.move_in_date.to_datetime
+      sdate = move_in_date - 31
+      edate = move_in_date - 1
+      eb = ElectricBill.new(total_kwhs: 100, price: 100, no_residents: 2, start_date: sdate, end_date: edate, house_id: @house.id, who: @user)
+      expect(eb.save).to be false
+
+      uH.move_in_date = sdate - 30
+      uH.save
+      #now a bill can be saved
+      eb = ElectricBill.new(total_kwhs: 100, price: 100, no_residents: 2, start_date: sdate, end_date: edate, house_id: @house.id, who: @user)
+      expect(eb.save).to be true
+    end
+    it 'can save bills up to earliest members move-in-date' do
+      #house has user who moved in 90 days ago, as well as @user, which moved in today
+      old_user = User.create(
+                            first: "Grandpa",
+                            last: "User", email: "gramps@gmail.com",
+                            generation: 1, password: 'password'
+                            )
+      new_user = @user
+      move_in_date = DateTime.now - 90
+      UserHouse.create(house_id: @house.id, user_id: old_user.id, move_in_date: move_in_date)
+          #confirms move in dates of older vs new user
+          uH_oldUser = UserHouse.last
+            expect(uH_oldUser.user_id).to eq(old_user.id)
+
+          uH_newUser = UserHouse.first
+            expect(uH_newUser.user_id).to eq(new_user.id)
+
+            expect(uH_newUser.move_in_date > uH_oldUser.move_in_date).to be true
+
+      #bill can be saved only by older resident
+      move_in_date = uH_newUser.move_in_date.to_datetime
+      sdate = move_in_date - 31
+      edate = move_in_date - 1
+
+      #false
+      eb = ElectricBill.new(total_kwhs: 100, price: 100, no_residents: 2, start_date: sdate, end_date: edate, house_id: @house.id, who: new_user)
+        expect(eb.save).to be false
+      #true
+      eb = ElectricBill.new(total_kwhs: 100, price: 100, no_residents: 2, start_date: sdate, end_date: edate, house_id: @house.id, who: old_user)
+        expect(eb.save).to be true
 
     end
     it 'saves bills only if the user has moved in BEFORE the supposed bill start-date' do
