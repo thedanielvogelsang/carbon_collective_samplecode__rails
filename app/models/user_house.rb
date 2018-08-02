@@ -5,7 +5,7 @@ class UserHouse < ApplicationRecord
   validates_uniqueness_of :user_id, :scope => :house_id
 
   before_create :update_house_no_residents_add
-  after_create :log_house_creation
+  after_create :log_house_creation, :confirm_move_in
 
   before_destroy :update_house_no_residents_less
 
@@ -23,5 +23,10 @@ class UserHouse < ApplicationRecord
 
   def log_house_creation
     UserLogHelper.log_house_creation(self.user_id, self.house_id)
+  end
+
+  def confirm_move_in
+    self.move_in_date ||= self.created_at
+    self.save
   end
 end
