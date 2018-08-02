@@ -42,8 +42,9 @@ class WaterBill < ApplicationRecord
     num_res = self.no_residents
     num_days = self.end_date - self.start_date
     gals = self.total_gallons.fdiv(num_res)
-    users = house.users
     water_saved = self.water_saved.fdiv(num_res)
+    users = UserHouse.joins(:house).where(house_id: house_id).select{|uh| uh.move_in_date.to_datetime <= self.start_date}
+    users = users.map{|uh| User.find(uh.user_id)}
     users.each do |u|
       u.total_waterbill_days_logged += num_days
       u.total_gallons_logged += gals

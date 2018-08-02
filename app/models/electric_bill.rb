@@ -50,7 +50,7 @@ class ElectricBill < ApplicationRecord
     num_res = self.no_residents
     num_days = self.end_date - self.start_date
     kwhs = self.total_kwhs.fdiv(num_res)
-    users = UserHouse.joins(:house).where(house_id: house_id).select{|uh| uh.move_in_date.to_datetime < self.start_date}
+    users = UserHouse.joins(:house).where(house_id: house_id).select{|uh| uh.move_in_date.to_datetime <= self.start_date}
     users = users.map{|uh| User.find(uh.user_id)}
     elect_saved = self.electricity_saved.fdiv(num_res)
     users.each do |u|

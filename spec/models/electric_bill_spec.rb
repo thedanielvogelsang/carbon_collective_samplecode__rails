@@ -128,7 +128,6 @@ RSpec.describe ElectricBill, type: :model do
       uH = UserHouse.first
         expect(uH.user_id).to eq(@user.id)
 
-      #bill should not be able to save if dated before move-in of 'oldest' resident
       move_in_date = uH.move_in_date.to_datetime
       sdate = DateTime.now - 29
       edate = DateTime.now + 1
@@ -207,18 +206,18 @@ RSpec.describe ElectricBill, type: :model do
   end
   context 'a house with different bill types' do
     it 'can be saved on the same day' do
-      today = DateTime.now - 29
-      bill_1 = ElectricBill.new(total_kwhs: 1000, start_date: today, end_date: (today + 29), house_id: @house.id, no_residents: 2, who: @user)
-      bill_2 = WaterBill.new(total_gallons: 1000,  start_date: today, end_date: (today + 29), house_id: @house.id, no_residents: 2, who: @user)
+      yesterday = DateTime.now - 29
+      bill_1 = ElectricBill.new(total_kwhs: 1000, start_date: yesterday, end_date: (yesterday + 29), house_id: @house.id, no_residents: 2, who: @user)
+      bill_2 = WaterBill.new(total_gallons: 1000,  start_date: yesterday, end_date: (yesterday + 29), house_id: @house.id, no_residents: 2, who: @user)
       expect(bill_1.save).to be true
       expect(bill_2.save).to be true
     end
   end
   context 'two different houses' do
     it 'can save along the same dates' do
-      today = DateTime.now - 29
-      el1 = ElectricBill.new(total_kwhs: 1000, start_date: today, end_date: (today + 29), house_id: @house.id, no_residents: 2, who: @user)
-      el2 = ElectricBill.new(total_kwhs: 1000,  start_date: today, end_date: (today + 29), house_id: @house2.id, no_residents: 2, who: @user)
+      yesterday = DateTime.now - 29
+      el1 = ElectricBill.new(total_kwhs: 1000, start_date: yesterday, end_date: (yesterday + 29), house_id: @house.id, no_residents: 2, who: @user)
+      el2 = ElectricBill.new(total_kwhs: 1000,  start_date: yesterday, end_date: (yesterday + 29), house_id: @house2.id, no_residents: 2, who: @user)
       expect(el1.save).to be true
       expect(el2.save).to be true
     end
