@@ -25,9 +25,11 @@ class County < ApplicationRecord
   before_create :add_zeros
 
   def capitalize_name
-    self.name = self.name.split(' ')
-    .map{|w| w.downcase == 'of' || w.downcase == 'and' ? lowercase(w) : capitalize(w)}
-    .join(' ')
+    if self.name
+      self.name = self.name.split(' ')
+      .map{|w| w.downcase == 'of' || w.downcase == 'and' ? lowercase(w) : capitalize(w)}
+      .join(' ')
+    end
   end
 
   def lowercase(word)

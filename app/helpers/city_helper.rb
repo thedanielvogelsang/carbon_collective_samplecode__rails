@@ -48,7 +48,7 @@ module CityHelper
 
   def update_daily_avg_electricity_consumption
       users = self.users.map{|u| u.avg_daily_electricity_consumption }
-              .flatten.reject(&:nan?)
+              .flatten.reject(&:nan?).reject(&:zero?)
       ct = users.length
       energy_consumed = users.reduce(0){|sum, num| sum + num} / ct if ct != 0
       energy_consumed ||= 0.0
@@ -78,7 +78,7 @@ module CityHelper
   def update_daily_avg_water_consumption
       users = self.users.map{|u| u.avg_daily_water_consumption }
               .flatten
-              .reject(&:nan?)
+              .reject(&:nan?).reject(&:zero?)
       ct = users.length
       water_consumed = users.reduce(0){|sum, num| sum + num} / ct if ct != 0
       water_consumed ||= 0.0
@@ -108,7 +108,7 @@ module CityHelper
 
   def update_daily_avg_gas_consumption
       users = self.users.map{|u| u.avg_daily_gas_consumption }
-              .flatten.reject(&:nan?)
+              .flatten.reject(&:nan?).reject(&:zero?)
       ct = users.length
       gas_consumed = users.reduce(0){|sum, num| sum + num} / ct if ct != 0
       gas_consumed ||= 0.0
@@ -125,7 +125,7 @@ module CityHelper
   def update_total_electricity_consumption
     if ElectricBill.joins(:house => {:address => :region}).where(:regions => {country_id: self.id}).count != 0
       energy_consumed = self.users.map{|u| u.total_kwhs_logged }
-              .flatten.reject(&:nan?)
+              .flatten.reject(&:nan?).reject(&:zero?)
               .reduce(0){|sum, num| sum + num}
       self.total_electricity_consumed = energy_consumed
     end
@@ -135,7 +135,7 @@ module CityHelper
     if WaterBill.joins(:house => {:address => :region}).where(:regions => {country_id: self.id}).count != 0
       water_consumed = self.users.map{|u| u.total_gallons_logged }
               .flatten
-              .reject(&:nan?)
+              .reject(&:nan?).reject(&:zero?)
               .reduce(0){|sum, num| sum + num}
       self.total_water_consumed = water_consumed
     end
@@ -144,7 +144,7 @@ module CityHelper
   def update_total_gas_consumption
     if HeatBill.joins(:house => {:address => :region}).where(:regions => {country_id: self.id}).count != 0
       gas_consumed = self.users.map{|u| u.total_therms_logged }
-              .flatten.reject(&:nan?)
+              .flatten.reject(&:nan?).reject(&:zero?)
               .reduce(0){|sum, num| sum + num}
       self.total_gas_consumed = gas_consumed
     end

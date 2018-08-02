@@ -4,6 +4,7 @@ class Country < ApplicationRecord
   validates :name, presence: true, uniqueness: true
   has_many :regions
   has_many :cities, through: :regions
+  has_many :counties, through: :regions
   has_many :neighborhoods, through: :cities
   has_many :addresses, through: :neighborhoods
   has_many :houses, through: :addresses
@@ -26,9 +27,11 @@ class Country < ApplicationRecord
   has_many :user_carbon_rankings, :as => :area
 
   def capitalize_name
-    self.name = self.name.split(' ')
-    .map{|w| w.downcase == 'of' || w.downcase == 'and' ? lowercase(w) : capitalize(w)}
-    .join(' ')
+    if self.name
+      self.name = self.name.split(' ')
+      .map{|w| w.downcase == 'of' || w.downcase == 'and' ? lowercase(w) : capitalize(w)}
+      .join(' ')
+    end
   end
 
   def lowercase(word)

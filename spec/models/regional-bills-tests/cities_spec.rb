@@ -39,19 +39,19 @@ RSpec.describe 'City consumption averages' do
     user = User.create(first: 'D', last: "Simpson", email: "d.simpson@gmail.com",
                         password: 'password', generation: 1)
     house = House.create(address_id: @address1.id, no_residents: 1, total_sq_ft: 3000)
-    user.houses << house
+    UserHouse.create(user_id: user.id, house_id: house.id, move_in_date: DateTime.now - 90)
 
     user2 = User.create(first: 'M', last: "Johnson", email: "m.johnson@gmail.com",
                         password: 'password', generation: 1)
 
     house = House.create(address_id: @address2.id, no_residents: 1, total_sq_ft: 3000)
-    user2.houses << house
+    UserHouse.create(user_id: user2.id, house_id: house.id, move_in_date: DateTime.now - 90)
 
     user3 = User.create(first: 'J', last: "Geirgio", email: "j.geirgio@gmail.com",
                         password: 'password', generation: 1)
 
     house = House.create(address_id: @address3.id, no_residents: 1, total_sq_ft: 3000)
-    user3.houses << house
+    UserHouse.create(user_id: user3.id, house_id: house.id, move_in_date: DateTime.now - 90)
   end
   context "Electric Bills / 1 & 2 users affect (same) city" do
     it 'cities do not innately reflect their users averages' do
@@ -63,7 +63,8 @@ RSpec.describe 'City consumption averages' do
       u_avg = user.avg_daily_electricity_consumption
       expect(c1_avg).to eq(0)
       expect(c2_avg).to eq(0)
-      expect(u_avg.nan?).to be true
+      expect(u_avg.nan?).to be false
+      expect(u_avg.zero?).to be true
     end
     it 'cities reflect single bill upon update' do
       user = User.first
@@ -151,7 +152,7 @@ RSpec.describe 'City consumption averages' do
       u_avg = user.avg_daily_water_consumption
       expect(c1_avg).to eq(0)
       expect(c2_avg).to eq(0)
-      expect(u_avg.nan?).to be true
+      expect(u_avg.nan?).to be false
     end
     it 'citys reflect single bill upon update' do
       user = User.first
@@ -239,7 +240,7 @@ RSpec.describe 'City consumption averages' do
       u_avg = user.avg_daily_gas_consumption
       expect(c1_avg).to eq(0)
       expect(c2_avg).to eq(0)
-      expect(u_avg.nan?).to be true
+      expect(u_avg.nan?).to be false
     end
     it 'citys reflect single bill upon update' do
       user = User.first

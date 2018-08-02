@@ -7,7 +7,7 @@ RSpec.describe Address, type: :model do
       @zip = Zipcode.create(zipcode: 80212)
       @zip2= Zipcode.create(zipcode: "11100")
       @addy = "123 Main St"
-      @city = "Denver"
+      @city = City.create("Denver"
       @country = "United States of America"
       @addy2 = "4100 Albion St"
       @city2 = "Fort Collins"
