@@ -9,7 +9,7 @@ class ElectricBill < ApplicationRecord
                           :total_kwhs,
                           :no_residents
 
-    validate :confirm_valid_dates, :check_move_in_date
+    validate :confirm_no_overlaps, :confirm_valid_dates, :check_move_in_date
 
     after_validation :electricity_saved?,
                      :update_users_savings
@@ -63,7 +63,7 @@ class ElectricBill < ApplicationRecord
     end
   end
 
-  def confirm_valid_dates
+  def confirm_no_overlaps
     start_ = self.start_date
     end_ = self.end_date
     past_bills = ElectricBill.where(house_id: self.house_id)
@@ -84,6 +84,10 @@ class ElectricBill < ApplicationRecord
   def check_move_in_date
     uH_movein = UserHouse.where(user_id: user_id, house_id: house_id)[0].move_in_date.to_datetime
     start_date >= uH_movein ? true : errors.add(:start_date, "user moved in after bill cycle")
+  end
+
+  def confirm_valid_dates
+    end_date <= DateTime.now ? true : errors.add(:end_date, "cannot claim future use on past bills")
   end
 
 end
