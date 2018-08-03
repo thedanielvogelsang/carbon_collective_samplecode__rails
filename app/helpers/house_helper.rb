@@ -53,64 +53,89 @@ module HouseHelper
     #Electricity
       # - total
         def average_total_electricity_consumption_per_resident
-          total_electricity_consumption_to_date / self.no_residents
+          if self.no_residents > 0
+            total_electricity_consumption_to_date / self.no_residents
+          end
         end
       # - daily
         def average_daily_electricity_consumption_per_resident
-          self.electric_bills.map{|b| b.total_kwhs}.compact.flatten.reject(&:nan?)
-                    .reduce(0){|s, n| s + n} / self.no_residents
+          if total_electricitybill_days_recorded > 0 && self.no_residents > 0
+            res = total_electricity_consumption_to_date.fdiv(total_electricitybill_days_recorded).fdiv(self.no_residents)
+          else
+            0.0
+          end
         end
     #Water
       # - total
         def average_total_water_consumption_per_resident
-          total_water_consumption_to_date / self.no_residents
+          if self.no_residents > 0
+            total_water_consumption_to_date / self.no_residents
+          end
         end
       # - daily
         def average_daily_water_consumption_per_resident
-          self.wbills.map{|b| b.total_gallons}.compact.flatten.reject(&:nan?)
-                    .reduce(0){|s, n| s + n} / self.no_residents
+          if total_waterbill_days_recorded > 0 && self.no_residents > 0
+            res = total_water_consumption_to_date.fdiv(total_waterbill_days_recorded).fdiv(self.no_residents)
+          else
+            0.0
+          end
         end
     #Gas
       # - total
         def average_total_gas_consumption_per_resident
-          total_gas_consumption_to_date / self.no_residents
+          if self.no_residents > 0
+            total_gas_consumption_to_date / self.no_residents
+          end
         end
       # - daily
         def average_daily_gas_consumption_per_resident
-          self.gbills.map{|b| b.total_therms}.compact.flatten.reject(&:nan?)
-                    .reduce(0){|s, n| s + n} / self.no_residents
+          if total_heatbill_days_recorded > 0 && self.no_residents > 0
+            res = total_gas_consumption_to_date.fdiv(total_heatbill_days_recorded).fdiv(self.no_residents)
+          else
+            0.0
+          end
         end
     #Carbon
         def average_total_carbon_consumption_per_resident
-          total_carbon_consumption_to_date / self.no_residents
+          if self.no_residents > 0
+            total_carbon_consumption_to_date / self.no_residents
+          end
         end
 
   #SAVINGS
     #Electricity
       # - total
       def average_total_electricity_saved_per_resident
-        total_electricity_savings_to_date / self.no_residents
+        if self.no_residents > 0
+          total_electricity_savings_to_date / self.no_residents
+        end
       end
     #Water
       # - total
       def average_total_water_saved_per_resident
-        total_water_savings_to_date / self.no_residents
+        if self.no_residents > 0
+          total_water_savings_to_date / self.no_residents
+        end
       end
     #Gas
       # - total
       def average_total_gas_saved_per_resident
-        total_gas_savings_to_date / self.no_residents
+        if self.no_residents > 0
+          total_gas_savings_to_date / self.no_residents
+        end
       end
 
   ## DOUBLE CHECK THIS -- per resident or users?
-    def average_total_carbon_saved_per_resident
-      total_carbon_savings_to_date / self.no_residents
-    end
-    def total_carbon_savings_to_date
-      return combine_average_use(total_electricity_savings_to_date,
-                                total_gas_savings_to_date,
-                                )
-    end
+      def average_total_carbon_saved_per_resident
+        if self.no_residents > 0
+          total_carbon_savings_to_date / self.no_residents
+        end
+      end
+      def total_carbon_savings_to_date
+        return combine_average_use(total_electricity_savings_to_date,
+                                  total_gas_savings_to_date,
+                                  )
+      end
 
 ## -- HOUSEHOLD AVGS / TOTALS -- ##
 # -- based on bills -- #
@@ -122,12 +147,22 @@ module HouseHelper
     res_ = total.reject(&:nil?).reduce(0){|s, n| s + n}.to_f.round(2)
   end
 
-  #Still not accurate actually. Needs to be selected for unique dates...
+  #Good for now. Needs to be selected for unique dates...
   def total_days_recorded
     e_days = self.bills.map{|b| (b.end_date - b.start_date).to_i }.reduce(0){|s, n| s + n}
     w_days = self.wbills.map{|b| (b.end_date - b.start_date).to_i }.reduce(0){|s, n| s + n}
     g_days = self.gbills.map{|b| (b.end_date - b.start_date).to_i }.reduce(0){|s, n| s + n}
     return e_days + w_days + g_days
+  end
+
+  def total_electricitybill_days_recorded
+    self.bills.map{|b| (b.end_date - b.start_date).to_i }.reduce(0){|s,n| s+n}
+  end
+  def total_waterbill_days_recorded
+    self.wbills.map{|b| (b.end_date - b.start_date).to_i }.reduce(0){|s,n| s+n}
+  end
+  def total_heatbill_days_recorded
+    self.gbills.map{|b| (b.end_date - b.start_date).to_i }.reduce(0){|s,n| s+n}
   end
 
   #Electricity

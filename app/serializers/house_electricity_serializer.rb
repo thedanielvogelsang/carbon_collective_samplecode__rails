@@ -11,6 +11,9 @@ class HouseElectricitySerializer < ActiveModel::Serializer
                   :avg_daily_consumption
                   :avg_monthly_consumption
 
+  def total_days_recorded
+    object.total_electricitybill_days_recorded
+  end
   def total_sq_ft
     object.total_sq_ft || 0
   end

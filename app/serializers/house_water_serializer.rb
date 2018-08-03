@@ -11,6 +11,9 @@ class HouseWaterSerializer < ActiveModel::Serializer
                   :avg_daily_consumption_per_user,
                   :avg_monthly_consumption_per_user,
 
+  def total_days_recorded
+    object.total_waterbill_days_recorded
+  end
   def total_consumption_to_date
     object.total_water_consumption_to_date.round(2).to_s + " gallons"
   end

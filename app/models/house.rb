@@ -5,6 +5,8 @@ class House < ApplicationRecord
 
   validates :address_id, presence: true, uniqueness: true
 
+  # after_save :destroy_if_no_residents
+
   has_many :user_houses, dependent: :destroy
   has_many :users, through: :user_houses
   has_many :electric_bills, dependent: :destroy
@@ -29,4 +31,5 @@ class House < ApplicationRecord
   def gbills
     self.heat_bills
   end
+
 end
