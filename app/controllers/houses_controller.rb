@@ -5,7 +5,11 @@ class HousesController < ApplicationController
     @house = House.new(safe_params)
     if @house.save
       hId = @house.id
-      user.houses << @house
+      UserHouse.create(user_id: user.id,
+                      house_id: hId,
+                      move_in_date: DateTime.new(params[:moveInDate])
+                            .in_time_zone("Mountain Time (US & Canada)")
+                      )
       user.set_all_questions(hId)
       user.set_default_ranks
       render json: @house, status: 202

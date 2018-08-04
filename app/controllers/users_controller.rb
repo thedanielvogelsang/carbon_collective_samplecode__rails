@@ -69,7 +69,11 @@ class UsersController < ApplicationController
     user = User.find(params[:user_id])
     house = House.find(params[:house_id])
     if user && house
-      user.houses << house
+      UserHouse.create(user_id: user.id,
+                      house_id: house.id,
+                      move_in_date: DateTime.new(params[:moveInDate])
+                            .in_time_zone("Mountain Time (US & Canada)")
+                      )
       user.set_default_ranks
       render json: user
     else

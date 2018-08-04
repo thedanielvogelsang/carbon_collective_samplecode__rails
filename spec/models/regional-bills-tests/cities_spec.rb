@@ -215,6 +215,8 @@ RSpec.describe 'City consumption averages' do
       gallons2 = 28000
       price = rand(1..100)
       WaterBill.create(start_date: @start_date2, end_date: @end_date2, total_gallons: gallons2, price: price, house_id: House.second.id, no_residents: 2, user_id: User.second.id)
+      h1 = House.first
+      h2 = House.second
       user = User.first
       user2 = User.second
       u_avg = user.avg_daily_water_consumption

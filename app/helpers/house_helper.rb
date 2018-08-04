@@ -155,6 +155,10 @@ module HouseHelper
     return e_days + w_days + g_days
   end
 
+  def all_bills_to_date
+    bills + wbills + gbills
+  end
+
   def total_electricitybill_days_recorded
     self.bills.map{|b| (b.end_date - b.start_date).to_i }.reduce(0){|s,n| s+n}
   end

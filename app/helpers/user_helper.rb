@@ -1,5 +1,32 @@
 module UserHelper
 
+    def immediate_parent
+      if self.parent
+        UserGeneration.where(child_id: self.id).order(id: :asc).first.parent
+      end
+    end
+
+    def all_children
+      array = Array.new
+      array << self.children.map do |child|
+          get_childrens_children(child)
+        end
+      if !array.empty?
+        array.flatten.compact.uniq.sort{|u1, u2| u1.id <=> u2.id}
+      else
+        array
+      end
+    end
+
+    def get_childrens_children(child)
+      if !child.children.empty?
+        kids = child.children.map{|user| get_childrens_children(user)}
+                .unshift(child)
+      else
+        child
+      end
+    end
+
     def account_length_time
       DateTime.now - self.created_at.to_datetime + 1
     end

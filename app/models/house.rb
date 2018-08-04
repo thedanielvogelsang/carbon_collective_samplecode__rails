@@ -5,6 +5,7 @@ class House < ApplicationRecord
 
   validates :address_id, presence: true, uniqueness: true
 
+  before_save :no_residents_zeroed?
   # after_save :destroy_if_no_residents
 
   has_many :user_houses, dependent: :destroy
@@ -30,6 +31,16 @@ class House < ApplicationRecord
 
   def gbills
     self.heat_bills
+  end
+
+  def no_residents_zeroed?
+    self.no_residents == 0 ? erase_bill_history : nil
+  end
+
+  def erase_bill_history
+    ElectricBill.joins(:house).where(:houses => {id: self.id}).destroy_all
+    WaterBill.joins(:house).where(:houses => {id: self.id}).destroy_all
+    HeatBill.joins(:house).where(:houses => {id: self.id}).destroy_all
   end
 
 end

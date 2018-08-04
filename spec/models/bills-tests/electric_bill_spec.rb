@@ -25,8 +25,8 @@ RSpec.describe ElectricBill, type: :model do
                     last: "Voogle",
                     generation: 0,
                     )
-    UserHouse.create(house_id: @house.id, user_id: @user.id, move_in_date: DateTime.now - 30)
-    UserHouse.create(house_id: @house2.id, user_id: @user.id, move_in_date: DateTime.now - 30)
+    UserHouse.create(house_id: @house.id, user_id: @user.id, move_in_date: DateTime.now - 31)
+    UserHouse.create(house_id: @house2.id, user_id: @user.id, move_in_date: DateTime.now - 31)
   end
   context 'a house' do
     it 'cant have bills with the same exact days' do
