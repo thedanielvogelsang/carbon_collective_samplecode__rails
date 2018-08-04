@@ -83,35 +83,66 @@ RSpec.describe User, type: :model do
       expect(@user3.authenticate("password")).to eq(@user3)
       expect(user3.authenticate("password")).to eq(user3)
     end
-    it "must set default ranks manually (AND SAVE!)" do
+    it "must set default ranks automatically" do
       user1 = User.find(@user1.id)
-      user2 = User.find(@user2.id)
-      user3 = User.find(@user3.id)
-        expect(user1.user_electricity_rankings.count).to eq(0)
-        expect(user2.user_electricity_rankings.count).to eq(0)
-        expect(user3.user_electricity_rankings.count).to eq(0)
 
-      user1.set_default_ranks
-      user1.save
         expect(user1.user_electricity_rankings.count).to eq(6)
     end
     it "ranks are set for all of users regions from household to nation" do
       user1 = User.find(@user1.id)
       user2 = User.find(@user2.id)
-      user3 = User.find(@user3.id)
-        expect(user1.user_electricity_rankings.count).to eq(0)
-        expect(user2.user_electricity_rankings.count).to eq(0)
-        expect(user3.user_electricity_rankings.count).to eq(0)
 
       #user1 belongs to house, neighborhood, city, county, region, and country
-      user1.set_default_ranks
-      user1.save
         expect(user1.user_electricity_rankings.count).to eq(6)
 
       #user2 belongs to house, neighborhood, city, region, and country
-      user2.set_default_ranks
-      user2.save
         expect(user2.user_electricity_rankings.count).to eq(5)
+    end
+    it "ranks remain and are not recreated with addition of new house (same geography)" do
+      user1 = User.find(@user1.id)
+      user3 = User.find(@user3.id)
+      #user1 belongs to house, neighborhood, city, county, region, and country
+      rank = UserElectricityRanking.last
+        expect(user1.user_electricity_rankings.count).to eq(6)
+        expect(rank.area_id).to eq(user3.household.id)
+
+      #user1 adds new house and set_default_ranks is ran
+      address = Address.create(address_line1: "4590 New Address", zipcode_id: Zipcode.first.id,
+                                neighborhood_id: Neighborhood.first.id,
+                                city_id: City.first.id,
+                                )
+      new_house = House.create(address_id: address.id, no_residents: 0, total_sq_ft: 3000)
+      user1.houses << new_house
+      newest_rank = UserElectricityRanking.last
+          #rank amount grows by only 1, which is the ranking for the new house, since geography is the same
+          expect(user1.user_electricity_rankings.count).to eq(7)
+          expect(user1.houses.count).to eq(2)
+          expect(newest_rank.area_type).to eq("House")
+          expect(newest_rank.area_id).to eq(new_house.id)
+          expect(rank.id).to eq(newest_rank.id - 1)
+
+    end
+    it "ranks include new house regions (different geography)" do
+      user1 = User.find(@user1.id)
+
+      #user1 belongs to house, neighborhood, city, county, region, and country
+      rank = UserElectricityRanking.last
+        expect(user1.user_electricity_rankings.count).to eq(6)
+
+      #user1 adds new house and set_default_ranks is ran
+      address = Address.create(address_line1: "4590 New Address", zipcode_id: Zipcode.last.id,
+                                neighborhood_id: Neighborhood.last.id,
+                                city_id: City.last.id,
+                                )
+      new_house = House.create(address_id: address.id, no_residents: 0, total_sq_ft: 3000)
+      user1.houses << new_house
+      newest_rank = UserElectricityRanking.last
+          #rank amount grows by 3, which is the ranking for the new house, neighborhood, and city
+          expect(user1.user_electricity_rankings.count).to eq(9)
+          expect(user1.houses.count).to eq(2)
+          expect(newest_rank.area_type).to eq("House")
+          expect(newest_rank.area_id).to eq(new_house.id)
+          expect(rank.id).to eq(newest_rank.id - 3)
     end
     it "each user automatically gets user_questions upon UserHouse creation" do
       user1 = User.find(@user1.id)
