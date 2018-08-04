@@ -12,9 +12,8 @@ class UserHouse < ApplicationRecord
   before_destroy :update_house_no_residents_less
 
   def add_user_questions
-    UserElectricityQuestion.find_or_create_by(user_id: user_id, house_id: house_id)
-    UserGasQuestion.find_or_create_by(user_id: user_id, house_id: house_id)
-    UserWaterQuestion.find_or_create_by(user_id: user_id, house_id: house_id)
+    user = User.find(user_id)
+    user.set_all_questions(house_id)
   end
 
   def update_house_no_residents_add

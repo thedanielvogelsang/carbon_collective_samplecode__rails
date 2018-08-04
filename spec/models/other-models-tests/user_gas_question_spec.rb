@@ -15,7 +15,7 @@ RSpec.describe UserGasQuestion, type: :model do
                         password: 'password', generation: 1)
     house = House.create(address_id: address.id, no_residents: 1, total_sq_ft: 3000)
     user.houses << house
-    @u_question_list = UserGasQuestion.create(user_id: user.id, house_id: house.id)
+    @u_question_list = UserGasQuestion.last
   end
   context 'relationships' do
     it {should belong_to(:house)}
@@ -87,6 +87,49 @@ RSpec.describe UserGasQuestion, type: :model do
       @u_question_list.save
         expect(UserGasQuestion.last.completion_percentage).to eq(100)
         expect(UserGasQuestion.last.completed).to eq(true)
+    end
+  end
+  context 'question creation / destruction in database' do
+    it "questions are created automatically with UserHouse creation" do
+      address = Address.create(address_line1: "4590 New Address", zipcode_id: Zipcode.last.id,
+                                neighborhood_id: Neighborhood.last.id,
+                                city_id: City.last.id,
+                                )
+      new_house = House.create(address_id: address.id, no_residents: 0, total_sq_ft: 3000)
+
+      user = User.last
+          expect(user.user_gas_questions.count).to eq(1)
+      user.houses << new_house
+      user = User.last
+          expect(user.user_gas_questions.count).to eq(2)
+
+    end
+    it 'questions are retained when a user leaves a house' do
+      user = User.last
+      house = user.household
+        expect(user).to_not be nil
+        expect(house).to_not be nil
+
+      question_count = UserGasQuestion.count
+        expect(question_count).to eq(1)
+
+      UserHouse.find_by(user_id: user.id).destroy
+      user = User.last
+        expect(user.household).to be nil
+
+      updated_question_count = UserGasQuestion.count
+        expect(updated_question_count).to eq(question_count)
+    end
+    it "questions are destroyed when user is destroyed" do
+      user = User.last
+        expect(user.email).to eq("r.rajan@gmail.com")
+        expect(user.user_gas_questions.count).to eq(1)
+        expect(UserGasQuestion.count).to eq(1)
+        expect(user.user_gas_questions[0]).to eq(@u_question_list)
+      User.destroy(user.id)
+      user = User.last
+        expect(user).to eq(nil)
+        expect(UserGasQuestion.count).to eq(0)
     end
   end
 end

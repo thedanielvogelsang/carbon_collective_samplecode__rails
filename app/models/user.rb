@@ -52,6 +52,7 @@ class User < ApplicationRecord
   has_many :user_gas_questions, dependent: :destroy
 
   has_many :user_logs, dependent: :destroy
+  has_many :user_invites, dependent: :destroy
 
   before_create :add_zeros,
                 :add_confirm_token,

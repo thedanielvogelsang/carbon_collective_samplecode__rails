@@ -84,10 +84,34 @@ RSpec.describe UserElectricityQuestion, type: :model do
   end
   context 'question creation / destruction in database' do
     it "questions are created automatically with UserHouse creation" do
+      address = Address.create(address_line1: "4590 New Address", zipcode_id: Zipcode.last.id,
+                                neighborhood_id: Neighborhood.last.id,
+                                city_id: City.last.id,
+                                )
+      new_house = House.create(address_id: address.id, no_residents: 0, total_sq_ft: 3000)
+
+      user = User.last
+          expect(user.user_electricity_questions.count).to eq(1)
+      user.houses << new_house
+      user = User.last
+          expect(user.user_electricity_questions.count).to eq(2)
 
     end
     it 'questions are retained when a user leaves a house' do
+      user = User.last
+      house = user.household
+        expect(user).to_not be nil
+        expect(house).to_not be nil
 
+      question_count = UserElectricityQuestion.count
+        expect(question_count).to eq(1)
+
+      UserHouse.find_by(user_id: user.id).destroy
+      user = User.last
+        expect(user.household).to be nil
+
+      updated_question_count = UserElectricityQuestion.count
+        expect(updated_question_count).to eq(question_count)
     end
     it "questions are destroyed when user is destroyed" do
       user = User.last

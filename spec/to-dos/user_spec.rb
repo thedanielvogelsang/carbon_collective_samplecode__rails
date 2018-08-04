@@ -23,10 +23,9 @@ RSpec.describe User, type: :model do
                               county_id: county.id,
                               city_id: city.id,
                               )
-    #same neighborhood
+    #same neighborhood no county
     address2 = Address.create(address_line1: "245 Second Address", zipcode_id: zip.id,
                               neighborhood_id: neighborhood.id,
-                              county_id: county.id,
                               city_id: city.id,
                               )
     #different neighborhood, same city
@@ -38,19 +37,19 @@ RSpec.describe User, type: :model do
     #single user
     @user1 = User.create(first: 'D', last: "Simpson", email: "d.simpson@gmail.com",
                         password: 'password', generation: 1)
-    house = House.create(address_id: address1.id, no_residents: 1, total_sq_ft: 3000)
+    house = House.create(address_id: address1.id, no_residents:0, total_sq_ft: 3000)
     UserHouse.create(user_id: @user1.id, house_id: house.id, move_in_date: DateTime.now - 90)
 
     @user2 = User.create(first: 'M', last: "Johnson", email: "m.johnson@gmail.com",
                         password: 'password', generation: 1)
 
-    house2 = House.create(address_id: address2.id, no_residents: 1, total_sq_ft: 3000)
+    house2 = House.create(address_id: address2.id, no_residents: 0, total_sq_ft: 3000)
     UserHouse.create(user_id: @user2.id, house_id: house2.id, move_in_date: DateTime.now - 90)
 
     @user3 = User.create(first: 'J', last: "Geirgio", email: "j.geirgio@gmail.com",
                         password: 'password', generation: 1)
 
-    house3 = House.create(address_id: address3.id, no_residents: 1, total_sq_ft: 3000)
+    house3 = House.create(address_id: address3.id, no_residents: 0, total_sq_ft: 3000)
     UserHouse.create(user_id: @user3.id, house_id: house3.id, move_in_date: DateTime.now - 90)
   end
   context 'relationships' do
@@ -71,10 +70,48 @@ RSpec.describe User, type: :model do
         expect(user1.confirm_token).to_not be nil
     end
     it "can call all attributes" do
-
+      expect(@user3.first).to eq("J")
+      expect(@user3.last).to eq("Geirgio")
+      expect(@user3.email).to eq("j.geirgio@gmail.com")
+      expect(@user3.password).to eq("password")
+      expect(@user3.authenticate("password")).to eq(@user3)
     end
-    it "must set default ranks manually" do
+    it "password is hidden after save" do
+      user3 = User.find(@user3.id)
+      expect(@user3.password).to eq("password")
+      expect(user3.password).to_not eq("password")
+      expect(@user3.authenticate("password")).to eq(@user3)
+      expect(user3.authenticate("password")).to eq(user3)
+    end
+    it "must set default ranks manually (AND SAVE!)" do
+      user1 = User.find(@user1.id)
+      user2 = User.find(@user2.id)
+      user3 = User.find(@user3.id)
+        expect(user1.user_electricity_rankings.count).to eq(0)
+        expect(user2.user_electricity_rankings.count).to eq(0)
+        expect(user3.user_electricity_rankings.count).to eq(0)
 
+      user1.set_default_ranks
+      user1.save
+        expect(user1.user_electricity_rankings.count).to eq(6)
+    end
+    it "ranks are set for all of users regions from household to nation" do
+      user1 = User.find(@user1.id)
+      user2 = User.find(@user2.id)
+      user3 = User.find(@user3.id)
+        expect(user1.user_electricity_rankings.count).to eq(0)
+        expect(user2.user_electricity_rankings.count).to eq(0)
+        expect(user3.user_electricity_rankings.count).to eq(0)
+
+      #user1 belongs to house, neighborhood, city, county, region, and country
+      user1.set_default_ranks
+      user1.save
+        expect(user1.user_electricity_rankings.count).to eq(6)
+
+      #user2 belongs to house, neighborhood, city, region, and country
+      user2.set_default_ranks
+      user2.save
+        expect(user2.user_electricity_rankings.count).to eq(5)
     end
     it "each user automatically gets user_questions upon UserHouse creation" do
       user1 = User.find(@user1.id)
@@ -95,22 +132,91 @@ RSpec.describe User, type: :model do
   end
   context 'behaviors' do
     it 'user can own two houses' do
+      user = User.last
+      house = user.household
+          expect(user.houses.first).to eq(house)
+          expect(user.houses.count).to eq(1)
+
+      address = Address.create(address_line1: "4590 New Address", zipcode_id: Zipcode.last.id,
+                                neighborhood_id: Neighborhood.last.id,
+                                city_id: City.last.id,
+                                )
+      new_house = House.create(address_id: address.id, no_residents: 0, total_sq_ft: 3000)
+      user.houses << new_house
+      user.save
+          expect(user.houses.count).to eq(2)
+          expect(user.household).to eq(house)
+          expect(user.houses.second).to eq(new_house)
 
     end
-    it 'user accrues resource-use data from all associated houses' do
+    xit 'user accrues resource-use data from all associated houses' do
+        user = User.last
+        house = user.household
+            expect(user.houses.first).to eq(house)
+            expect(user.houses.count).to eq(1)
 
+        address = Address.create(address_line1: "4590 New Address", zipcode_id: Zipcode.last.id,
+                                  neighborhood_id: Neighborhood.last.id,
+                                  city_id: City.last.id,
+                                  )
+        much_older_house = House.create(address_id: address.id, no_residents: 0, total_sq_ft: 3000)
+        UserHouse.create(user_id: user.id, house_id: much_older_house.id, move_in_date: DateTime.now - 5000)
+        user.save
+            expect(user.houses.count).to eq(2)
+            expect(user.household).to eq(house)
+            expect(user.houses.second).to eq(much_older_house)
     end
     it 'user can permanently leave house' do
-
+        user = User.last
+        house = user.household
+        UserHouse.where(user_id: user.id, house_id: house.id)[0].destroy
+        user.save
+          expect(user.houses.count).to eq(0)
+          expect(user.household).to eq(nil)
+          expect(user.houses.first).to eq(nil)
     end
-    it 'user can leave house and come back with same house data (so long as there are still residents in household)' do
+    xit 'user can leave house and come back with same house data (so long as there are still residents in household)' do
+        user = User.last
+        house = user.household
+        UserHouse.where(user_id: user.id, house_id: house.id)[0].destroy
+        user.save
+          expect(user.houses.count).to eq(0)
+          expect(user.household).to eq(nil)
+          expect(user.houses.first).to eq(nil)
 
+        UserHouse.create(user_id: user.id, house_id: house.id)
+        user.save
+        house_again = user.household
+            expect(house_again).to eq(house)
+            expect(user.houses.first).to eq(house_again)
+            expect(user.houses.count).to eq(1)
     end
     it 'user can join an (existing) house with users already in it' do
+        new_user = User.create(first: 'X', last: "Men", email: "xavier@gmail.com",
+                            password: 'pword', generation: 1)
+        house = House.last
+            expect(house.no_residents).to eq(1)
+            expect(house.users.count).to eq(1)
+            expect(house.users.first).to eq(@user3)
 
+        new_user.houses << house
+        new_user.save
+        house = House.last
+            expect(house.no_residents).to eq(2)
+            expect(house.users.count).to eq(2)
+            expect(house.users.first).to eq(@user3)
+            expect(house.users.second).to eq(new_user)
     end
     it 'user can invite people' do
+      new_user = User.create(first: 'X', last: "Men", email: "xavier@gmail.com",
+                          password: 'pword', generation: 1)
+      user = User.second
+          expect(user.email).to eq("m.johnson@gmail.com")
 
+      UserInvite.create(user_id: user.id, invite_id: new_user.id)
+      user = User.second
+          expect(user.invites.count).to eq(1)
+          expect(user.invites.first).to eq(new_user)
     end
   end
 end

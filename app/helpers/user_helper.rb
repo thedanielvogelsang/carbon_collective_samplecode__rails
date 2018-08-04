@@ -107,9 +107,10 @@ module UserHelper
   end
 
   def set_all_questions(hId)
-    UserElectricityQuestion.create(user_id: self.id, house_id: hId)
-    UserWaterQuestion.create(user_id: self.id, house_id: hId)
-    UserGasQuestion.create(user_id: self.id, house_id: hId)
+    UserElectricityQuestion.find_or_create_by(user_id: self.id, house_id: hId)
+    UserGasQuestion.find_or_create_by(user_id: self.id, house_id: hId)
+    UserWaterQuestion.find_or_create_by(user_id: self.id, house_id: hId)
+    true
   end
 
   def remove_all_questions(hId)
@@ -133,6 +134,10 @@ module UserHelper
 
   def confirm_accounts
     self.email_activate
+  end
+
+  def invites
+    UserInvite.where(user_id: self.id).map{|ui| ui.invited }
   end
 
 end
