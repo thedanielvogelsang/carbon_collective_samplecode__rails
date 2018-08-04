@@ -74,7 +74,6 @@ class UsersController < ApplicationController
                       move_in_date: DateTime.new(params[:moveInDate])
                             .in_time_zone("Mountain Time (US & Canada)")
                       )
-      user.set_default_ranks
       render json: user
     else
       error = "User could not be added to existing house"

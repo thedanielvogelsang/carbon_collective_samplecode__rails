@@ -180,7 +180,7 @@ RSpec.describe User, type: :model do
           expect(user.houses.second).to eq(new_house)
 
     end
-    xit 'user accrues resource-use data from all associated houses' do
+    it 'user accrues resource-use data from all associated houses' do
         user = User.last
         house = user.household
             expect(user.houses.first).to eq(house)
@@ -196,6 +196,48 @@ RSpec.describe User, type: :model do
             expect(user.houses.count).to eq(2)
             expect(user.household).to eq(house)
             expect(user.houses.second).to eq(much_older_house)
+
+        ### user begins importing old bills for both houses:
+        yesterday = DateTime.now - 30
+        ago = DateTime.now - 60
+        bill_A = ElectricBill.create(total_kwhs: 1000, price: 1, start_date: yesterday, end_date: (yesterday + 30), house_id: house.id, no_residents: 1, who: user)
+        bill_B = ElectricBill.create(total_kwhs: 2000, price: 1,  start_date: ago, end_date: (yesterday - 1), house_id: house.id, no_residents: 1, who: user)
+        bill_C = WaterBill.create(total_gallons: 1000, price: 1, start_date: ago, end_date: (yesterday - 1), house_id: house.id, no_residents: 1, who: user)
+        bill_D = WaterBill.create(total_gallons: 2000, price: 1,  start_date: yesterday, end_date: (yesterday + 30), house_id: house.id, no_residents: 1, who: user)
+        user = User.find(user.id)
+        u_eavg = user.avg_daily_electricity_consumption
+        u_wavg = user.avg_daily_water_consumption
+            expect(u_eavg.to_f.round(2)).to eq(50.85)
+            expect(u_wavg.to_f.round(2)).to eq(50.85)
+
+        #adds bills to old hold
+        bill_B = ElectricBill.create(total_kwhs: 3000, price: 1,  start_date: ago, end_date: (yesterday - 1), house_id: much_older_house.id, no_residents: 1, who: user)
+        bill_C = WaterBill.create(total_gallons: 3000, price: 1, start_date: ago, end_date: (yesterday - 1), house_id: much_older_house.id, no_residents: 1, who: user)
+
+        #which updates users averages
+        user = User.find(user.id)
+        new_u_eavg = user.avg_daily_electricity_consumption
+        new_u_wavg = user.avg_daily_water_consumption
+            expect(new_u_eavg.to_f.round(2)).to eq(68.18)
+            expect(new_u_wavg.to_f.round(2)).to eq(68.18)
+
+        #while houses retain separate info
+        house = House.find(house.id)
+        old_house = House.find(much_older_house.id)
+          expect(house.total_spent).to eq(4)
+          expect(house.total_days_recorded).to eq(118)
+          expect(house.total_electricity_consumption_to_date).to eq(3000)
+          expect(house.total_water_consumption_to_date).to eq(3000)
+          expect(old_house.total_spent).to eq(2)
+          expect(old_house.total_days_recorded).to eq(58)
+          expect(old_house.total_electricity_consumption_to_date).to eq(3000)
+          expect(old_house.total_water_consumption_to_date).to eq(3000)
+          #with same user averages (since theres only one user in each house)
+          old_house_user_avg = old_house.average_daily_water_consumption_per_user.to_f.round(2)
+          new_house_user_avg = house.average_daily_water_consumption_per_user.to_f.round(2)
+          expect(old_house_user_avg).to eq(68.18)
+          expect(new_house_user_avg).to eq(68.18)
+          expect(new_house_user_avg).to eq(old_house_user_avg)
     end
     it 'user can permanently leave house' do
         user = User.last
