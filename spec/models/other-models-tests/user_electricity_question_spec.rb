@@ -15,7 +15,7 @@ RSpec.describe UserElectricityQuestion, type: :model do
                         password: 'password', generation: 1)
     house = House.create(address_id: address.id, no_residents: 1, total_sq_ft: 3000)
     user.houses << house
-    @u_question_list = UserElectricityQuestion.create(user_id: user.id, house_id: house.id)
+    @u_question_list = UserElectricityQuestion.last
   end
   context 'relationships' do
     it {should belong_to(:house)}
@@ -80,6 +80,25 @@ RSpec.describe UserElectricityQuestion, type: :model do
       @u_question_list.save
         expect(UserElectricityQuestion.last.completion_percentage).to eq(100)
         expect(UserElectricityQuestion.last.completed).to eq(true)
+    end
+  end
+  context 'question creation / destruction in database' do
+    it "questions are created automatically with UserHouse creation" do
+
+    end
+    it 'questions are retained when a user leaves a house' do
+
+    end
+    it "questions are destroyed when user is destroyed" do
+      user = User.last
+        expect(user.email).to eq("r.rajan@gmail.com")
+        expect(user.user_electricity_questions.count).to eq(1)
+        expect(UserElectricityQuestion.count).to eq(1)
+        expect(user.user_electricity_questions[0]).to eq(@u_question_list)
+      User.destroy(user.id)
+      user = User.last
+        expect(user).to eq(nil)
+        expect(UserElectricityQuestion.count).to eq(0)
     end
   end
 end
