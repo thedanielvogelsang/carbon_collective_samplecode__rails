@@ -198,6 +198,7 @@ RSpec.describe User, type: :model do
             expect(user.houses.second).to eq(much_older_house)
 
         ### user begins importing old bills for both houses:
+        #adds bills to first house
         yesterday = DateTime.now - 30
         ago = DateTime.now - 60
         bill_A = ElectricBill.create(total_kwhs: 1000, price: 1, start_date: yesterday, end_date: (yesterday + 30), house_id: house.id, no_residents: 1, who: user)
@@ -248,21 +249,46 @@ RSpec.describe User, type: :model do
           expect(user.household).to eq(nil)
           expect(user.houses.first).to eq(nil)
     end
-    xit 'user can leave house and come back with same house data (so long as there are still residents in household)' do
-        user = User.last
-        house = user.household
-        UserHouse.where(user_id: user.id, house_id: house.id)[0].destroy
-        user.save
-          expect(user.houses.count).to eq(0)
-          expect(user.household).to eq(nil)
-          expect(user.houses.first).to eq(nil)
+    it 'user can leave house and come back with same house data (so long as there are still residents in household)' do
+      user = User.last
+      house = user.household
+      house.no_residents = 2
+      house.save
+        expect(user.houses.count).to eq(1)
+        expect(house.no_residents).to eq(2)
+      ### house has bills :
+      yesterday = DateTime.now - 30
+      ago = DateTime.now - 60
+      bill_A = ElectricBill.create(total_kwhs: 1000, price: 1, start_date: yesterday, end_date: (yesterday + 30), house_id: house.id, no_residents: 1, who: user)
+      bill_B = ElectricBill.create(total_kwhs: 2000, price: 1,  start_date: ago, end_date: (yesterday - 1), house_id: house.id, no_residents: 1, who: user)
+      bill_C = WaterBill.create(total_gallons: 1000, price: 1, start_date: ago, end_date: (yesterday - 1), house_id: house.id, no_residents: 1, who: user)
+      bill_D = WaterBill.create(total_gallons: 2000, price: 1,  start_date: yesterday, end_date: (yesterday + 30), house_id: house.id, no_residents: 1, who: user)
+      user = User.find(user.id)
+      u_eavg = user.avg_daily_electricity_consumption
+      u_wavg = user.avg_daily_water_consumption
+      h_eavg = house.average_daily_electricity_consumption_per_user
+      h_wavg = house.average_daily_water_consumption_per_user
+          expect(u_eavg.to_f.round(2)).to eq(50.85)
+          expect(u_wavg.to_f.round(2)).to eq(50.85)
+          expect(h_wavg.to_f.round(2)).to eq(50.85)
+          expect(h_wavg.to_f.round(2)).to eq(50.85)
 
-        UserHouse.create(user_id: user.id, house_id: house.id)
-        user.save
-        house_again = user.household
-            expect(house_again).to eq(house)
-            expect(user.houses.first).to eq(house_again)
-            expect(user.houses.count).to eq(1)
+      #user leaves house
+      UserHouse.find_by(user_id: user.id).destroy
+      user = User.last
+      house = House.find(house.id)
+          expect(user.houses.empty?).to be true
+          expect(house.users.empty?).to be true
+          expect(house.no_residents).to eq(1)
+      #house no longer has user averages
+      u_eavg = user.avg_daily_electricity_consumption
+      u_wavg = user.avg_daily_water_consumption
+      h_eavg = house.average_daily_electricity_consumption_per_user
+      h_wavg = house.average_daily_water_consumption_per_user
+          expect(u_eavg.to_f.round(2)).to eq(50.85)
+          expect(u_wavg.to_f.round(2)).to eq(50.85)
+          expect(h_wavg.to_f.round(2)).to eq(0.0)
+          expect(h_wavg.to_f.round(2)).to eq(0.0)
     end
     it 'user can join an (existing) house with users already in it' do
         new_user = User.create(first: 'X', last: "Men", email: "xavier@gmail.com",

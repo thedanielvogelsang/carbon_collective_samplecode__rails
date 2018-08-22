@@ -73,7 +73,6 @@ RSpec.describe HouseHelper, type: :helper do
         rachitha = @user
 
         daniel.houses << @house
-        daniel.set_default_ranks
 
         expect(@house.users.include?(daniel)).to be(true)
         expect(@house.users.include?(rachitha)).to be(true)
@@ -88,9 +87,13 @@ RSpec.describe HouseHelper, type: :helper do
         rachitha.total_waterbill_days_logged = 30
         rachitha.save
 
+        #rachita has no electricity kwhs logged, therefore is first in array (sorted asc)
         expect(@house.users.sort{|u| u.avg_daily_electricity_consumption}.first).to eq(rachitha)
+        #rachita has no gas therms logged, therefore is first in array (sorted asc)
         expect(@house.users.sort{|u| u.avg_daily_gas_consumption}.first).to eq(rachitha)
+        #daniel has no water gallons logged, therefore is first in array (sorted asc)
         expect(@house.users.sort{|u| u.avg_daily_water_consumption}.first).to eq(daniel)
+        #rachita has no electricity kwhs or gas therms logged, therefore is first in array (sorted asc)
         expect(@house.users.sort{|u| u.avg_daily_carbon_consumption}.first).to eq(rachitha)
 
         expect(rachitha.avg_daily_carbon_consumption).to eq(0.0)
@@ -105,7 +108,7 @@ RSpec.describe HouseHelper, type: :helper do
 
         carbon_avg = @house.combine_average_use(d_avg_elect, d_avg_gas).to_f.round(2)
 
-        expect(daniel.avg_daily_carbon_consumption.to_f.round(2)).to eq(44.63)
+        expect(daniel.avg_daily_carbon_consumption.to_f.round(2)).to eq(44.76)
         expect(daniel.avg_daily_carbon_consumption.to_f.round(2)).to eq(carbon_avg)
         expect(daniel.avg_daily_water_consumption).to eq(0.0)
     end
@@ -136,7 +139,7 @@ RSpec.describe HouseHelper, type: :helper do
         expect(@house.total_electricity_consumption_to_date).to eq(1400)
         expect(@house.total_water_consumption_to_date).to eq(1400)
         expect(@house.total_gas_consumption_to_date).to eq(1400)
-        expect(@house.total_carbon_consumption_to_date.to_f.round(2)).to eq(18068.82)
+        expect(@house.total_carbon_consumption_to_date.to_f.round(2)).to eq(18624.38)
     end
     it 'updates totals accurately via individual method (electricity)' do
       start_date1 = DateTime.now - 30
@@ -386,6 +389,7 @@ RSpec.describe HouseHelper, type: :helper do
     end
   end
   context 'house _per_resident calculations' do
+
 
   end
   context 'carbon calculations' do

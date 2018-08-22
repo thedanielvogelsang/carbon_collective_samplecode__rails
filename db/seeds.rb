@@ -749,8 +749,6 @@ User.all.each{|u|
    hId = u.household.id
    u.email_activate
    u.privacy_policy = true
-   u.set_default_ranks
-   u.set_all_questions(hId)
    u.save
  }
 
