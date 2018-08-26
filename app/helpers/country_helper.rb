@@ -19,7 +19,7 @@ module CountryHelper
       # update_daily_avg_gas_savings
       update_daily_avg_gas_consumption
       update_total_electricity_consumption
-      # update_carbon_consumption
+      update_carbon_consumption
       self.save
     end
   end

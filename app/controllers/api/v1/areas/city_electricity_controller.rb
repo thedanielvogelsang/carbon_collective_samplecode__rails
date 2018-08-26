@@ -50,6 +50,6 @@ class Api::V1::Areas::CityElectricityController < ApplicationController
   private
 
   def safe_params
-    params.require("cities").permit(:rank, :arrow)
+    params.require("cities").permit(:rank, :arrow, :area_avg)
   end
 end

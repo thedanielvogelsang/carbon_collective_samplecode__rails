@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180802161341) do
+ActiveRecord::Schema.define(version: 20180826202648) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,8 +44,6 @@ ActiveRecord::Schema.define(version: 20180802161341) do
     t.bigint "area_id"
     t.integer "rank"
     t.boolean "arrow"
-    t.decimal "total_carbon_saved"
-    t.decimal "avg_daily_carbon_consumed_per_user"
     t.index ["area_id", "area_type"], name: "index_carbon_rankings_on_area_id_and_area_type"
     t.index ["area_type", "area_id"], name: "index_carbon_rankings_on_area_type_and_area_id"
   end
@@ -70,6 +68,9 @@ ActiveRecord::Schema.define(version: 20180802161341) do
     t.decimal "total_gas_consumed", default: "0.0"
     t.decimal "total_electricity_consumed", default: "0.0"
     t.decimal "total_water_consumed", default: "0.0"
+    t.decimal "total_carbon_saved", default: "0.0"
+    t.decimal "avg_daily_carbon_consumed_per_user", default: "0.0"
+    t.decimal "total_carbon_consumed", default: "0.0"
     t.index ["name"], name: "index_cities_on_name", unique: true
     t.index ["region_id"], name: "index_cities_on_region_id"
     t.index ["total_electricity_consumed"], name: "index_cities_on_total_electricity_consumed"
@@ -110,6 +111,9 @@ ActiveRecord::Schema.define(version: 20180802161341) do
     t.decimal "total_electricity_consumed", default: "0.0"
     t.decimal "total_water_consumed", default: "0.0"
     t.decimal "total_gas_consumed", default: "0.0"
+    t.decimal "total_carbon_saved", default: "0.0"
+    t.decimal "avg_daily_carbon_consumed_per_user", default: "0.0"
+    t.decimal "total_carbon_consumed", default: "0.0"
     t.index ["name"], name: "index_counties_on_name", unique: true
     t.index ["region_id"], name: "index_counties_on_region_id"
     t.index ["total_electricity_consumed"], name: "index_counties_on_total_electricity_consumed"
@@ -139,6 +143,9 @@ ActiveRecord::Schema.define(version: 20180802161341) do
     t.decimal "total_electricity_consumed", default: "0.0"
     t.decimal "total_water_consumed", default: "0.0"
     t.decimal "total_gas_consumed", default: "0.0"
+    t.decimal "total_carbon_saved", default: "0.0"
+    t.decimal "total_carbon_consumed", default: "0.0"
+    t.decimal "avg_daily_carbon_consumed_per_user", default: "0.0"
     t.index ["name"], name: "index_countries_on_name", unique: true
     t.index ["total_electricity_consumed"], name: "index_countries_on_total_electricity_consumed"
     t.index ["total_electricity_saved"], name: "index_countries_on_total_electricity_saved"
@@ -303,6 +310,9 @@ ActiveRecord::Schema.define(version: 20180802161341) do
     t.decimal "total_electricity_consumed", default: "0.0"
     t.decimal "total_water_consumed", default: "0.0"
     t.decimal "total_gas_consumed", default: "0.0"
+    t.decimal "total_carbon_saved", default: "0.0"
+    t.decimal "avg_daily_carbon_consumed_per_user", default: "0.0"
+    t.decimal "total_carbon_consumed", default: "0.0"
     t.index ["city_id"], name: "index_neighborhoods_on_city_id"
     t.index ["name"], name: "index_neighborhoods_on_name", unique: true
     t.index ["total_electricity_consumed"], name: "index_neighborhoods_on_total_electricity_consumed"
@@ -343,6 +353,9 @@ ActiveRecord::Schema.define(version: 20180802161341) do
     t.decimal "total_electricity_consumed", default: "0.0"
     t.decimal "total_water_consumed", default: "0.0"
     t.decimal "total_gas_consumed", default: "0.0"
+    t.decimal "total_carbon_saved", default: "0.0"
+    t.decimal "avg_daily_carbon_consumed_per_user", default: "0.0"
+    t.decimal "total_carbon_consumed", default: "0.0"
     t.index ["country_id"], name: "index_regions_on_country_id"
     t.index ["name"], name: "index_regions_on_name", unique: true
     t.index ["total_electricity_consumed"], name: "index_regions_on_total_electricity_consumed"
