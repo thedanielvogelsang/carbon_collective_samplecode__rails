@@ -220,10 +220,14 @@ GLOBE = Global.create
 COUNTRIES[:countries].each do |c|
   edaily_avg = c[1].fdiv(30)
   wdaily_avg = c[2].fdiv(365) if c[2]
+  cavg = c[4] || 0.0
+  cdaily_avg = (cavg * 2204.6).fdiv(365)
   Country.create!(name: c[0], avg_daily_electricity_consumed_per_capita: edaily_avg,
                   avg_daily_electricity_consumed_per_user: edaily_avg,
                   avg_daily_water_consumed_per_capita: wdaily_avg,
                   avg_daily_water_consumed_per_user: wdaily_avg,
+                  avg_daily_carbon_consumed_per_capita: cdaily_avg,
+                  avg_daily_carbon_consumed_per_user: cdaily_avg,
                   )
 
 end
@@ -233,14 +237,10 @@ usa.avg_daily_gas_consumed_per_capita = 8.46
 usa.avg_daily_gas_consumed_per_user = 8.46
 usa.save
 
-Country.all.each{|c| c.set_default_ranks}
-
-COUNTRIES[:countries].each do |c|
-  name = c[0]
-  country = Country.find_by(name: name)
-  arg = c[4] || 0
-  country.update_carbon_consumption((arg * 2204.6).fdiv(365))
-end
+Country.all.each{|c|
+  c.set_default_ranks
+  c.update_data
+}
 
 puts "You have #{Country.count} countries in the database prepped and ready"
 
@@ -380,22 +380,17 @@ CO_COUNTIES = [
 
 STATES.each do |r|
   state_avg = "%0.6f" % (("%0.6f" % r[1]).to_f / ("%0.6f" % 30).to_f)
+  carbon_avg = (r[4] * 2204.6).fdiv(365)
   Region.create(name: r[0], avg_daily_electricity_consumed_per_capita: state_avg,
                 avg_daily_water_consumed_per_capita: r[2],
                 avg_daily_gas_consumed_per_capita: r[3],
                 avg_daily_electricity_consumed_per_user: state_avg,
                 avg_daily_water_consumed_per_user: r[2],
                 avg_daily_gas_consumed_per_user: r[3],
+                avg_daily_carbon_consumed_per_capita: carbon_avg,
+                avg_daily_carbon_consumed_per_user: carbon_avg,
                 country_id: Country.find_by(name: "United States of America").id,
                )
-end
-
-Region.all.each{|r| r.set_default_ranks}
-
-STATES.each do |r|
-  state = Region.find_by(name: r[0])
-  carbon_avg = (r[4] * 2204.6).fdiv(365)
-  state.update_carbon_consumption(carbon_avg)
 end
 
 puts "#{Region.count} States created in Regions table"
@@ -405,6 +400,11 @@ CANADA_REGIONS.each do |r|
   Region.create(name: r, country_id: Country.find_by(name: "Canada").id)
 end
 puts "#{Region.count} Provinces created in Regions table"
+
+Region.all.each{ |r|
+   r.set_default_ranks
+   r.update_data
+ }
 
 # def bind_new_user(house)
 #   user = User.new(email: Faker::Internet.email,
@@ -742,8 +742,14 @@ puts "all neighborhoods of Denver added"
 GLOBE.update_data
 
 country.update_data
+Country.all.each{|c|
+  c.set_snapshots
+}
 
 state.update_data
+Region.all.each{|r|
+  r.set_snapshots
+}
 
 User.all.each{|u|
    hId = u.household.id
@@ -755,16 +761,19 @@ User.all.each{|u|
 County.all.each do |c|
   c.set_default_ranks
   c.update_data
+  c.set_snapshots
 end
 
 City.all.each do |c|
-    c.set_default_ranks
-    c.update_data
+  c.set_default_ranks
+  c.update_data
+  c.set_snapshots
 end
 
 Neighborhood.all.each do |n|
   n.set_default_ranks
   n.update_data
+  n.set_snapshots
 end
 
 # # #

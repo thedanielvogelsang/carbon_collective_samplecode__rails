@@ -116,10 +116,8 @@ module CityHelper
   end
 
   def update_carbon_consumption
-    carbon_ranking = self.carbon_ranking
-    carbon_ranking.avg_daily_carbon_consumed_per_user = combine_average_use(self.avg_daily_electricity_consumed_per_user, self.avg_daily_gas_consumed_per_user)
-    # carbon_ranking.avg_daily_carbon_consumed_per_user = n
-    carbon_ranking.save
+    self.avg_daily_carbon_consumed_per_user = combine_average_use(self.avg_daily_electricity_consumed_per_user, self.avg_daily_gas_consumed_per_user)
+    self.total_carbon_consumed = combine_average_use(self.total_electricity_consumed, self.total_gas_consumed)
   end
 
   def update_total_electricity_consumption
@@ -153,6 +151,9 @@ module CityHelper
     WaterRanking.create(area_type: "City", area_id: self.id, rank: nil, arrow: nil)
     ElectricityRanking.create(area_type: "City", area_id: self.id, rank: nil, arrow: nil)
     GasRanking.create(area_type: "City", area_id: self.id, rank: nil, arrow: nil)
-    CarbonRanking.create(area_type: "City", area_id: self.id, rank: nil, arrow: nil, total_carbon_saved: 0, avg_daily_carbon_consumed_per_user: 0)
+    CarbonRanking.create(area_type: "City", area_id: self.id, rank: nil, arrow: nil)
+  end
+  def set_snapshots
+    CitySnapshot.take_snapshot(self)
   end
 end

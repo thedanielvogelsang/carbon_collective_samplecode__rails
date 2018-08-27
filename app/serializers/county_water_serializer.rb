@@ -1,6 +1,6 @@
 class CountyWaterSerializer < ActiveModel::Serializer
   attributes :id, :name, :metric_name, :rank, :arrow,
-                  :metric_sym, :total_saved,
+                  :metric_sym,
                   :avg_monthly_consumed_per_user,
                   :avg_monthly_consumed_per_capita, :out_of
 
