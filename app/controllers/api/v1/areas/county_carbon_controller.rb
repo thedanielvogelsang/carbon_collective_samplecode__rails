@@ -1,9 +1,8 @@
 class Api::V1::Areas::CountyCarbonController < ApplicationController
 
   def index
-      render json: County.joins(:carbon_ranking)
-            .merge(CarbonRanking.order(:avg_daily_carbon_consumed_per_user)).uniq,
-         each_serializer: CountyCarbonSerializer
+    render json: County.order(avg_daily_carbon_consumed_per_user: :asc).joins(:users)
+    .distinct, each_serializer: CountyCarbonSerializer
   end
 
   def show
