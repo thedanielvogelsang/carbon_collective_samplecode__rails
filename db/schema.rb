@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180826220819) do
+ActiveRecord::Schema.define(version: 20180827014352) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -307,9 +307,23 @@ ActiveRecord::Schema.define(version: 20180826220819) do
     t.bigint "house_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.decimal "average_daily_electricity_consumption_per_user"
-    t.decimal "average_daily_water_consumption_per_user"
-    t.decimal "average_daily_gas_consumption_per_user"
+    t.decimal "avg_daily_electricity_consumption_per_user"
+    t.decimal "avg_daily_water_consumption_per_user"
+    t.decimal "avg_daily_gas_consumption_per_user"
+    t.decimal "avg_daily_carbon_consumption_per_user"
+    t.decimal "total_electricity_consumed"
+    t.decimal "total_water_consumed"
+    t.decimal "total_gas_consumed"
+    t.decimal "total_carbon_consumed"
+    t.decimal "max_daily_electricity_consumption"
+    t.decimal "max_daily_water_consumption"
+    t.decimal "max_daily_gas_consumption"
+    t.decimal "max_daily_carbon_consumption"
+    t.integer "electricity_rank"
+    t.integer "water_rank"
+    t.integer "gas_rank"
+    t.integer "carbon_rank"
+    t.integer "out_of"
     t.index ["house_id"], name: "index_household_snapshots_on_house_id"
   end
 

@@ -159,6 +159,7 @@ module HouseHelper
     bills + wbills + gbills
   end
 
+  # total of each bill type
   def total_electricitybill_days_recorded
     self.bills.map{|b| (b.end_date - b.start_date).to_i }.reduce(0){|s,n| s+n}
   end
