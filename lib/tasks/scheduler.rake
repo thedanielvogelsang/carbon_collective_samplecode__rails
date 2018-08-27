@@ -20,12 +20,12 @@ task :update_data => :environment do
   Neighborhood.all.each{|n| n.update_data }
 
   puts "Updating snapshots...."
-    Country.all.each{|c| CountrySnapshot.take_snapshot(c) }
-    Region.all.each{|r| RegionSnapshot.take_snapshot(r) }
-    County.all.each{|c| CountySnapshot.take_snapshot(c) }
-    City.all.each{|c| CitySnapshot.take_snapshot(c) }
-    Neighborhood.all.each{|n| NeighborhoodSnapshot.take_snapshot(n) }
-    House.all.each{|h| HouseholdSnapshot.take_snapshot(h) }
+    Country.joins(:users).distinct.each{|c| CountrySnapshot.take_snapshot(c) }
+    Region.joins(:users).distinct.each{|r| RegionSnapshot.take_snapshot(r) }
+    County.joins(:users).distinct.each{|c| CountySnapshot.take_snapshot(c) }
+    City.joins(:users).distinct.each{|c| CitySnapshot.take_snapshot(c) }
+    Neighborhood.joins(:users).distinct.each{|n| NeighborhoodSnapshot.take_snapshot(n) }
+    House.joins(:users).distinct.each{|h| HouseholdSnapshot.take_snapshot(h) }
   puts "Snapshots logged"
 
   puts "Writing to S3 Bucket"
