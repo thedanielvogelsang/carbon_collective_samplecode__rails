@@ -2,12 +2,13 @@ class HouseElectricitySerializer < ActiveModel::Serializer
   attributes :id, :total_sq_ft, :no_residents, :address, :neighborhood,
                   :users_names, :users_ids, :no_users, :number_of_bills_entered,
                   :apartment, :total_spent, :total_days_recorded,
-                  :total_consumption_to_date, :metric_sym, :out_of
+                  :total_consumption_to_date, :metric_sym, :out_of,
                   :total_savings_to_date,
                   :avg_daily_consumption_per_resident,
                   :avg_monthly_consumption_per_resident,
                   :avg_daily_consumption_per_user,
                   :avg_monthly_consumption_per_user,
+                  :arrow, :rank,
                   :avg_daily_consumption
                   :avg_monthly_consumption
 
@@ -84,5 +85,11 @@ class HouseElectricitySerializer < ActiveModel::Serializer
   end
   def out_of
     object.household_snapshots.last.out_of
+  end
+  def rank
+    object.electricity_ranking.rank
+  end
+  def arrow
+    object.electricity_ranking.arrow
   end
 end

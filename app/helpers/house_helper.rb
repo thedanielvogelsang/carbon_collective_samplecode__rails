@@ -70,6 +70,10 @@ module HouseHelper
       end
     end
 
+    def average_daily_carbon_consumption_per_user
+      combine_average_use(avg_daily_electricity_consumed_per_user, avg_daily_gas_consumed_per_user)
+    end
+
   # -- based on bills -- #
   #CONSUMPTION
     #Electricity

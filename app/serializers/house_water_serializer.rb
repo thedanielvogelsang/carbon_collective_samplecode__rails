@@ -2,7 +2,8 @@ class HouseWaterSerializer < ActiveModel::Serializer
   attributes :id, :total_sq_ft, :no_residents, :address, :neighborhood,
                   :users_names, :users_ids, :no_users, :number_of_bills_entered,
                   :apartment, :total_spent, :total_days_recorded,
-                  :total_consumption_to_date, :metric_sym, :out_of
+                  :total_consumption_to_date, :metric_sym, :out_of,
+                  :arrow, :rank,
                   :total_savings_to_date,
                   :avg_daily_consumption,
                   :avg_monthly_consumption,
@@ -89,5 +90,11 @@ class HouseWaterSerializer < ActiveModel::Serializer
 
   def out_of
     object.household_snapshots.last.out_of
+  end
+  def rank
+    object.water_ranking.rank
+  end
+  def arrow
+    object.water_ranking.arrow
   end
 end
