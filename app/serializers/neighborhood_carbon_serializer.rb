@@ -1,5 +1,5 @@
 class NeighborhoodCarbonSerializer < ActiveModel::Serializer
-  attributes :id, :name, :parent, :total_saved, :avg_monthly_consumed_per_user,
+  attributes :id, :name, :parent, :avg_monthly_consumed_per_user,
                   :metric_sym, :metric_name, :rank, :arrow, :out_of
 
     def parent
@@ -18,9 +18,9 @@ class NeighborhoodCarbonSerializer < ActiveModel::Serializer
     #   object.users.count
     # end
 
-    def total_saved
-      object.carbon_ranking.total_carbon_saved.round(2)
-    end
+    # def total_saved
+    #   object.carbon_ranking.total_carbon_saved.round(2)
+    # end
 
     def avg_daily_consumed_per_user
       object.neighborhood_snapshots.last.avg_daily_carbon_consumption_per_user.round(2)
