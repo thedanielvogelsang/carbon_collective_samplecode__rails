@@ -1,10 +1,13 @@
 class Api::V1::Areas::CityCarbonController < ApplicationController
   def index
-    if params[:parent]
-      region = Region.find_by(name: params[:parent])
-      render json: City.where(region_id: region.id).joins(:carbon_ranking).merge(CarbonRanking.order(avg_daily_carbon_consumed_per_user: :desc)), each_serializer: CityCarbonSerializer
+    if params[:parent] && Region.find_by(name: params[:parent])
+      id = Region.find_by(name: params[:parent]).id
+      render json: City.where(region_id: id).joins(:users)
+        .order(avg_daily_carbon_consumed_per_user: :asc)
+        .distinct, each_serializer: CityCarbonSerializer
     else
-      render json: City.all, each_serializer: CityCarbonSerializer
+      render json: City
+        .order(avg_daily_carbon_consumed_per_user: :asc), each_serializer: CityCarbonSerializer
     end
   end
 

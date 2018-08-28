@@ -9,7 +9,6 @@ class UserWaterSerializer < ActiveModel::Serializer
                   :household_monthly_consumption,
                   :neighborhood_monthly_consumption,
                   :city_monthly_consumption,
-                  :county_monthly_consumption,
                   :region_monthly_consumption,
                   :country_monthly_consumption,
                   :metric_sym, :num_bills, :out_of
@@ -137,12 +136,15 @@ class UserWaterSerializer < ActiveModel::Serializer
       nil
     end
   end
+
   def metric_sym
     'gallons'
   end
+
   def num_bills
-    object.household.water_bills.count if object.household
+    object.water_bills_by_house(object.household.id).count if object.household
   end
+
   def out_of
     ops_ = @instance_options[:region] if @instance_options[:region]
     if ops_

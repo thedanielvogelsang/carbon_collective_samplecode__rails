@@ -69,8 +69,11 @@ class UsersController < ApplicationController
     user = User.find(params[:user_id])
     house = House.find(params[:house_id])
     if user && house
-      user.houses << house
-      user.set_default_ranks
+      UserHouse.create(user_id: user.id,
+                      house_id: house.id,
+                      move_in_date: DateTime.new(params[:moveInDate])
+                            .in_time_zone("Mountain Time (US & Canada)")
+                      )
       render json: user
     else
       error = "User could not be added to existing house"

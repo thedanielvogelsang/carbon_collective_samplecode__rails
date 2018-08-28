@@ -6,7 +6,7 @@ class CityWaterSerializer < ActiveModel::Serializer
                   :avg_monthly_consumed_per_capita,
                   :out_of
 
-  # 
+  #
   # def total_saved
   #   object.total_water_saved.round(2)
   # end
@@ -14,13 +14,13 @@ class CityWaterSerializer < ActiveModel::Serializer
   #   object.avg_total_water_saved_per_user.round(2)
   # end
   def avg_daily_consumed_per_user
-    (object.avg_daily_water_consumed_per_user).round(2) if object.avg_daily_water_consumed_per_user != nil
+    (object.city_snapshots.last.avg_daily_water_consumption_per_user).round(2)
   end
   def avg_daily_consumed_per_capita
     (object.avg_daily_water_consumed_per_capita).round(2) if object.avg_daily_water_consumed_per_capita != nil
   end
   def avg_monthly_consumed_per_user
-    (object.avg_daily_water_consumed_per_user * 29.53).round(2) if object.avg_daily_water_consumed_per_user != nil
+    (object.city_snapshots.last.avg_daily_water_consumption_per_user * 29.53).round(2)
   end
   def avg_monthly_consumed_per_capita
     (object.avg_daily_water_consumed_per_capita  * 29.53).round(2) if object.avg_daily_water_consumed_per_capita != nil
@@ -48,6 +48,6 @@ class CityWaterSerializer < ActiveModel::Serializer
     "gal."
   end
   def out_of
-    City.where(region: object.region).count
+    object.city_snapshots.last.out_of
   end
 end

@@ -2,7 +2,7 @@ class Api::V1::Areas::CityElectricityController < ApplicationController
 
   # used for rankings, only neighborhoods with users listed
   def index
-    if params[:parent]
+    if params[:parent] && Region.find_by(name: params[:parent])
       id = Region.find_by(name: params[:parent]).id
       render json: City.where(region_id: id).joins(:users)
         .order(avg_daily_electricity_consumed_per_user: :asc)
@@ -50,6 +50,6 @@ class Api::V1::Areas::CityElectricityController < ApplicationController
   private
 
   def safe_params
-    params.require("cities").permit(:rank, :arrow)
+    params.require("cities").permit(:rank, :arrow, :area_avg)
   end
 end

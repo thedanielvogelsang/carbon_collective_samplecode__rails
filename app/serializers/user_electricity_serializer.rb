@@ -9,7 +9,6 @@ class UserElectricitySerializer < ActiveModel::Serializer
                   :household_monthly_consumption,
                   :neighborhood_monthly_consumption,
                   :city_monthly_consumption,
-                  :county_monthly_consumption,
                   :region_monthly_consumption,
                   :country_monthly_consumption,
                   :metric_sym, :num_bills, :out_of
@@ -151,8 +150,9 @@ class UserElectricitySerializer < ActiveModel::Serializer
   end
 
   def num_bills
-    object.household.bills.count if object.household
+    object.electric_bills_by_house(object.household.id).count if object.household
   end
+
   def out_of
     ops_ = @instance_options[:region] if @instance_options[:region]
     if ops_

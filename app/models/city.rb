@@ -20,15 +20,19 @@ class City < ApplicationRecord
   has_many :user_water_rankings, :as => :area
   has_many :user_gas_rankings, :as => :area
   has_many :user_carbon_rankings, :as => :area
-  
+
   before_validation :capitalize_name
 
   before_create :add_zeros
 
+  after_create :set_default_ranks
+
   def capitalize_name
-    self.name = self.name.split(' ')
-    .map{|w| w.downcase == 'of' || w.downcase == 'and' ? lowercase(w) : capitalize(w)}
-    .join(' ')
+    if self.name
+      self.name = self.name.split(' ')
+      .map{|w| w.downcase == 'of' || w.downcase == 'and' ? lowercase(w) : capitalize(w)}
+      .join(' ')
+    end
   end
 
   def lowercase(word)

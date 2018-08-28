@@ -1,16 +1,14 @@
 class Api::V1::Areas::NeighborhoodCarbonController < ApplicationController
   def index
-    if params[:parent]
-      city = City.find_by(name: params[:parent])
-      render json: Neighborhood.where(city: city).joins(:users)
-            .joins(:carbon_ranking)
-            .merge(CarbonRanking.order(:avg_daily_carbon_consumed_per_user)).uniq,
-        each_serializer: NeighborhoodCarbonSerializer
+    if params[:parent] && Neighborhood.find_by(name: params[:parent])
+      id = City.find_by(name: params[:parent])
+      render json: Neighborhood.where(city: id).joins(:users)
+        .order(avg_daily_carbon_consumed_per_user: :asc)
+        .distinct, each_serializer: NeighborhoodCarbonSerializer
     else
       render json: Neighborhood.joins(:users)
-            .joins(:carbon_ranking)
-            .merge(CarbonRanking.order(:avg_daily_carbon_consumed_per_user)).uniq,
-        each_serializer: NeighborhoodCarbonSerializer
+        .order(avg_daily_carbon_consumed_per_user: :asc)
+        .distinct, each_serializer: NeighborhoodCarbonSerializer
     end
   end
 
@@ -37,9 +35,8 @@ class Api::V1::Areas::NeighborhoodCarbonController < ApplicationController
   end
 
   def update
-    id = params[:id]
-    if Neighborhood.exists?(id)
-      neighborhood = Neighborhood.find(id)
+    if Neighborhood.exists?(params[:id])
+      neighborhood = Neighborhood.find(params[:id])
       n_ranking = neighborhood.carbon_ranking
       if n_ranking.update(safe_params)
         render json: neighborhood, serializer: NeighborhoodCarbonSerializer

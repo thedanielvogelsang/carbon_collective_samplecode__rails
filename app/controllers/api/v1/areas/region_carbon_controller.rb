@@ -1,14 +1,13 @@
 class Api::V1::Areas::RegionCarbonController < ApplicationController
   def index
-    if params[:parent]
-      country = Country.find_by(name: params[:parent])
-      render json: Region.where(country_id: country.id)
-            .joins(:carbon_ranking)
-            .merge(CarbonRanking.order(:avg_daily_carbon_consumed_per_user)).uniq,
-        each_serializer: RegionCarbonSerializer
+    if params[:parent] && Country.find_by(name: params[:parent])
+      id = Country.find_by(name: params[:parent]).id
+      render json: Region.where(country_id: id)
+      .order(avg_daily_carbon_consumed_per_user: :asc)
+      .distinct, each_serializer: RegionCarbonSerializer
     else
-      render json: Region.joins(:carbon_ranking)
-            .merge(CarbonRanking.order(:avg_daily_carbon_consumed_per_user)).uniq,
+      render json: Region
+        .order(avg_daily_carbon_consumed_per_user: :asc),
         each_serializer: RegionCarbonSerializer
     end
   end
@@ -36,8 +35,8 @@ class Api::V1::Areas::RegionCarbonController < ApplicationController
   def update
     if Region.exists?(params[:id])
       region = Region.find(params[:id])
-      n_ranking = region.carbon_ranking
-      if n_ranking.update(safe_params)
+      r_ranking = region.carbon_ranking
+      if r_ranking.update(safe_params)
         render json: region, serializer: RegionCarbonSerializer
       else
         render json: {error: "Region unable to update. Try again!"}, status: 404

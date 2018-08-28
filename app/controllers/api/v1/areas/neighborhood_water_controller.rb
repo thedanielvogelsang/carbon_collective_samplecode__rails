@@ -1,6 +1,6 @@
 class Api::V1::Areas::NeighborhoodWaterController < ApplicationController
   def index
-    if params[:parent]
+    if params[:parent] && Neighborhood.find_by(name: params[:parent])
       id = City.find_by(name: params[:parent])
       render json: Neighborhood.where(city_id: id).joins(:users)
         .order(avg_daily_water_consumed_per_user: :asc)

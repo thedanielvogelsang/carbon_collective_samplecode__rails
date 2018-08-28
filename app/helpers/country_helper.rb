@@ -19,7 +19,7 @@ module CountryHelper
       # update_daily_avg_gas_savings
       update_daily_avg_gas_consumption
       update_total_electricity_consumption
-      # update_carbon_consumption
+      update_carbon_consumption
       self.save
     end
   end
@@ -47,7 +47,7 @@ module CountryHelper
 
   def update_daily_avg_electricity_consumption
       users = self.users.map{|u| u.avg_daily_electricity_consumption }
-              .flatten.reject(&:nan?)
+              .flatten.reject(&:nan?).reject(&:zero?)
       ct = users.length
       energy_consumed = users.reduce(0){|sum, num| sum + num} / ct if ct != 0
       energy_consumed ||= 0.0
@@ -75,7 +75,7 @@ module CountryHelper
   def update_daily_avg_water_consumption
       users = self.users.map{|u| u.avg_daily_water_consumption }
               .flatten
-              .reject(&:nan?)
+              .reject(&:nan?).reject(&:zero?)
       ct = users.length
       water_consumed = users.reduce(0){|sum, num| sum + num} / ct if ct != 0
       water_consumed ||= 0.0
@@ -105,24 +105,22 @@ module CountryHelper
 
   def update_daily_avg_gas_consumption
       users = self.users.map{|u| u.avg_daily_gas_consumption }
-        .flatten.reject(&:nan?)
+        .flatten.reject(&:nan?).reject(&:zero?)
       ct = users.length
       gas_consumed = users.reduce(0){|sum, num| sum + num} / ct if ct != 0
       gas_consumed ||= 0.0
       self.avg_daily_gas_consumed_per_user = gas_consumed
   end
 
-  def update_carbon_consumption(n)
-    carbon_ranking = self.carbon_ranking
-    # carbon_ranking.avg_daily_carbon_consumed_per_user = combine_average_use(self.avg_daily_electricity_consumed_per_user, self.avg_daily_gas_consumed_per_user)
-    carbon_ranking.avg_daily_carbon_consumed_per_user = n
-    carbon_ranking.save
+  def update_carbon_consumption
+    self.avg_daily_carbon_consumed_per_user = combine_average_use(self.avg_daily_electricity_consumed_per_user, self.avg_daily_gas_consumed_per_user)
+    self.total_carbon_consumed = combine_average_use(self.total_electricity_consumed, self.total_gas_consumed)
   end
 
   def update_total_electricity_consumption
     if ElectricBill.joins(:house => {:address => :region}).where(:regions => {country_id: self.id}).count != 0
       energy_consumed = self.users.map{|u| u.avg_daily_electricity_consumption }
-              .flatten.reject(&:nan?)
+              .flatten.reject(&:nan?).reject(&:zero?)
               .reduce(0){|sum, num| sum + num}
       self.total_electricity_consumed = energy_consumed
     end
@@ -131,7 +129,7 @@ module CountryHelper
     if WaterBill.joins(:house => {:address => :region}).where(:regions => {country_id: self.id}).count != 0
       water_consumed = self.users.map{|u| u.total_gallons_logged }
               .flatten
-              .reject(&:nan?)
+              .reject(&:nan?).reject(&:zero?)
               .reduce(0){|sum, num| sum + num}
       self.total_water_consumed = water_consumed
     end
@@ -139,7 +137,7 @@ module CountryHelper
   def update_total_gas_consumption
     if HeatBill.joins(:house => {:address => :region}).where(:regions => {country_id: self.id}).count != 0
       gas_consumed = self.users.map{|u| u.total_therms_logged }
-      .flatten.reject(&:nan?)
+      .flatten.reject(&:nan?).reject(&:zero?)
       .reduce(0){|sum, num| sum + num}
       self.total_gas_consumed = gas_consumed
     end
@@ -149,6 +147,10 @@ module CountryHelper
     WaterRanking.create(area_type: "Country", area_id: self.id, rank: nil, arrow: nil)
     ElectricityRanking.create(area_type: "Country", area_id: self.id, rank: nil, arrow: nil)
     GasRanking.create(area_type: "Country", area_id: self.id, rank: nil, arrow: nil)
-    CarbonRanking.create(area_type: "Country", area_id: self.id, rank: nil, arrow: nil, total_carbon_saved: 0, avg_daily_carbon_consumed_per_user: 0)
+    CarbonRanking.create(area_type: "Country", area_id: self.id, rank: nil, arrow: nil)
+  end
+
+  def set_snapshots
+    CountrySnapshot.take_snapshot(self)
   end
 end

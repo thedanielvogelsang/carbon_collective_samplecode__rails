@@ -5,7 +5,7 @@ class UserCarbonSerializer < ActiveModel::Serializer
                   :arrow, :rank, :last_updated, :avg_daily_footprint, :avg_monthly_footprint,
                   :household, :neighborhood, :city, :county, :region, :country,
                   :household_monthly_consumption, :neighborhood_monthly_consumption,
-                  :city_monthly_consumption, :county_monthly_consumption, :region_monthly_consumption,
+                  :city_monthly_consumption, :region_monthly_consumption,
                   :country_monthly_consumption, :avg_daily_consumption, :avg_monthly_consumption,
                   :metric_sym, :out_of
 
@@ -23,9 +23,9 @@ class UserCarbonSerializer < ActiveModel::Serializer
   end
 
   def avg_monthly_consumption
-    (object.avg_daily_carbon_consumption * 29.53).to_f.round(2).to_s if object.avg_daily_carbon_consumption
-    "0" if !object.avg_daily_carbon_consumption
+    object.avg_daily_carbon_consumption ? (object.avg_daily_carbon_consumption * 29.53).to_f.round(2).to_s : "0"
   end
+
   def neighborhood
     [object.neighborhood.id, object.neighborhood.name, object.neighborhood.carbon_ranking.rank, object.neighborhood.out_of] if object.neighborhood
   end
@@ -90,23 +90,23 @@ class UserCarbonSerializer < ActiveModel::Serializer
   end
 
   def neighborhood_monthly_consumption
-    (object.neighborhood.carbon_ranking.avg_daily_carbon_consumed_per_user * 29.53).to_f.round(2).to_s if !object.houses.empty?
+    (object.neighborhood.avg_daily_carbon_consumed_per_user * 29.53).to_f.round(2).to_s if !object.houses.empty?
   end
 
   def city_monthly_consumption
-    (object.city.carbon_ranking.avg_daily_carbon_consumed_per_user * 29.53).to_f.round(2).to_s if !object.houses.empty?
+    (object.city.avg_daily_carbon_consumed_per_user * 29.53).to_f.round(2).to_s if !object.houses.empty?
   end
 
   def county_monthly_consumption
-    (object.county.carbon_ranking.avg_daily_carbon_consumed_per_user * 29.53).to_f.round(2).to_s if !object.houses.empty?
+    (object.county.avg_daily_carbon_consumed_per_user * 29.53).to_f.round(2).to_s if !object.houses.empty?
   end
 
   def region_monthly_consumption
-    (object.region.carbon_ranking.avg_daily_carbon_consumed_per_user * 29.53).to_f.round(2).to_s if !object.houses.empty?
+    (object.region.avg_daily_carbon_consumed_per_user * 29.53).to_f.round(2).to_s if !object.houses.empty?
   end
 
   def country_monthly_consumption
-    (object.country.carbon_ranking.avg_daily_carbon_consumed_per_user * 29.53).to_f.round(2).to_s if !object.houses.empty?
+    (object.country.avg_daily_carbon_consumed_per_user * 29.53).to_f.round(2).to_s if !object.houses.empty?
   end
   def metric_sym
     'lbsCO2'

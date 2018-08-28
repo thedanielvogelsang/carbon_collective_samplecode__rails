@@ -6,7 +6,14 @@ module UserGasHelper
   # end
 
   def avg_daily_gas_consumption
-    self.total_therms_logged.fdiv(self.total_heatbill_days_logged)
+    res_ = self.total_therms_logged.fdiv(self.total_heatbill_days_logged)
+    return res_.nan? ? 0.0 : res_
+  end
+
+  def gas_bills_by_house(house_id)
+    uh = UserHouse.where(house_id: house_id, user_id: self.id)[0]
+    HeatBill.joins(:house).where(:houses => {id: house_id}).order(end_date: :desc)
+        .select{|b| b.start_date > uh.move_in_date}
   end
 
 # check

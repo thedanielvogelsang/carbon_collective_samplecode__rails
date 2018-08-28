@@ -2,7 +2,7 @@ class Api::V1::Areas::NeighborhoodElectricityController < ApplicationController
 
   # used for rankings, only neighborhoods with users listed
   def index
-    if params[:parent]
+    if params[:parent] && Neighborhood.find_by(name: params[:parent])
       id = City.find_by(name: params[:parent])
       render json: Neighborhood.where(city: id).joins(:users)
         .order(avg_daily_electricity_consumed_per_user: :asc)

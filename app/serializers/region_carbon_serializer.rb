@@ -15,11 +15,11 @@ class RegionCarbonSerializer < ActiveModel::Serializer
     # end
 
     def avg_daily_consumed_per_user
-      object.carbon_ranking.avg_daily_carbon_consumed_per_user.round(2)
+      object.region_snapshots.last.avg_daily_carbon_consumption_per_user.round(2)
     end
 
     def avg_monthly_consumed_per_user
-      (object.carbon_ranking.avg_daily_carbon_consumed_per_user * 29.53).round(2)
+      (object.region_snapshots.last.avg_daily_carbon_consumption_per_user * 29.53).round(2)
     end
 
     def metric_name
@@ -35,6 +35,6 @@ class RegionCarbonSerializer < ActiveModel::Serializer
       object.carbon_ranking.arrow
     end
     def out_of
-      Region.where(country: object.country).count
+      object.region_snapshots.last.out_of
     end
 end

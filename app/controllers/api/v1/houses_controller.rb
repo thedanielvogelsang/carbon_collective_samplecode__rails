@@ -19,10 +19,10 @@ class Api::V1::HousesController < ApplicationController
   def users
     id = params[:id]
     if House.exists?(id)
-      render json: House.find(id).users, each_serializer: UserElectricitySerializer, region: {area_type: "House", area_id: id} if params[:resource] == 'electricity'
-      render json: House.find(id).users, each_serializer: UserWaterSerializer, region: {area_type: "House", area_id: id} if params[:resource] == 'water'
-      render json: House.find(id).users, each_serializer: UserGasSerializer, region: {area_type: "House", area_id: id} if params[:resource] == 'gas'
-      render json: House.find(id).users, each_serializer: UserCarbonSerializer, region: {area_type: "House", area_id: id} if params[:resource] == 'carbon'
+      render json: House.find(id).users.sort{|s| s.avg_daily_electricity_consumption}, each_serializer: UserElectricitySerializer, region: {area_type: "House", area_id: id} if params[:resource] == 'electricity'
+      render json: House.find(id).users.sort{|s| s.avg_daily_water_consumption}, each_serializer: UserWaterSerializer, region: {area_type: "House", area_id: id} if params[:resource] == 'water'
+      render json: House.find(id).users.sort{|s| s.avg_daily_gas_consumption}, each_serializer: UserGasSerializer, region: {area_type: "House", area_id: id} if params[:resource] == 'gas'
+      render json: House.find(id).users.sort{|s| s.avg_daily_carbon_consumption}, each_serializer: UserCarbonSerializer, region: {area_type: "House", area_id: id} if params[:resource] == 'carbon'
       render json: House.find(id).users, each_serializer: UserSerializer if params[:resource] == nil
     else
       render json: {error: "House does not exist"}, status: 404

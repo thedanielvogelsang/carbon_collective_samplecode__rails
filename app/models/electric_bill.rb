@@ -9,12 +9,14 @@ class ElectricBill < ApplicationRecord
                           :total_kwhs,
                           :no_residents
 
-    validate :confirm_valid_dates
+    validate :confirm_no_overlaps, :confirm_valid_dates, :check_move_in_date
 
     after_validation :electricity_saved?,
                      :update_users_savings
 
+
     after_create :log_user_activity
+
 
   #checks if region_comparisons can be made or not; returns boolean either way
   def electricity_saved?
@@ -48,7 +50,9 @@ class ElectricBill < ApplicationRecord
     num_res = self.no_residents
     num_days = self.end_date - self.start_date
     kwhs = self.total_kwhs.fdiv(num_res)
-    users = house.users
+    users = UserHouse.joins(:house).where(house_id: house_id).select{|uh| uh.move_in_date.to_datetime <= self.start_date}
+    house = House.find(house_id)
+    users = users.map{|uh| User.find(uh.user_id)}
     elect_saved = self.electricity_saved.fdiv(num_res)
     users.each do |u|
       u.total_electricitybill_days_logged += num_days
@@ -58,9 +62,10 @@ class ElectricBill < ApplicationRecord
       u.total_carbon_savings += kwhs_to_carbon(elect_saved)
       u.save
     end
+    house.update_data
   end
 
-  def confirm_valid_dates
+  def confirm_no_overlaps
     start_ = self.start_date
     end_ = self.end_date
     past_bills = ElectricBill.where(house_id: self.house_id)
@@ -76,6 +81,15 @@ class ElectricBill < ApplicationRecord
 
   def log_user_activity
     UserLogHelper.user_adds_bill(self.user_id, 'electric')
+  end
+
+  def check_move_in_date
+    uH_movein = UserHouse.where(user_id: user_id, house_id: house_id)[0].move_in_date.to_datetime
+    start_date >= uH_movein ? true : errors.add(:start_date, "user moved in after bill cycle")
+  end
+
+  def confirm_valid_dates
+    end_date <= DateTime.now ? true : errors.add(:end_date, "cannot claim future use on past bills")
   end
 
 end
