@@ -23,6 +23,7 @@ class County < ApplicationRecord
   before_validation :capitalize_name
 
   before_create :add_zeros
+  after_create :set_default_ranks
 
   def capitalize_name
     if self.name

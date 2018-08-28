@@ -55,6 +55,7 @@ class HeatBill < ApplicationRecord
    num_days = self.end_date - self.start_date
    therms = self.total_therms.fdiv(num_res)
    gas_saved = self.gas_saved.fdiv(num_res)
+   house = House.find(house_id)
    users = UserHouse.joins(:house).where(house_id: house_id).select{|uh| uh.move_in_date.to_datetime <= self.start_date}
    users = users.map{|uh| User.find(uh.user_id)}
    users.each do |u|
@@ -65,6 +66,7 @@ class HeatBill < ApplicationRecord
      u.total_carbon_savings += therms_to_carbon(gas_saved)
      u.save
    end
+   house.update_data
  end
 
  def confirm_no_overlaps

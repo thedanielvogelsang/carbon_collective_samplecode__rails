@@ -8,11 +8,13 @@ class CountrySnapshot < ApplicationRecord
     cRank = country.carbon_ranking.rank
 
     countries = Country.joins(:users).distinct
-    max_elect = countries.order(avg_daily_electricity_consumed_per_user: :desc).first
-    max_wat = countries.order(avg_daily_water_consumed_per_user: :desc).first
-    max_gas = countries.order(avg_daily_gas_consumed_per_user: :desc).first
-    max_carb = countries.order(avg_daily_carbon_consumed_per_user: :desc).first
     oo = countries.count
+    if oo > 0
+      max_elect = countries.order(avg_daily_electricity_consumed_per_user: :desc).first.avg_daily_electricity_consumed_per_user
+      max_wat = countries.order(avg_daily_water_consumed_per_user: :desc).first.avg_daily_water_consumed_per_user
+      max_gas = countries.order(avg_daily_gas_consumed_per_user: :desc).first.avg_daily_gas_consumed_per_user
+      max_carb = countries.order(avg_daily_carbon_consumed_per_user: :desc).first.avg_daily_carbon_consumed_per_user
+    end
 
     create(country_id: country.id,
        avg_daily_electricity_consumption_per_user: country.avg_daily_electricity_consumed_per_user,

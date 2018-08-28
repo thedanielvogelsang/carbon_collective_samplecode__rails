@@ -51,6 +51,7 @@ class ElectricBill < ApplicationRecord
     num_days = self.end_date - self.start_date
     kwhs = self.total_kwhs.fdiv(num_res)
     users = UserHouse.joins(:house).where(house_id: house_id).select{|uh| uh.move_in_date.to_datetime <= self.start_date}
+    house = House.find(house_id)
     users = users.map{|uh| User.find(uh.user_id)}
     elect_saved = self.electricity_saved.fdiv(num_res)
     users.each do |u|
@@ -61,6 +62,7 @@ class ElectricBill < ApplicationRecord
       u.total_carbon_savings += kwhs_to_carbon(elect_saved)
       u.save
     end
+    house.update_data
   end
 
   def confirm_no_overlaps

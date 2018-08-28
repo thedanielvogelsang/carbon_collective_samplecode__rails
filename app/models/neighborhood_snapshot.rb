@@ -8,11 +8,13 @@ class NeighborhoodSnapshot < ApplicationRecord
     cRank = neighborhood.carbon_ranking.rank
     cId = neighborhood.city.id
     neighborhoods = Neighborhood.where(city_id: cId).joins(:users).distinct
-    max_elect = neighborhoods.order(avg_daily_electricity_consumed_per_user: :desc).first
-    max_wat = neighborhoods.order(avg_daily_water_consumed_per_user: :desc).first
-    max_gas = neighborhoods.order(avg_daily_gas_consumed_per_user: :desc).first
-    max_carb = neighborhoods.order(avg_daily_carbon_consumed_per_user: :desc).first
     oo = neighborhoods.count
+    if oo > 0
+      max_elect = neighborhoods.order(avg_daily_electricity_consumed_per_user: :desc).first.avg_daily_electricity_consumed_per_user
+      max_wat = neighborhoods.order(avg_daily_water_consumed_per_user: :desc).first.avg_daily_water_consumed_per_user
+      max_gas = neighborhoods.order(avg_daily_gas_consumed_per_user: :desc).first.avg_daily_gas_consumed_per_user
+      max_carb = neighborhoods.order(avg_daily_carbon_consumed_per_user: :desc).first.avg_daily_carbon_consumed_per_user
+    end
 
     create(neighborhood_id: neighborhood.id,
        avg_daily_electricity_consumption_per_user: neighborhood.avg_daily_electricity_consumed_per_user,

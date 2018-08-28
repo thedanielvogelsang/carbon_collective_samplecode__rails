@@ -1,4 +1,4 @@
-class WaterBill < ApplicationRecord  
+class WaterBill < ApplicationRecord
   belongs_to :house
   belongs_to :who, class_name: 'User', foreign_key: :user_id
 
@@ -44,6 +44,7 @@ class WaterBill < ApplicationRecord
     gals = self.total_gallons.fdiv(num_res)
     water_saved = self.water_saved.fdiv(num_res)
     users = UserHouse.joins(:house).where(house_id: house_id).select{|uh| uh.move_in_date.to_datetime <= self.start_date}
+    house = House.find(house_id)
     users = users.map{|uh| User.find(uh.user_id)}
     users.each do |u|
       u.total_waterbill_days_logged += num_days
@@ -51,6 +52,7 @@ class WaterBill < ApplicationRecord
       u.total_water_savings += water_saved
       u.save
     end
+    house.update_data
   end
 
   def confirm_no_overlaps

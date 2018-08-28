@@ -25,6 +25,8 @@ class City < ApplicationRecord
 
   before_create :add_zeros
 
+  after_create :set_default_ranks
+
   def capitalize_name
     if self.name
       self.name = self.name.split(' ')

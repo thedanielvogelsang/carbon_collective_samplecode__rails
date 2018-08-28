@@ -7,7 +7,8 @@ class House < ApplicationRecord
 
   before_save :no_residents_zeroed?
   # after_save :destroy_if_no_residents
-  
+  after_create :set_default_ranks
+
   has_many :user_houses, dependent: :destroy
   has_many :users, through: :user_houses
   has_many :electric_bills, dependent: :destroy

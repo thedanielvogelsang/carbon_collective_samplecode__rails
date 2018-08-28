@@ -8,12 +8,13 @@ class RegionSnapshot < ApplicationRecord
     cRank = region.carbon_ranking.rank
     cId = region.country.id
     regions = Region.where(country_id: cId).joins(:users).distinct
-    max_elect = regions.order(avg_daily_electricity_consumed_per_user: :desc).first
-    max_wat = regions.order(avg_daily_water_consumed_per_user: :desc).first
-    max_gas = regions.order(avg_daily_gas_consumed_per_user: :desc).first
-    max_carb = regions.order(avg_daily_carbon_consumed_per_user: :desc).first
     oo = regions.count
-
+    if oo > 0
+      max_elect = regions.order(avg_daily_electricity_consumed_per_user: :desc).first.avg_daily_electricity_consumed_per_user
+      max_wat = regions.order(avg_daily_water_consumed_per_user: :desc).first.avg_daily_water_consumed_per_user
+      max_gas = regions.order(avg_daily_gas_consumed_per_user: :desc).first.avg_daily_gas_consumed_per_user
+      max_carb = regions.order(avg_daily_carbon_consumed_per_user: :desc).first.avg_daily_carbon_consumed_per_user
+    end
     create(region_id: region.id,
        avg_daily_electricity_consumption_per_user: region.avg_daily_electricity_consumed_per_user,
        avg_daily_water_consumption_per_user: region.avg_daily_water_consumed_per_user,

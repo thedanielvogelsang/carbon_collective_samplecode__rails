@@ -8,10 +8,10 @@ class CitySnapshot < ApplicationRecord
     cRank = city.carbon_ranking.rank
     rId = city.region.id
     cities = City.where(region_id: rId).joins(:users).distinct
-    max_elect = cities.order(avg_daily_electricity_consumed_per_user: :desc).first
-    max_wat = cities.order(avg_daily_water_consumed_per_user: :desc).first
-    max_gas = cities.order(avg_daily_gas_consumed_per_user: :desc).first
-    max_carb = cities.order(avg_daily_carbon_consumed_per_user: :desc).first
+    max_elect = cities.order(avg_daily_electricity_consumed_per_user: :desc).first.avg_daily_electricity_consumed_per_user
+    max_wat = cities.order(avg_daily_water_consumed_per_user: :desc).first.avg_daily_water_consumed_per_user
+    max_gas = cities.order(avg_daily_gas_consumed_per_user: :desc).first.avg_daily_gas_consumed_per_user
+    max_carb = cities.order(avg_daily_carbon_consumed_per_user: :desc).first.avg_daily_carbon_consumed_per_user
     oo = cities.count
 
     create(city_id: city.id,

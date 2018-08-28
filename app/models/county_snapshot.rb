@@ -8,11 +8,13 @@ class CountySnapshot < ApplicationRecord
     cRank = county.carbon_ranking.rank
     rId = county.region.id
     counties = County.where(region_id: rId).joins(:users).distinct
-    max_elect = counties.order(avg_daily_electricity_consumed_per_user: :desc).first
-    max_wat = counties.order(avg_daily_water_consumed_per_user: :desc).first
-    max_gas = counties.order(avg_daily_gas_consumed_per_user: :desc).first
-    max_carb = counties.order(avg_daily_carbon_consumed_per_user: :desc).first
     oo = counties.count
+    if oo > 0
+      max_elect = counties.order(avg_daily_electricity_consumed_per_user: :desc).first.avg_daily_electricity_consumed_per_user
+      max_wat = counties.order(avg_daily_water_consumed_per_user: :desc).first.avg_daily_water_consumed_per_user
+      max_gas = counties.order(avg_daily_gas_consumed_per_user: :desc).first.avg_daily_gas_consumed_per_user
+      max_carb = counties.order(avg_daily_carbon_consumed_per_user: :desc).first.avg_daily_carbon_consumed_per_user
+    end
 
     create(county_id: county.id,
        avg_daily_electricity_consumption_per_user: county.avg_daily_electricity_consumed_per_user,

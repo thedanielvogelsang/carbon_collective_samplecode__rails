@@ -238,7 +238,6 @@ usa.avg_daily_gas_consumed_per_user = 8.46
 usa.save
 
 Country.all.each{|c|
-  c.set_default_ranks
   c.update_data
 }
 
@@ -402,7 +401,6 @@ end
 puts "#{Region.count} Provinces created in Regions table"
 
 Region.all.each{ |r|
-   r.set_default_ranks
    r.update_data
  }
 
@@ -759,21 +757,22 @@ User.all.each{|u|
  }
 
 County.all.each do |c|
-  c.set_default_ranks
   c.update_data
   c.set_snapshots
 end
 
 City.all.each do |c|
-  c.set_default_ranks
   c.update_data
   c.set_snapshots
 end
 
 Neighborhood.all.each do |n|
-  n.set_default_ranks
   n.update_data
   n.set_snapshots
+end
+
+House.all.each do |h|
+  h.set_snapshots
 end
 
 # # #

@@ -5,6 +5,28 @@ module HouseHelper
 
 ## used for snapshots -- pending api use ##
   # 0.5 ms
+  def set_snapshots
+    HouseholdSnapshot.take_snapshot(self)
+  end
+
+## used for rankings -- pending api use ##
+## wont make sense until we use different rank/arrow code for houses;
+  def set_default_ranks
+    WaterRanking.create(area_type: "House", area_id: self.id, rank: nil, arrow: nil)
+    ElectricityRanking.create(area_type: "House", area_id: self.id, rank: nil, arrow: nil)
+    GasRanking.create(area_type: "House", area_id: self.id, rank: nil, arrow: nil)
+    CarbonRanking.create(area_type: "House", area_id: self.id, rank: nil, arrow: nil)
+  end
+
+## attrs must be stored on houses in order to ActiveRecord sorting, these are used to update:
+
+  def update_data
+    self.avg_daily_electricity_consumed_per_user = average_daily_electricity_consumption_per_user
+    self.avg_daily_water_consumed_per_user = average_daily_water_consumption_per_user
+    self.avg_daily_gas_consumed_per_user = average_daily_gas_consumption_per_user
+    self.avg_daily_carbon_consumed_per_user = average_daily_carbon_consumption_per_user
+    self.save
+  end
 
 ## -- AVERAGE PER USER / RESIDENT -- ##
   # -- based on users -- #

@@ -15,6 +15,7 @@ class Country < ApplicationRecord
                     # :check_name
 
   before_create :add_zeros, :copy_default_per_capita
+  after_create :set_default_ranks
 
   has_one :electricity_ranking, :as => :area
   has_one :water_ranking, :as => :area
