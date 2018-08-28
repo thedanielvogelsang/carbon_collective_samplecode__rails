@@ -1,7 +1,7 @@
 class Api::V1::Areas::RegionGasController < ApplicationController
 
   def index
-    if params[:parent]
+    if params[:parent] && Country.find_by(name: params[:parent])
       id = Country.find_by(name: params[:parent])
       render json: Region.where(country_id: id)
       .order(avg_daily_gas_consumed_per_user: :asc)

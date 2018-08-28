@@ -7,7 +7,7 @@ class House < ApplicationRecord
 
   before_save :no_residents_zeroed?
   # after_save :destroy_if_no_residents
-
+  
   has_many :user_houses, dependent: :destroy
   has_many :users, through: :user_houses
   has_many :electric_bills, dependent: :destroy
@@ -21,7 +21,7 @@ class House < ApplicationRecord
   has_one :gas_ranking, :as => :area
   has_one :carbon_ranking, :as => :area
 
-# ???? what is this?? 
+# ???? what is this??
   has_many :user_electricity_rankings, :as => :area
   has_many :user_water_rankings, :as => :area
   has_many :user_gas_rankings, :as => :area

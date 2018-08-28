@@ -3,7 +3,7 @@ class Api::V1::Areas::RegionWaterController < ApplicationController
   # used for rankings
   def index
     # renders only states WITH users
-    if params[:parent]
+    if params[:parent] && Country.find_by(name: params[:parent])
       id = Country.find_by(name: params[:parent]).id
       render json: Region.where(country_id: id)
         .order(avg_daily_water_consumed_per_user: :asc)

@@ -11,13 +11,13 @@ class CountyWaterSerializer < ActiveModel::Serializer
   #   object.avg_total_water_saved_per_user.round(2)
   # end
   def avg_daily_consumed_per_user
-    (object.avg_daily_water_consumed_per_user).round(2) if object.avg_daily_water_consumed_per_user != nil
+    (object.county_snapshots.last.avg_daily_water_consumption_per_user).round(2)
   end
   def avg_daily_consumed_per_capita
     (object.avg_daily_water_consumed_per_capita).round(2) if object.avg_daily_water_consumed_per_capita != nil
   end
   def avg_monthly_consumed_per_user
-    (object.avg_daily_water_consumed_per_user * 29.53).round(2) if object.avg_daily_water_consumed_per_user != nil
+    (object.county_snapshots.last..avg_daily_water_consumption_per_user * 29.53).round(2)
   end
   def avg_monthly_consumed_per_capita
     (object.avg_daily_water_consumed_per_capita * 29.53).round(2) if object.avg_daily_water_consumed_per_capita != nil
@@ -41,6 +41,6 @@ class CountyWaterSerializer < ActiveModel::Serializer
 
   end
   def out_of
-    County.where(region: object.region).count
+    object.county_snapshots.last.out_of
   end
 end
