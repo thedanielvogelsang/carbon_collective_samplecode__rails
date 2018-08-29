@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180827015132) do
+ActiveRecord::Schema.define(version: 20180829134912) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -191,6 +191,10 @@ ActiveRecord::Schema.define(version: 20180827015132) do
     t.integer "gas_rank"
     t.integer "carbon_rank"
     t.integer "out_of"
+    t.decimal "country_avg_carbon"
+    t.decimal "country_avg_electricity"
+    t.decimal "country_avg_water"
+    t.decimal "country_avg_gas"
     t.index ["country_id"], name: "index_country_snapshots_on_country_id"
   end
 

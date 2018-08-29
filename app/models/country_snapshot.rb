@@ -6,14 +6,23 @@ class CountrySnapshot < ApplicationRecord
     wRank = country.water_ranking.rank
     gRank = country.gas_ranking.rank
     cRank = country.carbon_ranking.rank
-
+    country_avg_carbon = Country.average(:avg_daily_carbon_consumed_per_user)
+    country_avg_electricity = Country.average(:avg_daily_electricity_consumed_per_user)
+    country_avg_water = Country.average(:avg_daily_water_consumed_per_user)
+    country_avg_gas = Country.average(:avg_daily_gas_consumed_per_user)
     countries = Country.joins(:users).distinct
     oo = countries.count
     if oo > 0
-      max_elect = countries.order(avg_daily_electricity_consumed_per_user: :desc).first.avg_daily_electricity_consumed_per_user
-      max_wat = countries.order(avg_daily_water_consumed_per_user: :desc).first.avg_daily_water_consumed_per_user
-      max_gas = countries.order(avg_daily_gas_consumed_per_user: :desc).first.avg_daily_gas_consumed_per_user
-      max_carb = countries.order(avg_daily_carbon_consumed_per_user: :desc).first.avg_daily_carbon_consumed_per_user
+      # for now, i want to compare against international data to use a variety of avgs
+      max_elect = Country.maximum(:avg_daily_carbon_consumed_per_user)
+      max_wat = Country.maximum(:avg_daily_water_consumed_per_user)
+      max_gas = Country.maximum(:avg_daily_gas_consumed_per_user)
+      max_carb = Country.maximum(:avg_daily_carbon_consumed_per_user)
+      # what we'll use in the future:
+        # max_elect = countries.order(avg_daily_electricity_consumed_per_user: :desc).first.avg_daily_electricity_consumed_per_user
+        # max_wat = countries.order(avg_daily_water_consumed_per_user: :desc).first.avg_daily_water_consumed_per_user
+        # max_gas = countries.order(avg_daily_gas_consumed_per_user: :desc).first.avg_daily_gas_consumed_per_user
+        # max_carb = countries.order(avg_daily_carbon_consumed_per_user: :desc).first.avg_daily_carbon_consumed_per_user
     end
 
     create(country_id: country.id,
@@ -29,6 +38,10 @@ class CountrySnapshot < ApplicationRecord
        max_daily_water_consumption: max_wat,
        max_daily_gas_consumption: max_gas,
        max_daily_carbon_consumption: max_carb,
+       country_avg_carbon: country_avg_carbon,
+       country_avg_electricity: country_avg_electricity,
+       country_avg_water: country_avg_water,
+       country_avg_gas: country_avg_gas,
        electricity_rank: eRank,
        water_rank: wRank,
        gas_rank: gRank,

@@ -12,6 +12,7 @@ class CitySnapshot < ApplicationRecord
     max_wat = cities.order(avg_daily_water_consumed_per_user: :desc).first.avg_daily_water_consumed_per_user
     max_gas = cities.order(avg_daily_gas_consumed_per_user: :desc).first.avg_daily_gas_consumed_per_user
     max_carb = cities.order(avg_daily_carbon_consumed_per_user: :desc).first.avg_daily_carbon_consumed_per_user
+    parent_avg = city.region.avg_daily_carbon_consumed_per_user
     oo = cities.count
 
     create(city_id: city.id,
@@ -31,7 +32,7 @@ class CitySnapshot < ApplicationRecord
        water_rank: wRank,
        gas_rank: gRank,
        carbon_rank: cRank,
-       out_of: oo
+       out_of: oo,
       )
   end
 end
