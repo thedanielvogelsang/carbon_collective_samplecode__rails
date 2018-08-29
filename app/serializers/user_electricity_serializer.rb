@@ -6,11 +6,6 @@ class UserElectricitySerializer < ActiveModel::Serializer
                   :personal_savings_to_date, :personal_usage_to_date,
                   :avg_daily_footprint, :avg_monthly_footprint,
                   :household, :neighborhood, :city, :county, :region, :country,
-                  :household_monthly_consumption,
-                  :neighborhood_monthly_consumption,
-                  :city_monthly_consumption,
-                  :region_monthly_consumption,
-                  :country_monthly_consumption,
                   :metric_sym, :num_bills, :out_of
 
   def avg_daily_footprint
@@ -22,73 +17,85 @@ class UserElectricitySerializer < ActiveModel::Serializer
   end
 
 ## regional arrays for dash, order: [id, name, regional-avg, parent_avg, parent_max, regional-rank, out_of]
-  def household
-    h = object.household
-    if h
-      snapshot = h.household_snapshots.last
-      arr = [h.id, "Household", snapshot.avg_daily_electricity_consumption_per_user,
-        h.address.neighborhood.avg_daily_electricity_consumed_per_user,
-        snapshot.max_daily_electricity_consumption,
-        h.electricity_ranking.rank, snapshot.out_of]
-    end
-    arr
+def household
+  h = object.household
+  if h
+    snapshot = h.household_snapshots.last
+    avg_monthly = (snapshot.avg_daily_electricity_consumption_per_user * 29.53).round(2)
+    parent_avg = (h.address.neighborhood.avg_daily_electricity_consumed_per_user * 29.53).round(2)
+    parent_max = (snapshot.max_daily_electricity_consumption * 29.53).round(2)
+    arr = [h.id, "Household", avg_monthly,
+      parent_avg, parent_max,
+      h.electricity_ranking.rank, snapshot.out_of]
   end
-  def neighborhood
-    n = object.neighborhood
-    if n
-      snapshot = n.neighborhood_snapshots.last
-      arr = [n.id, n.name, snapshot.avg_daily_electricity_consumption_per_user,
-        n.city.avg_daily_electricity_consumed_per_user,
-        snapshot.max_daily_electricity_consumption,
-        n.electricity_ranking.rank, snapshot.out_of]
-    end
-    arr
+  arr
+end
+def neighborhood
+  n = object.neighborhood
+  if n
+    snapshot = n.neighborhood_snapshots.last
+    avg_monthly = (snapshot.avg_daily_electricity_consumption_per_user * 29.53).round(2)
+    parent_avg = (n.city.avg_daily_electricity_consumed_per_user * 29.53).round(2)
+    parent_max = (snapshot.max_daily_electricity_consumption * 29.53).round(2)
+    arr = [n.id, n.name, avg_monthly,
+      parent_avg, parent_max,
+      n.electricity_ranking.rank, snapshot.out_of]
   end
-  def city
-    c = object.city
-    if c
-      snapshot = c.city_snapshots.last
-      arr = [c.id, c.name, snapshot.avg_daily_electricity_consumption_per_user,
-        c.region.avg_daily_electricity_consumed_per_user,
-        snapshot.max_daily_electricity_consumption,
-        c.electricity_ranking.rank, snapshot.out_of]
-    end
-    arr
+  arr
+end
+def city
+  c = object.city
+  if c
+    snapshot = c.city_snapshots.last
+    avg_monthly = (snapshot.avg_daily_electricity_consumption_per_user * 29.53).round(2)
+    parent_avg = (c.region.avg_daily_electricity_consumed_per_user * 29.53).round(2)
+    parent_max = (snapshot.max_daily_electricity_consumption * 29.53).round(2)
+    arr = [c.id, c.name, avg_monthly,
+      parent_avg, parent_max,
+      c.electricity_ranking.rank, snapshot.out_of]
   end
-  def county
-    c = object.county
-    if c
-      snapshot = c.county_snapshots.last
-      arr = [c.id, c.name, snapshot.avg_daily_electricity_consumption_per_user,
-        c.region.avg_daily_electricity_consumed_per_user,
-        snapshot.max_daily_electricity_consumption,
-        c.electricity_ranking.rank, snapshot.out_of]
-    end
-    arr
+  arr
+end
+def county
+  c = object.county
+  if c
+    snapshot = c.county_snapshots.last
+    avg_monthly = (snapshot.avg_daily_electricity_consumption_per_user * 29.53).round(2)
+    parent_avg = (c.region.avg_daily_electricity_consumed_per_user * 29.53).round(2)
+    parent_max = (snapshot.max_daily_electricity_consumption * 29.53).round(2)
+    arr = [c.id, c.name, avg_monthly,
+      parent_avg, parent_max,
+      c.electricity_ranking.rank, snapshot.out_of]
   end
-  def region
-    r = object.region
-    if r
-      snapshot = r.region_snapshots.last
-      arr = [r.id, r.name, snapshot.avg_daily_electricity_consumption_per_user,
-        r.country.avg_daily_electricity_consumed_per_user,
-        snapshot.max_daily_electricity_consumption,
-        r.electricity_ranking.rank, snapshot.out_of]
-    end
-    arr
+  arr
+end
+def region
+  r = object.region
+  if r
+    snapshot = r.region_snapshots.last
+    avg_monthly = (snapshot.avg_daily_electricity_consumption_per_user * 29.53).round(2)
+    parent_avg = (r.country.avg_daily_electricity_consumed_per_user * 29.53).round(2)
+    parent_max = (snapshot.max_daily_electricity_consumption * 29.53).round(2)
+    arr = [r.id, r.name, avg_monthly,
+      parent_avg, parent_max,
+      r.electricity_ranking.rank, snapshot.out_of]
   end
-  def country
-    c = object.country
-    ## out of for country is 'inaccurate' but using all countries, not just ones with users
-    if c
-      snapshot = c.country_snapshots.last
-      arr = [c.id, c.name, snapshot.avg_daily_electricity_consumption_per_user,
-        snapshot.country_avg_electricity,
-        snapshot.max_daily_electricity_consumption,
-        c.electricity_ranking.rank, Country.count]
-    end
-    arr
+  arr
+end
+def country
+  c = object.country
+  ## out of for country is 'inaccurate' but using all countries, not just ones with users
+  if c
+    snapshot = c.country_snapshots.last
+    avg_monthly = (snapshot.avg_daily_electricity_consumption_per_user * 29.53).round(2)
+    parent_avg = (snapshot.country_avg_electricity * 29.53).round(2)
+    parent_max = (snapshot.max_daily_electricity_consumption * 29.53).round(2)
+    arr = [c.id, c.name, avg_monthly,
+      parent_avg, parent_max,
+      c.electricity_ranking.rank, Country.count]
   end
+  arr
+end
 
   def personal_savings_to_date
     object.total_electricity_savings.to_f.round(2).to_s
