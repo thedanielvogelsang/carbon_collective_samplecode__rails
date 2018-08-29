@@ -4,9 +4,7 @@ class UserCarbonSerializer < ActiveModel::Serializer
                   :personal_savings_to_date, :personal_usage_to_date,
                   :arrow, :rank, :last_updated, :avg_daily_footprint, :avg_monthly_footprint,
                   :household, :neighborhood, :city, :county, :region, :country,
-                  :household_monthly_consumption, :neighborhood_monthly_consumption,
-                  :city_monthly_consumption, :region_monthly_consumption,
-                  :country_monthly_consumption, :avg_daily_consumption, :avg_monthly_consumption,
+                  :avg_daily_consumption, :avg_monthly_consumption,
                   :metric_sym, :out_of
 
   def avg_daily_footprint
@@ -34,9 +32,11 @@ class UserCarbonSerializer < ActiveModel::Serializer
     h = object.household
     if h
       snapshot = h.household_snapshots.last
-      arr = [h.id, "Household", snapshot.avg_daily_carbon_consumption_per_user,
-        h.address.neighborhood.avg_daily_carbon_consumed_per_user,
-        snapshot.max_daily_carbon_consumption,
+      avg_monthly = (snapshot.avg_daily_carbon_consumption_per_user * 29.53).round(2)
+      parent_avg = (h.address.neighborhood.avg_daily_carbon_consumed_per_user * 29.53).round(2)
+      parent_max = (snapshot.max_daily_carbon_consumption * 29.53).round(2)
+      arr = [h.id, "Household", avg_monthly,
+        parent_avg, parent_max,
         h.carbon_ranking.rank, snapshot.out_of]
     end
     arr
@@ -45,9 +45,11 @@ class UserCarbonSerializer < ActiveModel::Serializer
     n = object.neighborhood
     if n
       snapshot = n.neighborhood_snapshots.last
-      arr = [n.id, n.name, snapshot.avg_daily_carbon_consumption_per_user,
-        n.city.avg_daily_carbon_consumed_per_user,
-        snapshot.max_daily_carbon_consumption,
+      avg_monthly = (snapshot.avg_daily_carbon_consumption_per_user * 29.53).round(2)
+      parent_avg = (n.city.avg_daily_carbon_consumed_per_user * 29.53).round(2)
+      parent_max = (snapshot.max_daily_carbon_consumption * 29.53).round(2)
+      arr = [n.id, n.name, avg_monthly,
+        parent_avg, parent_max,
         n.carbon_ranking.rank, snapshot.out_of]
     end
     arr
@@ -56,9 +58,11 @@ class UserCarbonSerializer < ActiveModel::Serializer
     c = object.city
     if c
       snapshot = c.city_snapshots.last
-      arr = [c.id, c.name, snapshot.avg_daily_carbon_consumption_per_user,
-        c.region.avg_daily_carbon_consumed_per_user,
-        snapshot.max_daily_carbon_consumption,
+      avg_monthly = (snapshot.avg_daily_carbon_consumption_per_user * 29.53).round(2)
+      parent_avg = (c.region.avg_daily_carbon_consumed_per_user * 29.53).round(2)
+      parent_max = (snapshot.max_daily_carbon_consumption * 29.53).round(2)
+      arr = [c.id, c.name, avg_monthly,
+        parent_avg, parent_max,
         c.carbon_ranking.rank, snapshot.out_of]
     end
     arr
@@ -67,9 +71,11 @@ class UserCarbonSerializer < ActiveModel::Serializer
     c = object.county
     if c
       snapshot = c.county_snapshots.last
-      arr = [c.id, c.name, snapshot.avg_daily_carbon_consumption_per_user,
-        c.region.avg_daily_carbon_consumed_per_user,
-        snapshot.max_daily_carbon_consumption,
+      avg_monthly = (snapshot.avg_daily_carbon_consumption_per_user * 29.53).round(2)
+      parent_avg = (c.region.avg_daily_carbon_consumed_per_user * 29.53).round(2)
+      parent_max = (snapshot.max_daily_carbon_consumption * 29.53).round(2)
+      arr = [c.id, c.name, avg_monthly,
+        parent_avg, parent_max,
         c.carbon_ranking.rank, snapshot.out_of]
     end
     arr
@@ -78,9 +84,11 @@ class UserCarbonSerializer < ActiveModel::Serializer
     r = object.region
     if r
       snapshot = r.region_snapshots.last
-      arr = [r.id, r.name, snapshot.avg_daily_carbon_consumption_per_user,
-        r.country.avg_daily_carbon_consumed_per_user,
-        snapshot.max_daily_carbon_consumption,
+      avg_monthly = (snapshot.avg_daily_carbon_consumption_per_user * 29.53).round(2)
+      parent_avg = (r.country.avg_daily_carbon_consumed_per_user * 29.53).round(2)
+      parent_max = (snapshot.max_daily_carbon_consumption * 29.53).round(2)
+      arr = [r.id, r.name, avg_monthly,
+        parent_avg, parent_max,
         r.carbon_ranking.rank, snapshot.out_of]
     end
     arr
@@ -90,9 +98,11 @@ class UserCarbonSerializer < ActiveModel::Serializer
     ## out of for country is 'inaccurate' but using all countries, not just ones with users
     if c
       snapshot = c.country_snapshots.last
-      arr = [c.id, c.name, snapshot.avg_daily_carbon_consumption_per_user,
-        snapshot.country_avg_carbon,
-        snapshot.max_daily_carbon_consumption,
+      avg_monthly = (snapshot.avg_daily_carbon_consumption_per_user * 29.53).round(2)
+      parent_avg = (snapshot.country_avg_carbon * 29.53).round(2)
+      parent_max = (snapshot.max_daily_carbon_consumption * 29.53).round(2)
+      arr = [c.id, c.name, avg_monthly,
+        parent_avg, parent_max,
         c.carbon_ranking.rank, Country.count]
     end
     arr
