@@ -30,47 +30,73 @@ class UserCarbonSerializer < ActiveModel::Serializer
     object.total_pounds_logged.round(2).to_s
   end
 
+  def household
+    h = object.household
+    if h
+      snapshot = h.household_snapshots.last
+      arr = [h.id, "Household", snapshot.avg_daily_carbon_consumption_per_user,
+        h.address.neighborhood.avg_daily_carbon_consumed_per_user,
+        snapshot.max_daily_carbon_consumption,
+        h.carbon_ranking.rank, snapshot.out_of]
+    end
+    arr
+  end
   def neighborhood
     n = object.neighborhood
-    snapshot = n.neighborhood_snapshots.last
-    [n.id, n.name, snapshot.avg_daily_carbon_consumption_per_user,
-      n.city.avg_daily_carbon_consumed_per_user,
-      snapshot.max_daily_carbon_consumption,
-      n.carbon_ranking.rank, snapshot.out_of] if n
+    if n
+      snapshot = n.neighborhood_snapshots.last
+      arr = [n.id, n.name, snapshot.avg_daily_carbon_consumption_per_user,
+        n.city.avg_daily_carbon_consumed_per_user,
+        snapshot.max_daily_carbon_consumption,
+        n.carbon_ranking.rank, snapshot.out_of]
+    end
+    arr
   end
   def city
     c = object.city
-    snapshot = c.city_snapshots.last
-    [c.id, c.name, snapshot.avg_daily_carbon_consumption_per_user,
-      c.region.avg_daily_carbon_consumed_per_user,
-      snapshot.max_daily_carbon_consumption,
-      c.carbon_ranking.rank, snapshot.out_of] if c
+    if c
+      snapshot = c.city_snapshots.last
+      arr = [c.id, c.name, snapshot.avg_daily_carbon_consumption_per_user,
+        c.region.avg_daily_carbon_consumed_per_user,
+        snapshot.max_daily_carbon_consumption,
+        c.carbon_ranking.rank, snapshot.out_of]
+    end
+    arr
   end
   def county
     c = object.county
-    snapshot = c.county_snapshots.last
-    [c.id, c.name, snapshot.avg_daily_carbon_consumption_per_user,
-      c.region.avg_daily_carbon_consumed_per_user,
-      snapshot.max_daily_carbon_consumption,
-      c.carbon_ranking.rank, snapshot.out_of] if c
+    if c
+      snapshot = c.county_snapshots.last
+      arr = [c.id, c.name, snapshot.avg_daily_carbon_consumption_per_user,
+        c.region.avg_daily_carbon_consumed_per_user,
+        snapshot.max_daily_carbon_consumption,
+        c.carbon_ranking.rank, snapshot.out_of]
+    end
+    arr
   end
   def region
     r = object.region
-    snapshot = r.county_snapshots.last
-    [r.id, r.name, snapshot.avg_daily_carbon_consumption_per_user,
-      r.country.avg_daily_carbon_consumed_per_user,
-      snapshot.max_daily_carbon_consumption,
-      r.carbon_ranking.rank, snapshot.out_of] if r
+    if r
+      snapshot = r.region_snapshots.last
+      arr = [r.id, r.name, snapshot.avg_daily_carbon_consumption_per_user,
+        r.country.avg_daily_carbon_consumed_per_user,
+        snapshot.max_daily_carbon_consumption,
+        r.carbon_ranking.rank, snapshot.out_of]
+    end
+    arr
   end
   def country
     c = object.country
-    snapshot = c.country_snapshots.last
-    [c.id, c.name, snapshot.avg_daily_carbon_consumption_per_user,
-      c.region.avg_daily_carbon_consumed_per_user,
-      snapshot.max_daily_carbon_consumption,
-      c.carbon_ranking.rank, snapshot.out_of] if c
-   end
-
+    ## out of for country is 'inaccurate' but using all countries, not just ones with users
+    if c
+      snapshot = c.country_snapshots.last
+      arr = [c.id, c.name, snapshot.avg_daily_carbon_consumption_per_user,
+        snapshot.country_avg_carbon,
+        snapshot.max_daily_carbon_consumption,
+        c.carbon_ranking.rank, Country.count]
+    end
+    arr
+  end
   def avatar_url
     object.url
   end
