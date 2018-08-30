@@ -3,12 +3,14 @@ class UserSerializer < ActiveModel::Serializer
                   :avatar_url, :house_ids,
                   :total_carbon_savings_to_date,
                   :global_collective_carbon_savings,
-                  :privacy_policy,
+                  :privacy_policy, :house,
                   # :avg_daily_footprint,
                   # :avg_monthly_footprint,
                   :household, :neighborhood, :city, :county, :region, :country,
 
-
+  def house
+    object.household
+  end
   def neighborhood
     [object.neighborhood.id, object.neighborhood.name] if object.neighborhood
   end

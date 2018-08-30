@@ -28,6 +28,19 @@ module HouseHelper
     self.save
   end
 
+  def house_max(type)
+    case(type)
+    when "electricity"
+      calculate_house_electricity_max
+    when "water"
+      calculate_house_water_max
+    when "gas"
+      calculate_house_heat_max
+    when "carbon"
+      calculate_house_carbon_max
+    end
+  end
+
 ## -- AVERAGE PER USER / RESIDENT -- ##
   # -- based on users -- #
     def average_daily_electricity_consumption_per_user
@@ -256,4 +269,18 @@ module HouseHelper
       def total_carbon_saved
         total_carbon_savings_to_date
       end
+
+  # MAX-es
+    def calculate_house_electricity_max
+      users.sort_by{|u| u.avg_daily_electricity_consumption }.last.avg_daily_electricity_consumption
+    end
+    def calculate_house_water_max
+      users.sort_by{|u| u.avg_daily_water_consumption }.last.avg_daily_water_consumption
+    end
+    def calculate_house_heat_max
+      users.sort_by{|u| u.avg_daily_gas_consumption }.last.avg_daily_gas_consumption
+    end
+    def calculate_house_carbon_max
+      users.sort_by{|u| u.avg_daily_carbon_consumption }.last.avg_daily_carbon_consumption
+    end
 end

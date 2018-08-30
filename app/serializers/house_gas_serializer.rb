@@ -3,7 +3,7 @@ class HouseGasSerializer < ActiveModel::Serializer
                   :users_names, :users_ids, :no_users, :number_of_bills_entered,
                   :apartment, :total_spent, :total_days_recorded,
                   :total_consumption_to_date, :metric_sym, :out_of,
-                  :arrow, :rank,
+                  :arrow, :rank, :move_in_date,
                   :total_savings_to_date,
                   :avg_daily_consumption,
                   :avg_monthly_consumption,
@@ -85,5 +85,13 @@ class HouseGasSerializer < ActiveModel::Serializer
   end
   def arrow
     object.gas_ranking.arrow
+  end
+  def move_in_date
+    if @instance_options[:user]
+      uh = object.user_houses.where(:user_houses => {user_id: @instance_options[:user]}).first
+      uh.move_in_date
+    else
+      nil
+    end
   end
 end

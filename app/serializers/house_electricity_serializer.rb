@@ -3,7 +3,7 @@ class HouseElectricitySerializer < ActiveModel::Serializer
                   :users_names, :users_ids, :no_users, :number_of_bills_entered,
                   :apartment, :total_spent, :total_days_recorded,
                   :total_consumption_to_date, :metric_sym, :out_of,
-                  :total_savings_to_date,
+                  :total_savings_to_date, :move_in_date,
                   :avg_daily_consumption_per_resident,
                   :avg_monthly_consumption_per_resident,
                   :avg_daily_consumption_per_user,
@@ -91,5 +91,14 @@ class HouseElectricitySerializer < ActiveModel::Serializer
   end
   def arrow
     object.electricity_ranking.arrow
+  end
+
+  def move_in_date
+    if @instance_options[:user]
+      uh = object.user_houses.where(:user_houses => {user_id: @instance_options[:user]}).first
+      uh.move_in_date
+    else
+      nil
+    end
   end
 end
