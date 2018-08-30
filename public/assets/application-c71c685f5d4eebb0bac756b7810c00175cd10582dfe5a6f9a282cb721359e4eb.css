@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css?family=Libre+Franklin|Merriweather');
+
+body {background-color: powderblue; padding-left: 60px}
+h1, h2, p{
+  text-align: left;
+}
+h1{
+  font-family: 'Merriweather', serif;
+  font-size: 56px;
+  color: #219a60;
+}
+h2{
+  font-family: "Libre Franklin", Garamond, sans-serif;
+  font-size: 26px;
+  line-height: 30px;
+  font-weight: 400;
+  color: #2a2c33;
+  margin: 10px 0px;
+}
+
+h3{
+
+}
+
+a {color: navy; margin-bottom: 30px; padding-left: 20px}
+
+p {font-family: "Libre Franklin", Garamond, sans-serif;
+  font-size: 1em;
+  line-height: 1.45em;
+  font-weight: 400;
+  color: #2a2c33;
+  margin: 10px 0px;
+}
+
+.native-msg{margin: 10px 0px 30px 20px;}
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+
+
+ */
+

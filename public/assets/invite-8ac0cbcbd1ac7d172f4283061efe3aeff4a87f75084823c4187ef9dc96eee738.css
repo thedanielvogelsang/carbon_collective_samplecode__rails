@@ -1,0 +1,50 @@
+@import url("https://fonts.googleapis.com/css?family=Libre+Franklin|Merriweather");
+/* line 3, /Users/thedanielvogelsang/ContractWork/CarbonCollective/carbon_collective/app/assets/stylesheets/invite.scss */
+body {
+  background-color: powderblue;
+  padding-left: 60px;
+}
+
+/* line 4, /Users/thedanielvogelsang/ContractWork/CarbonCollective/carbon_collective/app/assets/stylesheets/invite.scss */
+h1, h2, p {
+  text-align: left;
+}
+
+/* line 7, /Users/thedanielvogelsang/ContractWork/CarbonCollective/carbon_collective/app/assets/stylesheets/invite.scss */
+h1 {
+  font-family: 'Merriweather', serif;
+  font-size: 56px;
+  color: #219a60;
+}
+
+/* line 12, /Users/thedanielvogelsang/ContractWork/CarbonCollective/carbon_collective/app/assets/stylesheets/invite.scss */
+h2 {
+  font-family: "Libre Franklin", Garamond, sans-serif;
+  font-size: 26px;
+  line-height: 30px;
+  font-weight: 400;
+  color: #2a2c33;
+  margin: 10px 0px;
+}
+
+/* line 25, /Users/thedanielvogelsang/ContractWork/CarbonCollective/carbon_collective/app/assets/stylesheets/invite.scss */
+a {
+  color: navy;
+  margin-bottom: 30px;
+  padding-left: 20px;
+}
+
+/* line 27, /Users/thedanielvogelsang/ContractWork/CarbonCollective/carbon_collective/app/assets/stylesheets/invite.scss */
+p {
+  font-family: "Libre Franklin", Garamond, sans-serif;
+  font-size: 1em;
+  line-height: 1.45em;
+  font-weight: 400;
+  color: #2a2c33;
+  margin: 10px 0px;
+}
+
+/* line 35, /Users/thedanielvogelsang/ContractWork/CarbonCollective/carbon_collective/app/assets/stylesheets/invite.scss */
+.native-msg {
+  margin: 10px 0px 30px 20px;
+}

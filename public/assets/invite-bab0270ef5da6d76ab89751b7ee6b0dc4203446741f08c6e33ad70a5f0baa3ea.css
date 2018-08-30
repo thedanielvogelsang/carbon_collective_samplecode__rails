@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css?family=Libre+Franklin|Merriweather');
+
+body {background-color: powderblue; padding-left: 60px}
+h1, h2, p{
+  text-align: left;
+}
+h1{
+  font-family: 'Merriweather', serif;
+  font-size: 56px;
+  color: #219a60;
+}
+h2{
+  font-family: "Libre Franklin", Garamond, sans-serif;
+  font-size: 26px;
+  line-height: 30px;
+  font-weight: 400;
+  color: #2a2c33;
+  margin: 10px 0px;
+}
+
+h3{
+
+}
+
+a {color: navy; margin-bottom: 30px; padding-left: 20px}
+
+p {font-family: "Libre Franklin", Garamond, sans-serif;
+  font-size: 1em;
+  line-height: 1.45em;
+  font-weight: 400;
+  color: #2a2c33;
+  margin: 10px 0px;
+}
+
+.native-msg{margin: 10px 0px 30px 20px;}

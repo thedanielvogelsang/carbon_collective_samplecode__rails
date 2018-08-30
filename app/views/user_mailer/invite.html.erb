@@ -2,32 +2,66 @@
 <html>
   <head>
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <link href="https://fonts.googleapis.com/css?family=Libre+Franklin:100,100i,300,300i,400,400i,900,900i" rel="stylesheet">
     <style>
-        body {background-color: powderblue;}
-        h1 {color: black;}
-        h3 {color: black;}
-        a {color: navy; margin-bottom: 30px; padding-left: 20px}
-        p {color: #15c;}
-        .native-msg{margin: 10px 0px 30px 20px;}
-        .personal-msg{width: 40%; border-top: 2px dotted black; margin-left: 40px;}
+    div.invite-body{background-color: "#F1F6DB";}
+    h1, h2, p{
+      text-align: left;
+    }
+    h1{
+      font-family: 'Merriweather', serif;
+      font-size: 56px;
+      color: #219a60;
+    }
+    h2{
+      font-family: "Libre Franklin", Garamond, sans-serif;
+      font-size: 26px;
+      line-height: 30px;
+      font-weight: 400;
+      color: #2a2c33;
+      margin: 10px 0px;
+      margin-left: 20px;
+
+    }
+    h2.opener{
+      font-size: 32px;
+      margin-left: 0px;
+    }
+    h3{
+      margin-left: 20px;
+      font-size: 24px;
+      color: #2a2c33;
+    }
+    a {color: #105130 !important; margin-bottom: 10px; font-size: 20px !important; padding-left: 20px;}
+    p {font-family: "Libre Franklin", Garamond, sans-serif;
+      font-size: 1em;
+      line-height: 1.45em;
+      font-weight: 400;
+      color: #2a2c33;
+      margin: 10px 0px;
+    }
+    .signature{color: #219a60; font-weight: bold}
+    .native-msg{margin: 10px 0px 30px 0px;}
     </style>
   </head>
   <body>
-    <h1> Hello!</h1>
-    <div class="personal-msg">
-      <h2>A message from <%= @user.first %>: </h2>
-      <p><%= @message %></p>
-    </div>
+    <div class="invite-body">
+      <h1> Hello! Your friend has invited you!</h1>
+      <div class="personal-msg">
+        <h2 class="opener">A message from <%= @user.first %>: </h2>
+        <h3><%= @message %></h3>
+      </div>
 
-    <div class="native-msg">
-      <h3>Your friend <%= @user.first %> <%= @user.last %> has invited you to join Carbon Collective! To begin your registration click the URL below.</h3>
-      <h3><%= invite_users_url(:id => @new.id, :token => @user.invite_token) %></h3>
-    </div>
-    <% if @message %>
+      <div class="native-msg">
+        <h2>Your friend <%= @user.first %> <%= @user.last %> has invited you to join Carbon Collective! To begin your registration click the URL below.</h3>
+        <h3><%= invite_users_url(:id => @new.id, :token => @user.invite_token) %></h3>
+      </div>
+      <% if @message %>
 
-    <% end %>
-    <br/>
-    <h3>Sincerely</h3>
-    <h3>The Carbon Collective</h3>
+      <% end %>
+      <br/>
+      <h2>Sincerely</h2>
+      <h2 class="signature">The Carbon Collective</h2>
+    </div>
   </body>
 </html>
