@@ -23,7 +23,6 @@ class Api::V1::Areas::NeighborhoodCarbonController < ApplicationController
 
   def users
     id = params[:id]
-    byebug
     if Neighborhood.exists?(id)
       users = Neighborhood.find(id)
         .users.order(total_carbon_savings: :desc)

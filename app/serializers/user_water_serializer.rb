@@ -1,7 +1,7 @@
 class UserWaterSerializer < ActiveModel::Serializer
   attributes :id, :avg_daily_consumption, :first, :last, :email,
                   :avatar_url, :house_ids, :avg_monthly_consumption,
-                  :privacy_policy,
+                  :privacy_policy, :house, :house_max,
                   :last_updated, :rank, :arrow,
                   :personal_savings_to_date, :personal_usage_to_date,
                   :avg_daily_footprint, :avg_monthly_footprint,
@@ -15,6 +15,13 @@ class UserWaterSerializer < ActiveModel::Serializer
     (object.avg_daily_carbon_consumption * 29.53).round(2).to_s + " lbs" if object.avg_daily_carbon_consumption
   end
 
+  def house
+    object.household
+  end
+  def house_max
+    object.household.house_max("water")
+  end
+
   ## regional arrays for dash, order: [id, name, regional-avg, parent_avg, parent_max, regional-rank, out_of]
   def household
     h = object.household
@@ -25,7 +32,7 @@ class UserWaterSerializer < ActiveModel::Serializer
       parent_max = (snapshot.max_daily_water_consumption * 29.53).round(2)
       arr = [h.id, "Household", avg_monthly,
         parent_avg, parent_max,
-        h.water_ranking.rank, snapshot.out_of]
+        h.water_ranking.rank, snapshot.out_of, h.carbon_ranking.arrow]
     end
     arr
   end
@@ -38,7 +45,7 @@ class UserWaterSerializer < ActiveModel::Serializer
       parent_max = (snapshot.max_daily_water_consumption * 29.53).round(2)
       arr = [n.id, n.name, avg_monthly,
         parent_avg, parent_max,
-        n.water_ranking.rank, snapshot.out_of]
+        n.water_ranking.rank, snapshot.out_of, n.carbon_ranking.arrow]
     end
     arr
   end
@@ -51,7 +58,7 @@ class UserWaterSerializer < ActiveModel::Serializer
       parent_max = (snapshot.max_daily_water_consumption * 29.53).round(2)
       arr = [c.id, c.name, avg_monthly,
         parent_avg, parent_max,
-        c.water_ranking.rank, snapshot.out_of]
+        c.water_ranking.rank, snapshot.out_of, c.carbon_ranking.arrow]
     end
     arr
   end
@@ -64,7 +71,7 @@ class UserWaterSerializer < ActiveModel::Serializer
       parent_max = (snapshot.max_daily_water_consumption * 29.53).round(2)
       arr = [c.id, c.name, avg_monthly,
         parent_avg, parent_max,
-        c.water_ranking.rank, snapshot.out_of]
+        c.water_ranking.rank, snapshot.out_of, c.carbon_ranking.arrow]
     end
     arr
   end
@@ -77,7 +84,7 @@ class UserWaterSerializer < ActiveModel::Serializer
       parent_max = (snapshot.max_daily_water_consumption * 29.53).round(2)
       arr = [r.id, r.name, avg_monthly,
         parent_avg, parent_max,
-        r.water_ranking.rank, snapshot.out_of]
+        r.water_ranking.rank, snapshot.out_of, r.carbon_ranking.arrow]
     end
     arr
   end
@@ -91,7 +98,7 @@ class UserWaterSerializer < ActiveModel::Serializer
       parent_max = (snapshot.max_daily_water_consumption * 29.53).round(2)
       arr = [c.id, c.name, avg_monthly,
         parent_avg, parent_max,
-        c.water_ranking.rank, Country.count]
+        c.water_ranking.rank, Country.count, c.carbon_ranking.arrow]
     end
     arr
   end

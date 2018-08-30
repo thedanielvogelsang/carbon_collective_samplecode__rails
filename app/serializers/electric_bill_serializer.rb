@@ -5,10 +5,10 @@ class ElectricBillSerializer < ActiveModel::Serializer
                   :total_saved, :carbon_impact, :who, :average_use,
                   :house_info, :price, :year, :no_residents, :average_daily
   def start_date
-    object.start_date.strftime('%B%e')
+    object.start_date.strftime('%B %e')
   end
   def end_date
-    object.end_date.strftime('%B%e')
+    object.end_date.strftime('%B %e')
   end
   def no_days
     (object.end_date - object.start_date).to_i
@@ -36,6 +36,6 @@ class ElectricBillSerializer < ActiveModel::Serializer
   end
   def average_daily
     num_days = object.end_date - object.start_date
-    object.total_kwhs.fdiv(num_days).to_f.round(2)
+    '%.2f' % object.total_kwhs.fdiv(num_days).to_f.round(2)
   end
 end

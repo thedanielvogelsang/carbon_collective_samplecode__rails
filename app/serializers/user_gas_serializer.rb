@@ -1,19 +1,26 @@
 class UserGasSerializer < ActiveModel::Serializer
   attributes :id, :avg_daily_consumption, :first, :last, :email,
                   :avatar_url, :house_ids, :avg_monthly_consumption,
-                  :privacy_policy,
+                  :privacy_policy, :house, :house_max,
                   :rank, :arrow, :last_updated,
                   :personal_usage_to_date, :personal_savings_to_date,
                   :avg_daily_footprint, :avg_monthly_footprint,
                   :household, :neighborhood, :city, :county, :region, :country,
                   :metric_sym, :num_bills, :out_of
-                  
+
   def avg_daily_footprint
     object.avg_daily_carbon_consumption.round(2).to_s + " lbs" if object.avg_daily_carbon_consumption
   end
   def avg_monthly_footprint
     object.avg_daily_carbon_consumption.round(2).to_s + " lbs" if object.avg_daily_carbon_consumption
   end
+
+    def house
+      object.household
+    end
+    def house_max
+      object.household.house_max("gas")
+    end
   ## regional arrays for dash, order: [id, name, regional-avg, parent_avg, parent_max, regional-rank, out_of]
   def household
     h = object.household
@@ -24,7 +31,7 @@ class UserGasSerializer < ActiveModel::Serializer
       parent_max = (snapshot.max_daily_gas_consumption * 29.53).round(2)
       arr = [h.id, "Household", avg_monthly,
         parent_avg, parent_max,
-        h.gas_ranking.rank, snapshot.out_of]
+        h.gas_ranking.rank, snapshot.out_of, h.carbon_ranking.arrow]
     end
     arr
   end
@@ -37,7 +44,7 @@ class UserGasSerializer < ActiveModel::Serializer
       parent_max = (snapshot.max_daily_gas_consumption * 29.53).round(2)
       arr = [n.id, n.name, avg_monthly,
         parent_avg, parent_max,
-        n.gas_ranking.rank, snapshot.out_of]
+        n.gas_ranking.rank, snapshot.out_of, c.carbon_ranking.arrow]
     end
     arr
   end
@@ -50,7 +57,7 @@ class UserGasSerializer < ActiveModel::Serializer
       parent_max = (snapshot.max_daily_gas_consumption * 29.53).round(2)
       arr = [c.id, c.name, avg_monthly,
         parent_avg, parent_max,
-        c.gas_ranking.rank, snapshot.out_of]
+        c.gas_ranking.rank, snapshot.out_of, c.carbon_ranking.arrow]
     end
     arr
   end
@@ -63,7 +70,7 @@ class UserGasSerializer < ActiveModel::Serializer
       parent_max = (snapshot.max_daily_gas_consumption * 29.53).round(2)
       arr = [c.id, c.name, avg_monthly,
         parent_avg, parent_max,
-        c.gas_ranking.rank, snapshot.out_of]
+        c.gas_ranking.rank, snapshot.out_of, c.carbon_ranking.arrow]
     end
     arr
   end
@@ -76,7 +83,7 @@ class UserGasSerializer < ActiveModel::Serializer
       parent_max = (snapshot.max_daily_gas_consumption * 29.53).round(2)
       arr = [r.id, r.name, avg_monthly,
         parent_avg, parent_max,
-        r.gas_ranking.rank, snapshot.out_of]
+        r.gas_ranking.rank, snapshot.out_of, r.carbon_ranking.arrow]
     end
     arr
   end
@@ -90,7 +97,7 @@ class UserGasSerializer < ActiveModel::Serializer
       parent_max = (snapshot.max_daily_gas_consumption * 29.53).round(2)
       arr = [c.id, c.name, avg_monthly,
         parent_avg, parent_max,
-        c.gas_ranking.rank, Country.count]
+        c.gas_ranking.rank, Country.count, c.carbon_ranking.arrow]
     end
     arr
   end

@@ -6,11 +6,11 @@ class Api::V1::HousesController < ApplicationController
   def show
     id = params[:id]
     if House.exists?(id)
-      render json: House.find(id), serializer: HouseElectricitySerializer if params[:resource] == 'electricity'
-      render json: House.find(id), serializer: HouseWaterSerializer if params[:resource] == 'water'
-      render json: House.find(id), serializer: HouseGasSerializer if params[:resource] == 'gas'
-      render json: House.find(id), serializer: HouseCarbonSerializer if params[:resource] == 'carbon'
-      render json: House.find(id), serializer: HouseElectricitySerializer if params[:resource] == nil
+      render json: House.find(id), serializer: HouseElectricitySerializer, user: params[:user_id] if params[:resource] == 'electricity'
+      render json: House.find(id), serializer: HouseWaterSerializer, user: params[:user_id]  if params[:resource] == 'water'
+      render json: House.find(id), serializer: HouseGasSerializer, user: params[:user_id]  if params[:resource] == 'gas'
+      render json: House.find(id), serializer: HouseCarbonSerializer, user: params[:user_id]  if params[:resource] == 'carbon'
+      render json: House.find(id), serializer: HouseElectricitySerializer, user: params[:user_id]  if params[:resource] == nil
     else
       render json: {error: "House does not exist"}, status: 404
     end
@@ -33,7 +33,12 @@ class Api::V1::HousesController < ApplicationController
     id = params[:id]
     if House.exists?(id)
       house = House.find(id)
-      if house.update(safe_params)
+      if params[:user_house][:move_in_date]
+        uh = house.user_houses.where(:user_houses => {user_id: params[:user_id]}).first
+        uh.update(move_in_date: params[:user_house][:move_in_date])
+        house = uh.house
+        render json: house
+      elsif house.update(safe_params)
         render json: house
       else
         error_message = "error! house could not update. try again"

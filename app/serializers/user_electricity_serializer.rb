@@ -1,7 +1,7 @@
 class UserElectricitySerializer < ActiveModel::Serializer
   attributes :id, :avg_daily_consumption, :first, :last, :email,
                   :avatar_url, :house_ids, :avg_monthly_consumption,
-                  :privacy_policy,
+                  :privacy_policy, :house, :house_max,
                   :last_updated, :rank, :arrow,
                   :personal_savings_to_date, :personal_usage_to_date,
                   :avg_daily_footprint, :avg_monthly_footprint,
@@ -16,6 +16,13 @@ class UserElectricitySerializer < ActiveModel::Serializer
     (object.avg_daily_carbon_consumption * 29.53).round(2).to_s + " lbs" if object.avg_daily_carbon_consumption
   end
 
+  def house
+    object.household
+  end
+  def house_max
+    object.household.house_max("electricity")
+  end
+
 ## regional arrays for dash, order: [id, name, regional-avg, parent_avg, parent_max, regional-rank, out_of]
 def household
   h = object.household
@@ -26,7 +33,7 @@ def household
     parent_max = (snapshot.max_daily_electricity_consumption * 29.53).round(2)
     arr = [h.id, "Household", avg_monthly,
       parent_avg, parent_max,
-      h.electricity_ranking.rank, snapshot.out_of]
+      h.electricity_ranking.rank, snapshot.out_of, h.carbon_ranking.arrow]
   end
   arr
 end
@@ -39,7 +46,7 @@ def neighborhood
     parent_max = (snapshot.max_daily_electricity_consumption * 29.53).round(2)
     arr = [n.id, n.name, avg_monthly,
       parent_avg, parent_max,
-      n.electricity_ranking.rank, snapshot.out_of]
+      n.electricity_ranking.rank, snapshot.out_of, n.carbon_ranking.arrow]
   end
   arr
 end
@@ -52,7 +59,7 @@ def city
     parent_max = (snapshot.max_daily_electricity_consumption * 29.53).round(2)
     arr = [c.id, c.name, avg_monthly,
       parent_avg, parent_max,
-      c.electricity_ranking.rank, snapshot.out_of]
+      c.electricity_ranking.rank, snapshot.out_of, c.carbon_ranking.arrow]
   end
   arr
 end
@@ -65,7 +72,7 @@ def county
     parent_max = (snapshot.max_daily_electricity_consumption * 29.53).round(2)
     arr = [c.id, c.name, avg_monthly,
       parent_avg, parent_max,
-      c.electricity_ranking.rank, snapshot.out_of]
+      c.electricity_ranking.rank, snapshot.out_of, c.carbon_ranking.arrow]
   end
   arr
 end
@@ -76,9 +83,10 @@ def region
     avg_monthly = (snapshot.avg_daily_electricity_consumption_per_user * 29.53).round(2)
     parent_avg = (r.country.avg_daily_electricity_consumed_per_user * 29.53).round(2)
     parent_max = (snapshot.max_daily_electricity_consumption * 29.53).round(2)
+    arrowDirection = r.electricity_ranking.arrow
     arr = [r.id, r.name, avg_monthly,
       parent_avg, parent_max,
-      r.electricity_ranking.rank, snapshot.out_of]
+      r.electricity_ranking.rank, snapshot.out_of, r.carbon_ranking.arrow]
   end
   arr
 end
@@ -92,7 +100,7 @@ def country
     parent_max = (snapshot.max_daily_electricity_consumption * 29.53).round(2)
     arr = [c.id, c.name, avg_monthly,
       parent_avg, parent_max,
-      c.electricity_ranking.rank, Country.count]
+      c.electricity_ranking.rank, Country.count, c.carbon_ranking.arrow]
   end
   arr
 end
