@@ -33,7 +33,7 @@ class Api::V1::HousesController < ApplicationController
     id = params[:id]
     if House.exists?(id)
       house = House.find(id)
-      if params[:user_house][:move_in_date]
+      if params[:user_house]
         uh = house.user_houses.where(:user_houses => {user_id: params[:user_id]}).first
         uh.update(move_in_date: params[:user_house][:move_in_date])
         house = uh.house
