@@ -5,7 +5,7 @@ class UserCarbonSerializer < ActiveModel::Serializer
                   :arrow, :rank, :last_updated, :avg_daily_footprint, :avg_monthly_footprint,
                   :household, :neighborhood, :city, :county, :region, :country,
                   :avg_daily_consumption, :avg_monthly_consumption,
-                  :metric_sym, :out_of, :house, :house_max,
+                  :metric_sym, :out_of, :house, :house_max, :move_in_date
 
   def house
     object.household
@@ -232,6 +232,10 @@ class UserCarbonSerializer < ActiveModel::Serializer
     else
       nil
     end
+  end
+
+  def move_in_date
+    UserHouse.where(user_id: object.id, house_id: object.household.id).first.move_in_date
   end
 
 end

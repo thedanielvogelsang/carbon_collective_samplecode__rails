@@ -6,7 +6,7 @@ class UserWaterSerializer < ActiveModel::Serializer
                   :personal_savings_to_date, :personal_usage_to_date,
                   :avg_daily_footprint, :avg_monthly_footprint,
                   :household, :neighborhood, :city, :county, :region, :country,
-                  :metric_sym, :num_bills, :out_of
+                  :metric_sym, :num_bills, :out_of, :move_in_date
 
   def avg_daily_footprint
     object.avg_daily_carbon_consumption.round(2).to_s + " lbs" if object.avg_daily_carbon_consumption
@@ -235,5 +235,9 @@ class UserWaterSerializer < ActiveModel::Serializer
     else
       nil
     end
+  end
+
+  def move_in_date
+    UserHouse.where(user_id: object.id, house_id: object.household.id).first.move_in_date
   end
 end
