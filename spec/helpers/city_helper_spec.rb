@@ -300,11 +300,15 @@ RSpec.describe CityHelper, type: :helper do
       HeatBill.create(start_date: start_date1, end_date: end_date1, total_therms: therms, price: price, house_id: house.id, no_residents: 2, user_id: user.id)
 
       user = User.first
-      #no carbon_ranking until default_ranks are set, which default to 0 until the front end pings (and update) the db
-      expect(@city.carbon_ranking).to be(nil)
-
-      #regional per_user average changes to internal users' upon update_all
-      @city.set_default_ranks
+      #rankings are all set by default, which default to nil until the front end pings (and update) the db
+      expect(@city.carbon_ranking.rank).to be(nil)
+      expect(@city.carbon_ranking.class).to be(CarbonRanking)
+      expect(@city.electricity_ranking.rank).to be(nil)
+      expect(@city.electricity_ranking.class).to be(ElectricityRanking)
+      expect(@city.water_ranking.rank).to be(nil)
+      expect(@city.water_ranking.class).to be(WaterRanking)
+      expect(@city.gas_ranking.rank).to be(nil)
+      expect(@city.gas_ranking.class).to be(GasRanking)
       city = City.first
       expect(@city.id).to eq(city.id)
 
@@ -323,8 +327,8 @@ RSpec.describe CityHelper, type: :helper do
       expect(c1_avg_gas.to_f.round(2)).to eq(user.avg_daily_gas_consumption.to_f.round(2))
       expect(c1_avg_elec.to_f.round(2)).to eq(user.avg_daily_electricity_consumption.to_f.round(2))
 
-      expect(city.carbon_ranking.avg_daily_carbon_consumed_per_user).to eq(carbon_avg)
-      expect(city.carbon_ranking.avg_daily_carbon_consumed_per_user).to eq(user.avg_daily_carbon_consumption)
+      expect(city.avg_daily_carbon_consumed_per_user).to eq(carbon_avg)
+      expect(city.avg_daily_carbon_consumed_per_user).to eq(user.avg_daily_carbon_consumption)
     end
   end
 end
