@@ -44,7 +44,7 @@ class UserGasSerializer < ActiveModel::Serializer
       parent_max = (snapshot.max_daily_gas_consumption * 29.53).round(2)
       arr = [n.id, n.name, avg_monthly,
         parent_avg, parent_max,
-        n.gas_ranking.rank, snapshot.out_of, c.carbon_ranking.arrow]
+        n.gas_ranking.rank, snapshot.out_of, n.carbon_ranking.arrow]
     end
     arr
   end
