@@ -2,7 +2,13 @@ class UserGeneration < ApplicationRecord
   belongs_to :parent, :class_name => 'User'
   belongs_to :child, :class_name => 'User'
 
-  after_save :link_parent_to_child
+  after_save :add_accepted_date_to_invitee, :link_parent_to_child
+
+  def add_accepted_date_to_invitee
+    child = User.find(self.child_id)
+    child.accepted_date = DateTime.now
+    child.save
+  end
 
   def link_parent_to_child
     parent = User.find(self.parent_id)

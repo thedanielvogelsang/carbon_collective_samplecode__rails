@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180910180809) do
+ActiveRecord::Schema.define(version: 20180911184834) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -673,7 +673,8 @@ ActiveRecord::Schema.define(version: 20180910180809) do
     t.float "avg_time_btw_logins"
     t.boolean "privacy_policy"
     t.string "filename"
-    t.integer "invite_max"
+    t.integer "invite_max", default: 3
+    t.datetime "accepted_date"
     t.index ["total_electricity_savings"], name: "index_users_on_total_electricity_savings"
     t.index ["total_gas_savings"], name: "index_users_on_total_gas_savings"
     t.index ["total_water_savings"], name: "index_users_on_total_water_savings"

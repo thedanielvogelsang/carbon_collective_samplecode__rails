@@ -5,7 +5,7 @@ class UserCarbonSerializer < ActiveModel::Serializer
                   :arrow, :rank, :last_updated, :avg_daily_footprint, :avg_monthly_footprint,
                   :household, :neighborhood, :city, :county, :region, :country,
                   :avg_daily_consumption, :avg_monthly_consumption,
-                  :metric_sym, :out_of, :house, :house_max, :move_in_date
+                  :metric_sym, :out_of, :house, :house_max, :move_in_date, :invite_max
 
   def house
     object.household
