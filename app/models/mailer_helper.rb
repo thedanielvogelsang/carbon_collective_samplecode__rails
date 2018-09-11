@@ -1,9 +1,7 @@
 class MailerHelper
   def self.invite(user, emails, message, prev_gen)
-    ct = emails.keys.length - 1
-    (0..ct).each do |e|
-      e = e.to_s
-      addr = emails[e]
+    emails.keys.each do |key|
+      addr = emails[key]
       unless addr == "" || addr == nil
         new_user = User.find_or_create_by(email: addr)
           # no password error upon first creation lets us know they're not in the system
