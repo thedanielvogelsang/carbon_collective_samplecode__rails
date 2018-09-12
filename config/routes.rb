@@ -23,6 +23,8 @@ Rails.application.routes.draw do
   post '/:user_id/presses-nav-btn', to: 'user_behaviors#presses_navbar_button'
   post '/:user_id/user-logs-in', to: 'user_behaviors#logs_in'
   post '/:user_id/user-logs-out', to: 'user_behaviors#logs_out'
+  get '/:user_id/invites', to: 'users#user_invites'
+  post '/:user_id/cancel-invite/:invite_id', to: 'users#cancel_invite'
   resource :users do
     member do
       get :confirm_email

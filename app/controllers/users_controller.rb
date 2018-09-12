@@ -90,7 +90,6 @@ class UsersController < ApplicationController
     MailerHelper.invite(user, emails, msg, user.generation)
     respns = MailerHelper.sort_emails(emails)
     respns == 'success' ? status = 201 : status = 404
-    puts respns
     render json: {message: respns}, status: status
   end
 
@@ -102,13 +101,36 @@ class UsersController < ApplicationController
     # UserLogHelper.invite_accepted(prev, new) , write to text file that new_user accepted prev_users invite
     if !new_user.confirm_token
       render :file => 'public/404.html', :status => :not_found, :layout => false
-    else
+    elsif UserInvite.where(user_id: prev_user.id, invite_id: new_user.id).exists?
       new_user.email_activate
       UserLogHelper.user_accepts_invite(new_user)
       UserGeneration.find_or_create_by(parent_id: prev_user.id , child_id: new_user.id)
       UserGeneration.bind_generations(prev_user, new_user.id)
       redirect_to "#{host}/signup/#{new_user.id}"
+    else
+      render :file => 'public/expired.html', :status => :not_found, :layout => false
     end
+  end
+
+  def user_invites
+    user = User.find(params[:user_id])
+    invites = user.user_invites
+    user_invites = {}
+    if !invites.empty?
+      invites.each_with_index do |ui, n|
+        invite = User.find(ui.invite_id)
+        invite.email_confirmed ? time = invite.accepted_date : time = ui.created_at
+        user_invites[n] = [ui.invite_id, invite.email, time.to_f*1000, time.to_date.strftime('%a, %d %b %Y'), invite.email_confirmed?]
+      end
+    end
+    render json: user_invites, status: 200
+  end
+
+  def cancel_invite
+    user = User.find(params[:user_id])
+    invite = User.find(params[:invite_id])
+    UserInvite.where(user_id: user.id, invite_id: invite.id).first.destroy
+    render json: invite, status: 202
   end
 
   private

@@ -1,5 +1,7 @@
 module UserHelper
 
+    INVITE_MAX = 3
+
     def immediate_parent
       if self.parent
         UserGeneration.where(child_id: self.id).order(id: :asc).first.parent
