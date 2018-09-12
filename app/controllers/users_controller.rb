@@ -120,7 +120,7 @@ class UsersController < ApplicationController
       invites.each_with_index do |ui, n|
         invite = User.find(ui.invite_id)
         invite.email_confirmed ? time = invite.accepted_date : time = ui.created_at
-        user_invites[n] = [ui.invite_id, invite.email, time.to_f*1000, time.to_date.strftime('%a, %d %b %Y'), invite.email_confirmed?]
+        user_invites[n] = [ui.invite_id, invite.email, time.to_f*1000, time.strftime('%a, %d %b %Y'), invite.email_confirmed?]
       end
     end
     render json: user_invites, status: 200
