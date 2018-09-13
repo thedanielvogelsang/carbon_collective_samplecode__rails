@@ -671,7 +671,7 @@ ActiveRecord::Schema.define(version: 20180911184834) do
     t.datetime "last_login"
     t.integer "total_logins"
     t.float "avg_time_btw_logins"
-    t.boolean "privacy_policy"
+    t.boolean "privacy_policy", default: false
     t.string "filename"
     t.integer "invite_max", default: 3
     t.datetime "accepted_date"
