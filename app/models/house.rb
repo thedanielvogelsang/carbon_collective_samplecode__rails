@@ -17,16 +17,21 @@ class House < ApplicationRecord
   has_many :household_snapshots, dependent: :destroy
   has_one :neighborhood, through: :address
 
-  has_one :electricity_ranking, :as => :area
-  has_one :water_ranking, :as => :area
-  has_one :gas_ranking, :as => :area
-  has_one :carbon_ranking, :as => :area
+  has_one :electricity_ranking, :as => :area, dependent: :destroy
+  has_one :water_ranking, :as => :area, dependent: :destroy
+  has_one :gas_ranking, :as => :area, dependent: :destroy
+  has_one :carbon_ranking, :as => :area, dependent: :destroy
 
-# ???? what is this??
-  has_many :user_electricity_rankings, :as => :area
-  has_many :user_water_rankings, :as => :area
-  has_many :user_gas_rankings, :as => :area
-  has_many :user_carbon_rankings, :as => :area
+# has many  user_rankings
+  has_many :user_electricity_rankings, :as => :area, dependent: :destroy
+  has_many :user_water_rankings, :as => :area, dependent: :destroy
+  has_many :user_gas_rankings, :as => :area, dependent: :destroy
+  has_many :user_carbon_rankings, :as => :area, dependent: :destroy
+
+# has many  user_questions
+  has_many :user_electricity_questions, dependent: :destroy
+  has_many :user_water_questions, dependent: :destroy
+  has_many :user_gas_questions, dependent: :destroy
 
   def bills
     self.electric_bills
