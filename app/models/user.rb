@@ -53,6 +53,7 @@ class User < ApplicationRecord
 
   has_many :user_logs, dependent: :destroy
   has_many :user_invites, dependent: :destroy
+  has_many :user_request_areas, dependent: :destroy
 
   before_create :add_zeros,
                 :add_confirm_token,
@@ -100,6 +101,7 @@ end
 
 def email_activate
   self.email_confirmed = true
+  self.accepted_date = DateTime.now
   self.save!(:validate => false)
 end
 
