@@ -35,9 +35,14 @@ class Api::V1::HousesController < ApplicationController
       house = House.find(id)
       if params[:user_house] && !params[:user_house][:move_in_date].nil?
         uh = house.user_houses.where(:user_houses => {user_id: params[:user_id]}).first
-        uh.update(move_in_date: params[:user_house][:move_in_date])
-        house = uh.house
-        render json: house
+        if uh.move_in_date.strftime("%Y-%m-%d") == params[:user_house][:move_in_date]
+          error_message = "ignore nil date"
+          render json: {:error => error_message}, status: 404
+        else
+          uh.update(move_in_date: params[:user_house][:move_in_date])
+          house = uh.house
+          render json: house, serializer: HouseElectricitySerializer, user: params[:user_id]
+        end
       elsif house.update(safe_params)
         render json: house
       else
