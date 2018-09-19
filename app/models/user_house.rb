@@ -10,8 +10,9 @@ class UserHouse < ApplicationRecord
                 :add_user_questions,
                 :find_or_create_user_rankings
 
-  after_create :log_house_creation,
-               :confirm_move_in
+  after_create :log_house_creation
+
+  before_save :confirm_move_in
 
   before_destroy :update_house_no_residents_less
 
@@ -43,6 +44,5 @@ class UserHouse < ApplicationRecord
 
   def confirm_move_in
     self.move_in_date ||= self.created_at
-    self.save
   end
 end
