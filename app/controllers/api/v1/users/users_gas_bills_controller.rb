@@ -8,7 +8,7 @@ class Api::V1::Users::UsersGasBillsController < ApplicationController
       render json: HeatBill.joins(:house)
                 .where(:houses => {id: house.id})
                 .order(end_date: :desc)
-                .select{|b| b.start_date > uh.move_in_date}, each_serializer: HeatBillSerializer
+                .select{|b| b.start_date >= uh.move_in_date}, each_serializer: HeatBillSerializer
     end
   end
 
@@ -26,13 +26,31 @@ class Api::V1::Users::UsersGasBillsController < ApplicationController
   def update
     if params[:id] && User.exists(params[:user_id])
       bill = HeatBill.find(params[:id])
-      if bill.update(safe_params)
-        render json: bill, status: 201
+      if HeatBill.updated?(bill, safe_params)
+        who = User.find(params[:user_id])
+        bill.who = who
+        bill.save
+        message = "Bill Saved"
+        render json: {status: 202, error: message}
       else
-        render json: {error: "Something went wrong"}, status: 404
+        bill.update(safe_params)
+        error = bill.errors.messages.first.join(' ')
+        render json: {error: error}, status: 404
       end
     end
   end
+
+
+    def destroy
+      if User.exists?(params[:user_id]) && HeatBill.exists?(params[:id])
+        HeatBill.destroy(params[:id])
+        message = "Bill removed and data saved"
+        render :json => {status: 202, error: message}
+      else
+        error = "Something went wrong"
+        render :json => {status: 404, error: error}
+      end
+    end
 
   private
     def safe_params

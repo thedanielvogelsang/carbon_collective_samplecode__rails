@@ -76,11 +76,12 @@ class HeatBill < ApplicationRecord
    overlaps = past_bills.select do |b|
      check_overlap(start_, end_, b.start_date, b.end_date)
    end
+   overlaps = overlaps - [self]
    overlaps.empty? ? true : errors.add(:start_date, "start or end date overlaps with another bill")
  end
 
  def check_overlap(a_st, a_end, b_st, b_end)
-   (a_st < b_end) && (a_end > b_st)
+   (a_st <= b_end) && (a_end >= b_st)
  end
 
  def log_user_activity
@@ -94,5 +95,13 @@ class HeatBill < ApplicationRecord
 
  def confirm_valid_dates
    end_date <= DateTime.now ? true : errors.add(:end_date, "cannot claim future use on past bills")
+ end
+
+ def self.updated?(bill, updates)
+   updates.keys.each do |key|
+     key == "start_date" || key == "end_date" ? value = Date.parse(updates[key]) : value = updates[key]
+     bill[key] = value
+   end
+   bill.save ? true : false
  end
 end

@@ -1,8 +1,4 @@
 Rails.application.routes.draw do
-  #check back in on this (and views) later
-  get 'settings', to: 'settings#show'
-
-# reconfigure and clean up routes
 
   get '/', to: "sessions#index", as: :welcome
   get '/auth/facebook', as: :facebook_login
@@ -55,6 +51,9 @@ Rails.application.routes.draw do
           post '/electric_bills', to: 'users/users_electric_bills#create'
           post '/water_bills', to: 'users/users_water_bills#create'
           post '/gas_bills', to: 'users/users_gas_bills#create'
+          delete '/electric_bills', to: 'users/users_electric_bills#destroy'
+          delete '/water_bills', to: 'users/users_water_bills#destroy'
+          delete '/gas_bills', to: 'users/users_gas_bills#destroy'
             # get '/trips', to: 'users/trips#index'
             # get '/groups', to: 'users/groups#index'
             # get '/groups/:id', to: 'users/groups#show'
