@@ -40,6 +40,17 @@ class Api::V1::Users::UsersWaterBillsController < ApplicationController
     end
   end
 
+  def destroy
+    if User.exists?(params[:user_id]) && WaterBill.exists?(params[:id])
+      WaterBill.destroy(params[:id])
+      message = "Bill removed and data saved"
+      render :json => {status: 202, error: message}
+    else
+      error = "Something went wrong"
+      render :json => {status: 404, error: error}
+    end
+  end
+
   private
     def safe_params
       params.require(:water_bills).permit(:start_date, :end_date, :total_gallons, :price, :house_id, :no_residents, :who)

@@ -26,7 +26,7 @@ class Api::V1::Users::UsersGasBillsController < ApplicationController
   def update
     if params[:id] && User.exists(params[:user_id])
       bill = HeatBill.find(params[:id])
-      if GasBill.updated?(bill, safe_params)
+      if HeatBill.updated?(bill, safe_params)
         who = User.find(params[:user_id])
         bill.who = who
         bill.save
@@ -39,6 +39,18 @@ class Api::V1::Users::UsersGasBillsController < ApplicationController
       end
     end
   end
+
+
+    def destroy
+      if User.exists?(params[:user_id]) && HeatBill.exists?(params[:id])
+        HeatBill.destroy(params[:id])
+        message = "Bill removed and data saved"
+        render :json => {status: 202, error: message}
+      else
+        error = "Something went wrong"
+        render :json => {status: 404, error: error}
+      end
+    end
 
   private
     def safe_params
