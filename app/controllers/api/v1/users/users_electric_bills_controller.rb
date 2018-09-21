@@ -8,7 +8,7 @@ class Api::V1::Users::UsersElectricBillsController < ApplicationController
       render json: ElectricBill.joins(:house)
             .where(:houses => {id: house.id})
             .order(end_date: :desc)
-            .select{|b| b.start_date > uh.move_in_date}, each_serializer: ElectricBillSerializer
+            .select{|b| b.start_date >= uh.move_in_date}, each_serializer: ElectricBillSerializer
     end
   end
 
@@ -24,12 +24,18 @@ class Api::V1::Users::UsersElectricBillsController < ApplicationController
   end
 
   def update
-    if params[:id] && User.exists(params[:user_id])
+    if params[:id] && User.exists?(params[:user_id])
       bill = ElectricBill.find(params[:id])
-      if bill.update(safe_params)
-        render json: bill, status: 201
+      if ElectricBill.updated?(bill, safe_params)
+        who = User.find(params[:user_id])
+        bill.who = who
+        bill.save
+        message = "Bill Saved"
+        render json: {status: 202, error: message}
       else
-        render json: {error: "Something went wrong"}, status: 404
+        bill.update(safe_params)
+        error = bill.errors.messages.first.join(' ')
+        render json: {error: error}, status: 404
       end
     end
   end

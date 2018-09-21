@@ -1,8 +1,4 @@
 Rails.application.routes.draw do
-  #check back in on this (and views) later
-  get 'settings', to: 'settings#show'
-
-# reconfigure and clean up routes
 
   get '/', to: "sessions#index", as: :welcome
   get '/auth/facebook', as: :facebook_login
