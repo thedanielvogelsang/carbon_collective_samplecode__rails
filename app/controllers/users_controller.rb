@@ -98,7 +98,6 @@ class UsersController < ApplicationController
     # host = 'http://localhost:3001'
     prev_user = User.find_by_invite_token(params[:token])
     new_user = User.find(params[:id])
-    # UserLogHelper.invite_accepted(prev, new) , write to text file that new_user accepted prev_users invite
     if !new_user.confirm_token
       render :file => 'public/404.html', :status => :not_found, :layout => false
     elsif UserInvite.where(user_id: prev_user.id, invite_id: new_user.id).exists?
@@ -119,8 +118,9 @@ class UsersController < ApplicationController
     if !invites.empty?
       invites.each_with_index do |ui, n|
         invite = User.find(ui.invite_id)
-        invite.email_confirmed ? time = invite.accepted_date : time = ui.created_at
-        user_invites[n] = [ui.invite_id, invite.email, time.to_f*1000, time.strftime('%a, %d %b %Y'), invite.email_confirmed?]
+        invite.confirm_token ? time = ui.created_at : time = invite.completed_signup_date
+        puts [invite.confirm_token, time, ui.created_at, invite.completed_signup_date]
+        user_invites[n] = [ui.invite_id, invite.email, time.to_f*1000, time.strftime('%a, %d %b %Y'), invite.completed_signup?]
       end
     end
     render json: user_invites, status: 200
