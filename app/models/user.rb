@@ -133,6 +133,16 @@ def completed_signup?
   self.completed_signup_date ? true : false
 end
 
+def clear_account
+  self.attributes.except('id', 'email', 'generation', 'created_at', 'updated_at').each do |att|
+    self[att[0]] = nil
+  end
+  self.password = 'placeholder'
+  clear_associations
+  delete_file
+  self.save
+end
+
 private
   def check_email_format
     return if errors.key?(:email)
@@ -173,6 +183,16 @@ private
 
   def create_filename
     self.filename = self.email + SecureRandom.urlsafe_base64.to_s
+  end
+
+  def clear_associations
+    self.friendships.delete_all
+    self.user_invites.delete_all
+    self.user_houses.delete_all
+  end
+
+  def delete_file
+    UserLogHelper.user_deletes_account(self.id)
   end
 
   def write_file

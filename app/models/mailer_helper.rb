@@ -1,4 +1,14 @@
 class MailerHelper
+
+  def self.reset_password(user)
+    user.password = "placeholder"
+    user.confirm_token = SecureRandom.urlsafe_base64.to_s
+    #here we want to reset confirm token to nil after 30 minutes
+
+    user.save
+    UserMailer.reset_password(user).deliver_now
+  end
+
   def self.invite(user, emails, message, prev_gen)
     emails.keys.each do |key|
       addr = emails[key]

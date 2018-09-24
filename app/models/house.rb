@@ -5,7 +5,7 @@ class House < ApplicationRecord
 
   validates :address_id, presence: true, uniqueness: true
 
-  before_save :no_residents_zeroed?
+  # before_save :no_residents_zeroed?
   # after_save :destroy_if_no_residents
   after_create :set_default_ranks
 

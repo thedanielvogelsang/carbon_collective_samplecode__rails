@@ -21,10 +21,13 @@ Rails.application.routes.draw do
   post '/:user_id/user-logs-out', to: 'user_behaviors#logs_out'
   get '/:user_id/invites', to: 'users#user_invites'
   post '/:user_id/cancel-invite/:invite_id', to: 'users#cancel_invite'
+  post '/:user_id/delete-account', to: 'users#clear_account'
+  post '/reset_password_email', to: 'users#reset_password_email'
   resource :users do
     member do
       get :confirm_email
       get :invite_accepted, as: "invite"
+      post :reset_password, as: "reset"
     end
   end
   resources :addresses, only: [:create]

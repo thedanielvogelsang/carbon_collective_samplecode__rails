@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  skip_before_action :look_for_token, only: [:invite_accepted]
+  skip_before_action :look_for_token, only: [:invite_accepted, :reset_password]
   respond_to :json
 
   def create
@@ -118,8 +118,7 @@ class UsersController < ApplicationController
     if !invites.empty?
       invites.each_with_index do |ui, n|
         invite = User.find(ui.invite_id)
-        invite.confirm_token ? time = ui.created_at : time = invite.completed_signup_date
-        puts [invite.confirm_token, time, ui.created_at, invite.completed_signup_date]
+        invite.completed_signup? ? time = invite.completed_signup_date : time = ui.created_at
         user_invites[n] = [ui.invite_id, invite.email, time.to_f*1000, time.strftime('%a, %d %b %Y'), invite.completed_signup?]
       end
     end
@@ -131,6 +130,37 @@ class UsersController < ApplicationController
     invite = User.find(params[:invite_id])
     UserInvite.where(user_id: user.id, invite_id: invite.id).first.destroy
     render json: invite, status: 202
+  end
+
+  def clear_account
+    user = User.find(params[:user_id])
+    if user.clear_account
+      render :json => {status: 202}
+    else
+      render :json => {status: 404}
+    end
+  end
+
+  def reset_password_email
+    user = User.find_by(email: params[:user][:email])
+    if user
+      MailerHelper.reset_password(user)
+      render :json => {status: 202}
+    else
+      error = "Could not find an account with that email. Please try again."
+      render :json => {:errors => error}, status: 404
+    end
+  end
+
+  def reset_password
+    host = 'https://carbon-collective.github.io'
+    # host = 'http://localhost:3001'
+    user = User.find_by_confirm_token(params[:token])
+    if !user
+      render :file => 'public/expired.html', :status => :not_found, :layout => false
+    else
+      redirect_to "#{host}/reset-password/#{user.id}"
+    end
   end
 
   private
