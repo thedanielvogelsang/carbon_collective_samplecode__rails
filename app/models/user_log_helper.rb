@@ -210,4 +210,14 @@ class UserLogHelper
                    description: "New user created: #{user.email}"
             )
   end
+
+  def self.user_deletes_account(id)
+    user = User.find(id)
+    time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-% %H:%M:%S.%L")
+    UserLog.create(time: time,
+                   user_id: user.id,
+                   action: "accountDeleted",
+                   description: "User deletes account: #{user.email}"
+            )
+  end
 end

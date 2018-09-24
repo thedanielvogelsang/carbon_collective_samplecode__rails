@@ -13,4 +13,12 @@ class UserMailer < ApplicationMailer
          :subject => "Carbon Collective Invite from #{@user.first}"
         )
   end
+
+  def reset_password(user)
+    @user = user
+    mail(:to => @user.email,
+         :from => @user.email,
+         :subject => "Carbon Collective reset password confirmation email"
+        )
+  end
 end
