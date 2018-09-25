@@ -107,6 +107,10 @@ end
 
 def remove_token
   self.confirm_token = nil
+  self.save!(:validate => false)
+end
+
+def complete_signup
   self.completed_signup_date = DateTime.now
   self.save!(:validate => false)
 end
