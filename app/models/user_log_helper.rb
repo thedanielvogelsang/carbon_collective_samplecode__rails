@@ -217,7 +217,37 @@ class UserLogHelper
     UserLog.create(time: time,
                    user_id: user.id,
                    action: "accountDeleted",
-                   description: "User deletes account: #{user.email}"
+                   description: "#{user.first user.last} deletes account: #{user.email}"
             )
+  end
+
+  def self.user_chooses_unsupported_region(id, region_hash)
+    region = sort_and_find_region(region_hash)
+    if region
+      user = User.find(id)
+      time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-% %H:%M:%S.%L")
+      UserLog.create(time: time,
+                    user_id: id,
+                    action: "userChoosesUnsupportedRegion",
+                    description: "#{user.first user.last} selects unsupported region: #{region}",
+                    )
+    end
+  end
+
+  private
+
+  def sort_and_find_region(region_hash)
+    case region_hash[:area]
+    when "Country"
+      Country.find(region_hash[:id])
+    when "Region"
+      Region.find(region_hash[:id])
+    when "County"
+      County.find(region_hash[:id])
+    when "City"
+      City.find(region_hash[:id])
+    else
+      nil
+    end
   end
 end
