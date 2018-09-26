@@ -217,7 +217,7 @@ class UserLogHelper
     UserLog.create(time: time,
                    user_id: user.id,
                    action: "accountDeleted",
-                   description: "#{user.first user.last} deletes account: #{user.email}"
+                   description: "#{user.first} #{user.last} deletes account: #{user.email}"
             )
   end
 
@@ -229,7 +229,7 @@ class UserLogHelper
       UserLog.create(time: time,
                     user_id: id,
                     action: "userChoosesUnsupportedRegion",
-                    description: "#{user.first user.last} selects unsupported region: #{region}",
+                    description: "#{user.first} #{user.last} selects unsupported region: #{region}",
                     )
     end
   end

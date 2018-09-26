@@ -16,7 +16,8 @@ class User < ApplicationRecord
         class_name: "User",
         join_table: :user_invites,
         foreign_key: :user_id,
-        association_foreign_key: :invite_id
+        association_foreign_key: :invite_id,
+        dependent: :destroy
 
   has_secure_password
 
@@ -52,7 +53,6 @@ class User < ApplicationRecord
   has_many :user_gas_questions, dependent: :destroy
 
   has_many :user_logs, dependent: :destroy
-  has_many :user_invites, dependent: :destroy
   has_many :user_request_areas, dependent: :destroy
 
   before_create :add_zeros,

@@ -113,11 +113,11 @@ class UsersController < ApplicationController
 
   def user_invites
     user = User.find(params[:user_id])
-    invites = user.user_invites
+    invites = user.user_invites.sort_by{|u| u.email_confirmed ? 0 : 1 }
     user_invites = {}
     if !invites.empty?
-      invites.each_with_index do |ui, n|
-        invite = User.find(ui.invite_id)
+      invites.each_with_index do |invite, n|
+        ui = UserInvite.where(user_id: user.id, invite_id: invite.id).last
         invite.completed_signup? ? time = invite.completed_signup_date : time = ui.created_at
         user_invites[n] = [ui.invite_id, invite.email, time.to_f*1000, time.strftime('%a, %d %b %Y'), invite.completed_signup?]
       end
