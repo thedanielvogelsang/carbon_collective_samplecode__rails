@@ -112,6 +112,7 @@ end
 
 def complete_signup
   self.completed_signup_date = DateTime.now
+  UserMailer.invite_signup_successful
   self.save!(:validate => false)
 end
 
