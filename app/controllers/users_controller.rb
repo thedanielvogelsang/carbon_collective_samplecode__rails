@@ -9,6 +9,7 @@ class UsersController < ApplicationController
       if params[:user][:password] == params[:user][:passwordConfirmation] && @user.update(safe_params)
         if @user.email_confirmed
           @user.remove_token
+          @user.complete_signup
           format.json {render :json => @user, :status => 201}
         else
         # Not being used currently; For delivering to unregistered emails; signup without invite will work with other FE new_user component

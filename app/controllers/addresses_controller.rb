@@ -7,7 +7,6 @@
     @address.zipcode_id = zipcode.id
     if @address.save
       bind_new_house(params[:user_id], @address, params[:move_in_date])
-      User.find(params[:user_id]).complete_signup
       render json: @address, status: 202
     elsif !@address.save && @address.errors.messages[:address_line1][0] == 'has already been taken'
       city_id = @address.city_id
@@ -19,7 +18,6 @@
         render :json => {:errors => error, :house => @house.id}, status: 401
       else
         bind_new_house(params[:user_id], old_address, params[:move_in_date])
-        User.find(params[:user_id]).complete_signup 
         render json: old_address, status: 202
       end
     else
