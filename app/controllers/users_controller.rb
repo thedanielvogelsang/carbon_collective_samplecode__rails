@@ -4,29 +4,32 @@ class UsersController < ApplicationController
 
   def create
     #update here for new_users: instead of NEW lets use UPDATE after finding users we've already created
-    @user = User.friendly.find(params[:user][:id])
-    respond_to do |format|
+    if User.friendly.exists?(params[:user][:id])
+      @user = User.friendly.find(params[:user][:id])
       if params[:user][:password] == params[:user][:passwordConfirmation] && @user.update(safe_params)
         if @user.email_confirmed
           @user.remove_token
           @user.complete_signup
-          format.json {render :json => @user, :status => 201}
+          render :json => @user, :status => 201
         else
         # Not being used currently; For delivering to unregistered emails; signup without invite will work with other FE new_user component
           UserMailer.registration(@user).deliver_now
           error = "Please confirm your email address to continue"
-          format.json {render :json => {:errors => error}, :status => 401}
+          render :json => {:errors => error}, :status => 401
         end
       elsif params[:user][:password] != params[:user][:passwordConfirmation]
         error = 'Passwords did not match. Please try again'
-        format.json {render :json => {:errors => error}, :status => 401 }
+        render :json => {:errors => error}, :status => 401
       elsif !@user.errors.messages[:email].empty? && @user.errors.messages[:email][0] != 'has already been taken'
         error = "Email format invalid. If problem continues contact CarbonCollective systems support"
-        format.json {render :json => {:errors => error}, :status => 401 }
+        render :json => {:errors => error}, :status => 401
       else
         error = "Email already taken. Did you forget your password?"
-        format.json {render :json => {:errors => error}, :status => 401 }
+        render :json => {:errors => error}, :status => 401
       end
+    else
+      error = "Unregistered User. Please try your email invite again."
+      render :json => {:errors => error}, :status => 401
     end
   end
 
@@ -171,6 +174,6 @@ class UsersController < ApplicationController
     end
 
     def safe_params
-      params.require('user').permit(:id, :first, :last, :email, :password, :privacy_policy)
+      params.require('user').permit(:first, :last, :email, :password, :privacy_policy)
     end
 end
