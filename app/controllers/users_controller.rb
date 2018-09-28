@@ -95,8 +95,8 @@ class UsersController < ApplicationController
   end
 
   def invite_accepted
-    host = 'https://carbon-collective.github.io'
-    # host = 'http://localhost:3001'
+    # host = 'https://carbon-collective.github.io'
+    host = 'http://localhost:3001'
     prev_user = User.find_by_invite_token(params[:token])
     new_user = User.friendly.find(params[:id])
     if !new_user.confirm_token
@@ -106,7 +106,7 @@ class UsersController < ApplicationController
       UserLogHelper.user_accepts_invite(new_user)
       UserGeneration.find_or_create_by(parent_id: prev_user.id , child_id: new_user.id)
       UserGeneration.bind_generations(prev_user, new_user.id)
-      redirect_to "#{host}/signup/#{new_user.id}"
+      redirect_to "#{host}/signup/#{new_user.slug}"
     else
       render :file => 'public/expired.html', :status => :not_found, :layout => false
     end
