@@ -38,6 +38,7 @@ gem 'react-rails'
 gem 'rack-cors', :require => 'rack/cors'
 gem 'responders'
 gem 'aws-sdk-s3'
+gem 'friendly_id'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
@@ -59,7 +60,6 @@ group :development, :test do
   gem 'shoulda-matchers', git: 'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
   gem 'launchy'
   gem 'rspec-rainbow'
-  gem 'friendly_id'
 end
 
 group :development do
