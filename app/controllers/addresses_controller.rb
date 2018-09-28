@@ -2,11 +2,12 @@
   # before_action :require_user
 
   def create
+    user = User.friendly.find(params[:user_id])
     zipcode = Zipcode.find_or_create_by(zipcode: params[:zipcode]) if params[:zipcode]
     @address = Address.new(safe_params)
     @address.zipcode_id = zipcode.id
     if @address.save
-      bind_new_house(params[:user_id], @address, params[:move_in_date])
+      bind_new_house(user.id, @address, params[:move_in_date])
       render json: @address, status: 202
     elsif !@address.save && @address.errors.messages[:address_line1][0] == 'has already been taken'
       city_id = @address.city_id
@@ -17,7 +18,7 @@
         error = "House already exists"
         render :json => {:errors => error, :house => @house.id}, status: 401
       else
-        bind_new_house(params[:user_id], old_address, params[:move_in_date])
+        bind_new_house(user.id, old_address, params[:move_in_date])
         render json: old_address, status: 202
       end
     else

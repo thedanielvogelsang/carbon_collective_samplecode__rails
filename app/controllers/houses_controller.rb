@@ -1,7 +1,7 @@
 class HousesController < ApplicationController
 
   def create
-    user = User.find(params[:user_id])
+    user = User.friendly.find(params[:user_id])
     @house = House.new(safe_params)
     if @house.save
       hId = @house.id

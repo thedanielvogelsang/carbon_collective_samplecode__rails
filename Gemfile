@@ -59,6 +59,7 @@ group :development, :test do
   gem 'shoulda-matchers', git: 'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
   gem 'launchy'
   gem 'rspec-rainbow'
+  gem 'friendly_id'
 end
 
 group :development do

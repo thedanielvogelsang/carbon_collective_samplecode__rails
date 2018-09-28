@@ -1,7 +1,8 @@
 class Api::V1::Users::QuestionsController < ApplicationController
 
   def show
-    id = params[:user_id]
+    user = User.find(params[:user_id])
+    id = user.id
     hId = params[:house_id]
     if UserHouse.where(user_id: id, house_id: hId).empty?
       render json: {error: 'User and House do not match'}, status: 404

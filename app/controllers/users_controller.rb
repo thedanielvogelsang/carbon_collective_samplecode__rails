@@ -4,7 +4,7 @@ class UsersController < ApplicationController
 
   def create
     #update here for new_users: instead of NEW lets use UPDATE after finding users we've already created
-    @user = User.find(params[:user][:id])
+    @user = User.friendly.find(params[:user][:id])
     respond_to do |format|
       if params[:user][:password] == params[:user][:passwordConfirmation] && @user.update(safe_params)
         if @user.email_confirmed
@@ -31,7 +31,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    user = User.find(params[:id])
+    user = User.friendly.find(params[:id])
     oldpass = params[:user][:old_password]
     authenticated = authenticate_old_password(user, oldpass)
     # put in clause for updating email to reset email confirm"
@@ -67,7 +67,7 @@ class UsersController < ApplicationController
   end
 
   def old_houses
-    user = User.find(params[:user_id])
+    user = User.friendly.find(params[:user_id])
     house = House.find(params[:house_id])
     if user && house
       UserHouse.create(user_id: user.id,
@@ -83,7 +83,7 @@ class UsersController < ApplicationController
   end
 
   def invite
-    user = User.find(params[:id])
+    user = User.friendly.find(params[:id])
     emails = params[:emails]
     msg = params[:message]
     # write to invites text file here, use UserLogHelper in the MailerHelper
@@ -98,7 +98,7 @@ class UsersController < ApplicationController
     host = 'https://carbon-collective.github.io'
     # host = 'http://localhost:3001'
     prev_user = User.find_by_invite_token(params[:token])
-    new_user = User.find(params[:id])
+    new_user = User.friendly.find(params[:id])
     if !new_user.confirm_token
       render :file => 'public/404.html', :status => :not_found, :layout => false
     elsif UserInvite.where(user_id: prev_user.id, invite_id: new_user.id).exists?
@@ -113,7 +113,7 @@ class UsersController < ApplicationController
   end
 
   def user_invites
-    user = User.find(params[:user_id])
+    user = User.friendly.find(params[:user_id])
     invites = user.user_invites.sort_by{|u| u.email_confirmed ? 0 : 1 }
     user_invites = {}
     if !invites.empty?
@@ -127,14 +127,14 @@ class UsersController < ApplicationController
   end
 
   def cancel_invite
-    user = User.find(params[:user_id])
+    user = User.friendly.find(params[:user_id])
     invite = User.find(params[:invite_id])
     UserInvite.where(user_id: user.id, invite_id: invite.id).first.destroy
     render json: invite, status: 202
   end
 
   def clear_account
-    user = User.find(params[:user_id])
+    user = User.friendly.find(params[:user_id])
     if user.clear_account
       render :json => {status: 202}
     else

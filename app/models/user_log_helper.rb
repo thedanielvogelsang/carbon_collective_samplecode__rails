@@ -8,7 +8,7 @@ class UserLogHelper
   end
 
   def self.user_logs_in(id)
-    u = User.find(id)
+    u = User.friendly.find(id)
     time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
     # body = "#{Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60)},#{u.id},logsin,,,,#{u.first + ' ' + u.last} logs in\n"
     UserLog.create(time: time,
@@ -26,7 +26,7 @@ class UserLogHelper
   end
 
   def self.user_logs_out(id)
-    u = User.find(id)
+    u = User.friendly.find(id)
     time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
     # body = "#{Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60)},#{u.id},logsout,,,,#{u.first + ' ' + u.last} logs out\n"
     UserLog.create(time: time,
@@ -42,7 +42,7 @@ class UserLogHelper
   end
 
   def self.user_presses_button(id, name, page)
-    u = User.find(id)
+    u = User.friendly.find(id)
     # body = "#{Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60)},#{u.id},pressesBtn,#{page},,#{name},#{u.first + ' ' + u.last} presses #{type} button on #{prev_page}\n"
     time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
     UserLog.create(time: time,
@@ -57,7 +57,7 @@ class UserLogHelper
   end
 
   def self.user_lands_on_page(id, page)
-    u = User.find(id)
+    u = User.friendly.find(id)
     # body = "#{Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60)},#{u.id},pageView,#{page},,,#{u.first + ' ' + u.last} lands on #{page}\n"
     time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
     UserLog.create(time: time,
@@ -71,7 +71,7 @@ class UserLogHelper
   end
 
   def self.user_leaves_page(id, prev_page, next_page)
-    u = User.find(id)
+    u = User.friendly.find(id)
     # body = "#{Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60)},#{u.id},pageLeave,#{prev_page},#{next_page},,#{u.first + ' ' + u.last} leaves #{prev_page} for #{next_page}\n"
     time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
     UserLog.create(time: time,
@@ -86,7 +86,7 @@ class UserLogHelper
   end
 
   def self.user_hits_nav_button(id, type, prev_page)
-    u = User.find(id)
+    u = User.friendly.find(id)
     # body = "#{Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60)},#{u.id},hitsNavBtn,#{prev_page},,#{type},#{u.first + ' ' + u.last} hits #{type} button on navbar from #{prev_page}\n"
     time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
     UserLog.create(time: time,
@@ -164,9 +164,10 @@ class UserLogHelper
   end
 
   def self.page_mounted(id, page, time)
+    user = User.friendly.find(id)
     time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
     UserLog.create(time: time,
-                   user_id: id,
+                   user_id: user.id,
                    action: "pageMounts",
                    page: page,
                    description: "#{page} mounts: #{time}"

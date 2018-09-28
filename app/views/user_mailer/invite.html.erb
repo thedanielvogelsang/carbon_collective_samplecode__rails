@@ -71,7 +71,7 @@
         <h2>Your friend <%= @user.first %> <%= @user.last %> has invited you to join Carbon Collective! To begin your registration click the URL below.</h3>
         <br/>
         <div class="button-div">
-        <form action="<%= invite_users_url(:id => @new.id, :token => @user.invite_token)%>" method="post">
+        <form action="<%= invite_users_url(:id => @new.slug, :token => @user.invite_token)%>" method="post">
             <button class="passwordReset-btn" type="submit" onSubmit="(e) => e.preventDefault()">Reset password</button>
         </form>
         </div>
