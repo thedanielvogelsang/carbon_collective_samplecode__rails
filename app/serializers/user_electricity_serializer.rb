@@ -6,7 +6,7 @@ class UserElectricitySerializer < ActiveModel::Serializer
                   :personal_savings_to_date, :personal_usage_to_date,
                   :avg_daily_footprint, :avg_monthly_footprint,
                   :household, :neighborhood, :city, :county, :region, :country,
-                  :metric_sym, :num_bills, :out_of, :move_in_date, :invite_max
+                  :metric_sym, :num_bills, :out_of, :move_in_date, :invite_max, :slug
 
   def avg_daily_footprint
     object.avg_daily_carbon_consumption.round(2).to_s + " lbs" if object.avg_daily_carbon_consumption

@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  extend FriendlyId
   attr_accessor :confirm_password
   include UserHelper
   include UserElectricityHelper
@@ -63,6 +64,7 @@ class User < ApplicationRecord
 
   after_create :write_file
 
+  friendly_id :email, use: [:slugged, :history]
   # after_create :set_default_ranks
 
 def self.create_with_omniauth(auth)

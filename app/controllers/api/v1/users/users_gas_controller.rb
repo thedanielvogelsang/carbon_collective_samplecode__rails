@@ -2,8 +2,8 @@ class Api::V1::Users::UsersGasController < ApplicationController
 
   #updating userboard arrows and rankings
   def update
-    if User.exists?(params[:user_id])
-      user = User.find(params[:user_id])
+    if User.friendly.exists?(params[:user_id])
+      user = User.friendly.find(params[:user_id])
       area = params[:region_type]
       a_id = params[:region_id]
       rank = UserGasRanking.find_by(user_id: user.id, area_type: area, area_id: a_id)

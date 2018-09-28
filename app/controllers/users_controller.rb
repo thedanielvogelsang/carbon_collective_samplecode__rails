@@ -4,34 +4,37 @@ class UsersController < ApplicationController
 
   def create
     #update here for new_users: instead of NEW lets use UPDATE after finding users we've already created
-    @user = User.find(params[:user][:id])
-    respond_to do |format|
+    if User.friendly.exists?(params[:user][:id])
+      @user = User.friendly.find(params[:user][:id])
       if params[:user][:password] == params[:user][:passwordConfirmation] && @user.update(safe_params)
         if @user.email_confirmed
           @user.remove_token
           @user.complete_signup
-          format.json {render :json => @user, :status => 201}
+          render :json => @user, :status => 201
         else
         # Not being used currently; For delivering to unregistered emails; signup without invite will work with other FE new_user component
           UserMailer.registration(@user).deliver_now
           error = "Please confirm your email address to continue"
-          format.json {render :json => {:errors => error}, :status => 401}
+          render :json => {:errors => error}, :status => 401
         end
       elsif params[:user][:password] != params[:user][:passwordConfirmation]
         error = 'Passwords did not match. Please try again'
-        format.json {render :json => {:errors => error}, :status => 401 }
+        render :json => {:errors => error}, :status => 401
       elsif !@user.errors.messages[:email].empty? && @user.errors.messages[:email][0] != 'has already been taken'
         error = "Email format invalid. If problem continues contact CarbonCollective systems support"
-        format.json {render :json => {:errors => error}, :status => 401 }
+        render :json => {:errors => error}, :status => 401
       else
         error = "Email already taken. Did you forget your password?"
-        format.json {render :json => {:errors => error}, :status => 401 }
+        render :json => {:errors => error}, :status => 401
       end
+    else
+      error = "Unregistered User. Please try your email invite again."
+      render :json => {:errors => error}, :status => 401
     end
   end
 
   def update
-    user = User.find(params[:id])
+    user = User.friendly.find(params[:id])
     oldpass = params[:user][:old_password]
     authenticated = authenticate_old_password(user, oldpass)
     # put in clause for updating email to reset email confirm"
@@ -67,7 +70,7 @@ class UsersController < ApplicationController
   end
 
   def old_houses
-    user = User.find(params[:user_id])
+    user = User.friendly.find(params[:user_id])
     house = House.find(params[:house_id])
     if user && house
       UserHouse.create(user_id: user.id,
@@ -83,7 +86,7 @@ class UsersController < ApplicationController
   end
 
   def invite
-    user = User.find(params[:id])
+    user = User.friendly.find(params[:id])
     emails = params[:emails]
     msg = params[:message]
     # write to invites text file here, use UserLogHelper in the MailerHelper
@@ -95,10 +98,10 @@ class UsersController < ApplicationController
   end
 
   def invite_accepted
-    host = 'https://carbon-collective.github.io'
-    # host = 'http://localhost:3001'
+    # host = 'https://carbon-collective.github.io'
+    host = 'http://localhost:3001'
     prev_user = User.find_by_invite_token(params[:token])
-    new_user = User.find(params[:id])
+    new_user = User.friendly.find(params[:id])
     if !new_user.confirm_token
       render :file => 'public/404.html', :status => :not_found, :layout => false
     elsif UserInvite.where(user_id: prev_user.id, invite_id: new_user.id).exists?
@@ -106,14 +109,14 @@ class UsersController < ApplicationController
       UserLogHelper.user_accepts_invite(new_user)
       UserGeneration.find_or_create_by(parent_id: prev_user.id , child_id: new_user.id)
       UserGeneration.bind_generations(prev_user, new_user.id)
-      redirect_to "#{host}/signup/#{new_user.id}"
+      redirect_to "#{host}/signup/#{new_user.slug}"
     else
       render :file => 'public/expired.html', :status => :not_found, :layout => false
     end
   end
 
   def user_invites
-    user = User.find(params[:user_id])
+    user = User.friendly.find(params[:user_id])
     invites = user.user_invites.sort_by{|u| u.email_confirmed ? 0 : 1 }
     user_invites = {}
     if !invites.empty?
@@ -127,14 +130,14 @@ class UsersController < ApplicationController
   end
 
   def cancel_invite
-    user = User.find(params[:user_id])
+    user = User.friendly.find(params[:user_id])
     invite = User.find(params[:invite_id])
     UserInvite.where(user_id: user.id, invite_id: invite.id).first.destroy
     render json: invite, status: 202
   end
 
   def clear_account
-    user = User.find(params[:user_id])
+    user = User.friendly.find(params[:user_id])
     if user.clear_account
       render :json => {status: 202}
     else
@@ -171,6 +174,6 @@ class UsersController < ApplicationController
     end
 
     def safe_params
-      params.require('user').permit(:id, :first, :last, :email, :password, :privacy_policy)
+      params.require('user').permit(:first, :last, :email, :password, :privacy_policy)
     end
 end

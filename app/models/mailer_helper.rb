@@ -22,7 +22,7 @@ class MailerHelper
             UserInvite.find_or_create_by(user_id: user.id, invite_id: new_user.id)
             UserMailer.invite(user, new_user, message).deliver_now
           # email in system but unregistered, resend to recipient
-          elsif !new_user.completed_signup? 
+          elsif !new_user.completed_signup?
             new_user.generation = prev_gen + 1
             new_user.save
             UserInvite.find_or_create_by(user_id: user.id, invite_id: new_user.id)
@@ -42,7 +42,7 @@ class MailerHelper
         addr = emails[e]
         if addr != "" && addr != nil
         u = User.find_by(email: addr)
-        u.email_confirmed ? u.email : nil
+        u.completed_signup? ? u.email : nil
         end
     end
     if invited_yet.compact.empty?

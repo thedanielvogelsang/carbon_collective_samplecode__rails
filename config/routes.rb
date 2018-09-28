@@ -26,7 +26,7 @@ Rails.application.routes.draw do
   resource :users do
     member do
       get :confirm_email
-      get :invite_accepted, as: "invite"
+      post :invite_accepted, as: "invite"
       post :reset_password, as: "reset"
     end
   end

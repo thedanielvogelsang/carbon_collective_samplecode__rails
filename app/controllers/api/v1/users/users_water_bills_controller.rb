@@ -1,8 +1,8 @@
 class Api::V1::Users::UsersWaterBillsController < ApplicationController
 
   def index
-    if params[:user_id] && User.exists?(params[:user_id])
-      user = User.find(params[:user_id])
+    if params[:user_id] && User.friendly.exists?(params[:user_id])
+      user = User.friendly.find(params[:user_id])
       house = user.household
       uh = UserHouse.where(user_id: user.id, house_id: house.id)[0]
       render json: WaterBill.joins(:house)
@@ -14,7 +14,7 @@ class Api::V1::Users::UsersWaterBillsController < ApplicationController
 
   def create
     bill = WaterBill.new(safe_params)
-    bill.user_id = User.find(params[:user_id]).id
+    bill.user_id = User.friendly.find(params[:user_id]).id
     if bill.save
       render json: bill, status: 201
     else
@@ -24,10 +24,10 @@ class Api::V1::Users::UsersWaterBillsController < ApplicationController
   end
 
   def update
-    if params[:id] && User.exists(params[:user_id])
+    if params[:id] && User.friendly.exists(params[:user_id])
       bill = WaterBill.find(params[:id])
       if WaterBill.updated?(bill, safe_params)
-        who = User.find(params[:user_id])
+        who = User.friendly.find(params[:user_id])
         bill.who = who
         bill.save
         message = "Bill Saved"
@@ -41,7 +41,7 @@ class Api::V1::Users::UsersWaterBillsController < ApplicationController
   end
 
   def destroy
-    if User.exists?(params[:user_id]) && WaterBill.exists?(params[:id])
+    if User.friendly.exists?(params[:user_id]) && WaterBill.exists?(params[:id])
       WaterBill.destroy(params[:id])
       message = "Bill removed and data saved"
       render :json => {status: 202, error: message}

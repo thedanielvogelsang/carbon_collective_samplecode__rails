@@ -86,7 +86,8 @@ class HouseCarbonSerializer < ActiveModel::Serializer
   end
   def move_in_date
     if @instance_options[:user]
-      uh = object.user_houses.where(:user_houses => {user_id: @instance_options[:user]}).first
+      user = User.friendly.find(@instance_options[:user])
+      uh = object.user_houses.where(:user_houses => {user_id: user.id}).first
       uh.move_in_date.strftime("%Y-%m-%d")
     else
       nil

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180922060007) do
+ActiveRecord::Schema.define(version: 20180928150253) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -191,10 +191,10 @@ ActiveRecord::Schema.define(version: 20180922060007) do
     t.integer "gas_rank"
     t.integer "carbon_rank"
     t.integer "out_of"
-    t.decimal "country_avg_carbon"
-    t.decimal "country_avg_electricity"
-    t.decimal "country_avg_water"
-    t.decimal "country_avg_gas"
+    t.decimal "country_avg_carbon", default: "0.0"
+    t.decimal "country_avg_electricity", default: "0.0"
+    t.decimal "country_avg_water", default: "0.0"
+    t.decimal "country_avg_gas", default: "0.0"
     t.index ["country_id"], name: "index_country_snapshots_on_country_id"
   end
 
@@ -251,6 +251,18 @@ ActiveRecord::Schema.define(version: 20180922060007) do
     t.boolean "arrow"
     t.index ["area_id", "area_type"], name: "index_electricity_rankings_on_area_id_and_area_type"
     t.index ["area_type", "area_id"], name: "index_electricity_rankings_on_area_type_and_area_id"
+  end
+
+  create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|
+    t.string "slug", null: false
+    t.integer "sluggable_id", null: false
+    t.string "sluggable_type", limit: 50
+    t.string "scope"
+    t.datetime "created_at"
+    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
+    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
+    t.index ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
+    t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
   end
 
   create_table "friendships", id: false, force: :cascade do |t|
@@ -449,7 +461,7 @@ ActiveRecord::Schema.define(version: 20180922060007) do
     t.decimal "total_carbon_saved", default: "0.0"
     t.decimal "avg_daily_carbon_consumed_per_user", default: "0.0"
     t.decimal "total_carbon_consumed", default: "0.0"
-    t.decimal "avg_daily_carbon_consumed_per_capita", default: "0.0"
+    t.decimal "avg_daily_carbon_consumed_per_capita"
     t.index ["country_id"], name: "index_regions_on_country_id"
     t.index ["name"], name: "index_regions_on_name", unique: true
     t.index ["total_electricity_consumed"], name: "index_regions_on_total_electricity_consumed"
@@ -676,6 +688,8 @@ ActiveRecord::Schema.define(version: 20180922060007) do
     t.integer "invite_max", default: 3
     t.datetime "accepted_date"
     t.datetime "completed_signup_date"
+    t.string "slug"
+    t.index ["slug"], name: "index_users_on_slug", unique: true
     t.index ["total_electricity_savings"], name: "index_users_on_total_electricity_savings"
     t.index ["total_gas_savings"], name: "index_users_on_total_gas_savings"
     t.index ["total_water_savings"], name: "index_users_on_total_water_savings"
