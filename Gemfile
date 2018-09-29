@@ -39,8 +39,10 @@ gem 'rack-cors', :require => 'rack/cors'
 gem 'responders'
 gem 'aws-sdk-s3'
 gem 'friendly_id'
+gem 'sidekiq'
+gem 'sinatra'
 # Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 3.0'
+gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

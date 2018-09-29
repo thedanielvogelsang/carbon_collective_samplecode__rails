@@ -16,6 +16,8 @@ class Api::V1::Users::UsersElectricBillsController < ApplicationController
     bill = ElectricBill.new(safe_params)
     bill.user_id = User.friendly.find(params[:user_id]).id
     if bill.save
+      puts 'BILL CREATED! STARTING JOB:'
+      AverageCalculatorJob.perform_async
       render json: bill, status: 201
     else
       error = bill.errors.messages.first[1][0]
@@ -26,6 +28,7 @@ class Api::V1::Users::UsersElectricBillsController < ApplicationController
   def update
     if params[:id] && User.friendly.exists?(params[:user_id])
       bill = ElectricBill.find(params[:id])
+      puts safe_params[:house_id]
       if ElectricBill.updated?(bill, safe_params)
         who = User.friendly.find(params[:user_id])
         bill.who = who

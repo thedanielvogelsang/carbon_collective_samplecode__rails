@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  require 'sidekiq/web'
+  mount Sidekiq::Web => '/sidekiq'
 
   get '/', to: "sessions#index", as: :welcome
   get '/auth/facebook', as: :facebook_login

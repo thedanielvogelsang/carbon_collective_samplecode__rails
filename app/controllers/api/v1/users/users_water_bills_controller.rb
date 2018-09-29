@@ -18,6 +18,8 @@ class Api::V1::Users::UsersWaterBillsController < ApplicationController
     if bill.save
       render json: bill, status: 201
     else
+      puts 'BILL CREATED! STARTING JOB:'
+      AverageCalculatorJob.perform_async
       error = bill.errors.messages.first[1][0]
       render :json => {errors: error}, status: 401
     end
