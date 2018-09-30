@@ -1,7 +1,7 @@
 class Api::V1::Users::QuestionsController < ApplicationController
 
   def show
-    user = User.find(params[:user_id])
+    user = User.friendly.find(params[:user_id])
     id = user.id
     hId = params[:house_id]
     if UserHouse.where(user_id: id, house_id: hId).empty?
@@ -17,7 +17,7 @@ class Api::V1::Users::QuestionsController < ApplicationController
 
   def update
     if(!params[:user_question])
-      user = User.find(params[:user_id])
+      user = User.friendly.find(params[:user_id])
       house = House.find(params[:house_id])
       r = params[:resource]
       uq = UserElectricityQuestion.where(user_id: user.id, house_id: house.id).first if r == 'electricity'
@@ -29,7 +29,7 @@ class Api::V1::Users::QuestionsController < ApplicationController
         render json: {error: "Something went wrong"}, status: 404
       end
     else
-      user = User.find(params[:user_id])
+      user = User.friendly.find(params[:user_id])
       house = House.find(params[:house_id])
       r = params[:resource]
       uq = UserElectricityQuestion.where(user_id: user.id, house_id: house.id).first if r == 'electricity'
