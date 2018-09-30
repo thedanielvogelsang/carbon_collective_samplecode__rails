@@ -9,7 +9,7 @@ require 'rake'
 
 class AverageCalculatorJob
   include Sidekiq::Worker
-  sidekiq_options retry: false
+  # sidekiq_options retry: false
 
   def perform
     puts 'worker started'
