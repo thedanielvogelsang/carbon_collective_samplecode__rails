@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
   respond_to :json, :html
+  # skip_before_action
 
   def index
   end
