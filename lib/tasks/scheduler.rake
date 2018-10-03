@@ -22,6 +22,9 @@ desc "These rake tasks perform background work for our application
     puts 'Updating neighborhood data'
     Neighborhood.all.each{|n| n.update_data }
 
+    puts 'Updating household data'
+    House.all.each{|h| h.update_data}
+
     puts '...done'
   end
 

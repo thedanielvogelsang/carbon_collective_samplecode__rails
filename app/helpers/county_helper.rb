@@ -24,6 +24,71 @@ module CountyHelper
     end
   end
 
+  def update_all_rankings
+      update_electricity_rankings
+      update_gas_rankings
+      update_carbon_rankings
+      update_water_rankings
+  end
+
+  def update_electricity_rankings
+    e_counties = County.where(region_id: self.region.id)
+        .where.not(avg_daily_electricity_consumed_per_user: [nil, 0])
+        .order(avg_daily_electricity_consumed_per_user: :asc)
+    unless e_counties.empty?
+      oo = e_counties.count
+      e_counties.each_with_index do |county, i|
+        rank = ElectricityRanking.where(area_type: "County", area_id: county.id)
+        rank.rank = i
+        rank.out_of = oo
+        rank.save
+      end
+    end
+  end
+  def update_gas_rankings
+    g_counties = County.where(region_id: self.region.id)
+        .where.not(avg_daily_gas_consumed_per_user: [nil, 0])
+        .order(avg_daily_gas_consumed_per_user: :asc)
+    unless g_counties.empty?
+      oo = g_counties.count
+      g_counties.each_with_index do |county, i|
+        rank = GasRanking.where(area_type: "County", area_id: county.id)
+        rank.rank = i + 1
+        rank.out_of = oo
+        rank.save
+      end
+    end
+  end
+
+  def update_carbon_rankings
+    c_counties = County.where(region_id: self.region.id)
+        .where.not(avg_daily_carbon_consumed_per_user: [nil, 0])
+        .order(avg_daily_carbon_consumed_per_user: :asc)
+    unless c_counties.empty?
+      oo = c_counties.count
+      c_counties.each_with_index do |county, i|
+        rank = CarbonRanking.where(area_type: "County", area_id: county.id)
+        rank.rank = i + 1
+        rank.out_of = oo
+        rank.save
+      end
+    end
+  end
+  def update_water_rankings
+    w_counties = County.where(region_id: self.region.id)
+        .where.not(avg_daily_water_consumed_per_user: [nil, 0])
+        .order(avg_daily_water_consumed_per_user: :asc)
+    unless w_counties.empty?
+      oo = w_counties.count
+      w_counties.each_with_index do |county, i|
+        rank = WaterRanking.where(area_type: "County", area_id: county.id)
+        rank.rank = i + 1
+        rank.out_of = oo
+        rank.save
+      end
+    end
+  end
+
   # def update_total_electricity_and_carbon_savings
   #   if ElectricBill.joins(:house => :address).where(:addresses => {county_id: self.id}).count != 0
   #     energy_saved = self.users.map{|u| u.total_electricity_savings}

@@ -7,21 +7,107 @@ module CityHelper
   # update data and set data functions
   def update_data
     if self.users.count != 0
-      # update_total_electricity_and_carbon_savings
-      # update_daily_avg_electricity_savings
-      update_daily_avg_electricity_consumption
-      update_total_electricity_consumption
-      # update_total_water_savings
-      # update_daily_avg_water_savings
-      update_daily_avg_water_consumption
-      update_total_water_consumption
-      # update_total_gas_and_carbon_savings
-      # update_daily_avg_gas_savings
-      update_daily_avg_gas_consumption
-      update_total_gas_consumption
+      ## UPDATING AVERAGES (FIRST)##
+        # update_total_electricity_and_carbon_savings
+        # update_daily_avg_electricity_savings
+        update_daily_avg_electricity_consumption
+        update_total_electricity_consumption
+        # update_total_water_savings
+        # update_daily_avg_water_savings
+        update_daily_avg_water_consumption
+        update_total_water_consumption
+        # update_total_gas_and_carbon_savings
+        # update_daily_avg_gas_savings
+        update_daily_avg_gas_consumption
+        update_total_gas_consumption
+        update_carbon_consumption
+        self.save
 
-      update_carbon_consumption
-      self.save
+      ## UPDATING RANKINGS (SECOND)##
+        update_all_rankings
+
+      ## FINDING PARENT MAX (THIRD)##
+        rId = self.region.id
+        cities = City.where(region_id: rId).joins(:users).distinct
+        max_elect = cities.order(avg_daily_electricity_consumed_per_user: :desc).first.avg_daily_electricity_consumed_per_user
+        max_wat = cities.order(avg_daily_water_consumed_per_user: :desc).first.avg_daily_water_consumed_per_user
+        max_gas = cities.order(avg_daily_gas_consumed_per_user: :desc).first.avg_daily_gas_consumed_per_user
+        max_carb = cities.order(avg_daily_carbon_consumed_per_user: :desc).first.avg_daily_carbon_consumed_per_user
+        parent_avg = city.region.avg_daily_carbon_consumed_per_user
+        oo = cities.count
+        # (these maxes are from parent region)
+        max_daily_electricity_consumption = max_elect
+        max_daily_water_consumption = max_wat
+        max_daily_gas_consumption = max_gas
+        max_daily_carbon_consumption = max_carb
+
+      ## SAVING REGIONAL RECORD (LAST)##
+        self.save
+    end
+  end
+
+  def update_all_rankings
+      update_electricity_rankings
+      update_gas_rankings
+      update_carbon_rankings
+      update_water_rankings
+  end
+
+  def update_electricity_rankings
+    e_cities = City.where(region_id: self.region.id)
+        .where.not(avg_daily_electricity_consumed_per_user: [nil, 0])
+        .order(avg_daily_electricity_consumed_per_user: :asc)
+    unless e_cities.empty?
+      oo = e_cities.count
+      e_cities.each_with_index do |city, i|
+        rank = ElectricityRanking.where(area_type: "City", area_id: city.id)
+        rank.rank = i
+        rank.out_of = oo
+        rank.save
+      end
+    end
+  end
+  def update_gas_rankings
+    g_cities = City.where(region_id: self.region.id)
+        .where.not(avg_daily_gas_consumed_per_user: [nil, 0])
+        .order(avg_daily_gas_consumed_per_user: :asc)
+    unless g_cities.empty?
+      oo = g_cities.count
+      g_cities.each_with_index do |city, i|
+        rank = GasRanking.where(area_type: "City", area_id: city.id)
+        rank.rank = i + 1
+        rank.out_of = oo
+        rank.save
+      end
+    end
+  end
+
+  def update_carbon_rankings
+    c_cities = City.where(region_id: self.region.id)
+        .where.not(avg_daily_carbon_consumed_per_user: [nil, 0])
+        .order(avg_daily_carbon_consumed_per_user: :asc)
+    unless c_cities.empty?
+      oo = c_cities.count
+      c_cities.each_with_index do |city, i|
+        rank = CarbonRanking.where(area_type: "City", area_id: city.id)
+        rank.rank = i + 1
+        rank.out_of = oo
+        rank.save
+      end
+    end
+  end
+  def update_water_rankings
+    w_cities = City.where(region_id: self.region.id)
+        .where.not(avg_daily_water_consumed_per_user: [nil, 0])
+        .order(avg_daily_water_consumed_per_user: :asc)
+    unless w_cities.empty?
+      oo = w_cities.count
+      w_cities.each_with_index do |city, i|
+        rank = WaterRanking.where(area_type: "City", area_id: city.id)
+        rank.rank = i + 1
+        rank.out_of = oo
+        rank.save
+      end
     end
   end
 

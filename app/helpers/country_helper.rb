@@ -24,6 +24,71 @@ module CountryHelper
     end
   end
 
+  def update_all_rankings
+      update_electricity_rankings
+      update_gas_rankings
+      update_carbon_rankings
+      update_water_rankings
+  end
+
+  def update_electricity_rankings
+    e_countries = Country.joins(:users)
+        .where.not(avg_daily_electricity_consumed_per_user: [nil, 0])
+        .order(avg_daily_electricity_consumed_per_user: :asc)
+    unless e_countries.empty?
+      oo = e_countries.count
+      e_countries.each_with_index do |country, i|
+        rank = ElectricityRanking.where(area_type: "Country", area_id: country.id)
+        rank.rank = i
+        rank.out_of = oo
+        rank.save
+      end
+    end
+  end
+  def update_gas_rankings
+    g_countries = Country.joins(:users)
+        .where.not(avg_daily_gas_consumed_per_user: [nil, 0])
+        .order(avg_daily_gas_consumed_per_user: :asc)
+    unless g_countries.empty?
+      oo = g_countries.count
+      g_countries.each_with_index do |country, i|
+        rank = GasRanking.where(area_type: "Country", area_id: country.id)
+        rank.rank = i + 1
+        rank.out_of = oo
+        rank.save
+      end
+    end
+  end
+
+  def update_carbon_rankings
+    c_countries = Country.joins(:users)
+        .where.not(avg_daily_carbon_consumed_per_user: [nil, 0])
+        .order(avg_daily_carbon_consumed_per_user: :asc)
+    unless c_countries.empty?
+      oo = c_countries.count
+      c_countries.each_with_index do |country, i|
+        rank = CarbonRanking.where(area_type: "Country", area_id: country.id)
+        rank.rank = i + 1
+        rank.out_of = oo
+        rank.save
+      end
+    end
+  end
+  def update_water_rankings
+    w_countries = Country.joins(:users)
+        .not(avg_daily_water_consumed_per_user: [nil, 0])
+        .order(avg_daily_water_consumed_per_user: :asc)
+    unless w_countries.empty?
+      oo = w_countries.count
+      w_countries.each_with_index do |country, i|
+        rank = WaterRanking.where(area_type: "Country", area_id: country.id)
+        rank.rank = i + 1
+        rank.out_of = oo
+        rank.save
+      end
+    end
+  end
+
   # def update_total_electricity_and_carbon_savings
   #   if ElectricBill.joins(:house => {:address => :region}).where(:regions => {country_id: self.id}).count != 0
   #     energy_saved = self.users.map{|u| u.total_electricity_savings}

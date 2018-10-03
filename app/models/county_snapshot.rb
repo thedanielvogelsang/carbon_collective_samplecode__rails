@@ -2,19 +2,13 @@ class CountySnapshot < ApplicationRecord
   belongs_to :county
 
   def self.take_snapshot(county)
-    eRank = county.electricity_ranking.rank
-    wRank = county.water_ranking.rank
-    gRank = county.gas_ranking.rank
-    cRank = county.carbon_ranking.rank
-    rId = county.region.id
-    counties = County.where(region_id: rId).joins(:users).distinct
+    eRank = county.electricity_ranking
+    wRank = county.water_ranking
+    gRank = county.gas_ranking
+    cRank = county.carbon_ranking
+
+    counties = County.joins(:users).distinct
     oo = counties.count
-    if oo > 0
-      max_elect = counties.order(avg_daily_electricity_consumed_per_user: :desc).first.avg_daily_electricity_consumed_per_user
-      max_wat = counties.order(avg_daily_water_consumed_per_user: :desc).first.avg_daily_water_consumed_per_user
-      max_gas = counties.order(avg_daily_gas_consumed_per_user: :desc).first.avg_daily_gas_consumed_per_user
-      max_carb = counties.order(avg_daily_carbon_consumed_per_user: :desc).first.avg_daily_carbon_consumed_per_user
-    end
 
     create(county_id: county.id,
        avg_daily_electricity_consumption_per_user: county.avg_daily_electricity_consumed_per_user,
@@ -25,15 +19,15 @@ class CountySnapshot < ApplicationRecord
        total_water_consumed: county.total_water_consumed,
        total_gas_consumed: county.total_gas_consumed,
        total_carbon_consumed: county.total_carbon_consumed,
-       max_daily_electricity_consumption: max_elect,
-       max_daily_water_consumption: max_wat,
-       max_daily_gas_consumption: max_gas,
-       max_daily_carbon_consumption: max_carb,
-       electricity_rank: eRank,
-       water_rank: wRank,
-       gas_rank: gRank,
-       carbon_rank: cRank,
+       electricity_rank: eRank.rank,
+       water_rank: wRank.rank,
+       gas_rank: gRank.rank,
+       carbon_rank: cRank.rank,
        out_of: oo
+       electricity_out_of: eRank.out_of,
+       gas_out_of: gRank.out_of,
+       water_out_of: wRank.out_of,
+       carbon_out_of: cRank.out_of,
       )
   end
 end

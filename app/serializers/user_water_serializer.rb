@@ -26,65 +26,65 @@ class UserWaterSerializer < ActiveModel::Serializer
   def household
     h = object.household
     if h
-      snapshot = h.household_snapshots.last
-      avg_monthly = (snapshot.avg_daily_water_consumption_per_user * 29.53).round(2)
+      ranking = h.water_ranking
+      avg_monthly = (h.avg_daily_water_consumed_per_user * 29.53).round(2)
       parent_avg = (h.address.neighborhood.avg_daily_water_consumed_per_user * 29.53).round(2)
-      parent_max = (snapshot.max_daily_water_consumption * 29.53).round(2)
+      parent_max = (h.max_daily_water_consumption * 29.53).round(2)
       arr = [h.id, "Household", avg_monthly,
         parent_avg, parent_max,
-        h.water_ranking.rank, snapshot.out_of, h.carbon_ranking.arrow]
+        ranking.rank, ranking.out_of, ranking.arrow]
     end
     arr
   end
   def neighborhood
     n = object.neighborhood
     if n
-      snapshot = n.neighborhood_snapshots.last
-      avg_monthly = (snapshot.avg_daily_water_consumption_per_user * 29.53).round(2)
+      ranking = n.water_ranking
+      avg_monthly = (n.avg_daily_water_consumed_per_user * 29.53).round(2)
       parent_avg = (n.city.avg_daily_water_consumed_per_user * 29.53).round(2)
-      parent_max = (snapshot.max_daily_water_consumption * 29.53).round(2)
+      parent_max = (n.max_daily_water_consumption * 29.53).round(2)
       arr = [n.id, n.name, avg_monthly,
         parent_avg, parent_max,
-        n.water_ranking.rank, snapshot.out_of, n.carbon_ranking.arrow]
+        ranking.rank, ranking.out_of, ranking.arrow]
     end
     arr
   end
   def city
     c = object.city
     if c
-      snapshot = c.city_snapshots.last
-      avg_monthly = (snapshot.avg_daily_water_consumption_per_user * 29.53).round(2)
+      ranking = c.water_ranking
+      avg_monthly = (c.avg_daily_water_consumed_per_user * 29.53).round(2)
       parent_avg = (c.region.avg_daily_water_consumed_per_user * 29.53).round(2)
-      parent_max = (snapshot.max_daily_water_consumption * 29.53).round(2)
+      parent_max = (c.max_daily_water_consumption * 29.53).round(2)
       arr = [c.id, c.name, avg_monthly,
         parent_avg, parent_max,
-        c.water_ranking.rank, snapshot.out_of, c.carbon_ranking.arrow]
+        ranking.rank, ranking.out_of, ranking.arrow]
     end
     arr
   end
   def county
     c = object.county
     if c
-      snapshot = c.county_snapshots.last
-      avg_monthly = (snapshot.avg_daily_water_consumption_per_user * 29.53).round(2)
+      ranking = c.water_ranking
+      avg_monthly = (c.avg_daily_water_consumed_per_user * 29.53).round(2)
       parent_avg = (c.region.avg_daily_water_consumed_per_user * 29.53).round(2)
-      parent_max = (snapshot.max_daily_water_consumption * 29.53).round(2)
+      parent_max = (c.max_daily_water_consumption * 29.53).round(2)
       arr = [c.id, c.name, avg_monthly,
         parent_avg, parent_max,
-        c.water_ranking.rank, snapshot.out_of, c.carbon_ranking.arrow]
+        ranking.rank, ranking.out_of, ranking.arrow]
     end
     arr
   end
   def region
     r = object.region
     if r
-      snapshot = r.region_snapshots.last
-      avg_monthly = (snapshot.avg_daily_water_consumption_per_user * 29.53).round(2)
+      ranking = r.water_ranking
+      avg_monthly = (r.avg_daily_water_consumed_per_user * 29.53).round(2)
       parent_avg = (r.country.avg_daily_water_consumed_per_user * 29.53).round(2)
-      parent_max = (snapshot.max_daily_water_consumption * 29.53).round(2)
+      parent_max = (r.max_daily_water_consumption * 29.53).round(2)
       arr = [r.id, r.name, avg_monthly,
         parent_avg, parent_max,
-        r.water_ranking.rank, snapshot.out_of, r.carbon_ranking.arrow]
+        ranking.rank, ranking.out_of, ranking.arrow]
     end
     arr
   end
@@ -92,13 +92,14 @@ class UserWaterSerializer < ActiveModel::Serializer
     c = object.country
     ## out of for country is 'inaccurate' but using all countries, not just ones with users
     if c
-      snapshot = c.country_snapshots.last
-      avg_monthly = (snapshot.avg_daily_water_consumption_per_user * 29.53).round(2)
-      parent_avg = (snapshot.country_avg_water * 29.53).round(2)
-      parent_max = (snapshot.max_daily_water_consumption * 29.53).round(2)
+      ranking = c.water_ranking
+      country_avg_water = Country.average(:avg_daily_water_consumed_per_user)
+      avg_monthly = (c.avg_daily_water_consumed_per_user * 29.53).round(2)
+      parent_avg = (country_avg_water * 29.53).round(2)
+      parent_max = (c.max_daily_water_consumption * 29.53).round(2)
       arr = [c.id, c.name, avg_monthly,
         parent_avg, parent_max,
-        c.water_ranking.rank, Country.count, c.carbon_ranking.arrow]
+        ranking.rank, ranking.out_of, ranking.arrow]
     end
     arr
   end

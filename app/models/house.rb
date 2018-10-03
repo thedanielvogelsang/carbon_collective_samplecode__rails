@@ -16,6 +16,7 @@ class House < ApplicationRecord
   has_many :water_bills, dependent: :destroy
   has_many :household_snapshots, dependent: :destroy
   has_one :neighborhood, through: :address
+  has_one :city, through: :neighborhood
 
   has_one :electricity_ranking, :as => :area, dependent: :destroy
   has_one :water_ranking, :as => :area, dependent: :destroy

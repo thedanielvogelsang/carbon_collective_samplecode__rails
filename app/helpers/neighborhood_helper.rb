@@ -24,6 +24,71 @@ module NeighborhoodHelper
       self.save
     end
   end
+
+  def update_all_rankings
+      update_electricity_rankings
+      update_gas_rankings
+      update_carbon_rankings
+      update_water_rankings
+  end
+
+  def update_electricity_rankings
+    e_neighborhoods = Neighborhood.where(city_id: self.city.id)
+        .where.not(avg_daily_electricity_consumed_per_user: [nil, 0])
+        .order(avg_daily_electricity_consumed_per_user: :asc)
+    unless e_neighborhoods.empty?
+      oo = e_neighborhoods.count
+      e_neighborhoods.each_with_index do |neighborhood, i|
+        rank = ElectricityRanking.where(area_type: "Neighborhood", area_id: neighborhood.id)
+        rank.rank = i
+        rank.out_of = oo
+        rank.save
+      end
+    end
+  end
+  def update_gas_rankings
+    g_neighborhoods = Neighborhood.where(city_id: self.city.id)
+        .where.not(avg_daily_gas_consumed_per_user: [nil, 0])
+        .order(avg_daily_gas_consumed_per_user: :asc)
+    unless g_neighborhoods.empty?
+      oo = g_neighborhoods.count
+      g_neighborhoods.each_with_index do |neighborhood, i|
+        rank = GasRanking.where(area_type: "Neighborhood", area_id: neighborhood.id)
+        rank.rank = i + 1
+        rank.out_of = oo
+        rank.save
+      end
+    end
+  end
+
+  def update_carbon_rankings
+    c_neighborhoods = Neighborhood.where(city_id: self.city.id)
+        .where.not(avg_daily_carbon_consumed_per_user: [nil, 0])
+        .order(avg_daily_carbon_consumed_per_user: :asc)
+    unless c_neighborhoods.empty?
+      oo = c_neighborhoods.count
+      c_neighborhoods.each_with_index do |neighborhood, i|
+        rank = CarbonRanking.where(area_type: "Neighborhood", area_id: neighborhood.id)
+        rank.rank = i + 1
+        rank.out_of = oo
+        rank.save
+      end
+    end
+  end
+  def update_water_rankings
+    w_neighborhoods = Neighborhood.where(city_id: self.city.id)
+        .where.not(avg_daily_water_consumed_per_user: [nil, 0])
+        .order(avg_daily_water_consumed_per_user: :asc)
+    unless w_neighborhoods.empty?
+      oo = w_neighborhoods.count
+      w_neighborhoods.each_with_index do |neighborhood, i|
+        rank = WaterRanking.where(area_type: "Neighborhood", area_id: neighborhood.id)
+        rank.rank = i + 1
+        rank.out_of = oo
+        rank.save
+      end
+    end
+  end
   #
   # def update_total_electricity_and_carbon_savings
   #   if ElectricBill.joins(:house => :address).where(:addresses => {neighborhood_id: self.id}).count != 0
