@@ -21,6 +21,7 @@ class Api::V1::Users::UsersElectricBillsController < ApplicationController
       render json: bill, status: 201
     else
       error = bill.errors.messages.first[1][0]
+      puts error
       render :json => {errors: error}, status: 401
     end
   end
