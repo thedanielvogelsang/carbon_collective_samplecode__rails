@@ -13,7 +13,18 @@ class AverageCalculatorJob
 
   def perform
     puts 'worker started'
-    @task = "update_data"
-    `heroku run rake #{@task}`
+    task = :update_data
+    app = Rake.application
+    app.init
+    app.add_import Rails.root.join("Rakefile")
+    # this loads the Rakefile and other imports
+    app.load_rakefile
+    # this queues and invokes the task
+    app[task].invoke
+    puts "task invoked"
+    
+    # THINGS THAT DIDNT WORK:
+      # `rake -f #{Rails.root.join("Rakefile")} #{@task}`
+      # `heroku run rake #{@task}`
   end
 end
