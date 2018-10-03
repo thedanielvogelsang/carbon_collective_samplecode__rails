@@ -16,11 +16,12 @@ class Api::V1::Users::UsersGasBillsController < ApplicationController
     bill = HeatBill.new(safe_params)
     bill.user_id = User.friendly.find(params[:user_id]).id
     if bill.save
-      puts 'BILL CREATED! STARTING JOB:'
+      puts 'BILL CREATED! STARTING WORKER:'
       AverageCalculatorJob.perform_async
       render json: bill, status: 201
     else
       error = bill.errors.messages.first[1][0]
+      puts error
       render :json => {errors: error}, status: 401
     end
   end
