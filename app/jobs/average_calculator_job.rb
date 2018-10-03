@@ -14,6 +14,6 @@ class AverageCalculatorJob
   def perform
     puts 'worker started'
     @task = "update_data"
-    `rake -f #{Rails.root.join("Rakefile")} #{@task}`
+    `heroku run rake #{@task}`
   end
 end

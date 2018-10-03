@@ -35,3 +35,7 @@ task :write_to_userlogs => :environment do
 
   puts '...done'
 end
+
+task :update_snapshots_and_write_to_userlogs => [:update_snapshots, :write_to_userlogs] do
+  puts '...midnight update complete'
+end
