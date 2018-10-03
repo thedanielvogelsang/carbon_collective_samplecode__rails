@@ -33,7 +33,10 @@ task :write_to_userlogs => :environment do
   puts "Writing to S3 Bucket"
     AwsService.new.create_new_logfile
 
-  puts '...done'
+  puts "...files logged to AWS bucket: \nAWS Login Info:\n
+    IAM user_name: ‘sven’\n
+    Password: SEE PROJECT OWNER FOR PASSWORD\n
+    link: https://167120696907.signin.aws.amazon.com/console \n"
 end
 
 task :update_snapshots_and_write_to_userlogs => [:update_snapshots, :write_to_userlogs] do
