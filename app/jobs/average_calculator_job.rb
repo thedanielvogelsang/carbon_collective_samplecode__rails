@@ -4,7 +4,7 @@ Sidekiq.configure_client do |config|
   config.redis = {size: 3, url: ENV['REDISCLOUD_URL']}
 end
 Sidekiq.configure_server do |config|
-  config.redis = {size: 22}
+  config.redis = {size: 22, url: ENV['REDISCLOUD_URL']}
 end
 
 class AverageCalculatorJob
