@@ -1,5 +1,6 @@
 class ElectricBill < ApplicationRecord
   include Co2Helper
+  include MathHelper
 
   belongs_to :house
   belongs_to :who, class_name: 'User', foreign_key: :user_id
@@ -9,7 +10,7 @@ class ElectricBill < ApplicationRecord
                           :total_kwhs,
                           :no_residents
 
-    validate :confirm_no_overlaps, :confirm_valid_dates, :check_move_in_date
+    validate :check_data_validity, :confirm_no_overlaps, :confirm_valid_dates, :check_move_in_date
 
     after_validation :electricity_saved?,
                      :update_users_savings
@@ -78,6 +79,11 @@ class ElectricBill < ApplicationRecord
 
   def check_overlap(a_st, a_end, b_st, b_end)
     (a_st < b_end) && (a_end > b_st)
+  end
+
+  def check_data_validity
+    usages = ElectricBill.pluck(:average_use)
+
   end
 
   def log_user_activity
