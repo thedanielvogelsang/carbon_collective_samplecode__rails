@@ -59,7 +59,11 @@ module NeighborhoodHelper
       oo = e_neighborhoods.count
       e_neighborhoods.each_with_index do |neighborhood, i|
         rank = ElectricityRanking.where(area_type: "Neighborhood", area_id: neighborhood.id).first
-        rank.rank = i
+        prev_rank = rank.rank
+        rank.rank = i + 1
+        if prev_rank
+          rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        end
         rank.out_of = oo
         rank.save
       end
@@ -73,7 +77,11 @@ module NeighborhoodHelper
       oo = g_neighborhoods.count
       g_neighborhoods.each_with_index do |neighborhood, i|
         rank = GasRanking.where(area_type: "Neighborhood", area_id: neighborhood.id).first
+        prev_rank = rank.rank
         rank.rank = i + 1
+        if prev_rank
+          rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        end
         rank.out_of = oo
         rank.save
       end
@@ -88,7 +96,11 @@ module NeighborhoodHelper
       oo = c_neighborhoods.count
       c_neighborhoods.each_with_index do |neighborhood, i|
         rank = CarbonRanking.where(area_type: "Neighborhood", area_id: neighborhood.id).first
+        prev_rank = rank.rank
         rank.rank = i + 1
+        if prev_rank
+          rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        end
         rank.out_of = oo
         rank.save
       end
@@ -102,7 +114,11 @@ module NeighborhoodHelper
       oo = w_neighborhoods.count
       w_neighborhoods.each_with_index do |neighborhood, i|
         rank = WaterRanking.where(area_type: "Neighborhood", area_id: neighborhood.id).first
+        prev_rank = rank.rank
         rank.rank = i + 1
+        if prev_rank
+          rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        end
         rank.out_of = oo
         rank.save
       end

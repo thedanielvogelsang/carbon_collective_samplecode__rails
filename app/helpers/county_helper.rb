@@ -59,7 +59,11 @@ module CountyHelper
       oo = e_counties.count
       e_counties.each_with_index do |county, i|
         rank = ElectricityRanking.where(area_type: "County", area_id: county.id).first
+        prev_rank = rank.rank
         rank.rank = i + 1
+        if prev_rank
+          rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        end
         rank.out_of = oo
         rank.save
       end
@@ -73,7 +77,11 @@ module CountyHelper
       oo = g_counties.count
       g_counties.each_with_index do |county, i|
         rank = GasRanking.where(area_type: "County", area_id: county.id).first
-        rank.rank = i + 1 + 1
+        prev_rank = rank.rank
+        rank.rank = i + 1
+        if prev_rank
+          rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        end
         rank.out_of = oo
         rank.save
       end
@@ -88,7 +96,11 @@ module CountyHelper
       oo = c_counties.count
       c_counties.each_with_index do |county, i|
         rank = CarbonRanking.where(area_type: "County", area_id: county.id).first
-        rank.rank = i + 1 + 1
+        prev_rank = rank.rank
+        rank.rank = i + 1
+        if prev_rank
+          rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        end
         rank.out_of = oo
         rank.save
       end
@@ -102,7 +114,11 @@ module CountyHelper
       oo = w_counties.count
       w_counties.each_with_index do |county, i|
         rank = WaterRanking.where(area_type: "County", area_id: county.id).first
-        rank.rank = i + 1 + 1
+        prev_rank = rank.rank
+        rank.rank = i + 1
+        if prev_rank
+          rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        end
         rank.out_of = oo
         rank.save
       end

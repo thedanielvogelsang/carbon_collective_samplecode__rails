@@ -56,28 +56,36 @@ module RegionHelper
   end
 
   def update_electricity_rankings
-    e_regions = Region.where(country_id: self.country.id).joins(:users)
+    e_regions = Region.where(country_id: self.country.id).joins(:users).distinct
         .where.not(avg_daily_electricity_consumed_per_user: [nil, 0])
         .order(avg_daily_electricity_consumed_per_user: :asc)
     unless e_regions.empty?
       oo = e_regions.count
       e_regions.each_with_index do |region, i|
         rank = ElectricityRanking.where(area_type: "Region", area_id: region.id).first
-        rank.rank = i
+        prev_rank = rank.rank
+        rank.rank = i + 1
+        if prev_rank
+          rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        end
         rank.out_of = oo
         rank.save
       end
     end
   end
   def update_gas_rankings
-    g_regions = Region.where(country_id: self.country.id).joins(:users)
+    g_regions = Region.where(country_id: self.country.id).joins(:users).distinct
         .where.not(avg_daily_gas_consumed_per_user: [nil, 0])
         .order(avg_daily_gas_consumed_per_user: :asc)
     unless g_regions.empty?
       oo = g_regions.count
       g_regions.each_with_index do |region, i|
         rank = GasRanking.where(area_type: "Region", area_id: region.id).first
+        prev_rank = rank.rank
         rank.rank = i + 1
+        if prev_rank
+          rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        end
         rank.out_of = oo
         rank.save
       end
@@ -85,28 +93,36 @@ module RegionHelper
   end
 
   def update_carbon_rankings
-    c_regions = Region.where(country_id: self.country.id).joins(:users)
+    c_regions = Region.where(country_id: self.country.id).joins(:users).distinct
         .where.not(avg_daily_carbon_consumed_per_user: [nil, 0])
         .order(avg_daily_carbon_consumed_per_user: :asc)
     unless c_regions.empty?
       oo = c_regions.count
       c_regions.each_with_index do |region, i|
         rank = CarbonRanking.where(area_type: "Region", area_id: region.id).first
+        prev_rank = rank.rank
         rank.rank = i + 1
+        if prev_rank
+          rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        end
         rank.out_of = oo
         rank.save
       end
     end
   end
   def update_water_rankings
-    w_regions = Region.where(country_id: self.country.id).joins(:users)
+    w_regions = Region.where(country_id: self.country.id).joins(:users).distinct
         .where.not(avg_daily_water_consumed_per_user: [nil, 0])
         .order(avg_daily_water_consumed_per_user: :asc)
     unless w_regions.empty?
       oo = w_regions.count
       w_regions.each_with_index do |region, i|
         rank = WaterRanking.where(area_type: "Region", area_id: region.id).first
+        prev_rank = rank.rank
         rank.rank = i + 1
+        if prev_rank
+          rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        end
         rank.out_of = oo
         rank.save
       end

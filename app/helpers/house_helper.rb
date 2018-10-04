@@ -21,6 +21,19 @@ module HouseHelper
 ## attrs must be stored on houses in order to ActiveRecord sorting, these are used to update:
 
   def update_data
+    ## UPDATING AVERAGES (FIRST)##
+    self.avg_daily_electricity_consumed_per_user = average_daily_electricity_consumption_per_user
+    self.avg_daily_water_consumed_per_user = average_daily_water_consumption_per_user
+    self.avg_daily_gas_consumed_per_user = average_daily_gas_consumption_per_user
+    self.avg_daily_carbon_consumed_per_user = average_daily_carbon_consumption_per_user
+    self.total_electricity_consumed = total_electricity_consumption_to_date
+    self.total_water_consumed = total_water_consumption_to_date
+    self.total_gas_consumed = total_gas_consumption_to_date
+    self.total_carbon_consumed = total_carbon_consumption_to_date
+
+    self.save
+
+    update_all_rankings
     # # CHANGE THIS LATER: House.all is too broad for beyond Denver, perhaps change to:
     # # # $=> House.joins(:address).joins(:neighborhood).where(:neighborhoods => {id: self.neighborhood.id})
     # # (For houses within neighborhood)
@@ -30,14 +43,6 @@ module HouseHelper
     max_gas = houses.order(avg_daily_gas_consumed_per_user: :desc).first.avg_daily_gas_consumed_per_user
     max_carb = houses.order(avg_daily_carbon_consumed_per_user: :desc).first.avg_daily_carbon_consumed_per_user
 
-    self.avg_daily_electricity_consumed_per_user = average_daily_electricity_consumption_per_user
-    self.avg_daily_water_consumed_per_user = average_daily_water_consumption_per_user
-    self.avg_daily_gas_consumed_per_user = average_daily_gas_consumption_per_user
-    self.avg_daily_carbon_consumed_per_user = average_daily_carbon_consumption_per_user
-    self.total_electricity_consumed = total_electricity_consumption_to_date
-    self.total_water_consumed = total_water_consumption_to_date
-    self.total_gas_consumed = total_gas_consumption_to_date
-    self.total_carbon_consumed = total_carbon_consumption_to_date
     self.max_daily_electricity_consumption = max_elect
     self.max_daily_water_consumption = max_wat
     self.max_daily_gas_consumption = max_gas
@@ -46,10 +51,10 @@ module HouseHelper
   end
 
   def update_all_rankings
-      update_electricity_rankings
-      update_gas_rankings
-      update_carbon_rankings
-      update_water_rankings
+    update_electricity_rankings
+    update_gas_rankings
+    update_carbon_rankings
+    update_water_rankings
   end
 
   def update_electricity_rankings
@@ -61,9 +66,13 @@ module HouseHelper
       oo = e_houses.count
       e_houses.each_with_index do |house, i|
         rank = ElectricityRanking.where(area_type: "House", area_id: house.id).first
-        rank.rank = i
+        prev_rank = rank.rank
+        rank.rank = i + 1
+        if prev_rank
+          rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        end
         rank.out_of = oo
-        rank.save
+        rank.save!
       end
     end
   end
@@ -76,7 +85,12 @@ module HouseHelper
       oo = g_houses.count
       g_houses.each_with_index do |house, i|
         rank = GasRanking.where(area_type: "House", area_id: house.id).first
+        prev_rank = rank.rank
         rank.rank = i + 1
+        if prev_rank
+          rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+          # rank.rank >= prev_rank ? rank.arrow = true : rank.arrow = false
+        end
         rank.out_of = oo
         rank.save
       end
@@ -92,7 +106,11 @@ module HouseHelper
       oo = c_houses.count
       c_houses.each_with_index do |house, i|
         rank = CarbonRanking.where(area_type: "House", area_id: house.id).first
+        prev_rank = rank.rank
         rank.rank = i + 1
+        if prev_rank
+          rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        end
         rank.out_of = oo
         rank.save
       end
@@ -107,7 +125,11 @@ module HouseHelper
       oo = w_houses.count
       w_houses.each_with_index do |house, i|
         rank = WaterRanking.where(area_type: "House", area_id: house.id).first
+        prev_rank = rank.rank
         rank.rank = i + 1
+        if prev_rank
+          rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        end
         rank.out_of = oo
         rank.save
       end

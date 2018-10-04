@@ -59,7 +59,11 @@ module CityHelper
       oo = e_cities.count
       e_cities.each_with_index do |city, i|
         rank = ElectricityRanking.where(area_type: "City", area_id: city.id).first
-        rank.rank = i
+        prev_rank = rank.rank
+        rank.rank = i + 1
+        if prev_rank
+          rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        end
         rank.out_of = oo
         rank.save
       end
@@ -73,7 +77,11 @@ module CityHelper
       oo = g_cities.count
       g_cities.each_with_index do |city, i|
         rank = GasRanking.where(area_type: "City", area_id: city.id).first
+        prev_rank = rank.rank
         rank.rank = i + 1
+        if prev_rank
+          rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        end
         rank.out_of = oo
         rank.save
       end
@@ -88,7 +96,11 @@ module CityHelper
       oo = c_cities.count
       c_cities.each_with_index do |city, i|
         rank = CarbonRanking.where(area_type: "City", area_id: city.id).first
+        prev_rank = rank.rank
         rank.rank = i + 1
+        if prev_rank
+          rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        end
         rank.out_of = oo
         rank.save
       end
@@ -102,7 +114,11 @@ module CityHelper
       oo = w_cities.count
       w_cities.each_with_index do |city, i|
         rank = WaterRanking.where(area_type: "City", area_id: city.id).first
+        prev_rank = rank.rank
         rank.rank = i + 1
+        if prev_rank
+          rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        end
         rank.out_of = oo
         rank.save
       end
