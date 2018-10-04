@@ -25,4 +25,18 @@ module MathHelper
     Math.sqrt(sample_variance(array))
   end
 
+  def find_q1_q3(array)
+    if !array.empty? && array.length % 2 == 0
+      return array.each_slice(array.length / 2)
+       .to_a.map do |subArr|
+         median(subArr)
+       end
+    elsif !array.empty?
+      i = array.length / 2
+      a = median(array[0..i])
+      b = median(array[i..-1])
+      return [a, b]
+    end
+  end
+
 end
