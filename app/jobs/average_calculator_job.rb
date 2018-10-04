@@ -22,7 +22,7 @@ class AverageCalculatorJob
     # this queues and invokes the task
     app[task].invoke
     puts "task invoked"
-    
+
     # THINGS THAT DIDNT WORK:
       # `rake -f #{Rails.root.join("Rakefile")} #{@task}`
       # `heroku run rake #{@task}`

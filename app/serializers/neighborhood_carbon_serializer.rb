@@ -23,11 +23,11 @@ class NeighborhoodCarbonSerializer < ActiveModel::Serializer
     # end
 
     def avg_daily_consumed_per_user
-      object.neighborhood_snapshots.last.avg_daily_carbon_consumption_per_user.round(2)
+      object.avg_daily_carbon_consumed_per_user.round(2)
     end
 
     def avg_monthly_consumed_per_user
-      (object.neighborhood_snapshots.last.avg_daily_carbon_consumption_per_user * 29.53).round(2)
+      (object.avg_daily_carbon_consumed_per_user * 29.53).round(2)
     end
 
     def metric_name
@@ -43,6 +43,6 @@ class NeighborhoodCarbonSerializer < ActiveModel::Serializer
       object.carbon_ranking.arrow
     end
     def out_of
-      object.neighborhood_snapshots.last.out_of
+      object.carbon_ranking.out_of
     end
 end
