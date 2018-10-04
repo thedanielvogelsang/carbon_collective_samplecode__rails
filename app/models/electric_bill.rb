@@ -1,5 +1,6 @@
 class ElectricBill < ApplicationRecord
   include Co2Helper
+  include MathHelper
 
   belongs_to :house
   belongs_to :who, class_name: 'User', foreign_key: :user_id
@@ -81,7 +82,8 @@ class ElectricBill < ApplicationRecord
   end
 
   def check_data_validity
-    ElectricBill.pluck(:avg_use)
+    usages = ElectricBill.pluck(:average_use)
+
   end
 
   def log_user_activity
