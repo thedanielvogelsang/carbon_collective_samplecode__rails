@@ -12,7 +12,7 @@ class UserCarbonSerializer < ActiveModel::Serializer
   end
 
   def house_max
-    object.household.house_max("carbon")
+    object.household.house_max("carbon") if object.household
   end
 
   def avg_daily_footprint
@@ -236,7 +236,7 @@ class UserCarbonSerializer < ActiveModel::Serializer
   end
 
   def move_in_date
-    UserHouse.where(user_id: object.id, house_id: object.household.id).first.move_in_date
+    UserHouse.where(user_id: object.id, house_id: object.household.id).first.move_in_date if object.household
   end
 
 end

@@ -76,7 +76,7 @@ class HouseCarbonSerializer < ActiveModel::Serializer
     "lbs"
   end
   def out_of
-    object.household_snapshots.last.out_of
+    object.carbon_ranking.out_of
   end
   def rank
     object.carbon_ranking.rank

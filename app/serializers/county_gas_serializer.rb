@@ -11,14 +11,14 @@ class CountyGasSerializer < ActiveModel::Serializer
   #   object.avg_total_gas_saved_per_user.round(2)
   # end
   def avg_daily_consumed_per_user
-    (object.county_snapshots.last.avg_daily_gas_consumption_per_user).round(2)
+    (object.avg_daily_gas_consumed_per_user).round(2)
   end
   def avg_daily_consumed_per_capita
     (object.avg_daily_gas_consumed_per_capita).round(2) if object.avg_daily_gas_consumed_per_capita != nil
   end
 
   def avg_monthly_consumed_per_user
-    (object.county_snapshots.last.avg_daily_gas_consumption_per_user * 29.53).round(2)
+    (object.avg_daily_gas_consumed_per_user * 29.53).round(2)
   end
   def avg_monthly_consumed_per_capita
     (object.avg_daily_gas_consumed_per_capita * 29.53).round(2) if object.avg_daily_gas_consumed_per_capita != nil
@@ -39,6 +39,6 @@ class CountyGasSerializer < ActiveModel::Serializer
     object.gas_ranking.arrow
   end
   def out_of
-    object.county_snapshots.last.out_of
+    object.gas_ranking.out_of
   end
 end

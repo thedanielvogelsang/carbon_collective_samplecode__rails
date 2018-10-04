@@ -33,13 +33,11 @@ module CityHelper
         max_wat = cities.order(avg_daily_water_consumed_per_user: :desc).first.avg_daily_water_consumed_per_user
         max_gas = cities.order(avg_daily_gas_consumed_per_user: :desc).first.avg_daily_gas_consumed_per_user
         max_carb = cities.order(avg_daily_carbon_consumed_per_user: :desc).first.avg_daily_carbon_consumed_per_user
-        parent_avg = city.region.avg_daily_carbon_consumed_per_user
-        oo = cities.count
         # (these maxes are from parent region)
-        max_daily_electricity_consumption = max_elect
-        max_daily_water_consumption = max_wat
-        max_daily_gas_consumption = max_gas
-        max_daily_carbon_consumption = max_carb
+        self.max_daily_electricity_consumption = max_elect
+        self.max_daily_water_consumption = max_wat
+        self.max_daily_gas_consumption = max_gas
+        self.max_daily_carbon_consumption = max_carb
 
       ## SAVING REGIONAL RECORD (LAST)##
         self.save
@@ -60,7 +58,7 @@ module CityHelper
     unless e_cities.empty?
       oo = e_cities.count
       e_cities.each_with_index do |city, i|
-        rank = ElectricityRanking.where(area_type: "City", area_id: city.id)
+        rank = ElectricityRanking.where(area_type: "City", area_id: city.id).first
         rank.rank = i
         rank.out_of = oo
         rank.save
@@ -74,7 +72,7 @@ module CityHelper
     unless g_cities.empty?
       oo = g_cities.count
       g_cities.each_with_index do |city, i|
-        rank = GasRanking.where(area_type: "City", area_id: city.id)
+        rank = GasRanking.where(area_type: "City", area_id: city.id).first
         rank.rank = i + 1
         rank.out_of = oo
         rank.save
@@ -89,7 +87,7 @@ module CityHelper
     unless c_cities.empty?
       oo = c_cities.count
       c_cities.each_with_index do |city, i|
-        rank = CarbonRanking.where(area_type: "City", area_id: city.id)
+        rank = CarbonRanking.where(area_type: "City", area_id: city.id).first
         rank.rank = i + 1
         rank.out_of = oo
         rank.save
@@ -103,7 +101,7 @@ module CityHelper
     unless w_cities.empty?
       oo = w_cities.count
       w_cities.each_with_index do |city, i|
-        rank = WaterRanking.where(area_type: "City", area_id: city.id)
+        rank = WaterRanking.where(area_type: "City", area_id: city.id).first
         rank.rank = i + 1
         rank.out_of = oo
         rank.save

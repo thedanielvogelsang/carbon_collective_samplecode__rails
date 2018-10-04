@@ -20,7 +20,7 @@ class UserElectricitySerializer < ActiveModel::Serializer
     object.household
   end
   def house_max
-    object.household.house_max("electricity")
+    object.household.house_max("electricity") if object.household
   end
 
 ## regional arrays for dash, order: [id, name, regional-avg, parent_avg, parent_max, regional-rank, out_of]
@@ -55,7 +55,7 @@ def city
   c = object.city
   if c
     ranking = c.electricity_ranking
-    avg_monthly = (c.avg_daily_electricity_consumped_per_user * 29.53).round(2)
+    avg_monthly = (c.avg_daily_electricity_consumed_per_user * 29.53).round(2)
     parent_avg = (c.region.avg_daily_electricity_consumed_per_user * 29.53).round(2)
     parent_max = (c.max_daily_electricity_consumption * 29.53).round(2)
     arr = [c.id, c.name, avg_monthly,
@@ -96,7 +96,7 @@ def country
   if c
     ranking = c.electricity_ranking
     country_avg_electricity = Country.average(:avg_daily_electricity_consumed_per_user)
-    avg_monthly = (c.avg_daily_electricity_consumption_per_user * 29.53).round(2)
+    avg_monthly = (c.avg_daily_electricity_consumed_per_user * 29.53).round(2)
     parent_avg = (country_avg_electricity * 29.53).round(2)
     parent_max = (c.max_daily_electricity_consumption * 29.53).round(2)
     arr = [c.id, c.name, avg_monthly,

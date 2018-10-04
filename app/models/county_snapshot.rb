@@ -23,7 +23,7 @@ class CountySnapshot < ApplicationRecord
        water_rank: wRank.rank,
        gas_rank: gRank.rank,
        carbon_rank: cRank.rank,
-       out_of: oo
+       out_of: oo,
        electricity_out_of: eRank.out_of,
        gas_out_of: gRank.out_of,
        water_out_of: wRank.out_of,

@@ -7,20 +7,40 @@ module CountyHelper
 
   def update_data
     if self.users.count != 0
-      # update_total_electricity_and_carbon_savings
-      # update_daily_avg_electricity_savings
-      update_daily_avg_electricity_consumption
-      update_total_electricity_consumption
-      # update_total_water_savings
-      # update_daily_avg_water_savings
-      update_daily_avg_water_consumption
-      update_total_water_consumption
-      # update_total_gas_and_carbon_savings
-      # update_daily_avg_gas_savings
-      update_daily_avg_gas_consumption
-      update_total_gas_consumption
-      update_carbon_consumption
-      self.save
+      ## UPDATING AVERAGES (FIRST)##
+        # update_total_electricity_and_carbon_savings
+        # update_daily_avg_electricity_savings
+        update_daily_avg_electricity_consumption
+        update_total_electricity_consumption
+        # update_total_water_savings
+        # update_daily_avg_water_savings
+        update_daily_avg_water_consumption
+        update_total_water_consumption
+        # update_total_gas_and_carbon_savings
+        # update_daily_avg_gas_savings
+        update_daily_avg_gas_consumption
+        update_total_gas_consumption
+        update_carbon_consumption
+        self.save
+
+      ## UPDATING RANKINGS (SECOND)##
+        update_all_rankings
+
+      ## FINDING PARENT MAX (THIRD)##
+        rId = self.region.id
+        counties = County.where(region_id: rId).joins(:users).distinct
+        max_elect = counties.order(avg_daily_electricity_consumed_per_user: :desc).first.avg_daily_electricity_consumed_per_user
+        max_wat = counties.order(avg_daily_water_consumed_per_user: :desc).first.avg_daily_water_consumed_per_user
+        max_gas = counties.order(avg_daily_gas_consumed_per_user: :desc).first.avg_daily_gas_consumed_per_user
+        max_carb = counties.order(avg_daily_carbon_consumed_per_user: :desc).first.avg_daily_carbon_consumed_per_user
+        # (these maxes are from parent region)
+        self.max_daily_electricity_consumption = max_elect
+        self.max_daily_water_consumption = max_wat
+        self.max_daily_gas_consumption = max_gas
+        self.max_daily_carbon_consumption = max_carb
+
+      ## SAVING REGIONAL RECORD (LAST)##
+        self.save
     end
   end
 
@@ -38,8 +58,8 @@ module CountyHelper
     unless e_counties.empty?
       oo = e_counties.count
       e_counties.each_with_index do |county, i|
-        rank = ElectricityRanking.where(area_type: "County", area_id: county.id)
-        rank.rank = i
+        rank = ElectricityRanking.where(area_type: "County", area_id: county.id).first
+        rank.rank = i + 1
         rank.out_of = oo
         rank.save
       end
@@ -52,8 +72,8 @@ module CountyHelper
     unless g_counties.empty?
       oo = g_counties.count
       g_counties.each_with_index do |county, i|
-        rank = GasRanking.where(area_type: "County", area_id: county.id)
-        rank.rank = i + 1
+        rank = GasRanking.where(area_type: "County", area_id: county.id).first
+        rank.rank = i + 1 + 1
         rank.out_of = oo
         rank.save
       end
@@ -67,8 +87,8 @@ module CountyHelper
     unless c_counties.empty?
       oo = c_counties.count
       c_counties.each_with_index do |county, i|
-        rank = CarbonRanking.where(area_type: "County", area_id: county.id)
-        rank.rank = i + 1
+        rank = CarbonRanking.where(area_type: "County", area_id: county.id).first
+        rank.rank = i + 1 + 1
         rank.out_of = oo
         rank.save
       end
@@ -81,8 +101,8 @@ module CountyHelper
     unless w_counties.empty?
       oo = w_counties.count
       w_counties.each_with_index do |county, i|
-        rank = WaterRanking.where(area_type: "County", area_id: county.id)
-        rank.rank = i + 1
+        rank = WaterRanking.where(area_type: "County", area_id: county.id).first
+        rank.rank = i + 1 + 1
         rank.out_of = oo
         rank.save
       end

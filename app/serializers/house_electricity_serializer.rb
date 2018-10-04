@@ -84,7 +84,7 @@ class HouseElectricitySerializer < ActiveModel::Serializer
     "kWhs"
   end
   def out_of
-    object.household_snapshots.last.out_of
+    House.all.count
   end
   def rank
     object.electricity_ranking.rank

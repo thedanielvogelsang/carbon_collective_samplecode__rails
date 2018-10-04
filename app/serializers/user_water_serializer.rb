@@ -19,7 +19,7 @@ class UserWaterSerializer < ActiveModel::Serializer
     object.household
   end
   def house_max
-    object.household.house_max("water")
+    object.household.house_max("water") if object.household
   end
 
   ## regional arrays for dash, order: [id, name, regional-avg, parent_avg, parent_max, regional-rank, out_of]

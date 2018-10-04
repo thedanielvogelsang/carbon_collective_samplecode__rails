@@ -19,7 +19,7 @@ class UserGasSerializer < ActiveModel::Serializer
       object.household
     end
     def house_max
-      object.household.house_max("gas")
+      object.household.house_max("gas") if object.household
     end
   ## regional arrays for dash, order: [id, name, regional-avg, parent_avg, parent_max, regional-rank, out_of]
   def household

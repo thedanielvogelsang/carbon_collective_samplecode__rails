@@ -7,21 +7,40 @@ module NeighborhoodHelper
 
   def update_data
     if self.users.count != 0
-      # update_total_electricity_and_carbon_savings
-      # update_daily_avg_electricity_savings
-      update_daily_avg_electricity_consumption
-      update_total_electricity_consumption
-      # update_total_water_savings
-      # update_daily_avg_water_savings
-      update_daily_avg_water_consumption
-      update_total_water_consumption
-      # update_total_gas_and_carbon_savings
-      # update_daily_avg_gas_savings
-      update_daily_avg_gas_consumption
-      update_total_gas_consumption
+      ## UPDATING AVERAGES (FIRST)##
+        # update_total_electricity_and_carbon_savings
+        # update_daily_avg_electricity_savings
+        update_daily_avg_electricity_consumption
+        update_total_electricity_consumption
+        # update_total_water_savings
+        # update_daily_avg_water_savings
+        update_daily_avg_water_consumption
+        update_total_water_consumption
+        # update_total_gas_and_carbon_savings
+        # update_daily_avg_gas_savings
+        update_daily_avg_gas_consumption
+        update_total_gas_consumption
+        update_carbon_consumption
+        self.save
 
-      update_carbon_consumption
-      self.save
+      ## UPDATING RANKINGS (SECOND)##
+        update_all_rankings
+
+      ## FINDING PARENT MAX (THIRD)##
+        cId = self.city.id
+        hoods = Neighborhood.where(city_id: cId).joins(:users).distinct
+        max_elect = hoods.order(avg_daily_electricity_consumed_per_user: :desc).first.avg_daily_electricity_consumed_per_user
+        max_wat = hoods.order(avg_daily_water_consumed_per_user: :desc).first.avg_daily_water_consumed_per_user
+        max_gas = hoods.order(avg_daily_gas_consumed_per_user: :desc).first.avg_daily_gas_consumed_per_user
+        max_carb = hoods.order(avg_daily_carbon_consumed_per_user: :desc).first.avg_daily_carbon_consumed_per_user
+        # (these maxes are from parent region)
+        self.max_daily_electricity_consumption = max_elect
+        self.max_daily_water_consumption = max_wat
+        self.max_daily_gas_consumption = max_gas
+        self.max_daily_carbon_consumption = max_carb
+
+      ## SAVING REGIONAL RECORD (LAST)##
+        self.save
     end
   end
 
@@ -39,7 +58,7 @@ module NeighborhoodHelper
     unless e_neighborhoods.empty?
       oo = e_neighborhoods.count
       e_neighborhoods.each_with_index do |neighborhood, i|
-        rank = ElectricityRanking.where(area_type: "Neighborhood", area_id: neighborhood.id)
+        rank = ElectricityRanking.where(area_type: "Neighborhood", area_id: neighborhood.id).first
         rank.rank = i
         rank.out_of = oo
         rank.save
@@ -53,7 +72,7 @@ module NeighborhoodHelper
     unless g_neighborhoods.empty?
       oo = g_neighborhoods.count
       g_neighborhoods.each_with_index do |neighborhood, i|
-        rank = GasRanking.where(area_type: "Neighborhood", area_id: neighborhood.id)
+        rank = GasRanking.where(area_type: "Neighborhood", area_id: neighborhood.id).first
         rank.rank = i + 1
         rank.out_of = oo
         rank.save
@@ -68,7 +87,7 @@ module NeighborhoodHelper
     unless c_neighborhoods.empty?
       oo = c_neighborhoods.count
       c_neighborhoods.each_with_index do |neighborhood, i|
-        rank = CarbonRanking.where(area_type: "Neighborhood", area_id: neighborhood.id)
+        rank = CarbonRanking.where(area_type: "Neighborhood", area_id: neighborhood.id).first
         rank.rank = i + 1
         rank.out_of = oo
         rank.save
@@ -82,7 +101,7 @@ module NeighborhoodHelper
     unless w_neighborhoods.empty?
       oo = w_neighborhoods.count
       w_neighborhoods.each_with_index do |neighborhood, i|
-        rank = WaterRanking.where(area_type: "Neighborhood", area_id: neighborhood.id)
+        rank = WaterRanking.where(area_type: "Neighborhood", area_id: neighborhood.id).first
         rank.rank = i + 1
         rank.out_of = oo
         rank.save
