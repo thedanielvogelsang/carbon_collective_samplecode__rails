@@ -1,5 +1,5 @@
 class Api::V1::UsersController < ApplicationController
-  skip_before_action :look_for_token
+  # skip_before_action :look_for_token
   # development;
   def index
     render json: User.friendly.all.order(:id)
@@ -14,7 +14,7 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
-  #used for dashboard get fetch
+  #used for dashboard data fetch endpoint
   def resources
     if User.friendly.exists?(params[:id])
       render json: User.friendly.find(params[:id]), serializer: UserElectricitySerializer if params[:resource] == 'electricity'

@@ -6,6 +6,7 @@ class UserSerializer < ActiveModel::Serializer
                   :privacy_policy, :house,
                   :invite_max,
                   :slug,
+                  :move_in_date,
                   # :avg_daily_footprint,
                   # :avg_monthly_footprint,
                   :household, :neighborhood, :city, :county, :region, :country,
@@ -27,6 +28,10 @@ class UserSerializer < ActiveModel::Serializer
   end
   def country
     [object.country.id, object.country.name] if object.country
+  end
+
+  def move_in_date
+    UserHouse.where(user_id: object.id, house_id: object.household.id)[0].move_in_date if object.household
   end
 
   # needs to be erased or fixed

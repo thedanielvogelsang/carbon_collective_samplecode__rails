@@ -89,7 +89,7 @@ class HouseWaterSerializer < ActiveModel::Serializer
   end
 
   def out_of
-    object.household_snapshots.last.out_of
+    object.water_ranking.out_of
   end
   def rank
     object.water_ranking.rank

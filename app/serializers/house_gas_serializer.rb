@@ -78,7 +78,7 @@ class HouseGasSerializer < ActiveModel::Serializer
     "therms"
   end
   def out_of
-    object.household_snapshots.last.out_of
+    object.gas_ranking.out_of
   end
   def rank
     object.gas_ranking.rank

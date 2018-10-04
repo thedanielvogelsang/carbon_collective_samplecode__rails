@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180928150253) do
+ActiveRecord::Schema.define(version: 20181003235359) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 20180928150253) do
     t.bigint "area_id"
     t.integer "rank"
     t.boolean "arrow"
+    t.integer "out_of"
     t.index ["area_id", "area_type"], name: "index_carbon_rankings_on_area_id_and_area_type"
     t.index ["area_type", "area_id"], name: "index_carbon_rankings_on_area_type_and_area_id"
   end
@@ -71,6 +72,10 @@ ActiveRecord::Schema.define(version: 20180928150253) do
     t.decimal "total_carbon_saved", default: "0.0"
     t.decimal "avg_daily_carbon_consumed_per_user", default: "0.0"
     t.decimal "total_carbon_consumed", default: "0.0"
+    t.decimal "max_daily_electricity_consumption", default: "0.0"
+    t.decimal "max_daily_water_consumption", default: "0.0"
+    t.decimal "max_daily_gas_consumption", default: "0.0"
+    t.decimal "max_daily_carbon_consumption", default: "0.0"
     t.index ["name"], name: "index_cities_on_name", unique: true
     t.index ["region_id"], name: "index_cities_on_region_id"
     t.index ["total_electricity_consumed"], name: "index_cities_on_total_electricity_consumed"
@@ -93,15 +98,15 @@ ActiveRecord::Schema.define(version: 20180928150253) do
     t.decimal "total_water_consumed", default: "0.0"
     t.decimal "total_gas_consumed", default: "0.0"
     t.decimal "total_carbon_consumed", default: "0.0"
-    t.decimal "max_daily_electricity_consumption", default: "0.0"
-    t.decimal "max_daily_water_consumption", default: "0.0"
-    t.decimal "max_daily_gas_consumption", default: "0.0"
-    t.decimal "max_daily_carbon_consumption", default: "0.0"
     t.integer "electricity_rank"
     t.integer "water_rank"
     t.integer "gas_rank"
     t.integer "carbon_rank"
     t.integer "out_of"
+    t.integer "electricity_out_of"
+    t.integer "gas_out_of"
+    t.integer "water_out_of"
+    t.integer "carbon_out_of"
     t.index ["city_id"], name: "index_city_snapshots_on_city_id"
   end
 
@@ -128,6 +133,10 @@ ActiveRecord::Schema.define(version: 20180928150253) do
     t.decimal "total_carbon_saved", default: "0.0"
     t.decimal "avg_daily_carbon_consumed_per_user", default: "0.0"
     t.decimal "total_carbon_consumed", default: "0.0"
+    t.decimal "max_daily_electricity_consumption", default: "0.0"
+    t.decimal "max_daily_water_consumption", default: "0.0"
+    t.decimal "max_daily_gas_consumption", default: "0.0"
+    t.decimal "max_daily_carbon_consumption", default: "0.0"
     t.index ["name"], name: "index_counties_on_name", unique: true
     t.index ["region_id"], name: "index_counties_on_region_id"
     t.index ["total_electricity_consumed"], name: "index_counties_on_total_electricity_consumed"
@@ -161,6 +170,10 @@ ActiveRecord::Schema.define(version: 20180928150253) do
     t.decimal "avg_daily_carbon_consumed_per_user", default: "0.0"
     t.decimal "total_carbon_consumed", default: "0.0"
     t.decimal "avg_daily_carbon_consumed_per_capita"
+    t.decimal "max_daily_electricity_consumption", default: "0.0"
+    t.decimal "max_daily_water_consumption", default: "0.0"
+    t.decimal "max_daily_gas_consumption", default: "0.0"
+    t.decimal "max_daily_carbon_consumption", default: "0.0"
     t.index ["name"], name: "index_countries_on_name", unique: true
     t.index ["total_electricity_consumed"], name: "index_countries_on_total_electricity_consumed"
     t.index ["total_electricity_saved"], name: "index_countries_on_total_electricity_saved"
@@ -182,10 +195,6 @@ ActiveRecord::Schema.define(version: 20180928150253) do
     t.decimal "total_water_consumed", default: "0.0"
     t.decimal "total_gas_consumed", default: "0.0"
     t.decimal "total_carbon_consumed", default: "0.0"
-    t.decimal "max_daily_electricity_consumption", default: "0.0"
-    t.decimal "max_daily_water_consumption", default: "0.0"
-    t.decimal "max_daily_gas_consumption", default: "0.0"
-    t.decimal "max_daily_carbon_consumption", default: "0.0"
     t.integer "electricity_rank"
     t.integer "water_rank"
     t.integer "gas_rank"
@@ -195,6 +204,10 @@ ActiveRecord::Schema.define(version: 20180928150253) do
     t.decimal "country_avg_electricity", default: "0.0"
     t.decimal "country_avg_water", default: "0.0"
     t.decimal "country_avg_gas", default: "0.0"
+    t.integer "electricity_out_of"
+    t.integer "gas_out_of"
+    t.integer "water_out_of"
+    t.integer "carbon_out_of"
     t.index ["country_id"], name: "index_country_snapshots_on_country_id"
   end
 
@@ -210,15 +223,15 @@ ActiveRecord::Schema.define(version: 20180928150253) do
     t.decimal "total_water_consumed", default: "0.0"
     t.decimal "total_gas_consumed", default: "0.0"
     t.decimal "total_carbon_consumed", default: "0.0"
-    t.decimal "max_daily_electricity_consumption", default: "0.0"
-    t.decimal "max_daily_water_consumption", default: "0.0"
-    t.decimal "max_daily_gas_consumption", default: "0.0"
-    t.decimal "max_daily_carbon_consumption", default: "0.0"
     t.integer "electricity_rank"
     t.integer "water_rank"
     t.integer "gas_rank"
     t.integer "carbon_rank"
     t.integer "out_of"
+    t.integer "electricity_out_of"
+    t.integer "gas_out_of"
+    t.integer "water_out_of"
+    t.integer "carbon_out_of"
     t.index ["county_id"], name: "index_county_snapshots_on_county_id"
   end
 
@@ -249,6 +262,7 @@ ActiveRecord::Schema.define(version: 20180928150253) do
     t.bigint "area_id"
     t.integer "rank"
     t.boolean "arrow"
+    t.integer "out_of"
     t.index ["area_id", "area_type"], name: "index_electricity_rankings_on_area_id_and_area_type"
     t.index ["area_type", "area_id"], name: "index_electricity_rankings_on_area_type_and_area_id"
   end
@@ -277,6 +291,7 @@ ActiveRecord::Schema.define(version: 20180928150253) do
     t.bigint "area_id"
     t.integer "rank"
     t.boolean "arrow"
+    t.integer "out_of"
     t.index ["area_id", "area_type"], name: "index_gas_rankings_on_area_id_and_area_type"
     t.index ["area_type", "area_id"], name: "index_gas_rankings_on_area_type_and_area_id"
   end
@@ -331,15 +346,15 @@ ActiveRecord::Schema.define(version: 20180928150253) do
     t.decimal "total_water_consumed", default: "0.0"
     t.decimal "total_gas_consumed", default: "0.0"
     t.decimal "total_carbon_consumed", default: "0.0"
-    t.decimal "max_daily_electricity_consumption", default: "0.0"
-    t.decimal "max_daily_water_consumption", default: "0.0"
-    t.decimal "max_daily_gas_consumption", default: "0.0"
-    t.decimal "max_daily_carbon_consumption", default: "0.0"
     t.integer "electricity_rank"
     t.integer "water_rank"
     t.integer "gas_rank"
     t.integer "carbon_rank"
     t.integer "out_of"
+    t.integer "electricity_out_of"
+    t.integer "gas_out_of"
+    t.integer "water_out_of"
+    t.integer "carbon_out_of"
     t.index ["house_id"], name: "index_household_snapshots_on_house_id"
   end
 
@@ -354,6 +369,14 @@ ActiveRecord::Schema.define(version: 20180928150253) do
     t.decimal "avg_daily_water_consumed_per_user", default: "0.0"
     t.decimal "avg_daily_gas_consumed_per_user", default: "0.0"
     t.decimal "avg_daily_carbon_consumed_per_user", default: "0.0"
+    t.decimal "total_electricity_consumed", default: "0.0"
+    t.decimal "total_water_consumed", default: "0.0"
+    t.decimal "total_gas_consumed", default: "0.0"
+    t.decimal "total_carbon_consumed", default: "0.0"
+    t.decimal "max_daily_electricity_consumption", default: "0.0"
+    t.decimal "max_daily_water_consumption", default: "0.0"
+    t.decimal "max_daily_gas_consumption", default: "0.0"
+    t.decimal "max_daily_carbon_consumption", default: "0.0"
     t.index ["address_id"], name: "index_houses_on_address_id"
   end
 
@@ -369,15 +392,15 @@ ActiveRecord::Schema.define(version: 20180928150253) do
     t.decimal "total_water_consumed", default: "0.0"
     t.decimal "total_gas_consumed", default: "0.0"
     t.decimal "total_carbon_consumed", default: "0.0"
-    t.decimal "max_daily_electricity_consumption", default: "0.0"
-    t.decimal "max_daily_water_consumption", default: "0.0"
-    t.decimal "max_daily_gas_consumption", default: "0.0"
-    t.decimal "max_daily_carbon_consumption", default: "0.0"
     t.integer "electricity_rank"
     t.integer "water_rank"
     t.integer "gas_rank"
     t.integer "carbon_rank"
     t.integer "out_of"
+    t.integer "electricity_out_of"
+    t.integer "gas_out_of"
+    t.integer "water_out_of"
+    t.integer "carbon_out_of"
     t.index ["neighborhood_id"], name: "index_neighborhood_snapshots_on_neighborhood_id"
   end
 
@@ -404,6 +427,10 @@ ActiveRecord::Schema.define(version: 20180928150253) do
     t.decimal "total_carbon_saved", default: "0.0"
     t.decimal "avg_daily_carbon_consumed_per_user", default: "0.0"
     t.decimal "total_carbon_consumed", default: "0.0"
+    t.decimal "max_daily_electricity_consumption", default: "0.0"
+    t.decimal "max_daily_water_consumption", default: "0.0"
+    t.decimal "max_daily_gas_consumption", default: "0.0"
+    t.decimal "max_daily_carbon_consumption", default: "0.0"
     t.index ["city_id"], name: "index_neighborhoods_on_city_id"
     t.index ["name"], name: "index_neighborhoods_on_name", unique: true
     t.index ["total_electricity_consumed"], name: "index_neighborhoods_on_total_electricity_consumed"
@@ -426,15 +453,15 @@ ActiveRecord::Schema.define(version: 20180928150253) do
     t.decimal "total_water_consumed", default: "0.0"
     t.decimal "total_gas_consumed", default: "0.0"
     t.decimal "total_carbon_consumed", default: "0.0"
-    t.decimal "max_daily_electricity_consumption", default: "0.0"
-    t.decimal "max_daily_water_consumption", default: "0.0"
-    t.decimal "max_daily_gas_consumption", default: "0.0"
-    t.decimal "max_daily_carbon_consumption", default: "0.0"
     t.integer "electricity_rank"
     t.integer "water_rank"
     t.integer "gas_rank"
     t.integer "carbon_rank"
     t.integer "out_of"
+    t.integer "electricity_out_of"
+    t.integer "gas_out_of"
+    t.integer "water_out_of"
+    t.integer "carbon_out_of"
     t.index ["region_id"], name: "index_region_snapshots_on_region_id"
   end
 
@@ -462,6 +489,10 @@ ActiveRecord::Schema.define(version: 20180928150253) do
     t.decimal "avg_daily_carbon_consumed_per_user", default: "0.0"
     t.decimal "total_carbon_consumed", default: "0.0"
     t.decimal "avg_daily_carbon_consumed_per_capita"
+    t.decimal "max_daily_electricity_consumption", default: "0.0"
+    t.decimal "max_daily_water_consumption", default: "0.0"
+    t.decimal "max_daily_gas_consumption", default: "0.0"
+    t.decimal "max_daily_carbon_consumption", default: "0.0"
     t.index ["country_id"], name: "index_regions_on_country_id"
     t.index ["name"], name: "index_regions_on_name", unique: true
     t.index ["total_electricity_consumed"], name: "index_regions_on_total_electricity_consumed"
@@ -718,6 +749,7 @@ ActiveRecord::Schema.define(version: 20180928150253) do
     t.boolean "arrow"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "out_of"
     t.index ["area_id", "area_type"], name: "index_water_rankings_on_area_id_and_area_type"
     t.index ["area_type", "area_id"], name: "index_water_rankings_on_area_type_and_area_id"
   end

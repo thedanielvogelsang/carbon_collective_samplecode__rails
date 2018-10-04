@@ -11,20 +11,121 @@ module RegionHelper
 
   def update_data
     if self.users.count != 0
-      # update_total_electricity_and_carbon_savings
-      # update_daily_avg_electricity_savings
-      update_daily_avg_electricity_consumption
-      update_total_electricity_consumption
-      # update_total_water_savings
-      # update_daily_avg_water_savings
-      update_daily_avg_water_consumption
-      update_total_water_consumption
-      # update_total_gas_and_carbon_savings
-      # update_daily_avg_gas_savings
-      update_daily_avg_gas_consumption
-      update_total_gas_consumption
-      update_carbon_consumption
-      self.save
+      ## UPDATING AVERAGES (FIRST)##
+        # update_total_electricity_and_carbon_savings
+        # update_daily_avg_electricity_savings
+        update_daily_avg_electricity_consumption
+        update_total_electricity_consumption
+        # update_total_water_savings
+        # update_daily_avg_water_savings
+        update_daily_avg_water_consumption
+        update_total_water_consumption
+        # update_total_gas_and_carbon_savings
+        # update_daily_avg_gas_savings
+        update_daily_avg_gas_consumption
+        update_total_gas_consumption
+        update_carbon_consumption
+        self.save
+
+      ## UPDATING RANKINGS (SECOND)##
+        update_all_rankings
+
+      ## FINDING PARENT MAX (THIRD)##
+        cId = self.country.id
+        regions = Region.where(country_id: cId).joins(:users).distinct
+        max_elect = regions.order(avg_daily_electricity_consumed_per_user: :desc).first.avg_daily_electricity_consumed_per_user
+        max_wat = regions.order(avg_daily_water_consumed_per_user: :desc).first.avg_daily_water_consumed_per_user
+        max_gas = regions.order(avg_daily_gas_consumed_per_user: :desc).first.avg_daily_gas_consumed_per_user
+        max_carb = regions.order(avg_daily_carbon_consumed_per_user: :desc).first.avg_daily_carbon_consumed_per_user
+        # (these maxes are from parent region)
+        self.max_daily_electricity_consumption = max_elect
+        self.max_daily_water_consumption = max_wat
+        self.max_daily_gas_consumption = max_gas
+        self.max_daily_carbon_consumption = max_carb
+
+      ## SAVING REGIONAL RECORD (LAST)##
+        self.save
+    end
+  end
+
+  def update_all_rankings
+      update_electricity_rankings
+      update_gas_rankings
+      update_carbon_rankings
+      update_water_rankings
+  end
+
+  def update_electricity_rankings
+    e_regions = Region.where(country_id: self.country.id).joins(:users).distinct
+        .where.not(avg_daily_electricity_consumed_per_user: [nil, 0])
+        .order(avg_daily_electricity_consumed_per_user: :asc)
+    unless e_regions.empty?
+      oo = e_regions.count
+      e_regions.each_with_index do |region, i|
+        rank = ElectricityRanking.where(area_type: "Region", area_id: region.id).first
+        prev_rank = rank.rank
+        rank.rank = i + 1
+        if prev_rank
+          rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        end
+        rank.out_of = oo
+        rank.save
+      end
+    end
+  end
+  def update_gas_rankings
+    g_regions = Region.where(country_id: self.country.id).joins(:users).distinct
+        .where.not(avg_daily_gas_consumed_per_user: [nil, 0])
+        .order(avg_daily_gas_consumed_per_user: :asc)
+    unless g_regions.empty?
+      oo = g_regions.count
+      g_regions.each_with_index do |region, i|
+        rank = GasRanking.where(area_type: "Region", area_id: region.id).first
+        prev_rank = rank.rank
+        rank.rank = i + 1
+        if prev_rank
+          rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        end
+        rank.out_of = oo
+        rank.save
+      end
+    end
+  end
+
+  def update_carbon_rankings
+    c_regions = Region.where(country_id: self.country.id).joins(:users).distinct
+        .where.not(avg_daily_carbon_consumed_per_user: [nil, 0])
+        .order(avg_daily_carbon_consumed_per_user: :asc)
+    unless c_regions.empty?
+      oo = c_regions.count
+      c_regions.each_with_index do |region, i|
+        rank = CarbonRanking.where(area_type: "Region", area_id: region.id).first
+        prev_rank = rank.rank
+        rank.rank = i + 1
+        if prev_rank
+          rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        end
+        rank.out_of = oo
+        rank.save
+      end
+    end
+  end
+  def update_water_rankings
+    w_regions = Region.where(country_id: self.country.id).joins(:users).distinct
+        .where.not(avg_daily_water_consumed_per_user: [nil, 0])
+        .order(avg_daily_water_consumed_per_user: :asc)
+    unless w_regions.empty?
+      oo = w_regions.count
+      w_regions.each_with_index do |region, i|
+        rank = WaterRanking.where(area_type: "Region", area_id: region.id).first
+        prev_rank = rank.rank
+        rank.rank = i + 1
+        if prev_rank
+          rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        end
+        rank.out_of = oo
+        rank.save
+      end
     end
   end
 
