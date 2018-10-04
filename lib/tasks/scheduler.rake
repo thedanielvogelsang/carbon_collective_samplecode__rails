@@ -13,7 +13,7 @@ desc "These rake tasks perform background work for our application
     puts 'Updating region data'
     Region.all.each{|r| r.update_data }
 
-    puts 'Update county data'
+    puts 'Updating county data'
     County.all.each{|c| c.update_data }
 
     puts 'Updating city data'

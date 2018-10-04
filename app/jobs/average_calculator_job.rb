@@ -12,16 +12,17 @@ class AverageCalculatorJob
   # sidekiq_options retry: false
 
   def perform
-    puts 'worker started'
+    puts 'Worker started'
     task = :update_data
     app = Rake.application
-    app.init
-    app.add_import Rails.root.join("Rakefile")
-    # this loads the Rakefile and other imports
-    app.load_rakefile
+      app.init
+      app.add_import Rails.root.join("Rakefile")
+      # this loads the Rakefile and other imports
+      app.load_rakefile
     # this queues and invokes the task
-    app[task].invoke
-    puts "task invoked"
+      puts "task invoked"
+        app[task].invoke
+        puts "task completed"
 
     # THINGS THAT DIDNT WORK:
       # `rake -f #{Rails.root.join("Rakefile")} #{@task}`
