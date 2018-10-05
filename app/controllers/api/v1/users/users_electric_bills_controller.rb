@@ -57,6 +57,6 @@ class Api::V1::Users::UsersElectricBillsController < ApplicationController
 
   private
     def safe_params
-      params.require(:electric_bills).permit(:start_date, :end_date, :total_kwhs, :price, :house_id, :no_residents, :who)
+      params.require(:electric_bills).permit(:start_date, :end_date, :total_kwhs, :price, :house_id, :no_residents, :who, :force)
     end
 end

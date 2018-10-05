@@ -1,6 +1,7 @@
 module MathHelper
 
-  def mean(array)
+  def mean(array, already_sorted=false)
+    array = array.sort unless already_sorted
 	  array.reduce(0) { |sum, x| sum += x } / array.size.to_f
 	end
 
@@ -8,7 +9,7 @@ module MathHelper
 	  return nil if array.empty?
 	  array = array.sort unless already_sorted
 	  m_pos = array.size / 2
-	  return array.size % 2 == 1 ? array[m_pos] : mean(array[m_pos-1..m_pos])
+	  return array.size % 2 == 1 ? array[m_pos] : mean(array[m_pos-1..m_pos], true)
 	end
 
   def max(array)
@@ -37,6 +38,21 @@ module MathHelper
       b = median(array[i..-1])
       return [a, b]
     end
+  end
+
+  def find_max(array, already_sorted=false)
+    array = array.sort unless already_sorted
+    q1q3 = find_q1_q3(array)
+    iqr = q1q3[1] - q1q3[0]
+    max = 1.5*(iqr) + q1q3[1]
+  end
+
+  def find_max_monthly(array)
+    return find_max(array) * 29.53
+  end
+
+  def rounded(num)
+    return num.to_f.round(2)
   end
 
 end

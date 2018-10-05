@@ -15,7 +15,8 @@ class ElectricBill < ApplicationRecord
     validate :check_data_validity, :confirm_no_overlaps, :confirm_valid_dates, :check_move_in_date
 
     after_validation :electricity_saved?,
-                     :add_to_users_totals
+                     :add_to_users_totals,
+                     :update_no_residents_on_house
 
 
     after_create :log_user_activity
@@ -27,6 +28,12 @@ class ElectricBill < ApplicationRecord
       self.house.address.city.region.has_electricity_average? ? region_comparison : country_comparison
     else
       false
+    end
+  end
+
+  def update_no_residents_on_house
+    if house_id && no_residents
+      House.find(house_id).update(no_residents: no_residents)
     end
   end
 
@@ -44,11 +51,16 @@ class ElectricBill < ApplicationRecord
   # backup comparison when creating electricity savings
   def country_comparison
     country_per_cap_daily_average = self.house.address.city.region.country.avg_daily_electricity_consumed_per_capita
-    num_days = self.end_date - self.start_date
-    bill_daily_average = self.total_kwhs.fdiv(num_days)
-    avg_daily_use_per_resident = bill_daily_average.fdiv(self.no_residents)
-    country_per_cap_daily_average > avg_daily_use_per_resident ? res = true : res = false
-    res ? self.electricity_saved = ((country_per_cap_daily_average - avg_daily_use_per_resident) * num_days) : self.electricity_saved = 0
+     if country_per_cap_daily_average
+       num_days = self.end_date - self.start_date
+      bill_daily_average = self.total_kwhs.fdiv(num_days)
+      avg_daily_use_per_resident = bill_daily_average.fdiv(self.no_residents)
+      country_per_cap_daily_average > avg_daily_use_per_resident ? res = true : res = false
+      res ? self.electricity_saved = ((country_per_cap_daily_average - avg_daily_use_per_resident) * num_days) : self.electricity_saved = 0
+    else
+      res = false
+      self.electricity_saved = 0
+    end
     res
   end
 
@@ -92,9 +104,8 @@ class ElectricBill < ApplicationRecord
 
   def check_data_validity
     if no_residents && end_date && start_date && total_kwhs
-      num_res = self.no_residents
       num_days = self.end_date - self.start_date
-      kwhs = self.total_kwhs.fdiv(num_days).fdiv(num_res)
+      kwhs = self.total_kwhs.fdiv(num_days).fdiv(no_residents)
     end
     self.average_daily_usage = kwhs || 0
     usages = ElectricBill.pluck(:average_daily_usage).sort
@@ -104,7 +115,7 @@ class ElectricBill < ApplicationRecord
         iqr = q1_q3[1] - q1_q3[0]
       end
       usages.count < 10 ? max = 100 : max = 1.5*iqr + q1_q3[1]
-    return average_daily_usage > 0 && average_daily_usage <= max ? true : errors.add(:total_kwhs, "resource usage is much higher than average, are you sure you want to proceed?")
+    return average_daily_usage > 0 && average_daily_usage <= max ? true : force ? true : errors.add(:total_kwhs, "resource usage is much higher than average, are you sure you want to proceed?")
   end
 
   def log_user_activity
