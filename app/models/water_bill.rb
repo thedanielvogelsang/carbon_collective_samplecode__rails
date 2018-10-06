@@ -1,4 +1,6 @@
 class WaterBill < ApplicationRecord
+  include MathHelper
+
   belongs_to :house
   belongs_to :who, class_name: 'User', foreign_key: :user_id
 
@@ -33,11 +35,16 @@ class WaterBill < ApplicationRecord
 
   def region_comparison
     region_per_cap_daily_average = self.house.address.city.region.avg_daily_water_consumed_per_capita
-    num_days = self.end_date - self.start_date
-    bill_daily_average = self.total_gallons.fdiv(num_days)
-    avg_daily_use_per_resident = bill_daily_average.fdiv(self.house.no_residents)
-    region_per_cap_daily_average > avg_daily_use_per_resident ? res = true : res = false
-    res ? self.water_saved = ((region_per_cap_daily_average - avg_daily_use_per_resident) * num_days) : self.water_saved = 0
+    if region_per_cap_daily_average
+      num_days = self.end_date - self.start_date
+      bill_daily_average = self.total_gallons.fdiv(num_days)
+      avg_daily_use_per_resident = bill_daily_average.fdiv(self.house.no_residents)
+      region_per_cap_daily_average > avg_daily_use_per_resident ? res = true : res = false
+      res ? self.water_saved = ((region_per_cap_daily_average - avg_daily_use_per_resident) * num_days) : self.water_saved = 0
+    else
+      res = false
+      self.water_saved = 0
+    end
     res
   end
 
@@ -66,11 +73,12 @@ class WaterBill < ApplicationRecord
       num_days = self.end_date - self.start_date
       users.each do |u|
         u.total_waterbill_days_logged += num_days
-        u.total_gallons_logged += gals
+        u.total_gallons_logged += (total_gallons.fdiv(no_residents))
         u.total_water_savings += water_saved
         u.save
       end
       house.update_data
+      house.update_user_rankings
     else
       false
     end

@@ -4,7 +4,7 @@ class UserElectricitySerializer < ActiveModel::Serializer
                   :privacy_policy, :house, :house_max,
                   :last_updated, :rank, :arrow,
                   :personal_savings_to_date, :personal_usage_to_date,
-                  :avg_daily_footprint, :avg_monthly_footprint,
+                  :avg_daily_footprint, :avg_monthly_footprint, :personal,
                   :household, :neighborhood, :city, :county, :region, :country,
                   :metric_sym, :num_bills, :out_of, :move_in_date, :invite_max, :slug
 
@@ -21,6 +21,21 @@ class UserElectricitySerializer < ActiveModel::Serializer
   end
   def house_max
     object.household.house_max("electricity") if object.household
+  end
+
+  def personal
+    h = object.household
+    if h
+    avg_monthly = (object.avg_daily_electricity_consumption * 29.53).round(2)
+    household_avg = (h.avg_daily_electricity_consumed_per_user * 29.53).round(2) if h.avg_daily_water_consumed_per_user
+    household_max = (h.calculate_house_electricity_max * 29.53).round(2)
+    user_house_rank = object.user_electricity_rankings.where(area_type: "House").first.rank
+    user_house_arrow = object.user_electricity_rankings.where(area_type: "House").first.arrow
+    arr = [object.id, "Me", avg_monthly,
+      household_avg, household_max,
+      user_house_rank, h.users.count, user_house_arrow]
+    end
+    arr
   end
 
 ## regional arrays for dash, order: [id, name, regional-avg, parent_avg, parent_max, regional-rank, out_of]

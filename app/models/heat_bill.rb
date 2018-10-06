@@ -1,5 +1,6 @@
 class HeatBill < ApplicationRecord
   include Co2Helper
+  include MathHelper
 
   belongs_to :house
   belongs_to :who, class_name: 'User', foreign_key: :user_id
@@ -38,11 +39,16 @@ class HeatBill < ApplicationRecord
  # primary regional avg comparison
  def region_comparison
    region_per_cap_daily_average = self.house.address.city.region.avg_daily_gas_consumed_per_capita
-   num_days = self.end_date - self.start_date
-   bill_daily_average = self.total_therms.fdiv(num_days)
-   avg_daily_use_per_resident = bill_daily_average.fdiv(self.house.no_residents)
-   region_per_cap_daily_average > avg_daily_use_per_resident ? res = true : res = false
-   res ? self.gas_saved = ((region_per_cap_daily_average - avg_daily_use_per_resident) * num_days) : self.gas_saved = 0
+   if region_per_cap_daily_average
+     num_days = self.end_date - self.start_date
+     bill_daily_average = self.total_therms.fdiv(num_days)
+     avg_daily_use_per_resident = bill_daily_average.fdiv(self.house.no_residents)
+     region_per_cap_daily_average > avg_daily_use_per_resident ? res = true : res = false
+     res ? self.gas_saved = ((region_per_cap_daily_average - avg_daily_use_per_resident) * num_days) : self.gas_saved = 0
+   else
+     res = false
+     self.gas_saved = 0
+   end
    res
  end
 
@@ -69,17 +75,18 @@ class HeatBill < ApplicationRecord
      users = UserHouse.joins(:house).where(house_id: house_id).select{|uh| uh.move_in_date.to_datetime <= self.start_date}
      house = House.find(house_id)
      users = users.map{|uh| User.find(uh.user_id)}
-     gas_savings = self.gas_saved.fdiv(self.no_residents)
+     gas_saved = self.gas_saved.fdiv(self.no_residents)
      num_days = self.end_date - self.start_date
      users.each do |u|
        u.total_heatbill_days_logged += num_days
-       u.total_therms_logged += therms
+       u.total_therms_logged += (total_therms.fdiv(no_residents))
        u.total_pounds_logged += therms_to_carbon(therms)
-       u.total_gas_savings += gas_savings
-       u.total_carbon_savings += therms_to_carbon(gas_savings)
+       u.total_gas_savings += gas_saved
+       u.total_carbon_savings += therms_to_carbon(gas_saved)
        u.save
      end
      house.update_data
+     house.update_user_rankings
    else
      false
    end

@@ -75,13 +75,14 @@ class ElectricBill < ApplicationRecord
       num_days = self.end_date - self.start_date
       users.each do |u|
         u.total_electricitybill_days_logged += num_days
-        u.total_kwhs_logged += kwhs
+        u.total_kwhs_logged += (total_kwhs.fdiv(no_residents))
         u.total_pounds_logged += kwhs_to_carbon(kwhs)
         u.total_electricity_savings += elect_saved
         u.total_carbon_savings += kwhs_to_carbon(elect_saved)
         u.save
       end
       house.update_data
+      house.update_user_rankings
     else
       false
     end
