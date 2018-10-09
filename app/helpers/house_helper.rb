@@ -37,7 +37,7 @@ module HouseHelper
     # # CHANGE THIS LATER: House.all is too broad for beyond Denver, perhaps change to:
     # # # $=> House.joins(:address).joins(:neighborhood).where(:neighborhoods => {id: self.neighborhood.id})
     # # (For houses within neighborhood)
-    houses = House.all
+    houses = House.joins(:address).joins(:neighborhood).joins(:city).where(:cities => {id: self.city.id})
     max_elect = houses.order(avg_daily_electricity_consumed_per_user: :desc).first.avg_daily_electricity_consumed_per_user
     max_wat = houses.order(avg_daily_water_consumed_per_user: :desc).first.avg_daily_water_consumed_per_user
     max_gas = houses.order(avg_daily_gas_consumed_per_user: :desc).first.avg_daily_gas_consumed_per_user
@@ -390,5 +390,34 @@ module HouseHelper
     end
     def calculate_house_carbon_max
       users.sort_by{|u| u.avg_daily_carbon_consumption }.last.avg_daily_carbon_consumption
+    end
+
+    # User rankings / arrows
+
+    def update_user_rankings
+      eusers = users.sort_by{|u| u.avg_daily_electricity_consumption}
+      wusers = users.sort_by{|u| u.avg_daily_water_consumption}
+      gusers = users.sort_by{|u| u.avg_daily_gas_consumption}
+      cusers = users.sort_by{|u| u.avg_daily_carbon_consumption}
+      eusers.each_with_index do |u, i|
+        user_ranking = UserElectricityRanking.where(area_type: "House", area_id: id, user_id: u.id)[0]
+        arr = user_ranking.arrow || true
+        user_ranking.update(arrow: arr, rank: (i+1))
+      end
+      wusers.each_with_index do |u, i|
+        user_ranking = UserWaterRanking.where(area_type: "House", area_id: id, user_id: u.id)[0]
+        arr = user_ranking.arrow || true
+        user_ranking.update(arrow: arr, rank: (i+1))
+      end
+      gusers.each_with_index do |u, i|
+        user_ranking = UserGasRanking.where(area_type: "House", area_id: id, user_id: u.id)[0]
+        arr = user_ranking.arrow || true
+        user_ranking.update(arrow: arr, rank: (i+1))
+      end
+      cusers.each_with_index do |u, i|
+        user_ranking = UserCarbonRanking.where(area_type: "House", area_id: id, user_id: u.id)[0]
+        arr = user_ranking.arrow || true
+        user_ranking.update(arrow: arr, rank: (i+1))
+      end
     end
 end

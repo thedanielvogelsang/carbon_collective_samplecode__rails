@@ -4,7 +4,7 @@ class UserGasSerializer < ActiveModel::Serializer
                   :privacy_policy, :house, :house_max,
                   :rank, :arrow, :last_updated,
                   :personal_usage_to_date, :personal_savings_to_date,
-                  :avg_daily_footprint, :avg_monthly_footprint,
+                  :avg_daily_footprint, :avg_monthly_footprint, :personal,
                   :household, :neighborhood, :city, :county, :region, :country,
                   :metric_sym, :num_bills, :out_of, :move_in_date, :invite_max, :slug
 
@@ -15,12 +15,27 @@ class UserGasSerializer < ActiveModel::Serializer
     object.avg_daily_carbon_consumption.round(2).to_s + " lbs" if object.avg_daily_carbon_consumption
   end
 
-    def house
-      object.household
+  def house
+    object.household
+  end
+  def house_max
+    object.household.house_max("gas") if object.household
+  end
+
+  def personal
+    h = object.household
+    if h
+    avg_monthly = (object.avg_daily_gas_consumption * 29.53).round(2)
+    household_avg = (h.avg_daily_gas_consumed_per_user * 29.53).round(2) if h.avg_daily_water_consumed_per_user
+    household_max = (h.calculate_house_heat_max * 29.53).round(2)
+    user_house_rank = object.user_gas_rankings.where(area_type: "House").first.rank
+    user_house_arrow = object.user_gas_rankings.where(area_type: "House").first.arrow
+    arr = [object.id, "Me", avg_monthly,
+      household_avg, household_max,
+      user_house_rank, h.users.count, user_house_arrow]
     end
-    def house_max
-      object.household.house_max("gas") if object.household
-    end
+    arr
+  end
   ## regional arrays for dash, order: [id, name, regional-avg, parent_avg, parent_max, regional-rank, out_of]
   def household
     h = object.household

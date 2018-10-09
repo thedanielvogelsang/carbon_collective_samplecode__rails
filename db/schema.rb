@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181003235359) do
+ActiveRecord::Schema.define(version: 20181004144649) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -252,6 +252,8 @@ ActiveRecord::Schema.define(version: 20181003235359) do
     t.float "electricity_saved"
     t.integer "no_residents"
     t.bigint "user_id"
+    t.decimal "average_daily_usage"
+    t.boolean "force", default: false
     t.index ["electricity_saved"], name: "index_electric_bills_on_electricity_saved"
     t.index ["house_id"], name: "index_electric_bills_on_house_id"
     t.index ["user_id"], name: "index_electric_bills_on_user_id"
@@ -329,6 +331,8 @@ ActiveRecord::Schema.define(version: 20181003235359) do
     t.datetime "updated_at", null: false
     t.integer "no_residents"
     t.bigint "user_id"
+    t.decimal "average_daily_usage"
+    t.boolean "force", default: false
     t.index ["gas_saved"], name: "index_heat_bills_on_gas_saved"
     t.index ["house_id"], name: "index_heat_bills_on_house_id"
     t.index ["user_id"], name: "index_heat_bills_on_user_id"
@@ -737,6 +741,8 @@ ActiveRecord::Schema.define(version: 20181003235359) do
     t.datetime "updated_at", null: false
     t.integer "no_residents"
     t.bigint "user_id"
+    t.decimal "average_daily_usage"
+    t.boolean "force", default: false
     t.index ["house_id"], name: "index_water_bills_on_house_id"
     t.index ["user_id"], name: "index_water_bills_on_user_id"
     t.index ["water_saved"], name: "index_water_bills_on_water_saved"

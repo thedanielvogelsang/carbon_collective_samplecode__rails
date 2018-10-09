@@ -1,58 +1,87 @@
 class WaterBill < ApplicationRecord
+  include MathHelper
+
   belongs_to :house
   belongs_to :who, class_name: 'User', foreign_key: :user_id
 
   validates_presence_of :start_date,
                         :end_date,
                         :total_gallons,
-                        :no_residents
+                        :no_residents,
+                        :user_id,
+                        :house_id
 
-  validate :confirm_no_overlaps, :confirm_valid_dates, :check_move_in_date
+  validate :check_data_validity, :confirm_no_overlaps, :confirm_valid_dates, :check_move_in_date
 
   after_validation :water_saved?,
-                   :update_users_savings
+                   :add_to_users_totals,
+                   :update_no_residents_on_house
 
   after_create :log_user_activity
 
   def water_saved?
-    self.house.address.city.region.has_water_average? ? region_comparison : country_comparison
+    if self.house
+      self.house.address.city.region.has_water_average? ? region_comparison : country_comparison
+    else
+      false
+    end
+  end
+
+  def update_no_residents_on_house
+    if house_id && no_residents
+      House.find(house_id).update(no_residents: self.no_residents)
+    end
   end
 
   def region_comparison
     region_per_cap_daily_average = self.house.address.city.region.avg_daily_water_consumed_per_capita
-    num_days = self.end_date - self.start_date
-    bill_daily_average = self.total_gallons.fdiv(num_days)
-    avg_daily_use_per_resident = bill_daily_average.fdiv(self.house.no_residents)
-    region_per_cap_daily_average > avg_daily_use_per_resident ? res = true : res = false
-    res ? self.water_saved = ((region_per_cap_daily_average - avg_daily_use_per_resident) * num_days) : self.water_saved = 0
+    if region_per_cap_daily_average
+      num_days = self.end_date - self.start_date
+      bill_daily_average = self.total_gallons.fdiv(num_days)
+      avg_daily_use_per_resident = bill_daily_average.fdiv(self.house.no_residents)
+      region_per_cap_daily_average > avg_daily_use_per_resident ? res = true : res = false
+      res ? self.water_saved = ((region_per_cap_daily_average - avg_daily_use_per_resident) * num_days) : self.water_saved = 0
+    else
+      res = false
+      self.water_saved = 0
+    end
     res
   end
 
   def country_comparison
     country_per_cap_daily_average = self.house.address.city.region.country.avg_daily_water_consumed_per_capita
-    num_days = self.end_date - self.start_date
-    bill_daily_average = self.total_gallons.fdiv(num_days)
-    avg_daily_use_per_resident = bill_daily_average.fdiv(self.house.no_residents)
-    country_per_cap_daily_average > avg_daily_use_per_resident ? res = true : res = false
-    res ? self.water_saved = ((country_per_cap_daily_average - avg_daily_use_per_resident) * num_days) : self.water_saved = 0
+    if country_per_cap_daily_average
+      num_days = self.end_date - self.start_date
+      bill_daily_average = self.total_gallons.fdiv(num_days)
+      avg_daily_use_per_resident = bill_daily_average.fdiv(self.house.no_residents)
+      country_per_cap_daily_average > avg_daily_use_per_resident ? res = true : res = false
+      res ? self.water_saved = ((country_per_cap_daily_average - avg_daily_use_per_resident) * num_days) : self.water_saved = 0
+    else
+      res = false
+      self.water_saved = 0
+    end
     res
   end
 
-  def update_users_savings
-    num_res = self.no_residents
-    num_days = self.end_date - self.start_date
-    gals = self.total_gallons.fdiv(num_res)
-    water_saved = self.water_saved.fdiv(num_res)
-    users = UserHouse.joins(:house).where(house_id: house_id).select{|uh| uh.move_in_date.to_datetime <= self.start_date}
-    house = House.find(house_id)
-    users = users.map{|uh| User.find(uh.user_id)}
-    users.each do |u|
-      u.total_waterbill_days_logged += num_days
-      u.total_gallons_logged += gals
-      u.total_water_savings += water_saved
-      u.save
+  def add_to_users_totals
+    if user_id && house_id && start_date && end_date
+      gals = self.total_gallons.fdiv(no_residents)
+      users = UserHouse.joins(:house).where(house_id: house_id).select{|uh| uh.move_in_date.to_datetime <= self.start_date}
+      house = House.find(house_id)
+      users = users.map{|uh| User.find(uh.user_id)}
+      water_saved = self.water_saved.fdiv(self.no_residents)
+      num_days = self.end_date - self.start_date
+      users.each do |u|
+        u.total_waterbill_days_logged += num_days
+        u.total_gallons_logged += (total_gallons.fdiv(no_residents))
+        u.total_water_savings += water_saved
+        u.save
+      end
+      house.update_data
+      house.update_user_rankings
+    else
+      false
     end
-    house.update_data
   end
 
   def confirm_no_overlaps
@@ -66,8 +95,24 @@ class WaterBill < ApplicationRecord
     overlaps.empty? ? true : errors.add(:start_date, "start or end date overlaps with another bill")
   end
 
-  def check_overlap(a_st, a_end, b_st, b_end)
-    (a_st <= b_end) && (a_end >= b_st)
+  def check_overlap(a_st=0, a_end=0, b_st, b_end)
+    (a_st < b_end) && (a_end > b_st)
+  end
+
+  def check_data_validity
+    if no_residents && end_date && start_date && total_gallons
+      num_days = self.end_date - self.start_date
+      gals = self.total_gallons.fdiv(num_days).fdiv(no_residents)
+    end
+    self.average_daily_usage = gals || 0
+    usages = WaterBill.pluck(:average_daily_usage).sort
+      unless usages.count < 10
+        q1_q3 = find_q1_q3(usages)
+        min = 0
+        iqr = q1_q3[1] - q1_q3[0]
+      end
+      usages.count < 10 ? max = 150 : max = 1.5*iqr + q1_q3[1]
+    return average_daily_usage > 0 && average_daily_usage <= max ? true : force ? true : errors.add(:total_kwhs, "resource usage is much higher than average, are you sure you want to proceed?")
   end
 
   def log_user_activity
@@ -75,12 +120,18 @@ class WaterBill < ApplicationRecord
   end
 
   def check_move_in_date
-    uH_movein = UserHouse.where(user_id: user_id, house_id: house_id)[0].move_in_date.to_datetime
+    uh = UserHouse.where(user_id: user_id, house_id: house_id)[0]
+    uh ? uH_movein = uh.move_in_date.to_datetime : uH_movein = 0
     start_date >= uH_movein ? true : errors.add(:start_date, "user moved in after bill cycle")
   end
 
   def confirm_valid_dates
-    end_date <= DateTime.now ? true : errors.add(:end_date, "cannot claim future use on past bills")
+    if end_date && start_date
+      end_date > start_date ? true : errors.add(:end_date, "must come after start_date of bill")
+      end_date <= DateTime.now ? true : errors.add(:end_date, "cannot claim future use on past bills")
+    else
+      false
+    end
   end
 
   def self.updated?(bill, updates)

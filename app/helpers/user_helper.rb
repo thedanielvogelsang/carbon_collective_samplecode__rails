@@ -2,6 +2,11 @@ module UserHelper
 
     INVITE_MAX = 3
 
+    def move_in_date
+      uh = UserHouse.where(house_id: self.household.id, user_id: self.id)[0]
+      UserHouse.exists?(uh.id) ? uh.move_in_date : nil
+    end
+
     def immediate_parent
       if self.parent
         UserGeneration.where(child_id: self.id).order(id: :asc).first.parent

@@ -4,7 +4,7 @@ class UserCarbonSerializer < ActiveModel::Serializer
                   :personal_savings_to_date, :personal_usage_to_date,
                   :arrow, :rank, :last_updated, :avg_daily_footprint, :avg_monthly_footprint,
                   :household, :neighborhood, :city, :county, :region, :country,
-                  :avg_daily_consumption, :avg_monthly_consumption,
+                  :avg_daily_consumption, :avg_monthly_consumption, :personal,
                   :metric_sym, :out_of, :house, :house_max, :move_in_date, :invite_max, :slug
 
   def house
@@ -34,6 +34,21 @@ class UserCarbonSerializer < ActiveModel::Serializer
 
   def total_daily_footprint
     object.total_pounds_logged.round(2).to_s
+  end
+
+  def personal
+    h = object.household
+    if h
+    avg_monthly = (object.avg_daily_carbon_consumption * 29.53).round(2)
+    household_avg = (h.avg_daily_carbon_consumed_per_user * 29.53).round(2)
+    household_max = (h.calculate_house_carbon_max * 29.53).round(2)
+    user_house_rank = object.user_carbon_rankings.where(area_type: "House").first.rank
+    user_house_arrow = object.user_carbon_rankings.where(area_type: "House").first.arrow
+    arr = [object.id, "Me", avg_monthly,
+      household_avg, household_max,
+      user_house_rank, h.users.count, user_house_arrow]
+    end
+    arr
   end
 
   def household

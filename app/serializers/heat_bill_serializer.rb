@@ -33,10 +33,10 @@ class HeatBillSerializer < ActiveModel::Serializer
     object.who.first
   end
   def average_use
-    (object.total_therms / object.no_residents).to_s
+    object.average_daily_usage.to_f.round(2)
   end
   def average_daily
     num_days = object.end_date - object.start_date
-    '%.2f' % object.total_therms.fdiv(num_days).to_f.round(2)
+    '%.2f' % object.total_therms.fdiv(num_days).fdiv(object.no_residents).to_f.round(2)
   end
 end
