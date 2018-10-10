@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181010150659) do
+ActiveRecord::Schema.define(version: 20181010201912) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -305,6 +305,13 @@ ActiveRecord::Schema.define(version: 20181010150659) do
   create_table "generations", id: false, force: :cascade do |t|
     t.integer "parent_id"
     t.integer "child_id"
+  end
+
+  create_table "global_snapshots", force: :cascade do |t|
+    t.decimal "avg_user_electricity_consumption"
+    t.decimal "avg_user_water_consumption"
+    t.decimal "avg_user_gas_consumption"
+    t.decimal "avg_user_carbon_consumption"
   end
 
   create_table "globals", force: :cascade do |t|
