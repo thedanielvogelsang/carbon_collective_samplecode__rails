@@ -27,17 +27,27 @@ module CountryHelper
         update_all_rankings
 
       ## FINDING PARENT MAX (THIRD)##
-        countries = Country.joins(:users).distinct
+        countries = Country.all
         max_elect = countries.order(avg_daily_electricity_consumed_per_user: :desc).first.avg_daily_electricity_consumed_per_user
         max_wat = countries.order(avg_daily_water_consumed_per_user: :desc).first.avg_daily_water_consumed_per_user
         max_gas = countries.order(avg_daily_gas_consumed_per_user: :desc).first.avg_daily_gas_consumed_per_user
         max_carb = countries.order(avg_daily_carbon_consumed_per_user: :desc).first.avg_daily_carbon_consumed_per_user
-        # (these maxes are from parent region)
-        self.max_daily_electricity_consumption = max_elect
-        self.max_daily_water_consumption = max_wat
-        self.max_daily_gas_consumption = max_gas
-        self.max_daily_carbon_consumption = max_carb
+        # (these maxes are from all countries)
+        self.max_regional_avg_electricity_consumption = max_elect
+        self.max_regional_avg_water_consumption = max_wat
+        self.max_regional_avg_gas_consumption = max_gas
+        self.max_regional_avg_carbon_consumption = max_carb
 
+      ## FINDING COUNTRY MAX (FOURTH)##
+        max_elect = self.users.sort_by{|u| u.avg_daily_electricity_consumption}.last.avg_daily_electricity_consumption
+        max_water = self.users.sort_by{|u| u.avg_daily_water_consumption}.last.avg_daily_water_consumption
+        max_gas = self.users.sort_by{|u| u.avg_daily_gas_consumption}.last.avg_daily_gas_consumption
+        max_carb = self.users.sort_by{|u| u.avg_daily_electricity_consumption}.last.avg_daily_carbon_consumption
+
+        self.max_daily_user_electricity_consumption = max_elect
+        self.max_daily_user_water_consumption = max_water
+        self.max_daily_user_gas_consumption = max_gas
+        self.max_daily_user_carbon_consumption = max_carb
       ## SAVING REGIONAL RECORD (LAST)##
         self.save
     end
