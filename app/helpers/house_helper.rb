@@ -43,10 +43,10 @@ module HouseHelper
     max_gas = houses.order(avg_daily_gas_consumed_per_user: :desc).first.avg_daily_gas_consumed_per_user
     max_carb = houses.order(avg_daily_carbon_consumed_per_user: :desc).first.avg_daily_carbon_consumed_per_user
 
-    self.max_daily_electricity_consumption = max_elect
-    self.max_daily_water_consumption = max_wat
-    self.max_daily_gas_consumption = max_gas
-    self.max_daily_carbon_consumption = max_carb
+    self.max_regional_avg_electricity_consumption = max_elect
+    self.max_regional_avg_water_consumption = max_wat
+    self.max_regional_avg_gas_consumption = max_gas
+    self.max_regional_avg_carbon_consumption = max_carb
     self.save
   end
 

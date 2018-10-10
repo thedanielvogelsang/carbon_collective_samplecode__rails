@@ -24,4 +24,23 @@ module GlobalHelper
     tcs = User.all.map{|u| u.total_carbon_savings}.reduce(0){|s,n| s+n}
     self.total_carbon_saved = tcs
   end
+
+  def update_avg_electricity_consumption
+    tes = User.all.map{|u| u.total_electricity_savings}.reduce(0){|s,n| s+n}
+    self.avg_user_electricity_consumption = tes
+  end
+
+  def update_avg_water_consumption
+    tws = User.all.map{|u| u.total_water_savings}.reduce(0){|s,n| s+n}
+    self.avg_user_water_consumption = tws
+  end
+
+  def update_avg_heat_consumption
+    tcs = User.all.map{|u| u.avg_}.reduce(0){|s,n| s+n}
+    self.avg_user_heat_consumption = tcs
+  end
+  def update_avg_carbon_consumption
+    tcs = User.all.map{|u| u.total_carbon_savings}.reduce(0){|s,n| s+n}
+    self.avg_user_carbon_consumption = tcs
+  end
 end
