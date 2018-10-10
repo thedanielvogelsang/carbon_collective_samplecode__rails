@@ -7,6 +7,9 @@ desc "These rake tasks perform background work for our application
       # <electric, water, or gas > bill
       # has been created successfully in /api/v1/users/ folder
   task :update_data => :environment do
+    puts "Updating global stats"
+    Global.first.update_data
+
     puts 'Updating country data'
     Country.all.each{|c| c.update_data }
 
@@ -40,6 +43,7 @@ desc "These rake tasks perform background work for our application
 
   task :update_snapshots => :environment do
     puts "Updating snapshots...."
+      GlobalSnapshot.take_snapshot(Global.first)
       Country.joins(:users).distinct.each{|c| CountrySnapshot.take_snapshot(c) }
       Region.joins(:users).distinct.each{|r| RegionSnapshot.take_snapshot(r) }
       County.joins(:users).distinct.each{|c| CountySnapshot.take_snapshot(c) }

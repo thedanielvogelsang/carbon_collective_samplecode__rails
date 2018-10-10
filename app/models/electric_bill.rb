@@ -21,6 +21,8 @@ class ElectricBill < ApplicationRecord
 
     after_create :log_user_activity
 
+    before_destroy :subtract_from_users_totals
+
 
   #checks if region_comparisons can be made or not; returns boolean either way
   def electricity_saved?
@@ -86,6 +88,26 @@ class ElectricBill < ApplicationRecord
     else
       false
     end
+  end
+
+  # before_destroy action which removes bill from users record -- if and only if they're still in the house
+  def add_to_users_totals
+      kwhs = self.average_daily_usage
+      users = UserHouse.joins(:house).where(house_id: house_id).select{|uh| uh.move_in_date.to_datetime <= self.start_date}
+      house = House.find(house_id)
+      users = users.map{|uh| User.find(uh.user_id)}
+      elect_saved = self.electricity_saved.fdiv(no_residents)
+      num_days = self.end_date - self.start_date
+      users.each do |u|
+        u.total_electricitybill_days_logged -= num_days
+        u.total_kwhs_logged -= (total_kwhs.fdiv(no_residents))
+        u.total_pounds_logged -= kwhs_to_carbon(kwhs)
+        u.total_electricity_savings -= elect_saved
+        u.total_carbon_savings -= kwhs_to_carbon(elect_saved)
+        u.save
+      end
+      house.update_data
+      house.update_user_rankings
   end
 
   def confirm_no_overlaps

@@ -9,8 +9,6 @@ module GlobalHelper
     update_avg_water_consumption
     update_avg_heat_consumption
     update_avg_carbon_consumption
-
-    update_snapshots
     self.save
   end
 

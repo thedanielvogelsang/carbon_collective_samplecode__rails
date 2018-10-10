@@ -18,6 +18,7 @@ class WaterBill < ApplicationRecord
                    :update_no_residents_on_house
 
   after_create :log_user_activity
+  before_destroy :subtract_from_users_totals
 
   def water_saved?
     if self.house
@@ -82,6 +83,23 @@ class WaterBill < ApplicationRecord
     else
       false
     end
+  end
+
+  def subtract_from_users_totals
+    gals = self.total_gallons.fdiv(no_residents)
+    users = UserHouse.joins(:house).where(house_id: house_id).select{|uh| uh.move_in_date.to_datetime <= self.start_date}
+    house = House.find(house_id)
+    users = users.map{|uh| User.find(uh.user_id)}
+    water_saved = self.water_saved.fdiv(self.no_residents)
+    num_days = self.end_date - self.start_date
+    users.each do |u|
+      u.total_waterbill_days_logged -= num_days
+      u.total_gallons_logged -= (total_gallons.fdiv(no_residents))
+      u.total_water_savings -= water_saved
+      u.save
+    end
+    house.update_data
+    house.update_user_rankings
   end
 
   def confirm_no_overlaps
