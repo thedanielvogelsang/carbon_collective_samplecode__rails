@@ -41,7 +41,6 @@ class ElectricBill < ApplicationRecord
 
   # primary regional avg comparison
   def region_comparison
-    byebug
     region_per_cap_daily_average = self.house.address.city.region.avg_daily_electricity_consumed_per_capita
     num_days = self.end_date - self.start_date
     bill_daily_average = self.total_kwhs.fdiv(num_days)
