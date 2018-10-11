@@ -30,8 +30,12 @@ class UserGasSerializer < ActiveModel::Serializer
     # household_max = (h.calculate_house_heat_max * 29.53).round(2)
     user_max = (object.country.max_daily_user_gas_consumption * 29.53).round(2)
     user_avg = (object.country.avg_daily_gas_consumed_per_user * 29.53).round(2)
-    user_house_rank = object.user_gas_rankings.where(area_type: "House").first.rank
-    user_house_arrow = object.user_gas_rankings.where(area_type: "House").first.arrow
+    # user_house_rank = object.user_gas_rankings.where(area_type: "House").first.rank
+    # user_house_arrow = object.user_gas_rankings.where(area_type: "House").first.arrow
+    #
+    user_house_rank = object.user_gas_rankings.where(area_type: "City").first.rank
+    user_house_arrow = object.user_gas_rankings.where(area_type: "City").first.arrow
+
     arr = [object.id, "Me", avg_monthly,
       user_avg, user_max,
       user_house_rank, h.users.count, user_house_arrow]

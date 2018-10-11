@@ -394,28 +394,33 @@ module HouseHelper
 
     # User rankings / arrows
 
+    # This method updates all User<Resource>Rankings as specified in method.
+    # Currently: ranking and updating by `City`
+    # Serializers will then use these UserRankings to use on dashboard page arrow (Me)
     def update_user_rankings
       eusers = users.sort_by{|u| u.avg_daily_electricity_consumption}
       wusers = users.sort_by{|u| u.avg_daily_water_consumption}
       gusers = users.sort_by{|u| u.avg_daily_gas_consumption}
       cusers = users.sort_by{|u| u.avg_daily_carbon_consumption}
+      # Change "City" back to House and use house_helper `id` method to call house id
+      city = address.city.id
       eusers.each_with_index do |u, i|
-        user_ranking = UserElectricityRanking.where(area_type: "House", area_id: id, user_id: u.id)[0]
+        user_ranking = UserElectricityRanking.where(area_type: "City", area_id: city, user_id: u.id)[0]
         arr = user_ranking.arrow || true
         user_ranking.update(arrow: arr, rank: (i+1))
       end
       wusers.each_with_index do |u, i|
-        user_ranking = UserWaterRanking.where(area_type: "House", area_id: id, user_id: u.id)[0]
+        user_ranking = UserWaterRanking.where(area_type: "City", area_id: city, user_id: u.id)[0]
         arr = user_ranking.arrow || true
         user_ranking.update(arrow: arr, rank: (i+1))
       end
       gusers.each_with_index do |u, i|
-        user_ranking = UserGasRanking.where(area_type: "House", area_id: id, user_id: u.id)[0]
+        user_ranking = UserGasRanking.where(area_type: "City", area_id: city, user_id: u.id)[0]
         arr = user_ranking.arrow || true
         user_ranking.update(arrow: arr, rank: (i+1))
       end
       cusers.each_with_index do |u, i|
-        user_ranking = UserCarbonRanking.where(area_type: "House", area_id: id, user_id: u.id)[0]
+        user_ranking = UserCarbonRanking.where(area_type: "City", area_id: city, user_id: u.id)[0]
         arr = user_ranking.arrow || true
         user_ranking.update(arrow: arr, rank: (i+1))
       end
