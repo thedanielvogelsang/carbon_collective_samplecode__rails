@@ -31,11 +31,14 @@ class UserElectricitySerializer < ActiveModel::Serializer
     user_avg = (object.country.avg_daily_electricity_consumed_per_user * 29.53).round(2)
     user_max = (object.country.max_daily_user_electricity_consumption * 29.53).round(2)
     # household_max = (h.calculate_house_electricity_max * 29.53).round(2)
-    user_house_rank = object.user_electricity_rankings.where(area_type: "House").first.rank
-    user_house_arrow = object.user_electricity_rankings.where(area_type: "House").first.arrow
+    # user_house_rank = object.user_electricity_rankings.where(area_type: "House").first.rank
+    # user_house_arrow = object.user_electricity_rankings.where(area_type: "House").first.arrow
+
+    user_house_rank = object.user_electricity_rankings.where(area_type: "City").first.rank
+    user_house_arrow = object.user_electricity_rankings.where(area_type: "City").first.arrow
     arr = [object.id, "Me", avg_monthly,
       user_avg, user_max,
-      user_house_rank, h.users.count, user_house_arrow]
+      user_house_rank, User.joins(:user_electricity_rankings).distinct.count, user_house_arrow]
     end
     arr
   end
