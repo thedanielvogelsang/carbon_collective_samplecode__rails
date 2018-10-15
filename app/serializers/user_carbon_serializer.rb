@@ -52,7 +52,7 @@ class UserCarbonSerializer < ActiveModel::Serializer
     user_house_arrow = object.user_carbon_rankings.where(area_type: "City").first.arrow
     arr = [object.id, "Me", avg_monthly,
       user_avg, user_max,
-      user_house_rank, User.joins(:user_carbon_rankings).distinct.count, user_house_arrow]
+      user_house_rank, User.joins(:user_carbon_rankings).distinct.reject{|u| u.avg_daily_carbon_consumption.zero?}, user_house_arrow]
     end
     arr
   end
