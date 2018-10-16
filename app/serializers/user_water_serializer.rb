@@ -39,7 +39,7 @@ class UserWaterSerializer < ActiveModel::Serializer
 
     arr = [object.id, "Me", avg_monthly,
       user_avg, user_max,
-      user_house_rank, User.joins(:user_water_rankings).distinct.count, user_house_arrow]
+      user_house_rank, User.joins(:user_water_rankings).distinct.reject{|u| u.avg_daily_water_consumption.zero?}, user_house_arrow]
     end
     arr
   end

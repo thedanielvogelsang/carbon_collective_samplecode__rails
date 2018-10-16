@@ -12,14 +12,12 @@ class ElectricBill < ApplicationRecord
                           :user_id,
                           :house_id
 
-    validate :check_data_validity, :confirm_no_overlaps, :confirm_valid_dates, :check_move_in_date
+    validate :detect_outlier, :confirm_no_overlaps, :confirm_valid_dates, :check_move_in_date
 
     after_validation :electricity_saved?,
-                     :add_to_users_totals,
                      :update_no_residents_on_house
 
-
-    after_create :log_user_activity
+    after_create :log_user_activity, :add_to_users_totals
 
     before_destroy :subtract_from_users_totals
 
@@ -125,7 +123,7 @@ class ElectricBill < ApplicationRecord
     (a_st < b_end) && (a_end > b_st)
   end
 
-  def check_data_validity
+  def detect_outlier
     if no_residents && end_date && start_date && total_kwhs
       num_days = self.end_date - self.start_date
       kwhs = self.total_kwhs.fdiv(num_days).fdiv(no_residents)
@@ -153,7 +151,7 @@ class ElectricBill < ApplicationRecord
 
   def confirm_valid_dates
     if end_date && start_date
-      end_date > start_date ? true : errors.add(:end_date, "must come after start_date of bill")
+      end_date >= start_date ? true : errors.add(:end_date, "must come after start_date of bill")
       end_date <= DateTime.now ? true : errors.add(:end_date, "cannot claim future use on past bills")
     else
       false
