@@ -409,7 +409,7 @@ def bind_new_user(house)
                   password: 'banana',
                   first: Faker::Name.first_name,
                   last: Faker::Name.last_name,
-                  generation: 0,
+                  generation: 1,
                   )
   user.save
   UserHouse.create!(house_id: house.id, user_id: user.id, move_in_date: DateTime.now - (90 * rand(1..7)))
@@ -464,7 +464,7 @@ puts "all neighborhoods of Denver added"
       tadd = Address.create(address_line1: "1222 Nonesense Lane", address_line2: "#2",
                   neighborhood_id: dn2.id, city_id: city1.id, county_id: county.id,
                   zipcode_id: z.id)
-      # user = User.create(first: "OG", last: "GEN0", password: "password", generation: 0, email: 'dvog@gmail.com')
+      user = User.create(first: "OG", last: "GEN0", password: "password", generation: 0, email: 'dvog@gmail.com')
       house = House.create(total_sq_ft: rand(1000..3000), no_residents: 0, address_id: tadd.id)
       4.times do
         bind_new_user(house)
