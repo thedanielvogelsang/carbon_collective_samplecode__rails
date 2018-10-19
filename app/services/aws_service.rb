@@ -9,14 +9,14 @@ class AwsService
 
   def create_new_logfile
     body = []
-    UserLog.all.each do |ul|
+    UserLog.find_each do |ul|
       body.push("#{ul.id},#{ul.time},#{ul.user_id},#{ul.action},#{ul.page},#{ul.next_page},#{ul.detail},#{ul.description},#{ul.num},#{ul.msg}\n")
     end
     name = DateTime.now.strftime("%Y-%m-%d %H:%M:00s").to_s + "-userlogs"
     if UserLog.count != 0 && put_object(name, body)
       UserLog.destroy_all
     end
-  end   
+  end
 
   def put_object (name, body)
     @conn.put_object({

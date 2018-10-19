@@ -11,22 +11,22 @@ desc "These rake tasks perform background work for our application
     Global.first.update_data
 
     puts 'Updating country data'
-    Country.all.each{|c| c.update_data }
+    Country.find_each{|c| c.update_data }
 
     puts 'Updating region data'
-    Region.all.each{|r| r.update_data }
+    Region.find_each{|r| r.update_data }
 
     puts 'Updating county data'
-    County.all.each{|c| c.update_data }
+    County.find_each{|c| c.update_data }
 
     puts 'Updating city data'
-    City.all.each{|c| c.update_data }
+    City.find_each{|c| c.update_data }
 
     puts 'Updating neighborhood data'
-    Neighborhood.all.each{|n| n.update_data }
+    Neighborhood.find_each{|n| n.update_data }
 
     puts 'Updating household data'
-    House.all.each{|h| h.update_data}
+    House.find_each{|h| h.update_data}
 
     puts '...done'
   end
