@@ -38,7 +38,7 @@ class UserElectricitySerializer < ActiveModel::Serializer
     user_house_arrow = object.user_electricity_rankings.where(area_type: "City").first.arrow
     arr = [object.id, "Me", avg_monthly,
       user_avg, user_max,
-      user_house_rank, User.joins(:user_electricity_rankings).distinct.reject{|u| u.avg_daily_electricity_consumption.zero?}, user_house_arrow]
+      user_house_rank, User.joins(:user_electricity_rankings).distinct.reject{|u| u.avg_daily_electricity_consumption.zero?}.count, user_house_arrow]
     end
     arr
   end
