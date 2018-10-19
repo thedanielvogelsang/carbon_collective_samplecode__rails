@@ -237,10 +237,6 @@ usa.avg_daily_gas_consumed_per_capita = 8.46
 usa.avg_daily_gas_consumed_per_user = 8.46
 usa.save
 
-Country.all.each{|c|
-  c.update_data
-}
-
 puts "You have #{Country.count} countries in the database prepped and ready"
 
 # All states have electric, water, and gas averages
@@ -400,9 +396,6 @@ CANADA_REGIONS.each do |r|
 end
 puts "#{Region.count} Provinces created in Regions table"
 
-Region.all.each{ |r|
-   r.update_data
- }
 
 def bind_new_user(house)
   user = User.new(email: Faker::Internet.email,
@@ -987,37 +980,37 @@ sadd = Address.create!(address_line1: "CC",
 GLOBE.update_data
 
 country.update_data
-Country.all.each{|c|
+Country.find_each{|c|
   c.set_snapshots
 }
 
 state.update_data
-Region.all.each{|r|
+Region.find_each{|r|
   r.set_snapshots
 }
 
-User.all.each{|u|
+User.find_each{|u|
    u.email_activate
    u.privacy_policy = true
    u.save
  }
 
-County.all.each do |c|
+County.find_each do |c|
   c.update_data
   c.set_snapshots
 end
 
-City.all.each do |c|
+City.find_each do |c|
   c.update_data
   c.set_snapshots
 end
 
-Neighborhood.all.each do |n|
+Neighborhood.find_each do |n|
   n.update_data
   n.set_snapshots
 end
 
-House.all.each do |h|
+House.find_each do |h|
   h.update_data
   h.set_snapshots
 end
