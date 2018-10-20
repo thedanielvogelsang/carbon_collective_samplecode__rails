@@ -42,8 +42,7 @@ module CountryHelper
         max_elect = self.users.sort_by{|u| u.avg_daily_electricity_consumption}.last.avg_daily_electricity_consumption
         max_water = self.users.sort_by{|u| u.avg_daily_water_consumption}.last.avg_daily_water_consumption
         max_gas = self.users.sort_by{|u| u.avg_daily_gas_consumption}.last.avg_daily_gas_consumption
-        max_carb = self.users.sort_by{|u| u.avg_daily_electricity_consumption}.last.avg_daily_carbon_consumption
-
+        max_carb = self.users.sort_by{|u| u.avg_daily_carbon_consumption}.last.avg_daily_carbon_consumption
         self.max_daily_user_electricity_consumption = max_elect
         self.max_daily_user_water_consumption = max_water
         self.max_daily_user_gas_consumption = max_gas

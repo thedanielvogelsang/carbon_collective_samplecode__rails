@@ -33,12 +33,13 @@ class UserGasSerializer < ActiveModel::Serializer
     # user_house_rank = object.user_gas_rankings.where(area_type: "House").first.rank
     # user_house_arrow = object.user_gas_rankings.where(area_type: "House").first.arrow
     #
-    user_house_rank = object.user_gas_rankings.where(area_type: "City").first.rank
+    user_rank = object.user_gas_rankings.where(area_type: "City").first.rank
     user_house_arrow = object.user_gas_rankings.where(area_type: "City").first.arrow
-
+    out_of = User.joins(:user_gas_rankings).distinct.reject{|u| u.avg_daily_gas_consumption.zero?}.count
+    better_than = out_of - user_rank
     arr = [object.id, "Me", avg_monthly,
       user_avg, user_max,
-      user_house_rank, User.joins(:user_gas_rankings).distinct.reject{|u| u.avg_daily_gas_consumption.zero?}.count, user_house_arrow]
+      user_rank, better_than, user_house_arrow]
     end
     arr
   end
@@ -51,9 +52,10 @@ class UserGasSerializer < ActiveModel::Serializer
       regional_avg = (h.address.neighborhood.city.avg_daily_gas_consumed_per_user * 29.53).round(2)
       user_max = (object.country.max_daily_user_gas_consumption * 29.53).round(2)
       # parent_max = (h.max_regional_avg_gas_consumption * 29.53).round(2)
+      better_than = ranking.out_of - ranking.rank
       arr = [h.id, "Household", avg_monthly,
         regional_avg, user_max,
-        ranking.rank, ranking.out_of, ranking.arrow]
+        ranking.rank, better_than, ranking.arrow]
     end
     arr
   end
@@ -65,9 +67,10 @@ class UserGasSerializer < ActiveModel::Serializer
       regional_avg = (n.city.avg_daily_gas_consumed_per_user * 29.53).round(2)
       user_max = (object.country.max_daily_user_gas_consumption * 29.53).round(2)
       # parent_max = (n.max_regional_avg_gas_consumption * 29.53).round(2)
+      better_than = ranking.out_of - ranking.rank
       arr = [n.id, n.name, avg_monthly,
         regional_avg, user_max,
-        ranking.rank, ranking.out_of, ranking.arrow]
+        ranking.rank, better_than, ranking.arrow]
     end
     arr
   end
@@ -79,9 +82,10 @@ class UserGasSerializer < ActiveModel::Serializer
       regional_avg = (c.region.avg_daily_gas_consumed_per_user * 29.53).round(2)
       user_max = (object.country.max_daily_user_gas_consumption * 29.53).round(2)
       # parent_max = (c.max_regional_avg_gas_consumption * 29.53).round(2)
+      better_than = ranking.out_of - ranking.rank
       arr = [c.id, c.name, avg_monthly,
         regional_avg, user_max,
-        ranking.rank, ranking.out_of, ranking.arrow]
+        ranking.rank, better_than, ranking.arrow]
     end
     arr
   end
@@ -93,9 +97,10 @@ class UserGasSerializer < ActiveModel::Serializer
       regional_avg = (c.region.avg_daily_gas_consumed_per_user * 29.53).round(2)
       user_max = (object.country.max_daily_user_gas_consumption * 29.53).round(2)
       # parent_max = (c.max_regional_avg_gas_consumption * 29.53).round(2)
+      better_than = ranking.out_of - ranking.rank
       arr = [c.id, c.name, avg_monthly,
         regional_avg, user_max,
-        ranking.rank, ranking.out_of, ranking.arrow]
+        ranking.rank, better_than, ranking.arrow]
     end
     arr
   end
@@ -107,9 +112,10 @@ class UserGasSerializer < ActiveModel::Serializer
       regional_avg = (r.country.avg_daily_gas_consumed_per_user * 29.53).round(2)
       user_max = (object.country.max_daily_user_gas_consumption * 29.53).round(2)
       # parent_max = (r.max_regional_avg_gas_consumption * 29.53).round(2)
+      better_than = ranking.out_of - ranking.rank
       arr = [r.id, r.name, avg_monthly,
         regional_avg, user_max,
-        ranking.rank, ranking.out_of, ranking.arrow]
+        ranking.rank, better_than, ranking.arrow]
     end
     arr
   end
@@ -122,10 +128,11 @@ class UserGasSerializer < ActiveModel::Serializer
       avg_monthly = (c.avg_daily_gas_consumed_per_user * 29.53).round(2)
       regional_avg = (country_avg_gas * 29.53).round(2)
       # user_max = (object.country.max_daily_user_gas_consumption * 29.53).round(2)
+      better_than = ranking.out_of - ranking.rank
       parent_max = (c.max_regional_avg_gas_consumption * 29.53).round(2)
       arr = [c.id, c.name, avg_monthly,
         regional_avg, parent_max,
-        ranking.rank, ranking.out_of, ranking.arrow]
+        ranking.rank, better_than, ranking.arrow]
     end
     arr
   end
