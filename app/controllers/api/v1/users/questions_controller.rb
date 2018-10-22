@@ -16,19 +16,6 @@ class Api::V1::Users::QuestionsController < ApplicationController
   end
 
   def update
-    if(!params[:user_question])
-      user = User.friendly.find(params[:user_id])
-      house = House.find(params[:house_id])
-      r = params[:resource]
-      uq = UserElectricityQuestion.where(user_id: user.id, house_id: house.id).first if r == 'electricity'
-      uq = UserWaterQuestion.where(user_id: user.id, house_id: house.id).first if r == 'water'
-      uq = UserGasQuestion.where(user_id: user.id, house_id: house.id).first if r == 'gas'
-      if uq.update_with_params(params[:question], params[:answer])
-        render json: uq, status: 201
-      else
-        render json: {error: "Something went wrong"}, status: 404
-      end
-    else
       user = User.friendly.find(params[:user_id])
       house = House.find(params[:house_id])
       r = params[:resource]
@@ -40,11 +27,10 @@ class Api::V1::Users::QuestionsController < ApplicationController
       else
         render json: {error: "Something went wrong"}, status: 404
       end
-    end
   end
 
   private
     def safe_params
-      params.require(:user_question).permit(:question, :answer, :completion_percentage)
+      params.require(:user_question).permit(:quest1, :quest2, :quest3, :quest4, :quest5, :quest_6)
     end
 end

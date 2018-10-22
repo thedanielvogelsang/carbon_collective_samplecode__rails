@@ -5,7 +5,7 @@ class UserGasQuestion < ApplicationRecord
   validates_uniqueness_of :user_id, scope: :house_id
   validates_uniqueness_of :house_id, scope: :user_id
 
-  before_save :update_completion
+  before_save :questionairre_complete
 
   def update_completion
     ct = 0;
@@ -20,8 +20,10 @@ class UserGasQuestion < ApplicationRecord
   end
 
   def questionairre_complete
-    self.completed = true
-    UserLogHelper.user_completes_questionairre(self.user_id, "heat")
+    if self.quest1
+      self.completed = true
+      UserLogHelper.user_completes_questionairre(self.user_id, "heat")
+    end
   end
 
   def update_with_params(q, a)

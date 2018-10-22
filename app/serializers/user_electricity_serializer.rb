@@ -6,7 +6,8 @@ class UserElectricitySerializer < ActiveModel::Serializer
                   :personal_savings_to_date, :personal_usage_to_date,
                   :avg_daily_footprint, :avg_monthly_footprint, :personal,
                   :household, :neighborhood, :city, :county, :region, :country,
-                  :metric_sym, :num_bills, :out_of, :move_in_date, :invite_max, :slug
+                  :metric_sym, :num_bills, :out_of, :move_in_date,
+                  :invite_max, :slug, :checklist_completed, :bill_entered
 
   def avg_daily_footprint
     object.avg_daily_carbon_consumption.round(2).to_s + " lbs" if object.avg_daily_carbon_consumption
@@ -298,4 +299,24 @@ end
   def move_in_date
     UserHouse.where(user_id: object.id, house_id: object.household.id).first.move_in_date
   end
+
+  def checklist_completed
+    object.user_electricity_questions.first.completed?
+  end
+
+  def all_checklist
+    e = object.user_electricity_questions.first.completed?
+    w = object.user_water_questions.first.completed?
+    g = object.user_gas_questions.first.completed?
+    e && w && g
+  end
+
+  def bill_entered
+    if object.household
+      return object.household.bills.count > 0 ? true : false
+    else
+      false
+    end
+  end
+
 end

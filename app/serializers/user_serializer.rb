@@ -10,6 +10,7 @@ class UserSerializer < ActiveModel::Serializer
                   # :avg_daily_footprint,
                   # :avg_monthly_footprint,
                   :household, :neighborhood, :city, :county, :region, :country,
+                  :checklists_left, :invites_left, :resources_entered
 
   def house
     object.household
@@ -72,5 +73,32 @@ class UserSerializer < ActiveModel::Serializer
 
   def avatar_url
     object.url
+  end
+
+  def checklists_left
+    ct = 0
+    if !object.user_electricity_questions.empty?
+      ct += 1 if !object.user_electricity_questions.first.completed?
+      ct += 1 if !object.user_water_questions.first.completed?
+      ct += 1 if !object.user_gas_questions.first.completed?
+    end
+    if ct === 0
+      return nil
+    else
+      return ct
+    end
+  end
+
+  def invites_left
+    num = object.invite_max - object.invites.count
+    if num === 0
+      return nil
+    else
+      return num
+    end
+  end
+
+  def resources_entered
+
   end
 end

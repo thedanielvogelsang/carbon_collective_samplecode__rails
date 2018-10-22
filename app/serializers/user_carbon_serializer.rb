@@ -6,7 +6,8 @@ class UserCarbonSerializer < ActiveModel::Serializer
                   :personal, :household, :neighborhood,
                   :city, :county, :region, :country,
                   :avg_daily_consumption, :avg_monthly_consumption,
-                  :metric_sym, :out_of, :house, :house_max, :move_in_date, :invite_max, :slug
+                  :metric_sym, :out_of, :house, :house_max, :move_in_date,
+                  :invite_max, :slug, :checklist_completed, :bill_entered
 
   def house
     object.household
@@ -286,4 +287,18 @@ class UserCarbonSerializer < ActiveModel::Serializer
     UserHouse.where(user_id: object.id, house_id: object.household.id).first.move_in_date if object.household
   end
 
+  def checklist_completed
+    true
+  end
+
+  def all_checklist
+    e = object.user_electricity_questions.first.completed?
+    w = object.user_water_questions.first.completed?
+    g = object.user_gas_questions.first.completed?
+    e && w && g
+  end
+
+  def bill_entered
+    true
+  end
 end
