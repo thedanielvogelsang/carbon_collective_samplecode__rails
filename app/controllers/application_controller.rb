@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   end
 
   def look_for_token
-    unless request.headers['X-CC-TOKEN'] == "carbon.collective_9457983011c92n373nd0mx9d"
+    unless request.headers['X-CC-TOKEN'] == "carbon.collective.production_9457983011c92n373nd0mx9d"
       not_found
     end
 
