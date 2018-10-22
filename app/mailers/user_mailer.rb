@@ -8,7 +8,7 @@ class UserMailer < ApplicationMailer
     @user = user
     @new = new_user
     @message = message
-    puts message == '' ? true : false)
+    puts(message == '')
     puts @message
     mail(:to => @new.email,
          :from => @user.email,
