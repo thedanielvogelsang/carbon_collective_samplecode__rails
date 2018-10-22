@@ -75,7 +75,7 @@
       </div>
       <br/>
       <div class="personal-msg">
-        <% if @message %>
+        <% if @message !== '' %>
           <h2 class="opener">A message from <%= @user.first %>: </h2>
           <h3><%= @message %></h3>
         <% end %>
