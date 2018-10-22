@@ -4,13 +4,15 @@
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
     <link href="https://fonts.googleapis.com/css?family=Libre+Franklin:100,100i,300,300i,400,400i,900,900i" rel="stylesheet">
     <style>
-    div.invite-body{background-color: "#F1F6DB";}
+    body{
+      background-color: "#B9DEE0";
+    }
     h1, h2, p{
       text-align: left;
     }
     h1{
       font-family: 'Merriweather', serif;
-      font-size: 56px;
+      font-size: 48px;
       color: #219a60;
     }
     h2{
@@ -23,8 +25,8 @@
       margin-left: 20px;
     }
     h2.opener{
-      font-size: 32px;
-      margin-left: 0px;
+      font-size: 28px;
+      margin-left: 20px;;
     }
     h3{
       margin-left: 20px;
@@ -62,11 +64,6 @@
   <body>
     <div class="invite-body">
       <h1> Hello! Your friend has invited you!</h1>
-      <div class="personal-msg">
-        <h2 class="opener">A message from <%= @user.first %>: </h2>
-        <h3><%= @message %></h3>
-      </div>
-
       <div class="native-msg">
         <h2>Your friend <%= @user.first %> <%= @user.last %> has invited you to join Carbon Collective! To begin your registration click the URL below.</h3>
         <br/>
@@ -77,6 +74,12 @@
         </div>
       </div>
       <br/>
+      <div class="personal-msg">
+        <% if @message %>
+          <h2 class="opener">A message from <%= @user.first %>: </h2>
+          <h3><%= @message %></h3>
+        <% end %>
+      </div>
       <h2>Sincerely</h2>
       <h2 class="signature">The Carbon Collective</h2>
     </div>
