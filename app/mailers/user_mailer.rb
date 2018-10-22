@@ -8,6 +8,8 @@ class UserMailer < ApplicationMailer
     @user = user
     @new = new_user
     @message = message
+    puts message == ''
+    puts message 
     mail(:to => @new.email,
          :from => @user.email,
          :subject => "Carbon Collective Invite from #{@user.first}"
