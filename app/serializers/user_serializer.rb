@@ -91,7 +91,7 @@ class UserSerializer < ActiveModel::Serializer
 
   def bills_left
     ct = 0
-    if !object.household
+    if object.household
       ct += 1 if object.household.bills.empty?
       ct += 1 if object.household.wbills.empty?
       ct += 1 if object.household.gbills.empty?
