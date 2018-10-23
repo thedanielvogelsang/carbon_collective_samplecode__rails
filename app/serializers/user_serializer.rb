@@ -10,7 +10,7 @@ class UserSerializer < ActiveModel::Serializer
                   # :avg_daily_footprint,
                   # :avg_monthly_footprint,
                   :household, :neighborhood, :city, :county, :region, :country,
-                  :checklists_left, :invites_left, :resources_entered
+                  :checklists_left, :invites_left, :bills_left, :resources_entered
 
   def house
     object.household
@@ -81,6 +81,20 @@ class UserSerializer < ActiveModel::Serializer
       ct += 1 if !object.user_electricity_questions.first.completed?
       ct += 1 if !object.user_water_questions.first.completed?
       ct += 1 if !object.user_gas_questions.first.completed?
+    end
+    if ct === 0
+      return nil
+    else
+      return ct
+    end
+  end
+
+  def bills_left
+    ct = 0
+    if !object.household
+      ct += 1 if object.household.bills.empty?
+      ct += 1 if object.household.wbills.empty?
+      ct += 1 if object.household.gbills.empty?
     end
     if ct === 0
       return nil
