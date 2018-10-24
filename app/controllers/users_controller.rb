@@ -89,10 +89,10 @@ class UsersController < ApplicationController
     user = User.friendly.find(params[:id])
     emails = params[:emails]
     msg = params[:message]
-    # write to invites text file here, use UserLogHelper in the MailerHelper
+    # write to invites text file here, use UserLogHelper in the MailerWorker
     UserLogHelper.user_invites_someone(user, emails.keys.length, msg)
-    MailerHelper.invite(user, emails, msg, user.generation)
-    respns = MailerHelper.sort_emails(emails)
+    MailerWorker.invite(user, emails, msg, user.generation)
+    respns = MailerWorker.sort_emails(emails)
     respns == 'success' ? status = 201 : status = 404
     render json: {message: respns}, status: status
   end
@@ -148,7 +148,7 @@ class UsersController < ApplicationController
   def reset_password_email
     user = User.find_by(email: params[:user][:email])
     if user
-      MailerHelper.reset_password(user)
+      MailerWorker.reset_password(user)
       render :json => {status: 202}
     else
       error = "Could not find an account with that email. Please try again."

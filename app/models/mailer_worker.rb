@@ -1,5 +1,4 @@
-class MailerHelper
-
+class MailerWorker
   def self.reset_password(user)
     user.password = "placeholder"
     user.confirm_token = SecureRandom.urlsafe_base64.to_s
