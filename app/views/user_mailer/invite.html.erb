@@ -57,12 +57,18 @@
       background-color: #105130;
       color: white;
     }
+    .logo {
+      height: 60px;
+      width: 60px;
+      background-image: url(<%= asset_path('CC_logo.svg') %>);
+    }
     .signature{color: #219a60; font-weight: bold}
     .native-msg{margin: 10px 0px 30px 0px;}
     </style>
   </head>
   <body>
     <div class="invite-body">
+      <div class="logo"></div>
       <h1> Hello! Your friend has invited you!</h1>
       <div class="native-msg">
         <h2>Your friend <%= @user.first %> <%= @user.last %> has invited you to join Carbon Collective! To begin your registration click the URL below.</h3>
