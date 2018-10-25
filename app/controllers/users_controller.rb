@@ -117,7 +117,7 @@ class UsersController < ApplicationController
 
   def user_invites
     user = User.friendly.find(params[:user_id])
-    invites = user.user_invites.sort_by{|u| u.email_confirmed ? 0 : 1 }
+    invites = user.invites.sort_by{|u| u.email_confirmed ? 0 : 1 }
     user_invites = {}
     if !invites.empty?
       invites.each_with_index do |invite, n|

@@ -12,6 +12,6 @@ class UserInvite < ApplicationRecord
   end
 
   def call_10_day_check
-    CheckInviteJob.set(wait: 10.days).perform_later(User.find(self.invite_id))
+    CheckInviteJob.set(wait: 10.days).perform_later(self.invited)
   end
 end
