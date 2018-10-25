@@ -1,4 +1,6 @@
 class UserMailer < ApplicationMailer
+  add_template_helper(MailerHelper)
+
   def registration(user)
     @user = user
     mail(:to => "#{user.first + ' ' + user.last} <#{user.email}>", :from => @user.email, :subject => "Registration Confirmation")
