@@ -30,7 +30,7 @@ class UserMailer < ApplicationMailer
     @invite = invite
     @user = invite.parent
     mail(:to => @user.email,
-         :from => "carboncollective.devops@gmail.com",
+         :from => "carbon.collective.invites@gmail.com",
          :subject => "Your Carbon Collective invite has completed their signup!"
        )
   end
@@ -39,7 +39,7 @@ class UserMailer < ApplicationMailer
     @invite = invite
     @user = invite.parent
     mail(:to => @user.email,
-         :from => "carboncollective.devops@gmail.com",
+         :from => "carbon.collective.invites@gmail.com",
          :subject => "Your Carbon Collective invite couldn't signup!"
        )
   end
