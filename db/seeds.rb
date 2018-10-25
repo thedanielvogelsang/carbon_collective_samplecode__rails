@@ -453,7 +453,7 @@ end
 puts "all neighborhoods of Denver added"
 # 5 addresses in Denver; Colorado AVG: 723kwhs/month
   # 3 in caphill -- 2 with zip1, 1 with zip2
-    user = User.create(first: "Genesis", last: "User", password: "password", generation: 0, email: 'carboncollective@gmail.com')
+    user = User.create(first: "Genesis", last: "User", password: "password", generation: 0, email: 'carbon.collective.invites@gmail.com')
     z = Zipcode.create(zipcode: zip1)
       tadd = Address.create(address_line1: "1222 Nonesense Lane", address_line2: "#2",
                   neighborhood_id: dn2.id, city_id: city1.id, county_id: county.id,
