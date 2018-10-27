@@ -62,6 +62,7 @@ class User < ApplicationRecord
                 :set_avg_login_time,
                 :create_filename
 
+  has_many :user_invites, :foreign_key => "invite_id", :dependent => :destroy
   after_create :write_file
 
   friendly_id :email, use: [:slugged, :history]
