@@ -10,6 +10,7 @@ module CarbonCollective
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.1
+    config.serve_static_assets = true
     config.active_job.queue_adapter = :sidekiq
     config.middleware.insert_before 0, Rack::Cors do
           allow do
