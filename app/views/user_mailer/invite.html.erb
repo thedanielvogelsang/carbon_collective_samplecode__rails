@@ -82,8 +82,9 @@
   <body>
     <div class="invite-body">
       <div class="logo">
-        <%= show_svg('CC_logo.svg') %>
+        <%= show_svg('CC_logo.png') %>
       </div>
+      <h1> Hello! Your friend <%= @user.first %> <%= @user.last %> has invited you to join Carbon Collective!</h1>
       <div class="native-msg">
         <h2>Join your friends and neighbors in a cooperative effort to reduce your carbon footprints and watch your city save in real time. Your friend has chosen you to be among the first in this invite-only online community.</h2>
         <div class="button-div">
@@ -92,7 +93,6 @@
         </form>
         </div>
       </div>
-      <h1> Hello! Your friend <%= @user.first %> <%= @user.last %> has invited you to join Carbon Collective!</h1>
         <% if @message != '' %>
         <div class="personal-msg">
             <h2 class="opener">A personal message from <%= @user.first %>: </h2>
