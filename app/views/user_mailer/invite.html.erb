@@ -14,12 +14,12 @@
     h1{
       font-family: 'Merriweather', serif;
       margin-left: 20px;;
-      font-size: 34px;
+      font-size: 28px;
       color: #219a60;
     }
     h2{
       font-family: "Libre Franklin", Garamond, sans-serif;
-      font-size: 24px;
+      font-size: 20px;
       line-height: 30px;
       font-weight: 300;
       color: #2a2c33;
@@ -27,11 +27,11 @@
       margin-left: 20px;
     }
     h2.opener{
-      font-size: 24px;
+      font-size: 20px;
       margin-left: 20px;;
     }
     h3{
-      margin-left: 20px;
+      margin-left: 18px;
       padding-left: 10px;
       font-size: 24px;
       color: #2a2c33;
@@ -84,6 +84,14 @@
       <div class="logo">
         <%= show_svg('CC_logo.svg') %>
       </div>
+      <div class="native-msg">
+        <h2>Join your friends and neighbors in a cooperative effort to reduce your carbon footprints and watch your city save in real time. Your friend has chosen you to be among the first in this invite-only online community.</h2>
+        <div class="button-div">
+        <form action="<%= invite_users_url(:id => @new.slug, :token => @user.invite_token)%>" method="post">
+            <button class="passwordReset-btn" type="submit" onSubmit="(e) => e.preventDefault()">Accept Invite</button>
+        </form>
+        </div>
+      </div>
       <h1> Hello! Your friend <%= @user.first %> <%= @user.last %> has invited you to join Carbon Collective!</h1>
         <% if @message != '' %>
         <div class="personal-msg">
@@ -91,16 +99,8 @@
             <h3><%= @message %></h3>
         </div>
         <% end %>
-      <div class="native-msg">
-        <h2>Join your friends and neighbors in a cooperative effort to reduce your carbon footprints and watch your city save in real team. Your friend has chosen you to be among the first in this invite-only online community.</h2>
-        <div class="button-div">
-        <form action="<%= invite_users_url(:id => @new.slug, :token => @user.invite_token)%>" method="post">
-            <button class="passwordReset-btn" type="submit" onSubmit="(e) => e.preventDefault()">Accept Invite</button>
-        </form>
-        </div>
-      </div>
       <h2>Sincerely</h2>
-      <h2 class="signature">The Carbon Collective</h2>
+      <h2 class="signature"><a href="https://carboncollective.earth">The Carbon Collective</a></h2>
       <h5 class="signature-text">Envisioning and fostering an empowered, global community ready to transform our world through collective and strategic action. Carbon Collective&apos;s vision is an inclusive movement which aims to work together to <em>revolutionize</em> humanity's relationship with the natural world. We seek a collective symbiosis founded on: environmental responsibility, fairness, egalitarianism, and hope.</h5>
     </div>
   </body>
