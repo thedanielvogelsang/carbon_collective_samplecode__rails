@@ -428,8 +428,8 @@ county = County.find_by(name: "Denver County")
 city1 = City.create(name: "Denver", region_id: state.id)
 
 zip1 = "80218"
-zip2 = "80202"
-zip3 = "80211"
+# zip2 = "80202"
+# zip3 = "80211"
 # zip4 = "80203"
 # zip5 = "80216"
 
@@ -453,15 +453,17 @@ end
 puts "all neighborhoods of Denver added"
 # 5 addresses in Denver; Colorado AVG: 723kwhs/month
   # 3 in caphill -- 2 with zip1, 1 with zip2
-    user = User.create(first: "Genesis", last: "User", password: "password", generation: 0, email: 'carbon.collective.invites@gmail.com')
+    user = User.create(first: "Genesis", last: "User", password: "password", generation: 0, invite_max: 10, email: 'carbon.collective.invites@gmail.com')
     z = Zipcode.create(zipcode: zip1)
-      tadd = Address.create(address_line1: "1222 Nonesense Lane", address_line2: "#2",
-                  neighborhood_id: dn2.id, city_id: city1.id, county_id: county.id,
+      tadd = Address.create(address_line1: "1222 Nonesense Lane", address_line2: "#1",
+                  neighborhood_id: dn1.id, city_id: city1.id, county_id: county.id,
                   zipcode_id: z.id)
       house = House.create(total_sq_ft: rand(1000..3000), no_residents: 0, address_id: tadd.id)
-      4.times do
-        bind_new_user(house)
-      end
+      UserHouse.create!(house_id: house.id, user_id: user.id, move_in_date: DateTime.now - (90 * 7)))
+      puts "#{user} (with id: #{user.id}) created at #{house.address}"
+      # 4.times do
+      #   bind_new_user(house)
+      # end
         # UserHouse.create(house_id: house.id, user_id: user.id, move_in_date: DateTime.now - 90)
 
     #HOUSE NUMBER 1; 2 resident users; savings in 3/4 bills;
@@ -470,17 +472,17 @@ puts "all neighborhoods of Denver added"
     #       puts "#{user1.first} created with email #{user1.email} & password #{user1.password}"
     #       puts "#{user2.first} created with email #{user2.email} & password #{user1.password}"
     #
-              puts "#{house} added in #{tadd.city} at #{tadd.address_line1} in #{tadd.neighborhood.name}"
-                user = house.users.first
-                kwhs = 1050
-                gallons = 305
-                therms = 105
-                price = rand(1..100)
-                bill1 = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house.id, no_residents: 4, user_id: user.id)
-                bill2 = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gallons, price: price, house_id: house.id, no_residents: 4, user_id: user.id)
-                bill3 = HeatBill.create(start_date: @start_date, end_date: @end_date, total_therms: therms, price: price, house_id: house.id, no_residents: 4, user_id: user.id)
-              puts "bills added to house A: ID##{house.id} in #{house.address.neighborhood}: #{bill1.id}, #{bill2.id}, #{bill3.id}"
-              #   kwhs2 = 1200
+              # puts "#{house} added in #{tadd.city} at #{tadd.address_line1} in #{tadd.neighborhood.name}"
+              #   user = house.users.first
+              #   kwhs = 1050
+              #   gallons = 305
+              #   therms = 105
+              #   price = rand(1..100)
+              #   bill1 = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house.id, no_residents: 4, user_id: user.id)
+              #   bill2 = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gallons, price: price, house_id: house.id, no_residents: 4, user_id: user.id)
+              #   bill3 = HeatBill.create(start_date: @start_date, end_date: @end_date, total_therms: therms, price: price, house_id: house.id, no_residents: 4, user_id: user.id)
+              # puts "bills added to house A: ID##{house.id} in #{house.address.neighborhood}: #{bill1.id}, #{bill2.id}, #{bill3.id}"
+              # #   kwhs2 = 1200
               #   price2 = rand(1..100)
               #   sdate = @start_date - 30
               #   edate = @end_date - 30
@@ -505,50 +507,50 @@ puts "all neighborhoods of Denver added"
               #   bill5 = ElectricBill.create(start_date: sdate5, end_date: edate5, total_kwhs: kwhs5, price: price5, house_id: house.id, no_residents: 2, user_id: user.id)
               # puts "fifth bill added to house ##{house.id} in #{house.address.city.name}: #{bill5}"
 
-    sadd = Address.create!(address_line1: "2730 Welton",
-                neighborhood: dn2, city: city1, county_id: county.id,
-                zipcode_id: z.id)
+    # sadd = Address.create!(address_line1: "2730 Welton",
+    #             neighborhood: dn2, city: city1, county_id: county.id,
+    #             zipcode_id: z.id)
+    #
+    # # HOUSE NUMBER 2; 5 residents, 3 users; Colorado: 723; savings in 5/5 bills
+        # house2 = House.create!(total_sq_ft: rand(1000..3000), no_residents: 0, address_id: sadd.id)
+        # puts "#{house2} added in #{sadd.region} at #{sadd.address_line1} in #{sadd.neighborhood.name}"
+        # user =  bind_new_user(house2)
+        # user2 =  bind_new_user(house2)
+        # user3 =  bind_new_user(house2)
+        # puts "#{user.first} created with email #{user.email} & password #{user.password}"
+        # puts "#{user2.first} created with email #{user2.email} & password #{user2.password}"
+        # puts "#{user3.first} created with email #{user3.email} & password #{user3.password}"
+        #
+        #       kwhs = 1255
+        #       gallons = 705
+        #       therms = 80
+        #       price = rand(1..100)
+        #       ebill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house2.id, no_residents: 3, user_id: user.id)
+        #       wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gallons, price: price, house_id: house2.id, no_residents: 3, user_id: user.id)
+        #       bill3 = HeatBill.create(start_date: @start_date, end_date: @end_date, total_therms: therms, price: price, house_id: house2.id, no_residents: 3, user_id: user.id)
+        #     puts "2 bills added to house ##{house2.id} in #{house2.address.city}: #{ebill}, #{wbill}"
+        #     #   kwhs2 = rand(1000..3000)
+
+    # sadd = Address.create!(address_line1: "2830 Welton",
+    #             neighborhood: dn2, city: city1, county_id: county.id,
+    #             zipcode_id: z.id)
 
     # HOUSE NUMBER 2; 5 residents, 3 users; Colorado: 723; savings in 5/5 bills
-        house2 = House.create!(total_sq_ft: rand(1000..3000), no_residents: 0, address_id: sadd.id)
-        puts "#{house2} added in #{sadd.region} at #{sadd.address_line1} in #{sadd.neighborhood.name}"
-        user =  bind_new_user(house2)
-        user2 =  bind_new_user(house2)
-        user3 =  bind_new_user(house2)
-        puts "#{user.first} created with email #{user.email} & password #{user.password}"
-        puts "#{user2.first} created with email #{user2.email} & password #{user2.password}"
-        puts "#{user3.first} created with email #{user3.email} & password #{user3.password}"
-
-              kwhs = 1255
-              gallons = 705
-              therms = 80
-              price = rand(1..100)
-              ebill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house2.id, no_residents: 3, user_id: user.id)
-              wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gallons, price: price, house_id: house2.id, no_residents: 3, user_id: user.id)
-              bill3 = HeatBill.create(start_date: @start_date, end_date: @end_date, total_therms: therms, price: price, house_id: house2.id, no_residents: 3, user_id: user.id)
-            puts "2 bills added to house ##{house2.id} in #{house2.address.city}: #{ebill}, #{wbill}"
-            #   kwhs2 = rand(1000..3000)
-
-    sadd = Address.create!(address_line1: "2830 Welton",
-                neighborhood: dn2, city: city1, county_id: county.id,
-                zipcode_id: z.id)
-
-    # HOUSE NUMBER 2; 5 residents, 3 users; Colorado: 723; savings in 5/5 bills
-        house3 = House.create!(total_sq_ft: rand(1000..3000), no_residents: 0, address_id: sadd.id)
-        puts "#{house3} added in #{sadd.region} at #{sadd.address_line1} in #{sadd.neighborhood.name}"
-        user =  bind_new_user(house3)
-        user2 =  bind_new_user(house3)
-        puts "#{user.first} created with email #{user.email} & password #{user.password}"
-        puts "#{user2.first} created with email #{user2.email} & password #{user2.password}"
-
-              kwhs = 940
-              gallons = 1500
-              therms = 175
-              price = rand(1..100)
-              ebill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house3.id, no_residents: 2, user_id: user.id)
-              wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gallons, price: price, house_id: house3.id, no_residents: 2, user_id: user.id)
-              bill3 = HeatBill.create(start_date: @start_date, end_date: @end_date, total_therms: therms, price: price, house_id: house3.id, no_residents: 2, user_id: user.id)
-            puts "3 bills added to house ##{house2.id} in #{house2.address.city}: #{ebill}, #{wbill}"
+        # house3 = House.create!(total_sq_ft: rand(1000..3000), no_residents: 0, address_id: sadd.id)
+        # puts "#{house3} added in #{sadd.region} at #{sadd.address_line1} in #{sadd.neighborhood.name}"
+        # user =  bind_new_user(house3)
+        # user2 =  bind_new_user(house3)
+        # puts "#{user.first} created with email #{user.email} & password #{user.password}"
+        # puts "#{user2.first} created with email #{user2.email} & password #{user2.password}"
+        #
+        #       kwhs = 940
+        #       gallons = 1500
+        #       therms = 175
+        #       price = rand(1..100)
+        #       ebill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house3.id, no_residents: 2, user_id: user.id)
+        #       wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gallons, price: price, house_id: house3.id, no_residents: 2, user_id: user.id)
+        #       bill3 = HeatBill.create(start_date: @start_date, end_date: @end_date, total_therms: therms, price: price, house_id: house3.id, no_residents: 2, user_id: user.id)
+        #     puts "3 bills added to house ##{house2.id} in #{house2.address.city}: #{ebill}, #{wbill}"
             #   kwhs2 = rand(1000..3000)
             #   price2 = rand(1..100)
             #   sdate = @start_date - 30
@@ -585,25 +587,25 @@ puts "all neighborhoods of Denver added"
 
         # HOUSE NUMBER 3 -- 6 residents 1 user;
             # 2 bills added, 3 waterbills,
-            gzip= Zipcode.create(zipcode: zip2)
-              gold_add = Address.create(address_line1: "747 Vine St",
-                          neighborhood: dn2,
-                          city: city1,
-                          county_id: county.id,
-                          zipcode_id: gzip.id)
-
-                  house4 = House.create(total_sq_ft: rand(1000..3000), no_residents: 0, address_id: gold_add.id)
-                  puts "#{house4} added in #{gold_add.city} at #{gold_add.address_line1} in #{gold_add.neighborhood.name}"
-                  user = bind_new_user(house4)
-                  puts "#{user.first} created with email #{user.email} & password #{user.password}"
-
-                        kwhs = 420
-                        gallons = 700
-                        therms = 120
-                        price = rand(1..100)
-                        bill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house4.id, no_residents: 1, user_id: user.id)
-                        wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gallons, price: price, house_id: house4.id, no_residents: 1, user_id: user.id)
-                        bill3 = HeatBill.create(start_date: @start_date, end_date: @end_date, total_therms: therms, price: price, house_id: house4.id, no_residents: 1, user_id: user.id)
+            # gzip= Zipcode.create(zipcode: zip2)
+            #   gold_add = Address.create(address_line1: "747 Vine St",
+            #               neighborhood: dn2,
+            #               city: city1,
+            #               county_id: county.id,
+            #               zipcode_id: gzip.id)
+            #
+            #       house4 = House.create(total_sq_ft: rand(1000..3000), no_residents: 0, address_id: gold_add.id)
+            #       puts "#{house4} added in #{gold_add.city} at #{gold_add.address_line1} in #{gold_add.neighborhood.name}"
+            #       user = bind_new_user(house4)
+            #       puts "#{user.first} created with email #{user.email} & password #{user.password}"
+            #
+            #             kwhs = 420
+            #             gallons = 700
+            #             therms = 120
+            #             price = rand(1..100)
+            #             bill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house4.id, no_residents: 1, user_id: user.id)
+            #             wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gallons, price: price, house_id: house4.id, no_residents: 1, user_id: user.id)
+            #             bill3 = HeatBill.create(start_date: @start_date, end_date: @end_date, total_therms: therms, price: price, house_id: house4.id, no_residents: 1, user_id: user.id)
 
                       # puts "bill added to house ##{house.id} in #{house.address.city.name}: #{bill}"
                       #   kwhs2 = rand(1000..3000)
@@ -616,40 +618,38 @@ puts "all neighborhoods of Denver added"
                       # puts "second set of bills added to house ##{house.id} in #{house.address.city.name}: #{bill2}, #{wbill2}\n"
                       # wbill3 = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: 20000, price: price, house_id: house.id, no_residents: 6, user_id: user.id)
                       # puts "third water bill added to house ##{house.id} in #{house.address.city.name}: #{wbill3}\n"
-                      gold_add = Address.create(address_line1: "1200 Colfax",
-                                  neighborhood: dn2,
-                                  city: city1,
-                                  county_id: county.id,
-                                  zipcode_id: gzip.id)
-
-                          house5 = House.create(total_sq_ft: rand(1000..3000), no_residents: 0, address_id: gold_add.id)
-                          puts "#{house5} added in #{gold_add.city} at #{gold_add.address_line1} in #{gold_add.neighborhood.name}"
-                          user = bind_new_user(house5)
-                          puts "#{user.first} created with email #{user.email} & password #{user.password}"
-
-                                kwhs = 420
-                                gallons = 350
-                                therms = 140
-                                price = rand(1..100)
-                                # bill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house4.id, no_residents: 1, user_id: user.id)
-                                wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gallons, price: price, house_id: house5.id, no_residents: 1, user_id: user.id)
-                                bill3 = HeatBill.create(start_date: @start_date, end_date: @end_date, total_therms: therms, price: price, house_id: house5.id, no_residents: 1, user_id: user.id)
-                          puts "2 bills added to house 5"
-                      puts "created #{Address.where(city_id: city1.id).count} address in FivePoints\n\n\n"
+                      # gold_add = Address.create(address_line1: "1200 Colfax",
+                      #             neighborhood: dn2,
+                      #             city: city1,
+                      #             county_id: county.id,
+                      #             zipcode_id: gzip.id)
+                      #
+                      #     house5 = House.create(total_sq_ft: rand(1000..3000), no_residents: 0, address_id: gold_add.id)
+                      #     puts "#{house5} added in #{gold_add.city} at #{gold_add.address_line1} in #{gold_add.neighborhood.name}"
+                      #     user = bind_new_user(house5)
+                      #     puts "#{user.first} created with email #{user.email} & password #{user.password}"
+                      #
+                      #           kwhs = 420
+                      #           gallons = 350
+                      #           therms = 140
+                      #           price = rand(1..100)
+                      #           # bill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house4.id, no_residents: 1, user_id: user.id)
+                      #           wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gallons, price: price, house_id: house5.id, no_residents: 1, user_id: user.id)
+                      #           bill3 = HeatBill.create(start_date: @start_date, end_date: @end_date, total_therms: therms, price: price, house_id: house5.id, no_residents: 1, user_id: user.id)
+                      #     puts "2 bills added to house 5"
+                      # puts "created #{Address.where(city_id: city1.id).count} address in FivePoints\n\n\n"
 
                       # -------------
-
-puts "Now working in Capitol Hill"
-
-z = Zipcode.create(zipcode: zip3)
-  tadd = Address.create(address_line1: "AA", address_line2: "#2",
-              neighborhood_id: dn1.id, city_id: city1.id, county_id: county.id,
-              zipcode_id: z.id)
+#
+# z = Zipcode.create(zipcode: zip3)
+#   tadd = Address.create(address_line1: "AA", address_line2: "#2",
+#               neighborhood_id: dn1.id, city_id: city1.id, county_id: county.id,
+#               zipcode_id: z.id)
   # user = User.create(first: "OG", last: "GEN0", password: "password", generation: 0, email: 'dvog@gmail.com')
-  house = House.create(total_sq_ft: rand(1000..3000), no_residents: 0, address_id: tadd.id)
-  4.times do
-    bind_new_user(house)
-  end
+  # house = House.create(total_sq_ft: rand(1000..3000), no_residents: 0, address_id: tadd.id)
+  # 4.times do
+  #   bind_new_user(house)
+  # end
     # UserHouse.create(house_id: house.id, user_id: user.id, move_in_date: DateTime.now - 90)
 
 #HOUSE NUMBER 1; 2 resident users; savings in 3/4 bills;
@@ -658,16 +658,16 @@ z = Zipcode.create(zipcode: zip3)
 #       puts "#{user1.first} created with email #{user1.email} & password #{user1.password}"
 #       puts "#{user2.first} created with email #{user2.email} & password #{user1.password}"
 #
-          puts "#{house} added in #{tadd.city} at #{tadd.address_line1} in #{tadd.neighborhood.name}"
-            user = house.users.first
-            kwhs = 650
-            gallons = 1250
-            therms = 100
-            price = rand(1..100)
-            bill1 = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house.id, no_residents: 4, user_id: user.id)
-            bill2 = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gallons, price: price, house_id: house.id, no_residents: 4, user_id: user.id)
-            bill3 = HeatBill.create(start_date: @start_date, end_date: @end_date, total_therms: therms, price: price, house_id: house.id, no_residents: 4, user_id: user.id)
-          puts "bills added to house A: ID##{house.id} in #{house.address.neighborhood}: #{bill1.id}, #{bill2.id}, #{bill3.id}"
+          # puts "#{house} added in #{tadd.city} at #{tadd.address_line1} in #{tadd.neighborhood.name}"
+          #   user = house.users.first
+          #   kwhs = 650
+          #   gallons = 1250
+          #   therms = 100
+          #   price = rand(1..100)
+          #   bill1 = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house.id, no_residents: 4, user_id: user.id)
+          #   bill2 = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gallons, price: price, house_id: house.id, no_residents: 4, user_id: user.id)
+          #   bill3 = HeatBill.create(start_date: @start_date, end_date: @end_date, total_therms: therms, price: price, house_id: house.id, no_residents: 4, user_id: user.id)
+          # puts "bills added to house A: ID##{house.id} in #{house.address.neighborhood}: #{bill1.id}, #{bill2.id}, #{bill3.id}"
           #   kwhs2 = 1200
           #   price2 = rand(1..100)
           #   sdate = @start_date - 30
@@ -693,50 +693,50 @@ z = Zipcode.create(zipcode: zip3)
           #   bill5 = ElectricBill.create(start_date: sdate5, end_date: edate5, total_kwhs: kwhs5, price: price5, house_id: house.id, no_residents: 2, user_id: user.id)
           # puts "fifth bill added to house ##{house.id} in #{house.address.city.name}: #{bill5}"
 
-sadd = Address.create!(address_line1: "BB",
-            neighborhood: dn1, city: city1, county_id: county.id,
-            zipcode_id: z.id)
+# sadd = Address.create!(address_line1: "BB",
+#             neighborhood: dn1, city: city1, county_id: county.id,
+#             zipcode_id: z.id)
 
 # HOUSE NUMBER 2; 5 residents, 3 users; Colorado: 723; savings in 5/5 bills
-    house2 = House.create!(total_sq_ft: rand(1000..3000), no_residents: 0, address_id: sadd.id)
-    puts "#{house2} added in #{sadd.region} at #{sadd.address_line1} in #{sadd.neighborhood.name}"
-    user =  bind_new_user(house2)
-    user2 =  bind_new_user(house2)
-    user3 =  bind_new_user(house2)
-    puts "#{user.first} created with email #{user.email} & password #{user.password}"
-    puts "#{user2.first} created with email #{user2.email} & password #{user2.password}"
-    puts "#{user3.first} created with email #{user3.email} & password #{user3.password}"
-
-          kwhs = 250
-          # gallons = 0
-          therms = 75
-          price = rand(1..100)
-          ebill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house2.id, no_residents: 3, user_id: user.id)
-          # wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gallons, price: price, house_id: house2.id, no_residents: 3, user_id: user.id)
-          bill3 = HeatBill.create(start_date: @start_date, end_date: @end_date, total_therms: therms, price: price, house_id: house2.id, no_residents: 3, user_id: user.id)
-        puts "2 bills added to house ##{house2.id} in #{house2.address.city}: #{ebill}, #{wbill}"
+    # house2 = House.create!(total_sq_ft: rand(1000..3000), no_residents: 0, address_id: sadd.id)
+    # puts "#{house2} added in #{sadd.region} at #{sadd.address_line1} in #{sadd.neighborhood.name}"
+    # user =  bind_new_user(house2)
+    # user2 =  bind_new_user(house2)
+    # user3 =  bind_new_user(house2)
+    # puts "#{user.first} created with email #{user.email} & password #{user.password}"
+    # puts "#{user2.first} created with email #{user2.email} & password #{user2.password}"
+    # puts "#{user3.first} created with email #{user3.email} & password #{user3.password}"
+    #
+    #       kwhs = 250
+    #       # gallons = 0
+    #       therms = 75
+    #       price = rand(1..100)
+    #       ebill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house2.id, no_residents: 3, user_id: user.id)
+    #       # wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gallons, price: price, house_id: house2.id, no_residents: 3, user_id: user.id)
+    #       bill3 = HeatBill.create(start_date: @start_date, end_date: @end_date, total_therms: therms, price: price, house_id: house2.id, no_residents: 3, user_id: user.id)
+    #     puts "2 bills added to house ##{house2.id} in #{house2.address.city}: #{ebill}, #{wbill}"
         #   kwhs2 = rand(1000..3000)
 
-sadd = Address.create!(address_line1: "CC",
-            neighborhood: dn1, city: city1, county_id: county.id,
-            zipcode_id: z.id)
+# sadd = Address.create!(address_line1: "CC",
+#             neighborhood: dn1, city: city1, county_id: county.id,
+#             zipcode_id: z.id)
 
 # HOUSE NUMBER 2; 5 residents, 3 users; Colorado: 723; savings in 5/5 bills
-    house3 = House.create!(total_sq_ft: rand(1000..3000), no_residents: 0, address_id: sadd.id)
-    puts "#{house3} added in #{sadd.region} at #{sadd.address_line1} in #{sadd.neighborhood.name}"
-    user =  bind_new_user(house3)
-    user2 =  bind_new_user(house3)
-    puts "#{user.first} created with email #{user.email} & password #{user.password}"
-    puts "#{user2.first} created with email #{user2.email} & password #{user2.password}"
-
-          kwhs = 327
-          gallons = 1000
-          therms = 150
-          price = rand(1..100)
-          ebill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house3.id, no_residents: 2, user_id: user.id)
-          wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gallons, price: price, house_id: house3.id, no_residents: 2, user_id: user.id)
-          bill3 = HeatBill.create(start_date: @start_date, end_date: @end_date, total_therms: therms, price: price, house_id: house3.id, no_residents: 2, user_id: user.id)
-        puts "2 bills added to house ##{house2.id} in #{house2.address.city}: #{ebill}, #{wbill}"
+    # house3 = House.create!(total_sq_ft: rand(1000..3000), no_residents: 0, address_id: sadd.id)
+    # puts "#{house3} added in #{sadd.region} at #{sadd.address_line1} in #{sadd.neighborhood.name}"
+    # user =  bind_new_user(house3)
+    # user2 =  bind_new_user(house3)
+    # puts "#{user.first} created with email #{user.email} & password #{user.password}"
+    # puts "#{user2.first} created with email #{user2.email} & password #{user2.password}"
+    #
+    #       kwhs = 327
+    #       gallons = 1000
+    #       therms = 150
+    #       price = rand(1..100)
+    #       ebill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house3.id, no_residents: 2, user_id: user.id)
+    #       wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gallons, price: price, house_id: house3.id, no_residents: 2, user_id: user.id)
+    #       bill3 = HeatBill.create(start_date: @start_date, end_date: @end_date, total_therms: therms, price: price, house_id: house3.id, no_residents: 2, user_id: user.id)
+    #     puts "2 bills added to house ##{house2.id} in #{house2.address.city}: #{ebill}, #{wbill}"
         #   kwhs2 = rand(1000..3000)
         #   price2 = rand(1..100)
         #   sdate = @start_date - 30
@@ -773,25 +773,25 @@ sadd = Address.create!(address_line1: "CC",
 
     # HOUSE NUMBER 3 -- 6 residents 1 user;
         # 2 bills added, 3 waterbills,
-        gzip= Zipcode.create(zipcode: zip2)
-          gold_add = Address.create(address_line1: "DD",
-                      neighborhood: dn1,
-                      city: city1,
-                      county_id: county.id,
-                      zipcode_id: gzip.id)
-
-              house4 = House.create(total_sq_ft: rand(1000..3000), no_residents: 0, address_id: gold_add.id)
-              puts "#{house4} added in #{gold_add.city} at #{gold_add.address_line1} in #{gold_add.neighborhood.name}"
-              user = bind_new_user(house4)
-              puts "#{user.first} created with email #{user.email} & password #{user.password}"
-
-                    kwhs = 78
-                    gallons = 650
-                    therms = 105
-                    price = rand(1..100)
-                    bill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house4.id, no_residents: 1, user_id: user.id)
-                    wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gallons, price: price, house_id: house4.id, no_residents: 1, user_id: user.id)
-                    bill3 = HeatBill.create(start_date: @start_date, end_date: @end_date, total_therms: therms, price: price, house_id: house4.id, no_residents: 1, user_id: user.id)
+        # gzip= Zipcode.create(zipcode: zip2)
+        #   gold_add = Address.create(address_line1: "DD",
+        #               neighborhood: dn1,
+        #               city: city1,
+        #               county_id: county.id,
+        #               zipcode_id: gzip.id)
+        #
+        #       house4 = House.create(total_sq_ft: rand(1000..3000), no_residents: 0, address_id: gold_add.id)
+        #       puts "#{house4} added in #{gold_add.city} at #{gold_add.address_line1} in #{gold_add.neighborhood.name}"
+        #       user = bind_new_user(house4)
+        #       puts "#{user.first} created with email #{user.email} & password #{user.password}"
+        #
+        #             kwhs = 78
+        #             gallons = 650
+        #             therms = 105
+        #             price = rand(1..100)
+        #             bill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house4.id, no_residents: 1, user_id: user.id)
+        #             wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gallons, price: price, house_id: house4.id, no_residents: 1, user_id: user.id)
+        #             bill3 = HeatBill.create(start_date: @start_date, end_date: @end_date, total_therms: therms, price: price, house_id: house4.id, no_residents: 1, user_id: user.id)
 
                   # puts "bill added to house ##{house.id} in #{house.address.city.name}: #{bill}"
                   #   kwhs2 = rand(1000..3000)
@@ -804,26 +804,26 @@ sadd = Address.create!(address_line1: "CC",
                   # puts "second set of bills added to house ##{house.id} in #{house.address.city.name}: #{bill2}, #{wbill2}\n"
                   # wbill3 = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: 20000, price: price, house_id: house.id, no_residents: 6, user_id: user.id)
                   # puts "third water bill added to house ##{house.id} in #{house.address.city.name}: #{wbill3}\n"
-                  gold_add = Address.create(address_line1: "EE",
-                              neighborhood: dn1,
-                              city: city1,
-                              county_id: county.id,
-                              zipcode_id: gzip.id)
-
-                      house5 = House.create(total_sq_ft: rand(1000..3000), no_residents: 0, address_id: gold_add.id)
-                      puts "#{house5} added in #{gold_add.city} at #{gold_add.address_line1} in #{gold_add.neighborhood.name}"
-                      user = bind_new_user(house5)
-                      puts "#{user.first} created with email #{user.email} & password #{user.password}"
-
-                            kwhs = 240
-                            gallons = 300
-                            therms = 160
-                            price = rand(1..100)
-                            bill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house5.id, no_residents: 1, user_id: user.id)
-                            wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gallons, price: price, house_id: house5.id, no_residents: 1, user_id: user.id)
-                            bill3 = HeatBill.create(start_date: @start_date, end_date: @end_date, total_therms: therms, price: price, house_id: house5.id, no_residents: 1, user_id: user.id)
-                      puts "2 bills added to house 5"
-                  puts "created #{Address.where(city_id: city1.id).count} address in FivePoints\n\n\n"
+                  # gold_add = Address.create(address_line1: "EE",
+                  #             neighborhood: dn1,
+                  #             city: city1,
+                  #             county_id: county.id,
+                  #             zipcode_id: gzip.id)
+                  #
+                  #     house5 = House.create(total_sq_ft: rand(1000..3000), no_residents: 0, address_id: gold_add.id)
+                  #     puts "#{house5} added in #{gold_add.city} at #{gold_add.address_line1} in #{gold_add.neighborhood.name}"
+                  #     user = bind_new_user(house5)
+                  #     puts "#{user.first} created with email #{user.email} & password #{user.password}"
+                  #
+                  #           kwhs = 240
+                  #           gallons = 300
+                  #           therms = 160
+                  #           price = rand(1..100)
+                  #           bill = ElectricBill.create(start_date: @start_date, end_date: @end_date, total_kwhs: kwhs, price: price, house_id: house5.id, no_residents: 1, user_id: user.id)
+                  #           wbill = WaterBill.create(start_date: @start_date, end_date: @end_date, total_gallons: gallons, price: price, house_id: house5.id, no_residents: 1, user_id: user.id)
+                  #           bill3 = HeatBill.create(start_date: @start_date, end_date: @end_date, total_therms: therms, price: price, house_id: house5.id, no_residents: 1, user_id: user.id)
+                  #     puts "2 bills added to house 5"
+                  # puts "created #{Address.where(city_id: city1.id).count} address in FivePoints\n\n\n"
 
 
 #   # 2 address in fivepoints;
