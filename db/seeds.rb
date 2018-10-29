@@ -459,7 +459,7 @@ puts "all neighborhoods of Denver added"
                   neighborhood_id: dn1.id, city_id: city1.id, county_id: county.id,
                   zipcode_id: z.id)
       house = House.create(total_sq_ft: rand(1000..3000), no_residents: 0, address_id: tadd.id)
-      UserHouse.create!(house_id: house.id, user_id: user.id, move_in_date: DateTime.now - (90 * 7)))
+      UserHouse.create!(house_id: house.id, user_id: user.id, move_in_date: DateTime.now - (90 * 7))
       puts "#{user} (with id: #{user.id}) created at #{house.address}"
       # 4.times do
       #   bind_new_user(house)
