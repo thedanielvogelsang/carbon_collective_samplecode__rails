@@ -43,6 +43,7 @@ gem 'sidekiq'
 gem 'sinatra'
 # Use Redis adapter to run Action Cable in production
 gem 'redis', '~> 3.0'
+gem 'newrelic_rpm'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
