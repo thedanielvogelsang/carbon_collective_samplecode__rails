@@ -138,7 +138,9 @@ class UserCarbonSerializer < ActiveModel::Serializer
       regional_avg = (r.country.avg_daily_carbon_consumed_per_user * 29.53).round(2)
       # parent_max = (r.max_regional_avg_carbon_consumption * 29.53).round(2)
       user_max = (object.country.max_daily_user_carbon_consumption * 29.53).round(2)
-      better_than = ranking.out_of - ranking.rank
+      if ranking.rank
+        better_than = ranking.out_of - ranking.rank
+      end
       arr = [r.id, r.name, avg_monthly,
         regional_avg, user_max,
         ranking.rank, better_than, ranking.arrow]
