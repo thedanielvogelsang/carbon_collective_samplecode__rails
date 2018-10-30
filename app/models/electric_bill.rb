@@ -68,7 +68,7 @@ class ElectricBill < ApplicationRecord
   def add_to_users_totals
     if user_id && house_id && start_date && end_date
       kwhs = self.average_daily_usage
-      users = UserHouse.joins(:house).where(house_id: house_id).select{|uh| uh.move_in_date.to_datetime <= self.start_date}
+      users = UserHouse.joins(:house).where(house_id: house_id).select{|uh| (uh.move_in_date.to_datetime - 1) <= self.start_date}
       house = House.find(house_id)
       users = users.map{|uh| User.find(uh.user_id)}
       elect_saved = self.electricity_saved.fdiv(no_residents)
@@ -91,7 +91,7 @@ class ElectricBill < ApplicationRecord
   # before_destroy action which removes bill from users record -- if and only if they're still in the house
   def subtract_from_users_totals
       kwhs = self.average_daily_usage
-      users = UserHouse.joins(:house).where(house_id: house_id).select{|uh| uh.move_in_date.to_datetime <= self.start_date}
+      users = UserHouse.joins(:house).where(house_id: house_id).select{|uh| (uh.move_in_date.to_datetime - 1) <= self.start_date}
       house = House.find(house_id)
       users = users.map{|uh| User.find(uh.user_id)}
       elect_saved = self.electricity_saved.fdiv(no_residents)
