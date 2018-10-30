@@ -197,6 +197,16 @@ private
     self.friendships.delete_all
     self.user_invites.delete_all
     self.user_houses.delete_all
+    clear_ranks
+    add_zeros
+    add_confirm_token
+    add_invite_token
+    set_avg_login_time
+    create_filename
+    self.save
+  end
+
+  def clear_ranks
     self.user_carbon_rankings.delete_all
     self.user_electricity_rankings.delete_all
     self.user_water_rankings.delete_all
