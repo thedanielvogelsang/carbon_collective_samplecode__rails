@@ -140,7 +140,7 @@ class WaterBill < ApplicationRecord
   def check_move_in_date
     uh = UserHouse.where(user_id: user_id, house_id: house_id)[0]
     uh ? uH_movein = uh.move_in_date.to_datetime : uH_movein = 0
-    start_date >= uH_movein ? true : errors.add(:start_date, "update your move in date to save in that timeframe")
+    start_date >= (uH_movein - 1) ? true : errors.add(:start_date, "update your move in date to save in that timeframe")
   end
 
   def confirm_valid_dates
