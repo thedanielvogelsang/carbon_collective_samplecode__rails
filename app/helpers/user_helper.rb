@@ -138,4 +138,10 @@ module UserHelper
     UserInvite.where(user_id: self.id).map{|ui| ui.invited }
   end
 
+  def purge_bill_histroy(house_id)
+    House.find(house_id).bills.destroy_all
+    House.find(house_id).wbills.destroy_all
+    House.find(house_id).gbills.destroy_all
+  end
+
 end
