@@ -8,7 +8,7 @@ class Api::V1::Users::UsersWaterBillsController < ApplicationController
       render json: WaterBill.joins(:house)
                     .where(:houses => {id: house.id})
                     .order(end_date: :desc)
-                    .select{|b| b.start_date >= (uh.move_in_date - 1)}, each_serializer: WaterBillSerializer
+                    .select{|b| b.start_date >= (uh.move_in_date - (60*60*24))}, each_serializer: WaterBillSerializer
     end
   end
 
