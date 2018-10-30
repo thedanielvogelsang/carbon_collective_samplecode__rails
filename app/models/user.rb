@@ -146,6 +146,7 @@ def clear_account
     self[att[0]] = nil
   end
   self.password = 'placeholder'
+  self.invite_max = 3
   clear_associations
   delete_file
   self.save
@@ -203,7 +204,6 @@ private
     add_invite_token
     set_avg_login_time
     create_filename
-    self.save
   end
 
   def clear_ranks
