@@ -75,7 +75,7 @@ class UsersController < ApplicationController
     if user && house
       UserHouse.create(user_id: user.id,
                       house_id: house.id,
-                      move_in_date: DateTime.new(params[:moveInDate])
+                      move_in_date: DateTime.now
                             .in_time_zone("Mountain Time (US & Canada)")
                       )
       render json: user
