@@ -8,7 +8,7 @@ class Api::V1::Users::UsersElectricBillsController < ApplicationController
       render json: ElectricBill.joins(:house)
             .where(:houses => {id: house.id})
             .order(end_date: :desc)
-            .select{|b| b.start_date >= uh.move_in_date}, each_serializer: ElectricBillSerializer
+            .select{|b| b.start_date >= (uh.move_in_date - 1)}, each_serializer: ElectricBillSerializer
     end
   end
 
