@@ -197,6 +197,10 @@ private
     self.friendships.delete_all
     self.user_invites.delete_all
     self.user_houses.delete_all
+    self.user_carbon_rankings.delete_all
+    self.user_electricity_rankings.delete_all
+    self.user_water_rankings.delete_all
+    self.user_gas_rankings.delete_all
   end
 
   def delete_file
