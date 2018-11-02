@@ -12,7 +12,7 @@ class UserLogHelper
     time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
     # body = "#{Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60)},#{u.id},logsin,,,,#{u.first + ' ' + u.last} logs in\n"
     UserLog.create(time: time,
-                   user_id: id,
+                   user_id: u.id,
                    action: "logsin",
                    page: nil,
                    next_page: nil,
@@ -30,7 +30,7 @@ class UserLogHelper
     time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
     # body = "#{Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60)},#{u.id},logsout,,,,#{u.first + ' ' + u.last} logs out\n"
     UserLog.create(time: time,
-                   user_id: id,
+                   user_id: u.id,
                    action: "logsout",
                    page: nil,
                    next_page: nil,
@@ -46,7 +46,7 @@ class UserLogHelper
     # body = "#{Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60)},#{u.id},pressesBtn,#{page},,#{name},#{u.first + ' ' + u.last} presses #{type} button on #{prev_page}\n"
     time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
     UserLog.create(time: time,
-                   user_id: id,
+                   user_id: u.id,
                    action: "pressesBtn",
                    page: page,
                    detail: name,
@@ -61,7 +61,7 @@ class UserLogHelper
     # body = "#{Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60)},#{u.id},pageView,#{page},,,#{u.first + ' ' + u.last} lands on #{page}\n"
     time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
     UserLog.create(time: time,
-                   user_id: id,
+                   user_id: u.id,
                    action: "pageView",
                    page: page,
                    description: "#{u.first + ' ' + u.last} lands on #{page}"
@@ -75,7 +75,7 @@ class UserLogHelper
     # body = "#{Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60)},#{u.id},pageLeave,#{prev_page},#{next_page},,#{u.first + ' ' + u.last} leaves #{prev_page} for #{next_page}\n"
     time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
     UserLog.create(time: time,
-                   user_id: id,
+                   user_id: u.id,
                    action: "pageLeave",
                    page: prev_page,
                    next_page: next_page,
@@ -90,7 +90,7 @@ class UserLogHelper
     # body = "#{Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60)},#{u.id},hitsNavBtn,#{prev_page},,#{type},#{u.first + ' ' + u.last} hits #{type} button on navbar from #{prev_page}\n"
     time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
     UserLog.create(time: time,
-                   user_id: id,
+                   user_id: u.id,
                    action: "hitsNavBtn",
                    page: prev_page,
                    detail: type,
@@ -105,7 +105,7 @@ class UserLogHelper
     # body = "#{Time.now.strftime("%Y-%m-%d %H:%M:%S.%L") - (6 * 60 * 60)},#{u.id},addsBill,/manageBills,,#{type},#{u.first + ' ' + u.last} adds new #{type} bill\n"
     time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
     UserLog.create(time: time,
-                   user_id: id,
+                   user_id: u.id,
                    action: "addsBill",
                    detail: type,
                    description: "#{u.first + ' ' + u.last} adds new #{type} bill"
@@ -118,7 +118,7 @@ class UserLogHelper
     u = User.find(id)
     time = (Time.now - (6 * 60 * 60)).strftime("%Y-%m-%d %H:%M:%S.%L")
     UserLog.create(time: time,
-                   user_id: id,
+                   user_id: u.id,
                    action: "completesQuestionairre",
                    detail: type,
                    description: "#{u.first + ' ' + u.last} completes #{type} bill questionairre"

@@ -58,8 +58,13 @@ module HouseHelper
   end
 
   def update_electricity_rankings
-    e_houses = House.joins(:address).joins(:neighborhood).joins(:city)
-        .where(:cities => {id: self.city.id})
+    # commented out house comparison to city-wide houses in favor of neighborhood
+    # e_houses = House.joins(:address).joins(:neighborhood).joins(:city)
+    #     .where(:cities => {id: self.city.id})
+    #     .where.not(avg_daily_electricity_consumed_per_user: [nil, 0])
+    #     .order(avg_daily_electricity_consumed_per_user: :asc)
+    e_houses = House.joins(:address).joins(:neighborhood)
+        .where(:neighborhoods => {id: self.neighborhood.id})
         .where.not(avg_daily_electricity_consumed_per_user: [nil, 0])
         .order(avg_daily_electricity_consumed_per_user: :asc)
     unless e_houses.empty?
@@ -77,8 +82,12 @@ module HouseHelper
     end
   end
   def update_gas_rankings
-    g_houses = House.joins(:address).joins(:neighborhood).joins(:city)
-        .where(:cities => {id: self.city.id})
+    # g_houses = House.joins(:address).joins(:neighborhood).joins(:city)
+    #     .where(:cities => {id: self.city.id})
+    #     .where.not(avg_daily_gas_consumed_per_user: [nil, 0])
+    #     .order(avg_daily_gas_consumed_per_user: :asc)
+    g_houses = House.joins(:address).joins(:neighborhood)
+        .where(:neighborhoods => {id: self.neighborhood.id})
         .where.not(avg_daily_gas_consumed_per_user: [nil, 0])
         .order(avg_daily_gas_consumed_per_user: :asc)
     unless g_houses.empty?
@@ -98,8 +107,12 @@ module HouseHelper
   end
 
   def update_carbon_rankings
-    c_houses = House.joins(:address).joins(:neighborhood).joins(:city)
-        .where(:cities => {id: self.city.id})
+    # c_houses = House.joins(:address).joins(:neighborhood).joins(:city)
+    #     .where(:cities => {id: self.city.id})
+    #     .where.not(avg_daily_carbon_consumed_per_user: [nil, 0])
+    #     .order(avg_daily_carbon_consumed_per_user: :asc)
+    c_houses = House.joins(:address).joins(:neighborhood)
+        .where(:neighborhoods => {id: self.neighborhood.id})
         .where.not(avg_daily_carbon_consumed_per_user: [nil, 0])
         .order(avg_daily_carbon_consumed_per_user: :asc)
     unless c_houses.empty?
@@ -117,8 +130,12 @@ module HouseHelper
     end
   end
   def update_water_rankings
-    w_houses =  House.joins(:address).joins(:neighborhood).joins(:city)
-        .where(:cities => {id: self.city.id})
+    # w_houses =  House.joins(:address).joins(:neighborhood).joins(:city)
+    #     .where(:cities => {id: self.city.id})
+    #     .where.not(avg_daily_water_consumed_per_user: [nil, 0])
+    #     .order(avg_daily_water_consumed_per_user: :asc)
+    w_houses =  House.joins(:address).joins(:neighborhood)
+        .where(:neighborhoods => {id: self.neighborhood.id})
         .where.not(avg_daily_water_consumed_per_user: [nil, 0])
         .order(avg_daily_water_consumed_per_user: :asc)
     unless w_houses.empty?
