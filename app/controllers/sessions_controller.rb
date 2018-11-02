@@ -1,11 +1,17 @@
 class SessionsController < ApplicationController
+  skip_before_action :look_for_token, only: [:new_thang]
   respond_to :json, :html
-  
+
   def index
   end
 
   def new
     @user = User.new
+  end
+
+  def new_thang
+    AverageCalculatorJob.perform_async
+    render :json => {}, :status => 202
   end
 
   def create

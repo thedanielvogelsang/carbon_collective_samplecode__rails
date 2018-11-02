@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
 
   get '/', to: "sessions#index", as: :welcome
+  get '/ping', to: "sessions#new_thang"
   get '/auth/facebook', as: :facebook_login
   get '/auth/facebook/callback', to: "sessions#create", as: :facebook_callback
   get '/login', to: "sessions#new", as: :login
