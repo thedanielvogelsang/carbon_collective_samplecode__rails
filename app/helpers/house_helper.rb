@@ -398,7 +398,7 @@ module HouseHelper
     # Currently: ranking and updating by `City` and with User.all (not self.users)
     # Serializers will then use these UserRankings to use on dashboard page arrow (Me)
     def update_user_rankings
-      eusers = User.joins(:user_electricity_rankings).distinct.reject{|u| u.avg_daily_electricity_consumption.zero? }.sort_by{|u| u.avg_daily_water_consumption}
+      eusers = User.joins(:user_electricity_rankings).distinct.reject{|u| u.avg_daily_electricity_consumption.zero? }.sort_by{|u| u.avg_daily_electricity_consumption}
       wusers = User.joins(:user_water_rankings).distinct.reject{|u| u.avg_daily_water_consumption.zero? }.sort_by{|u| u.avg_daily_water_consumption}
       gusers = User.joins(:user_gas_rankings).distinct.reject{|u| u.avg_daily_gas_consumption.zero? }.sort_by{|u| u.avg_daily_gas_consumption}
       cusers = User.joins(:user_carbon_rankings).distinct.reject{|u| u.avg_daily_carbon_consumption.zero? }.sort_by{|u| u.avg_daily_carbon_consumption}
