@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
     @user = User.new
   end
 
-  def new_thang
+  def update_database
     AverageCalculatorJob.perform_async
     render :json => {}, :status => 202
   end
