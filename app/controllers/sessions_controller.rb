@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  skip_before_action :look_for_token, only: [:new_thang]
+  # skip_before_action :look_for_token, only: [:update_database]
   respond_to :json, :html
 
   def index
@@ -9,10 +9,10 @@ class SessionsController < ApplicationController
     @user = User.new
   end
 
-  def update_database
-    AverageCalculatorJob.perform_async
-    render :json => {}, :status => 202
-  end
+  # def update_database
+  #   AverageCalculatorJob.perform_async
+  #   render :json => {}, :status => 202
+  # end
 
   def create
     user = User.find_by(email: safe_params[:email])
