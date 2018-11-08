@@ -303,7 +303,7 @@ class UserWaterSerializer < ActiveModel::Serializer
 
   def bill_entered
     if object.household
-      return object.household.wbills.count > 0 ? true : false
+      return object.household.water_bills.count > 0 ? true : false
     else
       false
     end
