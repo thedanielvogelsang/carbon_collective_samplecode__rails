@@ -40,6 +40,10 @@ class User < ApplicationRecord
   has_many :regions, through: :cities
   has_many :countries, through: :regions
 
+  has_many :user_electric_bills
+  has_many :user_heat_bills
+  has_many :user_water_bills
+
   has_many :user_electricity_rankings, dependent: :destroy
   has_many :user_water_rankings, dependent: :destroy
   has_many :user_gas_rankings, dependent: :destroy
@@ -93,13 +97,16 @@ def bills
 end
 
 def electric_bills
-  self.houses.map{|h| h.electric_bills}.flatten
+  ElectricBill.joins(:user_electric_bills)
+              .where(:user_electric_bills => {user_id: id})
 end
 def water_bills
-  self.houses.map{|h| h.water_bills}.flatten
+  WaterBill.joins(:user_water_bills)
+            .where(:user_water_bills => {user_id: id})
 end
 def gas_bills
-  self.houses.map{|h| h.heat_bills}.flatten
+  HeatBill.joins(:user_heat_bills)
+          .where(:user_heat_bills => {user_id: id})
 end
 
 def email_activate

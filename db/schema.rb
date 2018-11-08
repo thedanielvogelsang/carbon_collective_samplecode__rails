@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181010201912) do
+ActiveRecord::Schema.define(version: 20181108214245) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -549,6 +549,15 @@ ActiveRecord::Schema.define(version: 20181010201912) do
     t.index ["user_id"], name: "index_user_carbon_rankings_on_user_id"
   end
 
+  create_table "user_electric_bills", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "electric_bill_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["electric_bill_id"], name: "index_user_electric_bills_on_electric_bill_id"
+    t.index ["user_id"], name: "index_user_electric_bills_on_user_id"
+  end
+
   create_table "user_electricity_questions", force: :cascade do |t|
     t.integer "a_count", default: 0
     t.integer "q_count", default: 4
@@ -628,6 +637,15 @@ ActiveRecord::Schema.define(version: 20181010201912) do
     t.index ["user_id"], name: "index_user_groups_on_user_id"
   end
 
+  create_table "user_heat_bills", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "heat_bill_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["heat_bill_id"], name: "index_user_heat_bills_on_heat_bill_id"
+    t.index ["user_id"], name: "index_user_heat_bills_on_user_id"
+  end
+
   create_table "user_houses", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "house_id"
@@ -668,6 +686,15 @@ ActiveRecord::Schema.define(version: 20181010201912) do
     t.datetime "updated_at", null: false
     t.index ["area_type", "area_id"], name: "index_user_request_areas_on_area_type_and_area_id"
     t.index ["user_id"], name: "index_user_request_areas_on_user_id"
+  end
+
+  create_table "user_water_bills", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "water_bill_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_user_water_bills_on_user_id"
+    t.index ["water_bill_id"], name: "index_user_water_bills_on_water_bill_id"
   end
 
   create_table "user_water_questions", force: :cascade do |t|
@@ -805,6 +832,8 @@ ActiveRecord::Schema.define(version: 20181010201912) do
   add_foreign_key "trips", "days"
   add_foreign_key "trips", "users"
   add_foreign_key "user_carbon_rankings", "users"
+  add_foreign_key "user_electric_bills", "electric_bills"
+  add_foreign_key "user_electric_bills", "users"
   add_foreign_key "user_electricity_questions", "houses"
   add_foreign_key "user_electricity_questions", "users"
   add_foreign_key "user_electricity_rankings", "users"
@@ -813,10 +842,14 @@ ActiveRecord::Schema.define(version: 20181010201912) do
   add_foreign_key "user_gas_rankings", "users"
   add_foreign_key "user_groups", "groups"
   add_foreign_key "user_groups", "users"
+  add_foreign_key "user_heat_bills", "heat_bills"
+  add_foreign_key "user_heat_bills", "users"
   add_foreign_key "user_houses", "houses"
   add_foreign_key "user_houses", "users"
   add_foreign_key "user_logs", "users"
   add_foreign_key "user_request_areas", "users"
+  add_foreign_key "user_water_bills", "users"
+  add_foreign_key "user_water_bills", "water_bills"
   add_foreign_key "user_water_questions", "houses"
   add_foreign_key "user_water_questions", "users"
   add_foreign_key "user_water_rankings", "users"
