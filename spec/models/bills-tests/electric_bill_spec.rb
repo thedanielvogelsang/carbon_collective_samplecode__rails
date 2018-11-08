@@ -5,7 +5,7 @@ RSpec.describe ElectricBill, type: :model do
     ctry = Country.create(name: "United States of America", avg_daily_electricity_consumed_per_capita: 12071.fdiv(30),
                   avg_daily_water_consumed_per_capita: 101.5,
                   avg_daily_gas_consumed_per_capita: 0.5)
-    al = ["Alabama", 1211, 82, 10.92]
+    al = ["Colorado", 1211, 82, 10.92]
     state_avg = "%0.6f" % (("%0.6f" % al[1]).to_f / ("%0.6f" % 30).to_f)
     reg = Region.create(name: al[0], avg_daily_electricity_consumed_per_capita: state_avg,
                   avg_daily_water_consumed_per_capita: al[2],

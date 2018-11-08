@@ -84,8 +84,10 @@ module UserHelper
       end
       #City
         set_rank("City", city.id)
+      if neighborhood
       #Neighborhood
         set_rank("Neighborhood", neighborhood.id)
+      end
       #Household
         set_rank("House", house.id)
   end
