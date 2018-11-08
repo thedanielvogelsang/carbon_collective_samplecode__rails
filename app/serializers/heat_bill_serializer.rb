@@ -34,7 +34,7 @@ class HeatBillSerializer < ActiveModel::Serializer
     object.who.first
   end
   def who_id
-    object.who.id
+    object.who.slug
   end
   def average_use
     object.average_daily_usage.to_f.round(2)
