@@ -100,7 +100,7 @@ def electric_bills
 
 end
 def water_bills
-
+  
 end
 def gas_bills
 

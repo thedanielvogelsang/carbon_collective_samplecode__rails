@@ -3,6 +3,7 @@ class WaterBill < ApplicationRecord
 
   belongs_to :house
   belongs_to :who, class_name: 'User', foreign_key: :user_id
+  has_many :user_water_bills 
 
   validates_presence_of :start_date,
                         :end_date,
