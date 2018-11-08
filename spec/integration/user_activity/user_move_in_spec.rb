@@ -41,7 +41,7 @@ RSpec.describe 'Users move-in-dates effect score' do
     it 'can now see correlating bills' do
         user = User.second
           expect(user.first + " " + user.last).to eq("New Roomie")
-        old_bills = user.bills
+        old_bills = user.electric_bills
           expect(old_bills.count).to eq(1)
           expect(old_bills.first.start_date > user.user_houses.first.move_in_date).to be true
           expect(ElectricBill.last.start_date > user.user_houses.first.move_in_date).to be false
