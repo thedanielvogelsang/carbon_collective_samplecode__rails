@@ -74,9 +74,11 @@ class HeatBill < ApplicationRecord
  def add_to_users_totals
    if user_id && house_id && start_date && end_date
      therms = self.average_daily_usage
-     users = UserHouse.joins(:house).where(house_id: house_id).select{|uh| (uh.move_in_date.to_datetime - 1) <= self.start_date}
      house = House.find(house_id)
-     users = users.map{|uh| User.find(uh.user_id)}
+     users_after_date = UserHouse.joins(:house)
+                                .where(house_id: house_id)
+                                .select{|uh| (uh.move_in_date.to_datetime - 1) <= self.start_date}
+     users = users_after_date.map{|uh| User.find(uh.user_id)}
      gas_saved = self.gas_saved.fdiv(self.no_residents)
      num_days = self.end_date - self.start_date
      users.each do |u|
@@ -85,6 +87,7 @@ class HeatBill < ApplicationRecord
        u.total_pounds_logged += therms_to_carbon(therms)
        u.total_gas_savings += gas_saved
        u.total_carbon_savings += therms_to_carbon(gas_saved)
+       UserHeatBill.find_or_create_by(user_id: u.id, heat_bill_id: self.id)
        u.save
      end
      house.update_data
@@ -97,9 +100,11 @@ class HeatBill < ApplicationRecord
  # before_destroy action
  def subtract_from_users_totals
    therms = self.average_daily_usage
-   users = UserHouse.joins(:house).where(house_id: house_id).select{|uh| (uh.move_in_date.to_datetime - 1) <= self.start_date}
+   # users = UserHouse.joins(:house).where(house_id: house_id).select{|uh| (uh.move_in_date.to_datetime - 1) <= self.start_date}
    house = House.find(house_id)
-   users = users.map{|uh| User.find(uh.user_id)}
+   users = User.joins(:user_heat_bills)
+               .where(:user_heat_bills => {heat_bill_id: id})
+               .merge(house.users)
    gas_saved = self.gas_saved.fdiv(self.no_residents)
    num_days = self.end_date - self.start_date
    users.each do |u|

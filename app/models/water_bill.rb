@@ -3,7 +3,7 @@ class WaterBill < ApplicationRecord
 
   belongs_to :house
   belongs_to :who, class_name: 'User', foreign_key: :user_id
-  has_many :user_water_bills 
+  has_many :user_water_bills
 
   validates_presence_of :start_date,
                         :end_date,
@@ -68,15 +68,17 @@ class WaterBill < ApplicationRecord
   def add_to_users_totals
     if user_id && house_id && start_date && end_date
       gals = self.total_gallons.fdiv(no_residents)
-      users = UserHouse.joins(:house).where(house_id: house_id).select{|uh| (uh.move_in_date.to_datetime - 1) <= self.start_date}
       house = House.find(house_id)
-      users = users.map{|uh| User.find(uh.user_id)}
+      users_after_date = UserHouse.joins(:house).where(house_id: house_id)
+                                  .select{|uh| (uh.move_in_date.to_datetime - 1) <= self.start_date}
+      users = users_after_date.map{|uh| User.find(uh.user_id)}
       water_saved = self.water_saved.fdiv(self.no_residents)
       num_days = self.end_date - self.start_date
       users.each do |u|
         u.total_waterbill_days_logged += num_days
         u.total_gallons_logged += (total_gallons.fdiv(no_residents))
         u.total_water_savings += water_saved
+        UserWaterBill.find_or_create_by(user_id: u.id, water_bill_id: self.id)
         u.save
       end
       house.update_data
@@ -88,9 +90,11 @@ class WaterBill < ApplicationRecord
 
   def subtract_from_users_totals
     gals = self.total_gallons.fdiv(no_residents)
-    users = UserHouse.joins(:house).where(house_id: house_id).select{|uh| (uh.move_in_date.to_datetime - 1) <= self.start_date}
+    # users = UserHouse.joins(:house).where(house_id: house_id).select{|uh| (uh.move_in_date.to_datetime - 1) <= self.start_date}
     house = House.find(house_id)
-    users = users.map{|uh| User.find(uh.user_id)}
+    users = User.joins(:user_water_bills)
+                .where(:user_water_bills => {water_bill_id: id})
+                .merge(house.users)
     water_saved = self.water_saved.fdiv(self.no_residents)
     num_days = self.end_date - self.start_date
     users.each do |u|
