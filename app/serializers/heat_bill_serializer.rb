@@ -3,7 +3,8 @@ class HeatBillSerializer < ActiveModel::Serializer
 
   attributes :id, :start_date, :end_date, :total_used, :no_days,
                   :total_saved, :carbon_impact, :who, :average_use,
-                  :house_info, :price, :year, :no_residents, :average_daily
+                  :house_info, :price, :year, :no_residents, :average_daily,
+                  :who_id
 
   def start_date
     object.start_date.strftime('%B %e')
@@ -31,6 +32,9 @@ class HeatBillSerializer < ActiveModel::Serializer
   end
   def who
     object.who.first
+  end
+  def who_id
+    object.who.id
   end
   def average_use
     object.average_daily_usage.to_f.round(2)
