@@ -97,13 +97,16 @@ def bills
 end
 
 def electric_bills
-
+  ElectricBill.joins(:user_electric_bills)
+              .where(:user_electric_bills => {user_id: id})
 end
 def water_bills
-  
+  WaterBill.joins(:user_water_bills)
+            .where(:user_water_bills => {user_id: id})
 end
 def gas_bills
-
+  HeatBill.joins(:user_heat_bills)
+          .where(:user_heat_bills => {user_id: id})
 end
 
 def email_activate
