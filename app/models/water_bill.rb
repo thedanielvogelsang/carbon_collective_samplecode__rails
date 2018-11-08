@@ -67,7 +67,8 @@ class WaterBill < ApplicationRecord
   def add_to_users_totals
     if user_id && house_id && start_date && end_date
       gals = self.total_gallons.fdiv(no_residents)
-      users = UserHouse.joins(:house).where(house_id: house_id).select{|uh| (uh.move_in_date.to_datetime - 1) <= self.start_date}
+      users = UserHouse.joins(:house).where(house_id: house_id)
+                       .select{|uh| (uh.move_in_date.to_datetime - 1) <= self.start_date}
       house = House.find(house_id)
       users = users.map{|uh| User.find(uh.user_id)}
       water_saved = self.water_saved.fdiv(self.no_residents)

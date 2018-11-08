@@ -152,6 +152,16 @@ def clear_account
   self.save
 end
 
+def re_calculate_bill_history(original)
+  mid = UserHouse.find_by(house_id: household.id, user_id: id).move_in_date
+  byebug
+  re_calculate_electricity_history(original, mid)
+  re_calculate_gas_history(original, mid)
+  re_calculate_water_history(original, mid)
+  byebug
+  self.save
+end
+
 private
   def check_email_format
     return if errors.key?(:email)

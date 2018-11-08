@@ -40,4 +40,25 @@ module UserWaterHelper
   def country_daily_water_consumption_per_user
     household ? household.address.city.region.country.avg_daily_water_consumed_per_user : nil
   end
+
+  def re_calculate_water_history(orig, mid)
+    total_days = household.water_bills.select{|b| b.start_date >= orig}
+                          .map{|b| b.end_date - b.start_date}.sum.to_i
+    total_use = household.water_bills.select{|b| b.start_date >= orig}
+                          .map{|b| b.average_daily_usage * (b.end_date - b.start_date).to_f}.sum
+    total_saved = household.water_bills.select{|b| b.start_date >= orig}
+                          .map{|b| b.water_saved.fdiv((b.end_date - b.start_date).to_i)}.sum
+        self.total_waterbill_days_logged -= total_days
+        self.total_gallons_logged -= total_use
+        self.total_water_savings -= total_saved
+    new_days = household.water_bills.select{|b| b.start_date >= mid}
+                          .map{|b| b.end_date - b.start_date}.sum.to_i
+    new_use = household.water_bills.select{|b| b.start_date >= mid}
+                          .map{|b| b.average_daily_usage * (b.end_date - b.start_date).to_f}.sum
+    new_savings = household.water_bills.select{|b| b.start_date >= mid}
+                          .map{|b| b.water_saved.fdiv((b.end_date - b.start_date).to_i)}.sum
+        self.total_waterbill_days_logged += new_days
+        self.total_gallons_logged += new_use
+        self.total_water_savings += new_savings
+  end
 end

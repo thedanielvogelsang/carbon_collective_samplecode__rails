@@ -1,5 +1,5 @@
 module UserElectricityHelper
-
+  include Co2Helper
   include UserHelper
 
   # def avg_daily_electricity_savings
@@ -40,6 +40,34 @@ module UserElectricityHelper
 
   def country_daily_electricity_consumption_per_user
     household ? household.address.city.region.country.avg_daily_electricity_consumed_per_user : nil
+  end
+
+  def re_calculate_electricity_history(orig, mid)
+    total_days = household.bills.select{|b| b.start_date >= orig}
+                          .map{|b| b.end_date - b.start_date}.sum.to_i
+    total_use = household.bills.select{|b| b.start_date >= orig}
+                          .map{|b| b.average_daily_usage * (b.end_date - b.start_date).to_f}.sum
+    total_saved = household.bills.select{|b| b.start_date >= orig}
+                          .map{|b| b.electricity_saved.fdiv((b.end_date - b.start_date).to_i)}.sum
+        self.total_kwhs_logged -= total_use
+        self.total_electricitybill_days_logged -= total_days
+        self.total_electricity_savings -= total_saved
+
+    new_days = household.bills.select{|b| b.start_date >= mid}
+                          .map{|b| b.end_date - b.start_date}.sum.to_i
+    new_use = household.bills.select{|b| b.start_date >= mid}
+                          .map{|b| b.average_daily_usage * (b.end_date - b.start_date).to_f}.sum
+    new_savings = household.bills.select{|b| b.start_date >= mid}
+                          .map{|b| b.electricity_saved.fdiv((b.end_date - b.start_date).to_i)}.sum
+        self.total_kwhs_logged += new_use
+        self.total_electricitybill_days_logged += new_days
+        self.total_electricity_savings += new_savings
+
+    # adjust carbon record
+    self.total_pounds_logged -= kwhs_to_carbon(total_use)
+    self.total_pounds_logged += kwhs_to_carbon(new_use)
+    self.total_carbon_savings -= kwhs_to_carbon(total_saved)
+    self.total_carbon_savings += kwhs_to_carbon(new_savings)
   end
 
 end

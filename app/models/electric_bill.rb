@@ -68,7 +68,8 @@ class ElectricBill < ApplicationRecord
   def add_to_users_totals
     if user_id && house_id && start_date && end_date
       kwhs = self.average_daily_usage
-      users = UserHouse.joins(:house).where(house_id: house_id).select{|uh| (uh.move_in_date.to_datetime - 1) <= self.start_date}
+      users = UserHouse.joins(:house).where(house_id: house_id)
+                       .select{|uh| (uh.move_in_date.to_datetime - 1) <= self.start_date}
       house = House.find(house_id)
       users = users.map{|uh| User.find(uh.user_id)}
       elect_saved = self.electricity_saved.fdiv(no_residents)
@@ -76,7 +77,7 @@ class ElectricBill < ApplicationRecord
       users.each do |u|
         u.total_electricitybill_days_logged += num_days
         u.total_kwhs_logged += (total_kwhs.fdiv(no_residents))
-        u.total_pounds_logged += kwhs_to_carbon(kwhs)
+        u.total_pounds_logged += kwhs_to_carbon(kwhs * num_days)
         u.total_electricity_savings += elect_saved
         u.total_carbon_savings += kwhs_to_carbon(elect_saved)
         u.save
