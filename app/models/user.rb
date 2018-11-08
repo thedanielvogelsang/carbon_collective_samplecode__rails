@@ -95,7 +95,10 @@ class User < ApplicationRecord
   end
 
   def bills
-    self.houses.map{|h| h.bills}.flatten
+    all_bills = []
+    all_bills << electric_bills
+    all_bills << water_bills
+    all_bills << gas_bills 
   end
 
   def electric_bills
