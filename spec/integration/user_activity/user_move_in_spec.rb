@@ -31,26 +31,55 @@ RSpec.describe 'Users move-in-dates effect score' do
                     generation: 1,
                     )
     UserHouse.create(house_id: @house.id, user_id: @old_user.id, move_in_date: DateTime.now - 90)
-    UserHouse.create(house_id: @house.id, user_id: @new_user.id, move_in_date: DateTime.now - 30)
+    UserHouse.create(house_id: @house.id, user_id: @new_user.id, move_in_date: DateTime.now - 31)
     ago = DateTime.now - 29
     ago2 = DateTime.now - 59
-    el1 = ElectricBill.create(total_kwhs: 1000, start_date: ago, end_date: (ago + 29), house_id: @house.id, no_residents: 2, who: @old_user)
-    el2 = ElectricBill.create(total_kwhs: 1000,  start_date: ago2, end_date: (ago2 + 29), house_id: @house.id, no_residents: 2, who: @old_user)
-  end
+    ago3 = DateTime.now - 89
+    @el1 = ElectricBill.create(total_kwhs: 1000, start_date: ago, end_date: (ago + 29), house_id: @house.id, no_residents: 2, who: @old_user)
+    @el2 = ElectricBill.create(total_kwhs: 1000,  start_date: ago2, end_date: (ago2 + 29), house_id: @house.id, no_residents: 2, who: @old_user)
+    @heat_A = HeatBill.create(total_therms: 10, start_date: ago2, end_date: (ago2 + 29), no_residents: 2, house_id: @house.id, who: @old_user, force: true)
+    @heat_B = HeatBill.create(total_therms: 10,  start_date: ago3, end_date: (ago3 + 29), no_residents: 2, house_id: @house.id, who: @old_user, force: true)
+end
   context 'User expands move_in_date time window' do
-    it 'can now see correlating bills' do
+    it 'can only see correlating bills if re-update (worker, on app) is triggered' do
         user = User.second
           expect(user.first + " " + user.last).to eq("New Roomie")
-        old_bills = user.electric_bills
-          expect(old_bills.count).to eq(1)
-          expect(old_bills.first.start_date > user.user_houses.first.move_in_date).to be true
-          expect(ElectricBill.last.start_date > user.user_houses.first.move_in_date).to be false
-        new_move_in_date = DateTime.now - 90
         uh = UserHouse.last
+          expect(uh.user_id).to eq(user.id)
+        # original bill count equal to 1 (because he moved in after @el1 and @heat_B)
+        old_electric = user.electric_bills
+          expect(old_electric.count).to eq(1)
+          # total bill count equal to 1 also
+          expect(user.bills.count).to eq(1)
+          expect(old_electric.first.start_date >= user.user_houses.first.move_in_date).to be true
+          expect(ElectricBill.last.start_date >= user.user_houses.first.move_in_date).to be false
+
+        # changes move in date
+        new_move_in_date = DateTime.now - 90
+
+        old_move_in_date = uh.move_in_date
           expect(uh.move_in_date >= new_move_in_date)
         uh.update(move_in_date: new_move_in_date)
+
+     ## ISNT ASSOCIATED UNTIL AFTER RE_UPDATE OCCURS (user_helper)
+        # sees only same first electric bills
+        new_electric = user.electric_bills
+          expect(new_electric.count).to eq(1)
+          expect(new_electric.first).to eq(@el1)
+          ## re_calculate ##
+          user.re_calculate_bill_history(old_move_in_date)
+
+        # now sees both electric bills
+        new_electric = user.electric_bills
+          expect(new_electric.count).to eq(2)
+
+        # also absorbs the heatbill within range
         bills = user.bills
-          expect(bills.count).to eq(2)
+          expect(bills.count).to eq(3)
+
+        #but not the final heat bill (which predates user2s new move_in_date)
+          expect(bills.last.id).to eq(@heat_A.id)
+          expect(bills.include?(@heat_B)).to be false
     end
     it 'sees a reflection in score' do
 

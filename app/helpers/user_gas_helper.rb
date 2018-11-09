@@ -43,31 +43,34 @@ module UserGasHelper
   end
 
   def re_calculate_gas_history(orig, mid)
-    total_days = household.heat_bills.select{|b| b.start_date >= orig}
-                          .map{|b| b.end_date - b.start_date}.sum.to_i
-    total_use = household.heat_bills.select{|b| b.start_date >= orig}
-                          .map{|b| b.average_daily_usage * (b.end_date - b.start_date).to_f}.sum
-    total_saved = household.heat_bills.select{|b| b.start_date >= orig}
-                          .map{|b| b.gas_saved.fdiv((b.end_date - b.start_date).to_i)}.sum
+    ## Removing old totals
+    bills = household.heat_bills.select{|b| b.start_date >= orig}
+
+    total_days = bills.map{|b| b.end_date - b.start_date}.sum.to_i
+    total_use = bills.map{|b| b.average_daily_usage * (b.end_date - b.start_date).to_f}.sum
+    total_saved = bills.map{|b| b.gas_saved.fdiv((b.end_date - b.start_date).to_i)}.sum
         self.total_heatbill_days_logged -= total_days
         self.total_therms_logged -= total_use
         self.total_gas_savings -= total_saved
 
-    new_days = household.heat_bills.select{|b| b.start_date >= mid}
-                          .map{|b| b.end_date - b.start_date}.sum.to_i
-    new_use = household.heat_bills.select{|b| b.start_date >= mid}
-                          .map{|b| b.average_daily_usage * (b.end_date - b.start_date).to_f}.sum
-    new_savings = household.heat_bills.select{|b| b.start_date >= mid}
-                          .map{|b| b.gas_saved.fdiv((b.end_date - b.start_date).to_i)}.sum
+    ## Adding new totals
+    bills = household.heat_bills.select{|b| b.start_date >= mid}
+
+    new_days = bills.map{|b| b.end_date - b.start_date}.sum.to_i
+    new_use = bills.map{|b| b.average_daily_usage * (b.end_date - b.start_date).to_f}.sum
+    new_savings = bills.map{|b| b.gas_saved.fdiv((b.end_date - b.start_date).to_i)}.sum
         self.total_heatbill_days_logged += new_days
         self.total_therms_logged += new_use
         self.total_gas_savings += new_savings
 
+    # CREATING NEW USER_HEAT_BILLS
+    bills.each{|b| UserHeatBill.find_or_create_by(user_id: id, heat_bill_id: b.id)}
+
     # adjust carbon record
-    self.total_pounds_logged -= therms_to_carbon(total_use)
-    self.total_pounds_logged += therms_to_carbon(new_use)
-    self.total_carbon_savings -= therms_to_carbon(total_saved)
-    self.total_carbon_savings += therms_to_carbon(new_savings)
+        self.total_pounds_logged -= therms_to_carbon(total_use)
+        self.total_pounds_logged += therms_to_carbon(new_use)
+        self.total_carbon_savings -= therms_to_carbon(total_saved)
+        self.total_carbon_savings += therms_to_carbon(new_savings)
   end
 
 end

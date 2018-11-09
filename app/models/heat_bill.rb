@@ -127,7 +127,6 @@ class HeatBill < ApplicationRecord
      check_overlap(start_, end_, b.start_date, b.end_date)
    end
    overlaps = overlaps - [self]
-   pp overlaps
    overlaps.empty? ? true : errors.add(:start_date, "start or end date overlaps with another bill")
  end
 

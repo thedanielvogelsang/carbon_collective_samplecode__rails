@@ -95,10 +95,11 @@ class User < ApplicationRecord
   end
 
   def bills
-    all_bills = []
-    all_bills << electric_bills
-    all_bills << water_bills
-    all_bills << gas_bills 
+    all_ = []
+    all_ << electric_bills
+    all_ << water_bills
+    all_ << gas_bills
+    return all_.flatten
   end
 
   def electric_bills

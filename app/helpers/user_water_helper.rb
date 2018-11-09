@@ -42,23 +42,29 @@ module UserWaterHelper
   end
 
   def re_calculate_water_history(orig, mid)
-    total_days = household.water_bills.select{|b| b.start_date >= orig}
-                          .map{|b| b.end_date - b.start_date}.sum.to_i
-    total_use = household.water_bills.select{|b| b.start_date >= orig}
-                          .map{|b| b.average_daily_usage * (b.end_date - b.start_date).to_f}.sum
-    total_saved = household.water_bills.select{|b| b.start_date >= orig}
-                          .map{|b| b.water_saved.fdiv((b.end_date - b.start_date).to_i)}.sum
+    ## Removing old totals
+    bills = household.water_bills.select{|b| b.start_date >= orig}
+
+    total_days = bills.map{|b| b.end_date - b.start_date}.sum.to_i
+    total_use = bills.map{|b| b.average_daily_usage * (b.end_date - b.start_date).to_f}.sum
+    total_saved = bills.map{|b| b.water_saved.fdiv((b.end_date - b.start_date).to_i)}.sum
+
         self.total_waterbill_days_logged -= total_days
         self.total_gallons_logged -= total_use
         self.total_water_savings -= total_saved
-    new_days = household.water_bills.select{|b| b.start_date >= mid}
-                          .map{|b| b.end_date - b.start_date}.sum.to_i
-    new_use = household.water_bills.select{|b| b.start_date >= mid}
-                          .map{|b| b.average_daily_usage * (b.end_date - b.start_date).to_f}.sum
-    new_savings = household.water_bills.select{|b| b.start_date >= mid}
-                          .map{|b| b.water_saved.fdiv((b.end_date - b.start_date).to_i)}.sum
+
+    ## Adding new totals
+    bills = household.water_bills.select{|b| b.start_date >= mid}
+
+    new_days =  bills.map{|b| b.end_date - b.start_date}.sum.to_i
+    new_use = bills.map{|b| b.average_daily_usage * (b.end_date - b.start_date).to_f}.sum
+    new_savings = bills.map{|b| b.water_saved.fdiv((b.end_date - b.start_date).to_i)}.sum
+
         self.total_waterbill_days_logged += new_days
         self.total_gallons_logged += new_use
         self.total_water_savings += new_savings
+
+    # CREATING NEW USER_WATER_BILLS
+    bills.each{|b| UserWaterBill.find_or_create_by(user_id: id, water_bill_id: b.id)}
   end
 end
