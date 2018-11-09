@@ -5,6 +5,7 @@ class ElectricBill < ApplicationRecord
   belongs_to :house
   belongs_to :who, class_name: 'User', foreign_key: :user_id
   has_many :user_electric_bills
+  has_many :users, through: :user_electric_bills
 
     validates_presence_of :start_date,
                           :end_date,
@@ -78,7 +79,7 @@ class ElectricBill < ApplicationRecord
       users.each do |u|
         u.total_electricitybill_days_logged += num_days
         u.total_kwhs_logged += (total_kwhs.fdiv(no_residents))
-        u.total_pounds_logged += kwhs_to_carbon(kwhs)
+        u.total_pounds_logged += kwhs_to_carbon(kwhs * num_days)
         u.total_electricity_savings += elect_saved
         u.total_carbon_savings += kwhs_to_carbon(elect_saved)
         UserElectricBill.find_or_create_by(user_id: u.id, electric_bill_id: self.id)

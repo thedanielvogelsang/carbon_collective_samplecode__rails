@@ -40,7 +40,9 @@ class Api::V1::HousesController < ApplicationController
           error_message = "ignore nil date"
           render json: {:error => error_message}, status: 404
         else
+          original_date = uh.move_in_date
           uh.update(move_in_date: params[:user_house][:move_in_date])
+          # job for updating users data CalculateUserScoreJob.perform(user, original_date)
           house = uh.house
           render json: house, serializer: HouseElectricitySerializer, user: user.id
         end

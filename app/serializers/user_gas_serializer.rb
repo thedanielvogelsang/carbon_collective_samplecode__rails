@@ -311,7 +311,7 @@ class UserGasSerializer < ActiveModel::Serializer
 
   def bill_entered
     if object.household
-      return object.household.gbills.count > 0 ? true : false
+      return object.household.heat_bills.count > 0 ? true : false
     else
       false
     end

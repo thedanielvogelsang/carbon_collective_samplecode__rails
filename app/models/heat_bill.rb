@@ -5,7 +5,7 @@ class HeatBill < ApplicationRecord
   belongs_to :house
   belongs_to :who, class_name: 'User', foreign_key: :user_id
   has_many :user_heat_bills
-
+  has_many :users, through: :user_heat_bills
 
   validates_presence_of :start_date,
                         :end_date,
@@ -84,7 +84,7 @@ class HeatBill < ApplicationRecord
      users.each do |u|
        u.total_heatbill_days_logged += num_days
        u.total_therms_logged += (total_therms.fdiv(no_residents))
-       u.total_pounds_logged += therms_to_carbon(therms)
+       u.total_pounds_logged += therms_to_carbon(therms * num_days)
        u.total_gas_savings += gas_saved
        u.total_carbon_savings += therms_to_carbon(gas_saved)
        UserHeatBill.find_or_create_by(user_id: u.id, heat_bill_id: self.id)
@@ -127,7 +127,6 @@ class HeatBill < ApplicationRecord
      check_overlap(start_, end_, b.start_date, b.end_date)
    end
    overlaps = overlaps - [self]
-   pp overlaps
    overlaps.empty? ? true : errors.add(:start_date, "start or end date overlaps with another bill")
  end
 
