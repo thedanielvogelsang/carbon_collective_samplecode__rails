@@ -82,7 +82,38 @@ end
           expect(bills.include?(@heat_B)).to be false
     end
     it 'sees a reflection in score' do
+        user = User.second
+          expect(user.first + " " + user.last).to eq("New Roomie")
+          expect(user.total_electricitybill_days_logged).to eq(29)
+          expect(user.total_kwhs_logged).to eq(500)
+          expect(user.avg_daily_electricity_consumption.to_f.round(2)).to eq(17.24)
+          expect(500.0.fdiv(29).to_f.round(2)).to eq(17.24)
 
+          expect(user.total_heatbill_days_logged).to eq(0)
+          expect(user.total_therms_logged.ceil).to eq(0.0)
+          expect(user.avg_daily_gas_consumption.to_f.round(2)).to eq(0.0)
+
+        # changes move in date
+        new_move_in_date = DateTime.now - 90
+        uh = UserHouse.last
+          expect(uh.user_id).to eq(user.id)
+        old_move_in_date = uh.move_in_date
+          expect(uh.move_in_date >= new_move_in_date)
+
+        uh.update(move_in_date: new_move_in_date)
+        user.re_calculate_bill_history(old_move_in_date)
+
+        #updates user averages properly
+        expect(user.total_electricitybill_days_logged).to eq(58)
+        expect(user.total_kwhs_logged.ceil).to eq(1000)
+        expect(user.avg_daily_electricity_consumption.to_f.round(2)).to eq(17.24)
+        expect(1000.0.fdiv(58).to_f.round(2)).to eq(17.24)
+
+        #user now has heat average too
+        expect(user.total_heatbill_days_logged).to eq(29)
+        expect(user.total_therms_logged.ceil).to eq(5)
+        expect(user.avg_daily_gas_consumption.to_f.round(2)).to eq(0.17)
+        expect(5.0.fdiv(29).to_f.round(2)).to eq(0.17)
     end
   end
 end
