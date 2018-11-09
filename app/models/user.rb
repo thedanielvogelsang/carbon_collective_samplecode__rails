@@ -98,7 +98,7 @@ class User < ApplicationRecord
     all_ = []
     all_ << electric_bills
     all_ << water_bills
-    all_ << gas_bills
+    all_ << heat_bills
     return all_.flatten
   end
 
@@ -110,7 +110,7 @@ class User < ApplicationRecord
     WaterBill.joins(:user_water_bills)
               .where(:user_water_bills => {user_id: id})
   end
-  def gas_bills
+  def heat_bills
     HeatBill.joins(:user_heat_bills)
             .where(:user_heat_bills => {user_id: id})
   end

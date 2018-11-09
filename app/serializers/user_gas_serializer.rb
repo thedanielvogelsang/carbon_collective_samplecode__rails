@@ -268,7 +268,7 @@ class UserGasSerializer < ActiveModel::Serializer
     'therms'
   end
   def num_bills
-    object.gas_bills_by_house(object.household.id).count if object.household
+    object.heat_bills_by_house(object.household.id).count if object.household
   end
 
   def out_of

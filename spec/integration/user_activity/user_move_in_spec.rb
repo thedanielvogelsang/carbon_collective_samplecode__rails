@@ -184,13 +184,17 @@ end
           expect(user.bills.include?(@el2))
           expect(user.bills.include?(waterbill))
 
+          expect(user.electric_bills.count).to eq(2)
+          expect(user.heat_bills.count).to eq(2)
+          expect(user.water_bills.count).to eq(1)
+
           #users heat average updates
           expect(user.total_heatbill_days_logged).to eq(58)
           expect(user.total_therms_logged.ceil).to eq(11)
           expect(user.avg_daily_gas_consumption.to_f.round(2)).to eq(0.19)
           expect(11.0.fdiv(58).to_f.round(2)).to eq(0.19)
 
-          #but still no water average (good)
+          #and now reports water average updates
           expect(user.total_waterbill_days_logged).to eq(27)
           expect(user.total_gallons_logged.ceil).to eq(5000)
           expect(user.avg_daily_water_consumption.to_f.round(2)).to eq(185.19)
