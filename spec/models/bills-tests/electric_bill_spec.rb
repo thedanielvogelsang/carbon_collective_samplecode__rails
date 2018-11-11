@@ -13,9 +13,10 @@ RSpec.describe ElectricBill, type: :model do
                   country_id: ctry.id,
                  )
     city = City.create(name: "Denver", region_id: reg.id)
+    neighborhood = Neighborhood.create!(name: "Neighborhood", city_id: city.id)
     zip = Zipcode.create(zipcode: "80218")
-    add = Address.create(address_line1: "404 Marshall Rd", city_id: city.id, zipcode_id: zip.id)
-    add2 = Address.create(address_line1: "505 Someplace Else", city_id: city.id, zipcode_id: zip.id)
+    add = Address.create(address_line1: "404 Marshall Rd", city_id: city.id, zipcode_id: zip.id, neighborhood_id: neighborhood.id)
+    add2 = Address.create(address_line1: "505 Someplace Else", city_id: city.id, zipcode_id: zip.id, neighborhood_id: neighborhood.id)
 
     @house = House.create(total_sq_ft: rand(1500..2000), no_residents: 2, address_id: add.id)
     @house2 = House.create(total_sq_ft: rand(2500..3000), no_residents: 3, address_id: add2.id)
@@ -28,7 +29,23 @@ RSpec.describe ElectricBill, type: :model do
     UserHouse.create(house_id: @house.id, user_id: @user.id, move_in_date: DateTime.now - 30)
     UserHouse.create(house_id: @house2.id, user_id: @user.id, move_in_date: DateTime.now - 30)
   end
-  context 'a house' do
+  context 'validations' do
+    it 'will detect an outlier' do
+      yesterday = DateTime.now - 29
+      el1 = ElectricBill.new(total_kwhs: 10000, start_date: yesterday, end_date: (yesterday + 29), house_id: @house.id, no_residents: 2, who: @user)
+      expect(el1.save).to be false
+      expect(el1.errors.first.join(' ')).to eq("total_kwhs resource usage is much higher than average, are you sure you want to proceed?")
+    end
+    it 'cant save with an avg_daily of > X (until bill count is over Y)' do
+      yesterday = DateTime.now - 2
+      el1 = ElectricBill.new(total_kwhs: 404, start_date: yesterday, end_date: (yesterday + 2), house_id: @house.id, no_residents: 2, who: @user)
+      expect(el1.save).to be false
+      expect(el1.errors.first[1]).to eq("resource usage is much higher than average, are you sure you want to proceed?")
+      el1 = ElectricBill.new(total_kwhs: 400, start_date: yesterday, end_date: (yesterday + 2), house_id: @house.id, no_residents: 2, who: @user)
+      expect(el1.save).to be true
+    end
+  end
+  context 'in a house' do
     it 'cant have bills with the same exact days' do
       yesterday = DateTime.now - 29
       el1 = ElectricBill.new(total_kwhs: 1000, start_date: yesterday, end_date: (yesterday + 29), house_id: @house.id, no_residents: 2, who: @user)
@@ -71,7 +88,7 @@ RSpec.describe ElectricBill, type: :model do
       expect(bill_B.save).to be true
     end
   end
-  context 'a house with revolving users' do
+  context 'in a house with revolving users' do
     it 'cannot save bills BEFORE single house-members move_in_date' do
       #user tries to save a bill for a date that precedes his move_in_date
       uH = UserHouse.first
@@ -204,7 +221,7 @@ RSpec.describe ElectricBill, type: :model do
         expect(new_user_score_NEW).to eq(new_user_score)
     end
   end
-  context 'a house with different bill types' do
+  context 'in a house with different bill types' do
     it 'can be saved on the same day' do
       yesterday = DateTime.now - 29
       bill_1 = ElectricBill.new(total_kwhs: 1000, start_date: yesterday, end_date: (yesterday + 29), house_id: @house.id, no_residents: 2, who: @user)
@@ -213,7 +230,7 @@ RSpec.describe ElectricBill, type: :model do
       expect(bill_2.save).to be true
     end
   end
-  context 'two different houses' do
+  context 'in two different houses' do
     it 'can save along the same dates' do
       yesterday = DateTime.now - 29
       el1 = ElectricBill.new(total_kwhs: 1000, start_date: yesterday, end_date: (yesterday + 29), house_id: @house.id, no_residents: 2, who: @user)

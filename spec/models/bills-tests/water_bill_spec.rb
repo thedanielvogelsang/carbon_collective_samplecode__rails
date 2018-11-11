@@ -14,12 +14,13 @@ RSpec.describe WaterBill, type: :model do
                   country_id: ctry.id,
                  )
     city = City.create(name: "Denver", region_id: reg.id)
+    neighborhood = Neighborhood.create!(name: "Neighborhood", city_id: city.id)
     zip = Zipcode.create(zipcode: "80218")
     add = Address.create(address_line1: "404 Marshall Rd", city_id: city.id, zipcode_id: zip.id)
     add2 = Address.create(address_line1: "505 Someplace Else", city_id: city.id, zipcode_id: zip.id)
 
-    @house = House.create(total_sq_ft: rand(1500..2000), no_residents: 2, address_id: add.id)
-    @house2 = House.create(total_sq_ft: rand(2500..3000), no_residents: 3, address_id: add2.id)
+    @house = House.create(total_sq_ft: rand(1500..2000), no_residents: 2, address_id: add.id, neighborhood_id: neighborhood.id)
+    @house2 = House.create(total_sq_ft: rand(2500..3000), no_residents: 3, address_id: add2.id, neighborhood_id: neighborhood.id)
     @user = User.create(email: "dvog@gmail.com",
                     password: 'banana',
                     first: "Drake",
@@ -28,6 +29,20 @@ RSpec.describe WaterBill, type: :model do
                     )
     UserHouse.create(house_id: @house.id, user_id: @user.id, move_in_date: DateTime.now - 30)
     UserHouse.create(house_id: @house2.id, user_id: @user.id, move_in_date: DateTime.now - 30)
+  end
+  context 'validations' do
+    it 'will detect an outlier' do
+      yesterday = DateTime.now - 29
+      el1 = ElectricBill.new(total_kwhs: 100000, start_date: yesterday, end_date: (yesterday + 29), house_id: @house.id, no_residents: 2, who: @user)
+      expect(el1.save).to be false
+      expect(el1.errors.first).to eq("resource usage is much higher than average, are you sure you want to proceed?")
+    end
+    it 'cant save with an avg_daily of > X (until bill count is over Y)' do
+      yesterday = DateTime.now - 29
+      el1 = ElectricBill.new(total_kwhs: 100000, start_date: yesterday, end_date: (yesterday + 29), house_id: @house.id, no_residents: 2, who: @user)
+      expect(el1.save).to be false
+      expect(el1.errors.first).to eq("resource usage is much higher than average, are you sure you want to proceed?")
+    end
   end
   context 'a house' do
     it 'cant have bills with the same exact days' do

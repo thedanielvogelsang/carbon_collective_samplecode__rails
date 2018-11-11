@@ -136,7 +136,7 @@ class WaterBill < ApplicationRecord
         iqr = q1_q3[1] - q1_q3[0]
       end
       usages.count < 10 ? max = 150 : max = 1.5*iqr + q1_q3[1]
-    return average_daily_usage > 0 && average_daily_usage <= max ? true : force ? true : errors.add(:total_kwhs, "resource usage is much higher than average, are you sure you want to proceed?")
+    return average_daily_usage > 0 && average_daily_usage <= max ? true : force ? true : errors.add(:total_gallons, "resource usage is much higher than average, are you sure you want to proceed?")
   end
 
   def log_user_activity
