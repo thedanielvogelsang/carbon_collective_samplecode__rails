@@ -22,7 +22,7 @@ RSpec.describe UserElectricityQuestion, type: :model do
     it {should belong_to(:user)}
   end
   context 'current number of user questions' do
-    it "has 5" do
+    it "has 5 but demands 4" do
         expect(@u_question_list.q_count).to eq(4)
         #however it has 5 questions
         expect(@u_question_list.attributes.keys.include?("quest1")).to be true
@@ -35,51 +35,51 @@ RSpec.describe UserElectricityQuestion, type: :model do
     it 'updates completion for question 1' do
       @u_question_list.quest1 = "A"
       @u_question_list.save
-        expect(UserElectricityQuestion.last.completion_percentage).to eq(25)
+        expect(@u_question_list.completion_percentage).to eq(25)
     end
-    it 'updates completion for question 1' do
+    it 'updates completion for question 2' do
       @u_question_list.quest2 = "A"
       @u_question_list.save
-        expect(UserElectricityQuestion.last.completion_percentage).to eq(25)
+        expect(@u_question_list.completion_percentage).to eq(25)
     end
-    it 'updates completion for question 1' do
+    it 'updates completion for question 3' do
       @u_question_list.quest3 = "A"
       @u_question_list.save
-        expect(UserElectricityQuestion.last.completion_percentage).to eq(25)
+        expect(@u_question_list.completion_percentage).to eq(25)
     end
     it 'DOES NOT update completion for question 4' do
       @u_question_list.quest4 = "A"
       @u_question_list.save
-        expect(UserElectricityQuestion.last.completion_percentage).to eq(0)
+        expect(@u_question_list.completion_percentage).to eq(0)
     end
-    it 'updates completion for question 1' do
+    it 'updates completion for question 5' do
       @u_question_list.quest5 = "A"
       @u_question_list.save
-        expect(UserElectricityQuestion.last.completion_percentage).to eq(25)
+        expect(@u_question_list.completion_percentage).to eq(25)
     end
     it 'calculates accurate completion percentage' do
       @u_question_list.quest1 = "A"
       @u_question_list.quest2 = "A"
       @u_question_list.quest5 = "A"
       @u_question_list.save
-        expect(UserElectricityQuestion.last.completion_percentage).to eq(75)
+        expect(@u_question_list.completion_percentage).to eq(75)
 
       @u_question_list.quest5 = nil
       @u_question_list.save
-        expect(UserElectricityQuestion.last.completion_percentage).to eq(50)
+        expect(@u_question_list.completion_percentage).to eq(50)
     end
     it 'at 100% completion percentage it is complete' do
       @u_question_list.quest1 = "A"
       @u_question_list.quest2 = "A"
       @u_question_list.quest5 = "A"
       @u_question_list.save
-        expect(UserElectricityQuestion.last.completion_percentage).to eq(75)
-        expect(UserElectricityQuestion.last.completed).to eq(false)
+        expect(@u_question_list.completion_percentage).to eq(75)
+        expect(@u_question_list.completed).to eq(false)
 
       @u_question_list.quest3 = "A"
       @u_question_list.save
-        expect(UserElectricityQuestion.last.completion_percentage).to eq(100)
-        expect(UserElectricityQuestion.last.completed).to eq(true)
+        expect(@u_question_list.completion_percentage).to eq(100)
+        expect(@u_question_list.completed).to eq(true)
     end
   end
   context 'question creation / destruction in database' do

@@ -36,43 +36,43 @@ RSpec.describe UserGasQuestion, type: :model do
     it 'updates completion for question 1' do
       @u_question_list.quest1 = "A"
       @u_question_list.save
-        expect(UserGasQuestion.last.completion_percentage).to eq(20)
+        expect(@u_question_list.completion_percentage).to eq(20)
     end
     it 'updates completion for question 2' do
       @u_question_list.quest2 = "A"
       @u_question_list.save
-        expect(UserGasQuestion.last.completion_percentage).to eq(20)
+        expect(@u_question_list.completion_percentage).to eq(20)
     end
     it 'updates completion for question 3' do
       @u_question_list.quest3 = "A"
       @u_question_list.save
-        expect(UserGasQuestion.last.completion_percentage).to eq(20)
+        expect(@u_question_list.completion_percentage).to eq(20)
     end
     it 'updates completion for question 4' do
       @u_question_list.quest4 = "A"
       @u_question_list.save
-      expect(UserGasQuestion.last.completion_percentage).to eq(20)
+      expect(@u_question_list.completion_percentage).to eq(20)
     end
     it 'DOES NOT update completion for question 5' do
       @u_question_list.quest5 = "A"
       @u_question_list.save
-        expect(UserGasQuestion.last.completion_percentage).to eq(0)
+        expect(@u_question_list.completion_percentage).to eq(0)
     end
     it 'updates completion for question 6' do
       @u_question_list.quest6 = "A"
       @u_question_list.save
-        expect(UserGasQuestion.last.completion_percentage).to eq(20)
+        expect(@u_question_list.completion_percentage).to eq(20)
     end
     it 'calculates accurate completion percentage' do
       @u_question_list.quest1 = "A"
       @u_question_list.quest2 = "A"
       @u_question_list.quest3 = "A"
       @u_question_list.save
-        expect(UserGasQuestion.last.completion_percentage).to eq(60)
+        expect(@u_question_list.completion_percentage).to eq(60)
 
       @u_question_list.quest3 = nil
       @u_question_list.save
-        expect(UserGasQuestion.last.completion_percentage).to eq(40)
+        expect(@u_question_list.completion_percentage).to eq(40)
     end
     it 'at 100% completion percentage it is complete' do
       @u_question_list.quest1 = "A"
@@ -80,13 +80,13 @@ RSpec.describe UserGasQuestion, type: :model do
       @u_question_list.quest3 = "A"
       @u_question_list.quest4 = "A"
       @u_question_list.save
-        expect(UserGasQuestion.last.completion_percentage).to eq(80)
-        expect(UserGasQuestion.last.completed).to eq(false)
+        expect(@u_question_list.completion_percentage).to eq(80)
+        expect(@u_question_list.completed).to eq(false)
 
       @u_question_list.quest6 = "A"
       @u_question_list.save
-        expect(UserGasQuestion.last.completion_percentage).to eq(100)
-        expect(UserGasQuestion.last.completed).to eq(true)
+        expect(@u_question_list.completion_percentage).to eq(100)
+        expect(@u_question_list.completed).to eq(true)
     end
   end
   context 'question creation / destruction in database' do
