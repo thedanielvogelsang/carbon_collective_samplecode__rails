@@ -36,7 +36,7 @@ RSpec.describe HeatBill, type: :model do
       expect(hl1.save).to be false
       expect(hl1.errors.first.join(' ')).to eq("total_therms resource usage is much higher than average, are you sure you want to proceed?")
     end
-    it 'cant save with an avg_daily of > 7/day/resident (until bill count is over 10)' do
+    it 'cant save with an avg_daily of > 7 therms/day/resident (until bill count is over 10)' do
       yesterday = DateTime.now - 2
       hl1 = HeatBill.new(total_therms: 32, start_date: yesterday, end_date: (yesterday + 2), house_id: @house.id, no_residents: 2, who: @user)
       expect(hl1.save).to be false

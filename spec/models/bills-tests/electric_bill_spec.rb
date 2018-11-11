@@ -36,12 +36,17 @@ RSpec.describe ElectricBill, type: :model do
       expect(el1.save).to be false
       expect(el1.errors.first.join(' ')).to eq("total_kwhs resource usage is much higher than average, are you sure you want to proceed?")
     end
-    it 'cant save with an avg_daily of > X (until bill count is over Y)' do
+    it 'cant save with an avg_daily of > 100 kwhs/day/resident (until bill count is over 10)' do
       yesterday = DateTime.now - 2
       el1 = ElectricBill.new(total_kwhs: 404, start_date: yesterday, end_date: (yesterday + 2), house_id: @house.id, no_residents: 2, who: @user)
       expect(el1.save).to be false
       expect(el1.errors.first[1]).to eq("resource usage is much higher than average, are you sure you want to proceed?")
       el1 = ElectricBill.new(total_kwhs: 400, start_date: yesterday, end_date: (yesterday + 2), house_id: @house.id, no_residents: 2, who: @user)
+      expect(el1.save).to be true
+    end
+    it 'CAN save with an avg_daily of > X kwhs/day/resident w/ FORCE = TRUE' do
+      yesterday = DateTime.now - 2
+      el1 = ElectricBill.new(total_kwhs: 41000, force: true, start_date: yesterday, end_date: (yesterday + 2), house_id: @house.id, no_residents: 2, who: @user)
       expect(el1.save).to be true
     end
   end
