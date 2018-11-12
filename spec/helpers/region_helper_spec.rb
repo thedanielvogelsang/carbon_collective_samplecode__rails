@@ -188,7 +188,7 @@ RSpec.describe RegionHelper, type: :helper do
       expect(user.region).to eq(@region)
       therms = 1400
       price = rand(1..100)
-      HeatBill.create(start_date: start_date1, end_date: end_date1, total_therms: therms, price: price, house_id: house.id, no_residents: 2, user_id: user.id)
+      HeatBill.create(start_date: start_date1, end_date: end_date1, total_therms: therms, price: price, house_id: house.id, no_residents: 2, user_id: user.id, force: true)
 
       user = User.first
       r1_avg = @region.avg_daily_gas_consumed_per_user
