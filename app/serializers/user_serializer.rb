@@ -10,6 +10,7 @@ class UserSerializer < ActiveModel::Serializer
                   # :avg_daily_footprint,
                   # :avg_monthly_footprint,
                   :household, :neighborhood, :city, :county, :region, :country,
+                  :navbar_helper,
                   :checklists_left, :invites_left, :bills_left, :resources_entered
 
   def house
@@ -101,6 +102,14 @@ class UserSerializer < ActiveModel::Serializer
     else
       return ct
     end
+  end
+
+  def navbar_helper
+    return {
+      'electricity': object.household.bills.empty?,
+      'water': object.household.wbills.empty?,
+      'gas': object.household.gbills.empty?,
+      }
   end
 
   def invites_left
