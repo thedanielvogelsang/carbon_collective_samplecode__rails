@@ -106,12 +106,26 @@ class ElectricBill < ApplicationRecord
         u.total_electricitybill_days_logged -= num_days
         u.total_kwhs_logged -= (total_kwhs.fdiv(no_residents))
         u.total_pounds_logged -= kwhs_to_carbon(kwhs)
+        u.total_kwhs_logged.to_i == 0 ? clear_user_ranks(u) : nil
+        u.total_pounds_logged.to_i == 0 ? clear_user_ranks_carbon(u) : nil
         u.total_electricity_savings -= elect_saved
         u.total_carbon_savings -= kwhs_to_carbon(elect_saved)
         u.save
       end
       house.update_data
       house.update_user_rankings
+  end
+
+  def clear_user_ranks(user)
+    user.user_electricity_rankings.each do |uwr|
+      uwr.update(rank: nil, arrow: nil)
+    end
+  end
+
+  def clear_user_ranks_carbon(user)
+    user.user_carbon_rankings.each do |uwr|
+      uwr.update(rank: nil, arrow: nil)
+    end
   end
 
   def confirm_no_overlaps

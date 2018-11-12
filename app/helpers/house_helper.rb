@@ -63,6 +63,7 @@ module HouseHelper
     #     .where(:cities => {id: self.city.id})
     #     .where.not(avg_daily_electricity_consumed_per_user: [nil, 0])
     #     .order(avg_daily_electricity_consumed_per_user: :asc)
+    self.avg_daily_electricity_consumed_per_user.to_i == 0 ? clear_house_ranks('electricity') : nil
     e_houses = House.joins(:address).joins(:neighborhood)
         .where(:neighborhoods => {id: self.neighborhood.id})
         .where.not(avg_daily_electricity_consumed_per_user: [nil, 0])
@@ -75,6 +76,8 @@ module HouseHelper
         rank.rank = i + 1
         if prev_rank
           rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        else
+          rank.arrow = true
         end
         rank.out_of = oo
         rank.save!
@@ -86,6 +89,7 @@ module HouseHelper
     #     .where(:cities => {id: self.city.id})
     #     .where.not(avg_daily_gas_consumed_per_user: [nil, 0])
     #     .order(avg_daily_gas_consumed_per_user: :asc)
+    self.avg_daily_gas_consumed_per_user.to_i == 0 ? clear_house_ranks('gas') : nil
     g_houses = House.joins(:address).joins(:neighborhood)
         .where(:neighborhoods => {id: self.neighborhood.id})
         .where.not(avg_daily_gas_consumed_per_user: [nil, 0])
@@ -98,7 +102,8 @@ module HouseHelper
         rank.rank = i + 1
         if prev_rank
           rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
-          # rank.rank >= prev_rank ? rank.arrow = true : rank.arrow = false
+        else
+          rank.arrow = true
         end
         rank.out_of = oo
         rank.save
@@ -111,6 +116,7 @@ module HouseHelper
     #     .where(:cities => {id: self.city.id})
     #     .where.not(avg_daily_carbon_consumed_per_user: [nil, 0])
     #     .order(avg_daily_carbon_consumed_per_user: :asc)
+    self.avg_daily_carbon_consumed_per_user.to_i == 0 ? clear_house_ranks('carbon') : nil
     c_houses = House.joins(:address).joins(:neighborhood)
         .where(:neighborhoods => {id: self.neighborhood.id})
         .where.not(avg_daily_carbon_consumed_per_user: [nil, 0])
@@ -123,6 +129,8 @@ module HouseHelper
         rank.rank = i + 1
         if prev_rank
           rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        else
+          rank.arrow = true
         end
         rank.out_of = oo
         rank.save
@@ -134,6 +142,7 @@ module HouseHelper
     #     .where(:cities => {id: self.city.id})
     #     .where.not(avg_daily_water_consumed_per_user: [nil, 0])
     #     .order(avg_daily_water_consumed_per_user: :asc)
+    self.avg_daily_water_consumed_per_user.to_i == 0 ? clear_house_ranks('water') : nil
     w_houses =  House.joins(:address).joins(:neighborhood)
         .where(:neighborhoods => {id: self.neighborhood.id})
         .where.not(avg_daily_water_consumed_per_user: [nil, 0])
@@ -146,11 +155,23 @@ module HouseHelper
         rank.rank = i + 1
         if prev_rank
           rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        else
+          rank.arrow = true
         end
         rank.out_of = oo
         rank.save
       end
     end
+  end
+
+  def clear_house_ranks(res)
+    clear = {
+      'electricity': self.electricity_ranking.update(rank: nil, arrow: nil),
+      'water': self.water_ranking.update(rank: nil, arrow: nil),
+      'gas': self.gas_ranking.update(rank: nil, arrow: nil),
+      'carbon': self.carbon_ranking.update(rank: nil, arrow: nil),
+    }
+    return clear[res]
   end
 
   def house_max(type)
