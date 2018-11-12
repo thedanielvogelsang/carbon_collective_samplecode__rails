@@ -52,6 +52,7 @@ module NeighborhoodHelper
   end
 
   def update_electricity_rankings
+    self.avg_daily_electricity_consumed_per_user.to_i == 0 ? clear_ranks('electricity') : nil
     e_neighborhoods = Neighborhood.where(city_id: self.city.id)
         .where.not(avg_daily_electricity_consumed_per_user: [nil, 0])
         .order(avg_daily_electricity_consumed_per_user: :asc)
@@ -63,13 +64,16 @@ module NeighborhoodHelper
         rank.rank = i + 1
         if prev_rank
           rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        else
+          rank.arrow = true
         end
         rank.out_of = oo
-        rank.save
+        rank.save!
       end
     end
   end
   def update_gas_rankings
+    self.avg_daily_gas_consumed_per_user.to_i == 0 ? clear_ranks('gas') : nil
     g_neighborhoods = Neighborhood.where(city_id: self.city.id)
         .where.not(avg_daily_gas_consumed_per_user: [nil, 0])
         .order(avg_daily_gas_consumed_per_user: :asc)
@@ -81,6 +85,8 @@ module NeighborhoodHelper
         rank.rank = i + 1
         if prev_rank
           rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        else
+          rank.arrow = true
         end
         rank.out_of = oo
         rank.save
@@ -89,6 +95,7 @@ module NeighborhoodHelper
   end
 
   def update_carbon_rankings
+    self.avg_daily_carbon_consumed_per_user.to_i == 0 ? clear_ranks('carbon') : nil
     c_neighborhoods = Neighborhood.where(city_id: self.city.id)
         .where.not(avg_daily_carbon_consumed_per_user: [nil, 0])
         .order(avg_daily_carbon_consumed_per_user: :asc)
@@ -100,6 +107,8 @@ module NeighborhoodHelper
         rank.rank = i + 1
         if prev_rank
           rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        else
+          rank.arrow = true
         end
         rank.out_of = oo
         rank.save
@@ -107,6 +116,7 @@ module NeighborhoodHelper
     end
   end
   def update_water_rankings
+    self.avg_daily_water_consumed_per_user.to_i == 0 ? clear_ranks('water') : nil
     w_neighborhoods = Neighborhood.where(city_id: self.city.id)
         .where.not(avg_daily_water_consumed_per_user: [nil, 0])
         .order(avg_daily_water_consumed_per_user: :asc)
@@ -118,11 +128,29 @@ module NeighborhoodHelper
         rank.rank = i + 1
         if prev_rank
           rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        else
+          rank.arrow = true
         end
         rank.out_of = oo
         rank.save
       end
     end
+  end
+
+  def clear_ranks(res)
+    case res
+    when 'electricity'
+      self.electricity_ranking.update(rank: nil, arrow: nil)
+    when 'water'
+       self.water_ranking.update(rank: nil, arrow: nil)
+    when 'gas'
+      self.gas_ranking.update(rank: nil, arrow: nil)
+    when 'carbon'
+      self.carbon_ranking.update(rank: nil, arrow: nil)
+    else
+      nil
+    end
+    return true
   end
   #
   # def update_total_electricity_and_carbon_savings

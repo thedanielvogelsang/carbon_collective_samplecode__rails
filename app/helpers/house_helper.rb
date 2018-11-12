@@ -55,6 +55,7 @@ module HouseHelper
     update_gas_rankings
     update_carbon_rankings
     update_water_rankings
+    update_user_rankings
   end
 
   def update_electricity_rankings
@@ -81,6 +82,7 @@ module HouseHelper
         end
         rank.out_of = oo
         rank.save!
+        # puts "rank saved: #{rank.id}, electricity"
       end
     end
   end
@@ -106,7 +108,8 @@ module HouseHelper
           rank.arrow = true
         end
         rank.out_of = oo
-        rank.save
+        rank.save!
+        # puts "rank saved #{rank.id}, gas"
       end
     end
   end
@@ -133,7 +136,8 @@ module HouseHelper
           rank.arrow = true
         end
         rank.out_of = oo
-        rank.save
+        rank.save!
+        # puts "rank saved #{rank.id}, carbon"
       end
     end
   end
@@ -159,19 +163,26 @@ module HouseHelper
           rank.arrow = true
         end
         rank.out_of = oo
-        rank.save
+        rank.save!
+        # puts "rank saved #{rank.id}, water"
       end
     end
   end
 
   def clear_house_ranks(res)
-    clear = {
-      'electricity': self.electricity_ranking.update(rank: nil, arrow: nil),
-      'water': self.water_ranking.update(rank: nil, arrow: nil),
-      'gas': self.gas_ranking.update(rank: nil, arrow: nil),
-      'carbon': self.carbon_ranking.update(rank: nil, arrow: nil),
-    }
-    return clear[res]
+    case res
+    when 'electricity'
+      self.electricity_ranking.update(rank: nil, arrow: nil)
+    when 'water'
+       self.water_ranking.update(rank: nil, arrow: nil)
+    when 'gas'
+      self.gas_ranking.update(rank: nil, arrow: nil)
+    when 'carbon'
+      self.carbon_ranking.update(rank: nil, arrow: nil)
+    else
+      nil
+    end
+    return true
   end
 
   def house_max(type)
