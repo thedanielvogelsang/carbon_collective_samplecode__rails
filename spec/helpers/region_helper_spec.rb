@@ -327,19 +327,23 @@ RSpec.describe RegionHelper, type: :helper do
       HeatBill.create(start_date: start_date1, end_date: end_date1, total_therms: therms, price: price, house_id: house.id, no_residents: 2, user_id: user.id)
 
       user = User.first
+      region = @region
+      # carbon_ranking initially is nil
+      # expect(region.carbon_ranking.rank).to be(nil)
 
       #regional per_user average changes to internal users' upon update_all
-      @region.update_data
-      r1_avg_water = @region.avg_daily_water_consumed_per_user
-      r1_avg_gas = @region.avg_daily_gas_consumed_per_user
-      r1_avg_elec = @region.avg_daily_electricity_consumed_per_user
+      region.update_data
+      r1_avg_water = region.avg_daily_water_consumed_per_user
+      r1_avg_gas = region.avg_daily_gas_consumed_per_user
+      r1_avg_elec = region.avg_daily_electricity_consumed_per_user
 
       #update changes water, elec and gas away from default
       expect(r1_avg_water.to_f.round(5)).to_not eq(@wavg.to_f.round(5))
       expect(r1_avg_gas.to_f.round(5)).to_not eq(@gavg.to_f.round(5))
       expect(r1_avg_elec.to_f.round(5)).to_not eq(@avg.to_f.round(5))
-      #no carbon_ranking until default_ranks are set, which default to 0 until the front end pings (and update) the db
-      expect(@region.carbon_ranking).to be(nil)
+
+      #since no other regions have users, upon update carbon_ranking is ranked #1
+      expect(region.carbon_ranking.rank).to be(1)
     end
   end
 end

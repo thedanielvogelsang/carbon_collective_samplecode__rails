@@ -175,7 +175,7 @@ RSpec.describe CountryHelper, type: :helper do
       expect(user.country).to eq(@country)
       therms = 1400
       price = rand(1..100)
-      HeatBill.create(start_date: start_date1, end_date: end_date1, total_therms: therms, price: price, house_id: house.id, no_residents: 2, user_id: user.id)
+      HeatBill.create(start_date: start_date1, end_date: end_date1, total_therms: therms, price: price, house_id: house.id, no_residents: 2, user_id: user.id, force: true)
 
       user = User.first
       c1_avg = @country.avg_daily_gas_consumed_per_user
@@ -288,6 +288,13 @@ RSpec.describe CountryHelper, type: :helper do
 
       user = User.first
 
+      expect(user.avg_daily_water_consumption).to_not eq(@country.avg_daily_water_consumed_per_user)
+      expect(user.avg_daily_gas_consumption).to_not eq(@country.avg_daily_gas_consumed_per_user)
+      expect(user.avg_daily_electricity_consumption).to_not eq(@country.avg_daily_electricity_consumed_per_user)
+
+      #no rank before update:
+      # expect(@country.carbon_ranking.rank).to be(nil)
+
       #regional per_user average changes to internal users' upon update_all
       @country.update_data
       r1_avg_water = @country.avg_daily_water_consumed_per_user
@@ -298,8 +305,13 @@ RSpec.describe CountryHelper, type: :helper do
       expect(r1_avg_water.to_f.round(5)).to_not eq(@wavg.to_f.round(5))
       expect(r1_avg_gas.to_f.round(5)).to_not eq(@gavg.to_f.round(5))
       expect(r1_avg_elec.to_f.round(5)).to_not eq(@avg.to_f.round(5))
-      #area average == user average
-      expect(@country.carbon_ranking).to be(nil)
+
+      expect(user.avg_daily_water_consumption.to_f.round(5)).to eq(r1_avg_water.to_f.round(5))
+      expect(user.avg_daily_gas_consumption.to_f.round(5)).to eq(r1_avg_gas.to_f.round(5))
+      expect(user.avg_daily_electricity_consumption.to_f.round(5)).to eq(r1_avg_elec.to_f.round(5))
+
+      #since no other countries have users, upon update carbon_ranking is ranked #1
+      expect(@country.carbon_ranking.rank).to be(1)
     end
   end
 end
