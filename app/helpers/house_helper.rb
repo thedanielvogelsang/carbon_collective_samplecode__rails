@@ -55,6 +55,7 @@ module HouseHelper
     update_gas_rankings
     update_carbon_rankings
     update_water_rankings
+    update_user_rankings
   end
 
   def update_electricity_rankings
@@ -63,6 +64,7 @@ module HouseHelper
     #     .where(:cities => {id: self.city.id})
     #     .where.not(avg_daily_electricity_consumed_per_user: [nil, 0])
     #     .order(avg_daily_electricity_consumed_per_user: :asc)
+    self.avg_daily_electricity_consumed_per_user.to_i == 0 ? clear_house_ranks('electricity') : nil
     e_houses = House.joins(:address).joins(:neighborhood)
         .where(:neighborhoods => {id: self.neighborhood.id})
         .where.not(avg_daily_electricity_consumed_per_user: [nil, 0])
@@ -75,9 +77,12 @@ module HouseHelper
         rank.rank = i + 1
         if prev_rank
           rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        else
+          rank.arrow = true
         end
         rank.out_of = oo
         rank.save!
+        # puts "rank saved: #{rank.id}, electricity"
       end
     end
   end
@@ -86,6 +91,7 @@ module HouseHelper
     #     .where(:cities => {id: self.city.id})
     #     .where.not(avg_daily_gas_consumed_per_user: [nil, 0])
     #     .order(avg_daily_gas_consumed_per_user: :asc)
+    self.avg_daily_gas_consumed_per_user.to_i == 0 ? clear_house_ranks('gas') : nil
     g_houses = House.joins(:address).joins(:neighborhood)
         .where(:neighborhoods => {id: self.neighborhood.id})
         .where.not(avg_daily_gas_consumed_per_user: [nil, 0])
@@ -98,10 +104,12 @@ module HouseHelper
         rank.rank = i + 1
         if prev_rank
           rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
-          # rank.rank >= prev_rank ? rank.arrow = true : rank.arrow = false
+        else
+          rank.arrow = true
         end
         rank.out_of = oo
-        rank.save
+        rank.save!
+        # puts "rank saved #{rank.id}, gas"
       end
     end
   end
@@ -111,6 +119,7 @@ module HouseHelper
     #     .where(:cities => {id: self.city.id})
     #     .where.not(avg_daily_carbon_consumed_per_user: [nil, 0])
     #     .order(avg_daily_carbon_consumed_per_user: :asc)
+    self.avg_daily_carbon_consumed_per_user.to_i == 0 ? clear_house_ranks('carbon') : nil
     c_houses = House.joins(:address).joins(:neighborhood)
         .where(:neighborhoods => {id: self.neighborhood.id})
         .where.not(avg_daily_carbon_consumed_per_user: [nil, 0])
@@ -123,9 +132,12 @@ module HouseHelper
         rank.rank = i + 1
         if prev_rank
           rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        else
+          rank.arrow = true
         end
         rank.out_of = oo
-        rank.save
+        rank.save!
+        # puts "rank saved #{rank.id}, carbon"
       end
     end
   end
@@ -134,6 +146,7 @@ module HouseHelper
     #     .where(:cities => {id: self.city.id})
     #     .where.not(avg_daily_water_consumed_per_user: [nil, 0])
     #     .order(avg_daily_water_consumed_per_user: :asc)
+    self.avg_daily_water_consumed_per_user.to_i == 0 ? clear_house_ranks('water') : nil
     w_houses =  House.joins(:address).joins(:neighborhood)
         .where(:neighborhoods => {id: self.neighborhood.id})
         .where.not(avg_daily_water_consumed_per_user: [nil, 0])
@@ -146,11 +159,30 @@ module HouseHelper
         rank.rank = i + 1
         if prev_rank
           rank.rank > prev_rank ? rank.arrow = true : rank.rank == prev_rank ? rank.arrow = nil : rank.arrow = false
+        else
+          rank.arrow = true
         end
         rank.out_of = oo
-        rank.save
+        rank.save!
+        # puts "rank saved #{rank.id}, water"
       end
     end
+  end
+
+  def clear_house_ranks(res)
+    case res
+    when 'electricity'
+      self.electricity_ranking.update(rank: nil, arrow: nil)
+    when 'water'
+       self.water_ranking.update(rank: nil, arrow: nil)
+    when 'gas'
+      self.gas_ranking.update(rank: nil, arrow: nil)
+    when 'carbon'
+      self.carbon_ranking.update(rank: nil, arrow: nil)
+    else
+      nil
+    end
+    return true
   end
 
   def house_max(type)

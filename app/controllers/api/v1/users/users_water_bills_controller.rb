@@ -46,6 +46,7 @@ class Api::V1::Users::UsersWaterBillsController < ApplicationController
   def destroy
     if User.friendly.exists?(params[:user_id]) && WaterBill.exists?(params[:id])
       WaterBill.destroy(params[:id])
+      AverageCalculatorJob.perform_async
       message = "Bill removed and data saved"
       render :json => {status: 202, error: message}
     else

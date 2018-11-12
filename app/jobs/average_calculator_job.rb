@@ -12,7 +12,7 @@ class AverageCalculatorJob
   # sidekiq_options retry: false
 
   def perform
-    puts 'Worker started'
+    puts "Worker started\n"
     task = :update_data
     app = Rake.application
       app.init

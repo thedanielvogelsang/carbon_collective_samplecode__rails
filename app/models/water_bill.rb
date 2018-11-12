@@ -20,7 +20,7 @@ class WaterBill < ApplicationRecord
 
   after_create :log_user_activity, :add_to_users_totals
 
-  before_destroy :subtract_from_users_totals
+  before_destroy :subtract_from_users_totals, prepend: true
 
   def water_saved?
     if self.house
@@ -102,10 +102,17 @@ class WaterBill < ApplicationRecord
       u.total_waterbill_days_logged -= num_days
       u.total_gallons_logged -= (total_gallons.fdiv(no_residents))
       u.total_water_savings -= water_saved
+      u.total_gallons_logged.to_i == 0 ? clear_user_ranks(u) : nil
       u.save
     end
     house.update_data
     house.update_user_rankings
+  end
+
+  def clear_user_ranks(user)
+    user.user_water_rankings.each do |uwr|
+      uwr.update(rank: nil, arrow: nil)
+    end
   end
 
   def confirm_no_overlaps

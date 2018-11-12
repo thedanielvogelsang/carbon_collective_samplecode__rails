@@ -21,7 +21,7 @@ class HeatBill < ApplicationRecord
 
   after_create :log_user_activity, :add_to_users_totals
 
-  before_destroy :subtract_from_users_totals
+  before_destroy :subtract_from_users_totals, prepend: true
 
  #checks if region_comparisons can be made or not; returns boolean either way
  def gas_saved?
@@ -111,12 +111,26 @@ class HeatBill < ApplicationRecord
      u.total_heatbill_days_logged -= num_days
      u.total_therms_logged -= (total_therms.fdiv(no_residents))
      u.total_pounds_logged -= therms_to_carbon(therms)
+     u.total_therms_logged.to_i == 0 ? clear_user_ranks(u) : nil
+     u.total_pounds_logged.to_i == 0 ? clear_user_ranks_carbon(u) : nil
      u.total_gas_savings -= gas_saved
      u.total_carbon_savings -= therms_to_carbon(gas_saved)
      u.save
    end
    house.update_data
    house.update_user_rankings
+ end
+
+ def clear_user_ranks(user)
+   user.user_gas_rankings.each do |uwr|
+     uwr.update(rank: nil, arrow: nil)
+   end
+ end
+
+ def clear_user_ranks_carbon(user)
+   user.user_carbon_rankings.each do |uwr|
+     uwr.update(rank: nil, arrow: nil)
+   end
  end
 
  def confirm_no_overlaps

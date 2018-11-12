@@ -7,28 +7,30 @@ desc "These rake tasks perform background work for our application
       # <electric, water, or gas > bill
       # has been created successfully in /api/v1/users/ folder
   task :update_data => :environment do
-    puts "Updating global stats"
-    Global.first.update_data
-
-    puts 'Updating country data'
-    Country.find_each{|c| c.update_data }
-
-    puts 'Updating region data'
-    Region.find_each{|r| r.update_data }
-
-    puts 'Updating county data'
-    County.find_each{|c| c.update_data }
-
-    puts 'Updating city data'
-    City.find_each{|c| c.update_data }
-
-    puts 'Updating neighborhood data'
-    Neighborhood.find_each{|n| n.update_data }
 
     puts 'Updating household data'
     House.find_each{|h| h.update_data}
 
-    puts '...done'
+    puts 'Updating neighborhood data'
+    Neighborhood.find_each{|n| n.update_data }
+
+    puts 'Updating city data'
+    City.find_each{|c| c.update_data }
+
+    puts 'Updating county data'
+    County.find_each{|c| c.update_data }
+
+    puts 'Updating region data'
+    Region.find_each{|r| r.update_data }
+
+    puts 'Updating country data'
+    Country.find_each{|c| c.update_data }
+
+    puts "Updating global stats"
+    Global.first.update_data
+
+    puts "...done."
+    
   end
 
 #  -----
