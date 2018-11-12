@@ -21,7 +21,7 @@ class HeatBill < ApplicationRecord
 
   after_create :log_user_activity, :add_to_users_totals
 
-  before_destroy :subtract_from_users_totals
+  before_destroy :subtract_from_users_totals, prepend: true
 
  #checks if region_comparisons can be made or not; returns boolean either way
  def gas_saved?

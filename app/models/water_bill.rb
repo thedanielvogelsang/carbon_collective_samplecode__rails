@@ -20,7 +20,7 @@ class WaterBill < ApplicationRecord
 
   after_create :log_user_activity, :add_to_users_totals
 
-  before_destroy :subtract_from_users_totals
+  before_destroy :subtract_from_users_totals, prepend: true
 
   def water_saved?
     if self.house
@@ -98,6 +98,7 @@ class WaterBill < ApplicationRecord
                 .merge(house.users)
     water_saved = self.water_saved.fdiv(self.no_residents)
     num_days = self.end_date - self.start_date
+    byebug
     users.each do |u|
       u.total_waterbill_days_logged -= num_days
       u.total_gallons_logged -= (total_gallons.fdiv(no_residents))
