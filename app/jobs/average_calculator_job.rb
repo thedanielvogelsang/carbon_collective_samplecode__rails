@@ -13,8 +13,9 @@ class AverageCalculatorJob
 
   def perform
     puts "Worker started\n"
-    task = :update_data
+    task = "update_data"
     app = Rake.application
+    puts app
       app.init
       app.add_import Rails.root.join("Rakefile")
       # this loads the Rakefile and other imports
