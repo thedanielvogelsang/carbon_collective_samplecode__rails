@@ -186,7 +186,7 @@ RSpec.describe CityHelper, type: :helper do
       expect(user.city).to eq(@city)
       therms = 1400
       price = rand(1..100)
-      HeatBill.create(start_date: start_date1, end_date: end_date1, total_therms: therms, price: price, house_id: house.id, no_residents: 2, user_id: user.id)
+      HeatBill.create(start_date: start_date1, end_date: end_date1, total_therms: therms, price: price, house_id: house.id, no_residents: 2, user_id: user.id, force: true)
 
       user = User.first
       c1_avg = @city.avg_daily_gas_consumed_per_user

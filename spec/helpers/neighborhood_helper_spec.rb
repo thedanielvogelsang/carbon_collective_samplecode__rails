@@ -208,7 +208,7 @@ RSpec.describe NeighborhoodHelper, type: :helper do
       expect(user.neighborhood).to eq(@neighborhood)
       therms = 1400
       price = rand(1..100)
-      HeatBill.create(start_date: start_date1, end_date: end_date1, total_therms: therms, price: price, house_id: house.id, no_residents: 2, user_id: user.id)
+      HeatBill.create(start_date: start_date1, end_date: end_date1, total_therms: therms, price: price, house_id: house.id, no_residents: 2, user_id: user.id, force: true)
 
       user = User.first
       c1_avg = @neighborhood.avg_daily_gas_consumed_per_user
@@ -321,7 +321,7 @@ RSpec.describe NeighborhoodHelper, type: :helper do
 
       user = User.first
       #no carbon_ranking until default_ranks are set, which default to 0 until the front end pings (and update) the db
-      expect(@neighborhood.carbon_ranking).to be(nil)
+      expect(@neighborhood.carbon_ranking.rank).to be(nil)
 
       #regional per_user average changes to internal users' upon update_all
       @neighborhood.set_default_ranks
@@ -342,9 +342,9 @@ RSpec.describe NeighborhoodHelper, type: :helper do
       expect(c1_avg_water.to_f.round(2)).to eq(user.avg_daily_water_consumption.to_f.round(2))
       expect(c1_avg_gas.to_f.round(2)).to eq(user.avg_daily_gas_consumption.to_f.round(2))
       expect(c1_avg_elec.to_f.round(2)).to eq(user.avg_daily_electricity_consumption.to_f.round(2))
-
-      expect(neighborhood.carbon_ranking.avg_daily_carbon_consumed_per_user).to eq(carbon_avg)
-      expect(neighborhood.carbon_ranking.avg_daily_carbon_consumed_per_user).to eq(user.avg_daily_carbon_consumption)
+      
+      expect(neighborhood.avg_daily_carbon_consumed_per_user).to eq(carbon_avg)
+      expect(neighborhood.avg_daily_carbon_consumed_per_user).to eq(user.avg_daily_carbon_consumption)
     end
   end
 end

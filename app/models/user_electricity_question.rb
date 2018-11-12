@@ -6,6 +6,7 @@ class UserElectricityQuestion < ApplicationRecord
   validates_uniqueness_of :house_id, scope: :user_id
 
   before_save :questionairre_complete
+  after_save :update_completion
 
   def update_completion
     ct = 0;
@@ -19,7 +20,7 @@ class UserElectricityQuestion < ApplicationRecord
   end
 
   def questionairre_complete
-    if self.quest1
+    if self.completion_percentage.to_i == 100
       self.completed = true
       UserLogHelper.user_completes_questionairre(self.user_id, "electricity")
     end

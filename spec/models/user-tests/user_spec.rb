@@ -37,7 +37,7 @@ RSpec.describe User, type: :model do
     #single user
     @user1 = User.create(first: 'D', last: "Simpson", email: "d.simpson@gmail.com",
                         password: 'password', generation: 1)
-    house = House.create(address_id: address1.id, no_residents:0, total_sq_ft: 3000)
+    house = House.create(address_id: address1.id, no_residents: 0, total_sq_ft: 3000)
     UserHouse.create(user_id: @user1.id, house_id: house.id, move_in_date: DateTime.now - 90)
 
     @user2 = User.create(first: 'M', last: "Johnson", email: "m.johnson@gmail.com",
@@ -50,7 +50,7 @@ RSpec.describe User, type: :model do
                         password: 'password', generation: 1)
 
     house3 = House.create(address_id: address3.id, no_residents: 0, total_sq_ft: 3000)
-    UserHouse.create(user_id: @user3.id, house_id: house3.id, move_in_date: DateTime.now - 90)
+    uh = UserHouse.create(user_id: @user3.id, house_id: house3.id, move_in_date: DateTime.now - 90)
   end
   context 'relationships' do
     it {should have_many(:groups)}
@@ -211,15 +211,15 @@ RSpec.describe User, type: :model do
             expect(u_eavg.to_f.round(2)).to eq(50.85)
             expect(u_wavg.to_f.round(2)).to eq(50.85)
 
-        #adds bills to old hold
-        bill_B = ElectricBill.create(total_kwhs: 3000, price: 1,  start_date: ago, end_date: (yesterday - 1), house_id: much_older_house.id, no_residents: 1, who: user)
-        bill_C = WaterBill.create(total_gallons: 3000, price: 1, start_date: ago, end_date: (yesterday - 1), house_id: much_older_house.id, no_residents: 1, who: user)
+        #adds bills to old house
+        bill_B = ElectricBill.create(total_kwhs: 3000, price: 1,  start_date: ago, end_date: (yesterday - 1), house_id: much_older_house.id, no_residents: 1, who: user, force: true)
+        bill_C = WaterBill.create(total_gallons: 3000, price: 1, start_date: ago, end_date: (yesterday - 1), house_id: much_older_house.id, no_residents: 1, who: user, force: true)
 
         #which updates users averages
         user = User.find(user.id)
         new_u_eavg = user.avg_daily_electricity_consumption
         new_u_wavg = user.avg_daily_water_consumption
-            expect(new_u_eavg.to_f.round(2)).to eq(68.18)
+              expect(new_u_eavg.to_f.round(2)).to eq(68.18)
             expect(new_u_wavg.to_f.round(2)).to eq(68.18)
 
         #while houses retain separate info
@@ -279,7 +279,7 @@ RSpec.describe User, type: :model do
       house = House.find(house.id)
           expect(user.houses.empty?).to be true
           expect(house.users.empty?).to be true
-          expect(house.no_residents).to eq(1)
+          expect(house.no_residents).to eq(0)
       #house no longer has user averages
       u_eavg = user.avg_daily_electricity_consumption
       u_wavg = user.avg_daily_water_consumption

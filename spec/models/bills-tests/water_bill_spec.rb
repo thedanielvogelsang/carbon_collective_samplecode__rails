@@ -14,9 +14,10 @@ RSpec.describe WaterBill, type: :model do
                   country_id: ctry.id,
                  )
     city = City.create(name: "Denver", region_id: reg.id)
+    neighborhood = Neighborhood.create!(name: "Neighborhood", city_id: city.id)
     zip = Zipcode.create(zipcode: "80218")
-    add = Address.create(address_line1: "404 Marshall Rd", city_id: city.id, zipcode_id: zip.id)
-    add2 = Address.create(address_line1: "505 Someplace Else", city_id: city.id, zipcode_id: zip.id)
+    add = Address.create(address_line1: "404 Marshall Rd", city_id: city.id, zipcode_id: zip.id, neighborhood_id: neighborhood.id)
+    add2 = Address.create(address_line1: "505 Someplace Else", city_id: city.id, zipcode_id: zip.id, neighborhood_id: neighborhood.id)
 
     @house = House.create(total_sq_ft: rand(1500..2000), no_residents: 2, address_id: add.id)
     @house2 = House.create(total_sq_ft: rand(2500..3000), no_residents: 3, address_id: add2.id)
@@ -28,6 +29,29 @@ RSpec.describe WaterBill, type: :model do
                     )
     UserHouse.create(house_id: @house.id, user_id: @user.id, move_in_date: DateTime.now - 30)
     UserHouse.create(house_id: @house2.id, user_id: @user.id, move_in_date: DateTime.now - 30)
+  end
+  context 'validations' do
+    it 'will detect an outlier' do
+      yesterday = DateTime.now - 29
+      el1 = WaterBill.new(total_gallons: 100000, start_date: yesterday, end_date: (yesterday + 29), house_id: @house.id, no_residents: 2, who: @user)
+      expect(el1.save).to be false
+      expect(el1.errors.first.join(' ')).to eq("total_gallons resource usage is much higher than average, are you sure you want to proceed?")
+    end
+    it 'cant save with an avg_daily of > 150 gallons/day/resident (until bill count is over 10)' do
+      yesterday = DateTime.now - 2
+      el1 = WaterBill.new(total_gallons: 606, start_date: yesterday, end_date: (yesterday + 2), house_id: @house.id, no_residents: 2, who: @user)
+      expect(el1.save).to be false
+      expect(el1.errors.first[1]).to eq("resource usage is much higher than average, are you sure you want to proceed?")
+
+      hl2 = WaterBill.new(total_gallons: 600, start_date: yesterday, end_date: (yesterday + 2), house_id: @house.id, no_residents: 2, who: @user)
+      expect(hl2.save).to be true
+      expect(hl2.errors.first).to eq(nil)
+    end
+    it 'can save with an avg_daily of > 7/day/resident with FORCE = TRUE' do
+      yesterday = DateTime.now - 2
+      hl1 = WaterBill.new(total_gallons: 1000000, force: true, start_date: yesterday, end_date: (yesterday + 2), house_id: @house.id, no_residents: 2, who: @user)
+      expect(hl1.save).to be true
+    end
   end
   context 'a house' do
     it 'cant have bills with the same exact days' do
@@ -131,7 +155,7 @@ RSpec.describe WaterBill, type: :model do
 
       move_in_date = uH.move_in_date.to_datetime
       sdate = DateTime.now - 29
-      edate = DateTime.now + 1
+      edate = DateTime.now + 2
       eb = WaterBill.new(total_gallons: 1000,  start_date: sdate, end_date: edate, house_id: @house.id, no_residents: 2, who: @user)
       expect(eb.save).to be false
       expect(eb.errors.messages).to eq({:end_date => ["cannot claim future use on past bills"]})

@@ -13,9 +13,10 @@ RSpec.describe HeatBill, type: :model do
                   country_id: ctry.id,
                  )
     city = City.create(name: "Denver", region_id: reg.id)
+    neighborhood = Neighborhood.create!(name: "Neighborhood", city_id: city.id)
     zip = Zipcode.create(zipcode: "80218")
-    add = Address.create(address_line1: "404 Marshall Rd", city_id: city.id, zipcode_id: zip.id)
-    add2 = Address.create(address_line1: "505 Someplace Else", city_id: city.id, zipcode_id: zip.id)
+    add = Address.create(address_line1: "404 Marshall Rd", city_id: city.id, zipcode_id: zip.id, neighborhood_id: neighborhood.id)
+    add2 = Address.create(address_line1: "505 Someplace Else", city_id: city.id, zipcode_id: zip.id, neighborhood_id: neighborhood.id)
 
     @house = House.create(total_sq_ft: rand(1500..2000), no_residents: 2, address_id: add.id)
     @house2 = House.create(total_sq_ft: rand(2500..3000), no_residents: 3, address_id: add2.id)
@@ -28,19 +29,42 @@ RSpec.describe HeatBill, type: :model do
     UserHouse.create(house_id: @house.id, user_id: @user.id, move_in_date: DateTime.now - 30)
     UserHouse.create(house_id: @house2.id, user_id: @user.id, move_in_date: DateTime.now - 30)
   end
+  context 'validations' do
+    it 'will detect an outlier' do
+      yesterday = DateTime.now - 29
+      hl1 = HeatBill.new(total_therms: 100000, start_date: yesterday, end_date: (yesterday + 29), house_id: @house.id, no_residents: 2, who: @user)
+      expect(hl1.save).to be false
+      expect(hl1.errors.first.join(' ')).to eq("total_therms resource usage is much higher than average, are you sure you want to proceed?")
+    end
+    it 'cant save with an avg_daily of > 7 therms/day/resident (until bill count is over 10)' do
+      yesterday = DateTime.now - 2
+      hl1 = HeatBill.new(total_therms: 32, start_date: yesterday, end_date: (yesterday + 2), house_id: @house.id, no_residents: 2, who: @user)
+      expect(hl1.save).to be false
+      expect(hl1.errors.first[1]).to eq("resource usage is much higher than average, are you sure you want to proceed?")
+
+      hl2 = HeatBill.new(total_therms: 28, start_date: yesterday, end_date: (yesterday + 2), house_id: @house.id, no_residents: 2, who: @user)
+      expect(hl2.save).to be true
+      expect(hl2.errors.first).to eq(nil)
+    end
+    it 'can save with an avg_daily of > 7/day/resident with FORCE = TRUE' do
+      yesterday = DateTime.now - 2
+      hl1 = HeatBill.new(total_therms: 32, force: true, start_date: yesterday, end_date: (yesterday + 2), house_id: @house.id, no_residents: 2, who: @user)
+      expect(hl1.save).to be true
+    end
+  end
   context 'a house' do
     it 'cant have bills with the same exact days' do
       yesterday = DateTime.now - 29
-      el1 = HeatBill.new(total_therms: 1000, start_date: yesterday, end_date: (yesterday + 29), no_residents: 2, house_id: @house.id, who: @user)
-      el2 = HeatBill.new(total_therms: 1000,  start_date: yesterday, end_date: (yesterday + 29), no_residents: 2, house_id: @house.id, who: @user)
-      expect(el1.save).to be true
-      expect(el2.save).to be false
-      expect(el2.errors.messages).to eq({:start_date=>["start or end date overlaps with another bill"]})
+      hl1 = HeatBill.new(total_therms: 10, start_date: yesterday, end_date: (yesterday + 29), no_residents: 2, house_id: @house.id, who: @user)
+      hl2 = HeatBill.new(total_therms: 10,  start_date: yesterday, end_date: (yesterday + 29), no_residents: 2, house_id: @house.id, who: @user)
+      expect(hl1.save).to be true
+      expect(hl2.save).to be false
+      expect(hl2.errors.messages).to eq({:start_date=>["start or end date overlaps with another bill"]})
     end
     it 'bill B cant save if start_date before the end_date of bill A' do
       yesterday = DateTime.now - 29
-      bill_A = HeatBill.new(total_therms: 1000, start_date: yesterday, end_date: (yesterday + 11), no_residents: 2, house_id: @house.id, who: @user)
-      bill_B = HeatBill.new(total_therms: 1000,  start_date: yesterday + 10, end_date: (yesterday + 40), no_residents: 2, house_id: @house.id, who: @user)
+      bill_A = HeatBill.new(total_therms: 10, start_date: yesterday, end_date: (yesterday + 11), no_residents: 2, house_id: @house.id, who: @user)
+      bill_B = HeatBill.new(total_therms: 10,  start_date: yesterday + 10, end_date: (yesterday + 40), no_residents: 2, house_id: @house.id, who: @user)
       expect(bill_A.save).to be true
       expect(bill_B.save).to be false
       expect(bill_B.errors.messages).to eq({:start_date=>["start or end date overlaps with another bill"], :end_date=>["cannot claim future use on past bills"]})
@@ -48,8 +72,8 @@ RSpec.describe HeatBill, type: :model do
     it 'bill B cant save if end_date after the start_date of bill A' do
       yesterday = DateTime.now - 20
       ago = DateTime.now - 29
-      bill_A = HeatBill.new(total_therms: 1000, start_date: yesterday, end_date: (yesterday + 20), no_residents: 2, house_id: @house.id, who: @user)
-      bill_B = HeatBill.new(total_therms: 1000,  start_date: ago, end_date: (yesterday + 1), no_residents: 2, house_id: @house.id, who: @user)
+      bill_A = HeatBill.new(total_therms: 10, start_date: yesterday, end_date: (yesterday + 20), no_residents: 2, house_id: @house.id, who: @user)
+      bill_B = HeatBill.new(total_therms: 10,  start_date: ago, end_date: (yesterday + 1), no_residents: 2, house_id: @house.id, who: @user)
       expect(bill_A.save).to be true
       expect(bill_B.save).to be false
       expect(bill_B.errors.messages).to eq({:start_date=>["start or end date overlaps with another bill"]})
@@ -57,16 +81,16 @@ RSpec.describe HeatBill, type: :model do
     it 'bill B CAN save if start_date and end_date BEFORE bill A' do
       yesterday = DateTime.now - 20
       ago = DateTime.now - 29
-      bill_A = HeatBill.new(total_therms: 1000, start_date: yesterday, end_date: (yesterday + 20), no_residents: 2, house_id: @house.id, who: @user)
-      bill_B = HeatBill.new(total_therms: 1000,  start_date: ago, end_date: (yesterday - 1), no_residents: 2, house_id: @house.id, who: @user)
+      bill_A = HeatBill.new(total_therms: 10, start_date: yesterday, end_date: (yesterday + 20), no_residents: 2, house_id: @house.id, who: @user)
+      bill_B = HeatBill.new(total_therms: 10,  start_date: ago, end_date: (yesterday - 1), no_residents: 2, house_id: @house.id, who: @user)
       expect(bill_A.save).to be true
       expect(bill_B.save).to be true
     end
     it 'bill B CAN save if start_date and end_date AFTER bill A' do
       yesterday = DateTime.now - 20
       ago = DateTime.now - 29
-      bill_A = HeatBill.new(total_therms: 1000, start_date: ago, end_date: (yesterday - 1), no_residents: 2, house_id: @house.id, who: @user)
-      bill_B = HeatBill.new(total_therms: 1000,  start_date: yesterday, end_date: (yesterday + 20), no_residents: 2, house_id: @house.id, who: @user)
+      bill_A = HeatBill.new(total_therms: 10, start_date: ago, end_date: (yesterday - 1), no_residents: 2, house_id: @house.id, who: @user)
+      bill_B = HeatBill.new(total_therms: 10,  start_date: yesterday, end_date: (yesterday + 20), no_residents: 2, house_id: @house.id, who: @user)
       expect(bill_A.save).to be true
       expect(bill_B.save).to be true
     end
@@ -81,13 +105,13 @@ RSpec.describe HeatBill, type: :model do
       move_in_date = uH.move_in_date.to_datetime
       sdate = move_in_date - 31
       edate = move_in_date - 1
-      eb = HeatBill.new(total_therms: 1000, start_date: sdate, end_date: edate, house_id: @house.id, no_residents: 2, who: @user)
+      eb = HeatBill.new(total_therms: 10, start_date: sdate, end_date: edate, house_id: @house.id, no_residents: 2, who: @user)
       expect(eb.save).to be false
 
       uH.move_in_date = sdate - 30
       uH.save
       #now a bill can be saved because it comes AFTER move_in_date
-      eb = HeatBill.new(total_therms: 1000, start_date: sdate, end_date: edate, house_id: @house.id, no_residents: 2, who: @user)
+      eb = HeatBill.new(total_therms: 10, start_date: sdate, end_date: edate, house_id: @house.id, no_residents: 2, who: @user)
       expect(eb.save).to be true
     end
     it 'can save bills up to earliest members move-in-date' do
@@ -115,10 +139,10 @@ RSpec.describe HeatBill, type: :model do
       edate = move_in_date - 1
 
       #false
-      eb = HeatBill.new(total_therms: 1000,  start_date: sdate, end_date: edate, house_id: @house.id, no_residents: 2, who: @user)
+      eb = HeatBill.new(total_therms: 10,  start_date: sdate, end_date: edate, house_id: @house.id, no_residents: 2, who: @user)
         expect(eb.save).to be false
       #true
-      eb = HeatBill.new(total_therms: 1000,  start_date: sdate, end_date: edate, house_id: @house.id, no_residents: 2, who: old_user)
+      eb = HeatBill.new(total_therms: 10,  start_date: sdate, end_date: edate, house_id: @house.id, no_residents: 2, who: old_user)
         expect(eb.save).to be true
 
     end
@@ -130,14 +154,14 @@ RSpec.describe HeatBill, type: :model do
 
       move_in_date = uH.move_in_date.to_datetime
       sdate = DateTime.now - 29
-      edate = DateTime.now + 1
-      eb = HeatBill.new(total_therms: 1000,  start_date: sdate, end_date: edate, house_id: @house.id, no_residents: 2, who: @user)
+      edate = DateTime.now + 2
+      eb = HeatBill.new(total_therms: 10,  start_date: sdate, end_date: edate, house_id: @house.id, no_residents: 2, who: @user)
       expect(eb.save).to be false
       expect(eb.errors.messages).to eq({:end_date => ["cannot claim future use on past bills"]})
 
       edate = DateTime.now
       # redefined end_date to today, now a bill can be saved
-      eb = HeatBill.new(total_therms: 1000,  start_date: sdate, end_date: edate, house_id: @house.id, no_residents: 2, who: @user)
+      eb = HeatBill.new(total_therms: 10,  start_date: sdate, end_date: edate, house_id: @house.id, no_residents: 2, who: @user)
       expect(eb.save).to be true
     end
     it 'bill saves update users whos move in dates precede bill date' do
@@ -188,12 +212,12 @@ RSpec.describe HeatBill, type: :model do
       oldest_user_score = oldest_user.avg_daily_gas_consumption
 
       #false
-      eb = HeatBill.new(total_therms: 1000,  start_date: sdate, end_date: edate, house_id: @house.id, no_residents: 2, who: @user)
+      eb = HeatBill.new(total_therms: 10,  start_date: sdate, end_date: edate, house_id: @house.id, no_residents: 2, who: @user)
         expect(eb.save).to be false
       #true
-      eb = HeatBill.new(total_therms: 1000,  start_date: sdate, end_date: edate, house_id: @house.id, no_residents: 2, who: old_user)
+      eb = HeatBill.new(total_therms: 10,  start_date: sdate, end_date: edate, house_id: @house.id, no_residents: 2, who: old_user)
         expect(eb.save).to be true
-        
+
       new_user_score_NEW = User.find(new_user.id).avg_daily_gas_consumption
       old_user_score_NEW = User.find(old_user.id).avg_daily_gas_consumption
       oldest_user_score_NEW = User.find(oldest_user.id).avg_daily_gas_consumption
@@ -208,7 +232,7 @@ RSpec.describe HeatBill, type: :model do
     it 'can be saved on the same day' do
       yesterday = DateTime.now - 29
       bill_1 = ElectricBill.new(total_kwhs: 1000, start_date: yesterday, end_date: (yesterday + 29), house_id: @house.id, no_residents: 2, who: @user)
-      bill_2 = HeatBill.new(total_therms: 1000,  start_date: yesterday, end_date: (yesterday + 29), house_id: @house.id, no_residents: 2, who: @user)
+      bill_2 = HeatBill.new(total_therms: 10,  start_date: yesterday, end_date: (yesterday + 29), house_id: @house.id, no_residents: 2, who: @user)
       expect(bill_1.save).to be true
       expect(bill_2.save).to be true
     end
@@ -216,10 +240,10 @@ RSpec.describe HeatBill, type: :model do
   context 'two different houses' do
     it 'can save along the same dates' do
       yesterday = DateTime.now - 29
-      el1 = HeatBill.new(total_therms: 1000,  start_date: yesterday, end_date: (yesterday + 29), house_id: @house.id, no_residents: 2, who: @user)
-      el2 = HeatBill.new(total_therms: 1000,  start_date: yesterday, end_date: (yesterday + 29), house_id: @house2.id, no_residents: 2, who: @user)
-      expect(el1.save).to be true
-      expect(el2.save).to be true
+      hl1 = HeatBill.new(total_therms: 10,  start_date: yesterday, end_date: (yesterday + 29), house_id: @house.id, no_residents: 2, who: @user)
+      hl2 = HeatBill.new(total_therms: 10,  start_date: yesterday, end_date: (yesterday + 29), house_id: @house2.id, no_residents: 2, who: @user)
+      expect(hl1.save).to be true
+      expect(hl2.save).to be true
     end
   end
 end

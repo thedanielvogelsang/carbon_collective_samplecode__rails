@@ -415,26 +415,34 @@ module HouseHelper
     # Currently: ranking and updating by `City` and with User.all (not self.users)
     # Serializers will then use these UserRankings to use on dashboard page arrow (Me)
     def update_user_rankings
+      # users are compared within CITIES at this point
+      city = address.city.id
+      # eusers = User.joins(:user_electricity_rankings).where(:user_electricity_rankings => {area_type: "City", area_id: city}).distinct.reject{|u| u.avg_daily_electricity_consumption.zero? }.sort_by{|u| u.avg_daily_electricity_consumption}
       eusers = User.joins(:user_electricity_rankings).distinct.reject{|u| u.avg_daily_electricity_consumption.zero? }.sort_by{|u| u.avg_daily_electricity_consumption}
       wusers = User.joins(:user_water_rankings).distinct.reject{|u| u.avg_daily_water_consumption.zero? }.sort_by{|u| u.avg_daily_water_consumption}
       gusers = User.joins(:user_gas_rankings).distinct.reject{|u| u.avg_daily_gas_consumption.zero? }.sort_by{|u| u.avg_daily_gas_consumption}
       cusers = User.joins(:user_carbon_rankings).distinct.reject{|u| u.avg_daily_carbon_consumption.zero? }.sort_by{|u| u.avg_daily_carbon_consumption}
       # Change "City" back to House and use house_helper `id` method to call house id
-      city = address.city.id
       eusers.each_with_index do |u, i|
         user_ranking = UserElectricityRanking.where(area_type: "City", area_id: city, user_id: u.id)[0]
+        if user_ranking
           arr = user_ranking.arrow || true
           user_ranking.update(arrow: arr, rank: (i+1))
+        end
       end
       wusers.each_with_index do |u, i|
         user_ranking = UserWaterRanking.where(area_type: "City", area_id: city, user_id: u.id)[0]
+        if user_ranking
           arr = user_ranking.arrow || true
           user_ranking.update(arrow: arr, rank: (i+1))
+        end
       end
       gusers.each_with_index do |u, i|
         user_ranking = UserGasRanking.where(area_type: "City", area_id: city, user_id: u.id)[0]
+        if user_ranking
           arr = user_ranking.arrow || true
           user_ranking.update(arrow: arr, rank: (i+1))
+        end
       end
       cusers.each_with_index do |u, i|
         user_ranking = UserCarbonRanking.where(area_type: "City", area_id: city, user_id: u.id)[0]
