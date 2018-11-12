@@ -161,7 +161,7 @@ RSpec.describe 'City consumption averages' do
       expect(user.city).to eq(city)
       gallons = 14000
       price = rand(1..100)
-      WaterBill.create(start_date: @start_date1, end_date: @end_date1, total_gallons: gallons, price: price, house_id: house.id, no_residents: 2, user_id: user.id)
+      WaterBill.create(start_date: @start_date1, end_date: @end_date1, total_gallons: gallons, price: price, house_id: house.id, no_residents: 2, user_id: user.id, force: true)
       user = User.first
       c1_avg = city.avg_daily_water_consumed_per_user
       u_avg = user.avg_daily_water_consumption
@@ -180,12 +180,12 @@ RSpec.describe 'City consumption averages' do
       gallons = 14000
       gallons2 = 28000
       price = rand(1..100)
-      WaterBill.create(start_date: @start_date1, end_date: @end_date1, total_gallons: gallons, price: price, house_id: house.id, no_residents: 2, user_id: user.id)
+      WaterBill.create(start_date: @start_date1, end_date: @end_date1, total_gallons: gallons, price: price, house_id: house.id, no_residents: 2, user_id: user.id, force: true)
       city.update_daily_avg_water_consumption
       c1_avg1 = city.avg_daily_water_consumed_per_user
       expect(c1_avg1.to_f.round(2)).to eq(233.33)
       #-- add second bill --#
-      WaterBill.create(start_date: @start_date2, end_date: @end_date2, total_gallons: gallons2, price: price, house_id: house.id, no_residents: 2, user_id: user.id)
+      WaterBill.create(start_date: @start_date2, end_date: @end_date2, total_gallons: gallons2, price: price, house_id: house.id, no_residents: 2, user_id: user.id, force: true)
       user = User.first
       u_avg = user.avg_daily_water_consumption
       c1_new_avg = city.avg_daily_water_consumed_per_user
@@ -210,11 +210,11 @@ RSpec.describe 'City consumption averages' do
       #-- add bill to second house--#
       gallons = 14000
       price = rand(1..100)
-      WaterBill.create(start_date: @start_date1, end_date: @end_date1, total_gallons: gallons, price: price, house_id: House.first.id, no_residents: 2, user_id: User.first.id)
+      WaterBill.create(start_date: @start_date1, end_date: @end_date1, total_gallons: gallons, price: price, house_id: House.first.id, no_residents: 2, user_id: User.first.id, force: true)
       #-- add bill to second house--#
       gallons2 = 28000
       price = rand(1..100)
-      WaterBill.create(start_date: @start_date2, end_date: @end_date2, total_gallons: gallons2, price: price, house_id: House.second.id, no_residents: 2, user_id: User.second.id)
+      WaterBill.create(start_date: @start_date2, end_date: @end_date2, total_gallons: gallons2, price: price, house_id: House.second.id, no_residents: 2, user_id: User.second.id, force: true)
       h1 = House.first
       h2 = House.second
       user = User.first
@@ -251,7 +251,7 @@ RSpec.describe 'City consumption averages' do
       expect(user.city).to eq(city)
       therms = 300
       price = rand(1..100)
-      HeatBill.create(start_date: @start_date1, end_date: @end_date1, total_therms: therms, price: price, house_id: house.id, no_residents: 2, user_id: user.id)
+      HeatBill.create(start_date: @start_date1, end_date: @end_date1, total_therms: therms, price: price, house_id: house.id, no_residents: 2, user_id: user.id, force: true)
       user = User.first
       c1_avg = city.avg_daily_gas_consumed_per_user
       u_avg = user.avg_daily_gas_consumption
@@ -280,7 +280,7 @@ RSpec.describe 'City consumption averages' do
       #same as city
       expect(c1_avg1.to_f.round(2)).to eq(5.0)
       #-- add second bill --#
-      HeatBill.create(start_date: @start_date2, end_date: @end_date2, total_therms: therms2, price: price, house_id: house.id, no_residents: 2, user_id: user.id)
+      HeatBill.create(start_date: @start_date2, end_date: @end_date2, total_therms: therms2, price: price, house_id: house.id, no_residents: 2, user_id: user.id, force: true)
       user = User.first
       u_avg2 = user.avg_daily_gas_consumption
       c1_new_avg = city.avg_daily_gas_consumed_per_user
@@ -312,7 +312,7 @@ RSpec.describe 'City consumption averages' do
       #-- add bill to second house--#
       therms2 = 600
       price = rand(1..100)
-      HeatBill.create(start_date: @start_date2, end_date: @end_date2, total_therms: therms2, price: price, house_id: House.second.id, no_residents: 2, user_id: User.second.id)
+      HeatBill.create(start_date: @start_date2, end_date: @end_date2, total_therms: therms2, price: price, house_id: House.second.id, no_residents: 2, user_id: User.second.id, force: true)
       user = User.first
       user2 = User.second
       u_avg = user.avg_daily_gas_consumption
