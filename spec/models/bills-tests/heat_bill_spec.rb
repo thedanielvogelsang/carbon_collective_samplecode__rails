@@ -154,7 +154,7 @@ RSpec.describe HeatBill, type: :model do
 
       move_in_date = uH.move_in_date.to_datetime
       sdate = DateTime.now - 29
-      edate = DateTime.now + 1
+      edate = DateTime.now + 2
       eb = HeatBill.new(total_therms: 10,  start_date: sdate, end_date: edate, house_id: @house.id, no_residents: 2, who: @user)
       expect(eb.save).to be false
       expect(eb.errors.messages).to eq({:end_date => ["cannot claim future use on past bills"]})
