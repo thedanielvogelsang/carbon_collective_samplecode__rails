@@ -12,18 +12,31 @@ class AverageCalculatorJob
   # sidekiq_options retry: false
 
   def perform
-    puts "Worker started\n"
-    task = "update_data"
-    app = Rake.application
-    puts app
-      app.init
-      app.add_import Rails.root.join("Rakefile")
-      # this loads the Rakefile and other imports
-      app.load_rakefile
-    # this queues and invokes the task
-      puts "task invoked"
-        app[task].invoke
-        puts "task completed"
+    puts "Worker task started...\n"
+    puts 'Updating household data'
+    House.find_each{|h| h.update_data}
+
+    puts 'Updating neighborhood data'
+    Neighborhood.find_each{|n| n.update_data }
+
+    puts 'Updating city data'
+    City.find_each{|c| c.update_data }
+
+    puts 'Updating county data'
+    County.find_each{|c| c.update_data }
+
+    puts 'Updating region data'
+    Region.find_each{|r| r.update_data }
+
+    puts 'Updating country data'
+    Country.find_each{|c| c.update_data }
+
+    puts "Updating global stats"
+    Global.first.update_data
+
+    puts "...done.\n"
+
+        puts "task completed\n"
 
     # THINGS THAT DIDNT WORK:
       # `rake -f #{Rails.root.join("Rakefile")} #{@task}`

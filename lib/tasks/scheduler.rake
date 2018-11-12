@@ -30,7 +30,7 @@ desc "These rake tasks perform background work for our application
     Global.first.update_data
 
     puts "...done."
-    
+
   end
 
 #  -----
