@@ -1,6 +1,8 @@
 # README
 
-This repo samples code from my recent employer, and was constructed in a Rails framework and optimized for speed and serialization using a PostgreSQL database. The samples include RESTful controllers, a TDD spec suite, provisions and gems for security and password management, as well as a serialized API dependant on a few dozen associated models -- which together form the backbone of the API. Views were not relevant to our backend API, as it is one of several modular applications (including AWS and React) that together formed the alpha launch for Carbon Collective.
+This repo samples code from my recent employer, and was constructed in a Rails framework and using a PostgreSQL database to store user data related to household energy-intensive activities (water, heat, and electricity bills).
+
+The sample includes a well-constructed schema managing dozens of independent yet associated models, RESTful (and non-RESTful -- depending on our needs) routes/controllers, a TDD spec suite, provisions and gems for security, backend workers and password management, as well as a serialized JSON-returning API -- which together form the backbone of the our application. Views were not relevant to our backend API, as it is one of several modular applications (including AWS and React) interacting to make up the alpha launch for Carbon Collective.
 
 <b>Carbon Collective is an environmental startup launching the first web app for consolidated and holistic carbon foot-printing.first web app for consolidated and holistic carbon foot-printing.</b>
 
@@ -146,5 +148,12 @@ api resource list (all RESTful routes for each resource are available for CRUD a
 
 ### Regions (examples)
   * GET /api/v1/areas/countries
-  * GET /api/v1/areas/cities
-  * GET /api/v1/areas/neighborhoods/:id
+  * GET /api/v1/areas/cities/<resource_name>
+  * GET /api/v1/areas/neighborhoods/:id/<resource_name>
+
+  ```shell
+    example: "GET 'localhost:3000/api/v1/areas/countries/water'"
+  ```
+  ```shell
+    example 2: "GET 'localhost:3000/api/v1/areas/regions/6/electricity'"
+  ```
