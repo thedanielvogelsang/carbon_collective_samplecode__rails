@@ -133,9 +133,9 @@ Responses have been cached using Rails cache.
 
 ## Endpoints
 
-api resource list (all RESTful routes for each resource are available for CRUD):
+api resource list (all RESTful routes for each resource are available for CRUD and in can be seen in `routes`):
 
-### Users
+### Users (examples)
   * GET /api/v1/users
   * GET /api/v1/users/:id
   * GET /api/v1/users/:id/resources?resource=<resource_name>
@@ -144,11 +144,7 @@ api resource list (all RESTful routes for each resource are available for CRUD):
     example: "GET 'localhost:3000/api/v1/users/example-user-slug/resource?resource=electricity'"
   ```
 
-### Trips
-  * GET /api/v1/trips
-  * GET /api/v1/users/:id/trips
-
-### Days
-  * GET /api/v1/days
-  * GET /api/v1/days/:id
-  * GET /api/v1/days/:id/trips
+### Regions (examples)
+  * GET /api/v1/areas/countries
+  * GET /api/v1/areas/cities
+  * GET /api/v1/areas/neighborhoods/:id
