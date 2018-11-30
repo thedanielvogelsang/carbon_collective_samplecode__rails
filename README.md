@@ -1,96 +1,75 @@
 # README
 
-This repo samples code from my recent employer, and was constructed in a Rails framework and optimized for speed and serialization using a PostgreSQL database. The samples include RESTful controllers, a TDD spec suite, provisions and gems for security and password management, as well as a serialized API dependant on a few dozen associated models -- which together form the backbone of the API. Views were not relevant to our backend API, as it is one of several modular applications (including AWS and React) that together formed the alpha launch for Carbon Collective. 
+This repo samples code from my recent employer, and was constructed in a Rails framework and optimized for speed and serialization using a PostgreSQL database. The samples include RESTful controllers, a TDD spec suite, provisions and gems for security and password management, as well as a serialized API dependant on a few dozen associated models -- which together form the backbone of the API. Views were not relevant to our backend API, as it is one of several modular applications (including AWS and React) that together formed the alpha launch for Carbon Collective.
 
 <b>Carbon Collective is an environmental startup launching the first web app for consolidated and holistic carbon foot-printing.first web app for consolidated and holistic carbon foot-printing.</b>
 
-An example JSON return: 
+An example JSON return:
 ```
 {
-id: 1,
-first: "Original",
-last: "User",
-email: "original.user@gmail.com",
-avatar_url: null,
-house_ids: [
-18
-],
-total_carbon_savings_to_date: "288.12 kWhs",
-global_collective_carbon_savings: "8826.85 kWhs",
-privacy_policy: true,
-house: {
-id: 18,
-total_sq_ft: null,
-no_residents: 2,
-created_at: "2018-11-28T17:14:16.753Z",
-updated_at: "2018-11-28T17:14:16.789Z",
-address_id: 18,
-apartment: false,
-avg_daily_electricity_consumed_per_user: "0.0",
-avg_daily_water_consumed_per_user: "0.0",
-avg_daily_gas_consumed_per_user: "0.0",
-avg_daily_carbon_consumed_per_user: "0.0",
-total_electricity_consumed: "0.0",
-total_water_consumed: "0.0",
-total_gas_consumed: "0.0",
-total_carbon_consumed: "0.0",
-max_regional_avg_electricity_consumption: "0.0",
-max_regional_avg_water_consumption: "0.0",
-max_regional_avg_gas_consumption: "0.0",
-max_regional_avg_carbon_consumption: "0.0"
-},
-slug: "original-user-gmail-com",
-move_in_date: "2000-10-20T06:00:00.000Z",
-household: {
-id: 18,
-total_sq_ft: null,
-no_residents: 2,
-created_at: "2018-11-28T17:14:16.753Z",
-updated_at: "2018-11-28T17:14:16.789Z",
-address_id: 18,
-apartment: false,
-avg_daily_electricity_consumed_per_user: "0.0",
-avg_daily_water_consumed_per_user: "0.0",
-avg_daily_gas_consumed_per_user: "0.0",
-avg_daily_carbon_consumed_per_user: "0.0",
-total_electricity_consumed: "0.0",
-total_water_consumed: "0.0",
-total_gas_consumed: "0.0",
-total_carbon_consumed: "0.0",
-max_regional_avg_electricity_consumption: "0.0",
-max_regional_avg_water_consumption: "0.0",
-max_regional_avg_gas_consumption: "0.0",
-max_regional_avg_carbon_consumption: "0.0"
-},
-neighborhood: [
-59,
-"Gateway - Green Valley Ranch"
-],
-city: [
-1,
-"Lansing"
-],
-county: [
-17,
-"Ingham County"
-],
-region: [
-6,
-"Michigan"
-],
-country: [
-194,
-"United States of America"
-],
-navbar_helper: {
-electricity: true,
-water: true,
-gas: true
-},
-checklists_left: 3,
-invites_left: 3,
-bills_left: 3,
-resources_entered: null
+  id: 1,
+  first: "Original",
+  last: "User",
+  email: "original.user@gmail.com",
+  avatar_url: null,
+  house_ids: [
+    18
+  ],
+  total_carbon_savings_to_date: "288.12 kWhs",
+  global_collective_carbon_savings: "8826.85 kWhs",
+  privacy_policy: true,
+  slug: "original-user-gmail-com",
+  move_in_date: "2000-10-20T06:00:00.000Z",
+  household: {
+    id: 18,
+    total_sq_ft: null,
+    no_residents: 2,
+    created_at: "2018-11-28T17:14:16.753Z",
+    updated_at: "2018-11-28T17:14:16.789Z",
+    address_id: 18,
+    apartment: false,
+    avg_daily_electricity_consumed_per_user: "0.0",
+    avg_daily_water_consumed_per_user: "0.0",
+    avg_daily_gas_consumed_per_user: "0.0",
+    avg_daily_carbon_consumed_per_user: "0.0",
+    total_electricity_consumed: "0.0",
+    total_water_consumed: "0.0",
+    total_gas_consumed: "0.0",
+    total_carbon_consumed: "0.0",
+    max_regional_avg_electricity_consumption: "0.0",
+    max_regional_avg_water_consumption: "0.0",
+    max_regional_avg_gas_consumption: "0.0",
+    max_regional_avg_carbon_consumption: "0.0"
+  },
+  neighborhood: [
+    59,
+    "Gateway - Green Valley Ranch"
+  ],
+  city: [
+    1,
+    "Lansing"
+  ],
+  county: [
+    17,
+    "Ingham County"
+  ],
+  region: [
+    6,
+    "Michigan"
+  ],
+  country: [
+    194,
+    "United States of America"
+  ],
+  navbar_helper: {
+    electricity: true,
+    water: true,
+    gas: true
+  },
+  checklists_left: 3,
+  invites_left: 3,
+  bills_left: 3,
+  resources_entered: null
 }
 ```
 
@@ -144,8 +123,9 @@ Responses have been cached using Rails cache.
 
 #### then, import fake user data using `rake db:seed` and you're ready to go!
 
-  run 
-  ```rails s
+  run
+  ```shell
+    rails s
   ```
 
 
