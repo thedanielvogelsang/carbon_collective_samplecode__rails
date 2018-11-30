@@ -1,12 +1,13 @@
 # README
 
-This repo samples code from my recent employer, and was constructed in a Rails framework and using a PostgreSQL database to store user data related to household energy-intensive activities (water, heat, and electricity bills).
+This repo samples code from my recent employer, and was constructed in a Rails framework using a PostgreSQL database. This Rails app is intended to store and return user data related to household energy-intensive activities (water, heat, and electricity bills) and does not have a UI.
 
-The sample includes a well-constructed schema managing dozens of independent yet associated models, RESTful (and non-RESTful -- depending on our needs) routes/controllers, a TDD spec suite, provisions and gems for security, backend workers and password management, as well as a serialized JSON-returning API -- which together form the backbone of the our application. Views were not relevant to our backend API, as it is one of several modular applications (including AWS and React) interacting to make up the alpha launch for Carbon Collective.
+The sample includes a well-constructed schema managing dozens of associated models; RESTful (and non-RESTful -- depending on our needs) routes/controllers; model and helper module functions (some using Active Record, others using direct SQL query) for business analytics; a TDD spec suite complete with unit, service, and integration tests; provisions and gems for security, backend workers and password management; as well as a serialized JSON-returning API -- which together form the backbone of the our application. Views were not relevant to our backend API, as it is one of several modular applications (including AWS and React) interacting to make up the alpha launch for Carbon Collective.
 
 <b>Carbon Collective is an environmental startup launching the first web app for consolidated and holistic carbon foot-printing.first web app for consolidated and holistic carbon foot-printing.</b>
 
-An example JSON return:
+An example JSON response for a user:
+
 ```
 {
   id: 1,
@@ -112,9 +113,7 @@ Responses have been cached using Rails cache.
 
 ## Deployment instructions
 
-  clone repo and cd into it, and in terminal
-
-  run:
+  clone repo and cd into it, and in terminal run:
   ```shell
     gem install bundle
     bundle install
