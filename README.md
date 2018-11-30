@@ -138,22 +138,11 @@ api resource list (all RESTful routes for each resource are available for CRUD):
 ### Users
   * GET /api/v1/users
   * GET /api/v1/users/:id
+  * GET /api/v1/users/:id/resources?resource=<resource_name>
 
   ```shell
-  users attributes:
-    company: string, must be unique
-    company_desc: string, must be unique
-    company_motto: string,
-    ceo_statement: string
-
-  example:
-    GET http://localhost:3000/api/v1/makes
-
+    example: "GET 'localhost:3000/api/v1/users/example-user-slug/resource?resource=electricity'"
   ```
-
-### Users
-  * GET /api/v1/users
-  * GET /api/v1/users/:id/groups
 
 ### Trips
   * GET /api/v1/trips
