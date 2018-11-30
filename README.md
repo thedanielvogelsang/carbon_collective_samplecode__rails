@@ -112,9 +112,9 @@ Responses have been cached using Rails cache.
 
 ## Deployment instructions
 
-  clone repo and cd into it
+  clone repo and cd into it, and in terminal
 
-  run
+  run:
   ```shell
     gem install bundle
     bundle install
@@ -125,7 +125,7 @@ Responses have been cached using Rails cache.
 
 #### then, import fake user data using `rake db:seed` and you're ready to go!
 
-  run
+  to launch the server, simply run:
   ```shell
     rails s
   ```
